@@ -1,5 +1,5 @@
 import { screen } from '@storybook/test';
-import { OffKeyGate } from './OffKeyGate';
+import OffKeyGate from './OffKeyGate';
 // import * as walletHook from '@next/wallet';
 import { StoryObj, type Meta } from '@storybook/react';
 

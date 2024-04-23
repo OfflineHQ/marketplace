@@ -7,7 +7,7 @@ import {
   ToasterDecorator,
 } from '@test-utils/storybook-decorators';
 import { getMock } from 'storybook-addon-module-mock';
-import { Auth } from './Auth';
+import Auth from './Auth';
 import { AuthExample, authMocks } from './examples';
 
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';

@@ -10,7 +10,7 @@ import {
 import * as nextIntl from 'next-intl';
 import { createMock } from 'storybook-addon-module-mock';
 import { AppContainer } from '../AppContainer/AppContainer';
-import { Auth } from './Auth';
+import Auth from './Auth';
 
 export const AuthExample = () => {
   return (

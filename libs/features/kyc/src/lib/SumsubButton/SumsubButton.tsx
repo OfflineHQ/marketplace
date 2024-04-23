@@ -2,7 +2,7 @@ import { Button, ButtonSkeleton } from '@ui/components';
 import { UserIdentification } from '@ui/icons';
 import { useTranslations } from 'next-intl';
 import { Suspense } from 'react';
-import { SumsubDialog, SumsubDialogProps } from '../SumsubDialog/SumsubDialog';
+import SumsubDialog, { SumsubDialogProps } from '../SumsubDialog/SumsubDialog';
 
 export type SumsubButtonProps = Pick<
   SumsubDialogProps,

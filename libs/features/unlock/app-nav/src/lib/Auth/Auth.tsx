@@ -7,7 +7,7 @@ import { LogIn, LogOut, SignUp } from '@ui/icons';
 import { useEffect, useState } from 'react';
 import { WalletConnect } from '../WalletConnect/WalletConnect';
 
-export const Auth: React.FC = () => {
+export default function Auth() {
   const {
     connect,
     disconnect,
@@ -107,4 +107,4 @@ export const Auth: React.FC = () => {
       )}
     </div>
   );
-};
+}

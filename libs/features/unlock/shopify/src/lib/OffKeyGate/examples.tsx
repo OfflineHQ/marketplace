@@ -1,12 +1,12 @@
 import * as iframeApi from '@next/iframe';
-import { IFrameProvider, useIframeOffKey, ConnectStatus } from '@next/iframe';
+import { ConnectStatus, IFrameProvider, useIframeOffKey } from '@next/iframe';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
+import { authMocks } from '../CardConnected/examples';
 import { OffKeyHeaderConnectedExamples } from '../OffKeyHeaderConnected/examples';
 import { OffKeyLayout } from '../OffKeyLayout/OffKeyLayout';
 import { OffKeyViewHeaderConnected } from '../types';
-import { OffKeyGate, OffKeyGateProps } from './OffKeyGate';
-import { authMocks } from '../CardConnected/examples';
+import OffKeyGate, { OffKeyGateProps } from './OffKeyGate';
 
 export const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
 

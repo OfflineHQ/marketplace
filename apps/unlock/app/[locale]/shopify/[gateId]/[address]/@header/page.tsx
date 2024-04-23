@@ -16,7 +16,7 @@ interface HeaderProps {
 }
 
 const OffKeyProfile = dynamic(
-  async () => (await import('@features/unlock/shopify')).OffKeyProfile,
+  () => import('@features/unlock/shopify').then((mod) => mod.OffKeyProfile),
   { ssr: false },
 );
 

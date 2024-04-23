@@ -11,7 +11,11 @@ export interface OffKeyGateProps {
   className?: string;
 }
 
-export function OffKeyGate({ gateId, address, className }: OffKeyGateProps) {
+export default function OffKeyGate({
+  gateId,
+  address,
+  className,
+}: OffKeyGateProps) {
   const t = useTranslations('Shopify.OffKeyGate');
   const { offKeyState } = useIframeOffKey();
   const stateToSubtitle = {

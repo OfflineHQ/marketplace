@@ -20,14 +20,14 @@ export interface SumsubDialogProps
   title: string;
 }
 
-export const SumsubDialog: React.FC<SumsubDialogProps> = ({
+export default function SumsubDialog({
   children,
   title,
   confirmedIcon,
   confirmedText,
   confirmedLink,
   ...dialogProps
-}) => {
+}: SumsubDialogProps) {
   const locale = useLocale() as Locale;
   return (
     <Dialog {...dialogProps}>
@@ -45,4 +45,4 @@ export const SumsubDialog: React.FC<SumsubDialogProps> = ({
       </DialogContent>
     </Dialog>
   );
-};
+}
