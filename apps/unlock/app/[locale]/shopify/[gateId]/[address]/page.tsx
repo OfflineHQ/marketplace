@@ -12,7 +12,7 @@ interface GateProps {
 }
 
 const OffKeyGate = dynamic(
-  async () => (await import('@features/unlock/shopify')).OffKeyGate,
+  () => import('@features/unlock/shopify').then((mod) => mod.OffKeyGate),
   { ssr: false },
 );
 

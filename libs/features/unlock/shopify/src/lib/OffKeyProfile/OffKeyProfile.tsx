@@ -25,7 +25,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 export interface OffKeyProfileProps {
   user: AppUser;
 }
-export const OffKeyProfile: React.FC<OffKeyProfileProps> = ({ user }) => {
+export default function OffKeyProfile({ user }: OffKeyProfileProps) {
   const t = useTranslations('Shopify.OffKeyProfile');
   const { toast } = useToast();
   const {
@@ -178,11 +178,11 @@ export const OffKeyProfile: React.FC<OffKeyProfileProps> = ({ user }) => {
       <DropdownMenuItems items={items} />
     </DropdownMenu>
   ) : (
-    <ProfileNavSkeleton />
+    <OffKeyProfileSkeleton />
   );
-};
+}
 
-export function ProfileNavSkeleton() {
+export function OffKeyProfileSkeleton() {
   return (
     <div className="relative flex items-center justify-center opacity-100">
       <AvatarSkeleton className="mx-3 size-9 md:size-10" />

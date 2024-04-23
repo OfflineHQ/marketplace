@@ -1,5 +1,5 @@
 import { expect, screen, userEvent, waitFor } from '@storybook/test';
-import { OffKeyProfile } from './OffKeyProfile';
+import OffKeyProfile from './OffKeyProfile';
 // import * as walletHook from '@next/wallet';
 import { StoryObj, type Meta } from '@storybook/react';
 import { OffKeyProfileExample, authMocks } from './examples';

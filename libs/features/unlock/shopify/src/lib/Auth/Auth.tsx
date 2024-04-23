@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { ConnectProps } from './AuthDialogDrawer';
 
 const AuthDialogDynamic = dynamic(
-  async () => (await import('./AuthDialogDrawer')).AuthDialogDrawer,
+  () => import('./AuthDialogDrawer').then((mod) => mod.AuthDialogDrawer),
   { ssr: false },
 );
 

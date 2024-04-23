@@ -7,7 +7,7 @@ import { useIframeConnect } from '@next/iframe';
 import * as nextIntl from 'next-intl';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
-import { OffKeyProfile, OffKeyProfileProps } from './OffKeyProfile';
+import OffKeyProfile, { OffKeyProfileProps } from './OffKeyProfile';
 
 export const OffKeyProfileExample = (props: OffKeyProfileProps) => {
   return (

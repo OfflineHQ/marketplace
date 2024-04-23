@@ -3,7 +3,7 @@
 import { AppContainer } from '@features/unlock/app-nav';
 import dynamic from 'next/dynamic';
 const Auth = dynamic(
-  async () => (await import('@features/unlock/app-nav')).Auth,
+  () => import('@features/unlock/app-nav').then((mod) => mod.Auth),
   { ssr: false },
 );
 

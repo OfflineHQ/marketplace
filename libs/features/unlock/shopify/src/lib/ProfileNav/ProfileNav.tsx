@@ -30,7 +30,7 @@ export interface ShopifyProfileNavProps {
 }
 
 const VerifyEmailDynamic = dynamic(
-  async () => (await import('@features/kyc')).SumsubDialog,
+  () => import('@features/kyc').then((mod) => mod.SumsubDialog),
   { ssr: false },
 );
 
