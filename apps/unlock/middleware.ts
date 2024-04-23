@@ -1,6 +1,6 @@
 import { defaultLocale, locales } from '@next/i18n';
 import createMiddleware from 'next-intl/middleware';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 const intlMiddleware = createMiddleware({
   locales: locales.slice(),
@@ -8,9 +8,9 @@ const intlMiddleware = createMiddleware({
 });
 
 export default function middleware(req: NextRequest) {
-  const next = NextResponse.next(intlMiddleware(req));
-  next.headers.set('x-url', req.url);
-  return next;
+  const res = intlMiddleware(req);
+  res.headers.set('x-url', req.url);
+  return res;
 }
 
 export const config = {

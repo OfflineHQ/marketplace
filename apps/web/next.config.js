@@ -108,8 +108,7 @@ const nextConfig = {
   },
   sentry: {
     hideSourceMaps: true,
-    // // TODO set back when issue fixed, meanwhile issue in api route will not be reported if not wrapped with withSentry.
-    // autoInstrumentServerFunctions: false, // avoid error: error ./middleware.ts Module not found: Can't resolve 'sentry.edge.config.ts'
+    autoInstrumentServerFunctions: true,
   },
 };
 
