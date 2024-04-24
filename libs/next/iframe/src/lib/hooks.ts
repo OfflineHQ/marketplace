@@ -78,11 +78,19 @@ export const useIframeConnect = () => {
   };
 };
 
+// Here we rely on uiReady to determine if the iframe has been set (here means the iframe received css settings from the parent)
+export const useIframeReady = () => {
+  const { uiReady } = useIFrame();
+  return uiReady;
+};
+
 export const useIframeOffKey = () => {
-  const { offKeyState, customer } = useIFrame();
+  const { offKeyState, customer, iframeParent } = useIFrame();
+  const isIframeReady = useIframeReady();
 
   return {
     offKeyState,
     customer,
+    isReady: isIframeReady,
   };
 };

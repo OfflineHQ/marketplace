@@ -6,10 +6,15 @@ import { useMutation } from '@tanstack/react-query';
 import { Button, ButtonSkeleton } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
+import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 
 import { ConnectProps, OffKeyAuthSignIn } from './OffKeyAuthSignIn';
 
-export function OffKeyAuth() {
+export interface OffKeyAuthProps {
+  organizerId: string;
+}
+
+export function OffKeyAuth({ organizerId }: OffKeyAuthProps) {
   const t = useTranslations('Shopify.OffKeyAuth');
   const {
     connect,
@@ -24,6 +29,13 @@ export function OffKeyAuth() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const {
+    customer,
+    status: shopifyCustomerStatus,
+    walletToConnect,
+  } = useShopifyCustomer({
+    organizerId,
+  });
 
   const connectWalletMutation = useMutation({
     mutationFn: ({ walletAddress, isCreatingAccount }: ConnectProps) =>
@@ -43,7 +55,7 @@ export function OffKeyAuth() {
       // Handle connection error
     },
   });
-  if (!isWalletReady) return <OffKeyAuthSkelton />;
+  if (!isWalletReady || !shopifyCustomerStatus) return <OffKeyAuthSkelton />;
   return (
     <div className="flex w-full flex-1 flex-col justify-end space-y-3">
       {existingWallet ? (
