@@ -14047,6 +14047,26 @@ type query_root {
     where: ScheduledReleaseWhereInput
   ): ScheduledReleaseConnection!
 
+  """
+  fetch data from the table: "shopifyCustomer"
+  """
+  shopifyCustomer(
+    """distinct select on columns"""
+    distinct_on: [shopifyCustomer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [shopifyCustomer_order_by!]
+
+    """filter the rows returned"""
+    where: shopifyCustomer_bool_exp
+  ): [shopifyCustomer!]!
+
   """Retrieve a single user"""
   user(
     """
@@ -14105,6 +14125,88 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: UserWhereInput
   ): UserConnection!
+}
+
+"""
+This table stores the link between the offline accounts and Shopify customer IDs. It allows organizers to manage customer data seamlessly across platforms without needing to handle sensitive personal information directly.
+"""
+type shopifyCustomer {
+  """
+  Reference to the account table, ensuring that customer data is associated with a unique account address.
+  """
+  address: String!
+
+  """
+  The unique identifier for the customer as stored in Shopify. This links the internal account to the Shopify customer record, facilitating integrated data management across systems.
+  """
+  customerId: String!
+
+  """
+  Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently.
+  """
+  organizerId: String!
+}
+
+"""
+Boolean expression to filter rows from the table "shopifyCustomer". All fields are combined with a logical 'AND'.
+"""
+input shopifyCustomer_bool_exp {
+  _and: [shopifyCustomer_bool_exp!]
+  _not: shopifyCustomer_bool_exp
+  _or: [shopifyCustomer_bool_exp!]
+  address: String_comparison_exp
+  customerId: String_comparison_exp
+  organizerId: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "shopifyCustomer"."""
+input shopifyCustomer_order_by {
+  address: order_by
+  customerId: order_by
+  organizerId: order_by
+}
+
+"""
+select columns of table "shopifyCustomer"
+"""
+enum shopifyCustomer_select_column {
+  """column name"""
+  address
+
+  """column name"""
+  customerId
+
+  """column name"""
+  organizerId
+}
+
+"""
+Streaming cursor of the table "shopifyCustomer"
+"""
+input shopifyCustomer_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: shopifyCustomer_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input shopifyCustomer_stream_cursor_value_input {
+  """
+  Reference to the account table, ensuring that customer data is associated with a unique account address.
+  """
+  address: String
+
+  """
+  The unique identifier for the customer as stored in Shopify. This links the internal account to the Shopify customer record, facilitating integrated data management across systems.
+  """
+  customerId: String
+
+  """
+  Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently.
+  """
+  organizerId: String
 }
 
 type subscription_root {
@@ -14285,4 +14387,38 @@ type subscription_root {
     """filter the rows returned"""
     where: passPricing_bool_exp
   ): [passPricing!]!
+
+  """
+  fetch data from the table: "shopifyCustomer"
+  """
+  shopifyCustomer(
+    """distinct select on columns"""
+    distinct_on: [shopifyCustomer_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [shopifyCustomer_order_by!]
+
+    """filter the rows returned"""
+    where: shopifyCustomer_bool_exp
+  ): [shopifyCustomer!]!
+
+  """
+  fetch data from the table in a streaming manner: "shopifyCustomer"
+  """
+  shopifyCustomer_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [shopifyCustomer_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: shopifyCustomer_bool_exp
+  ): [shopifyCustomer!]!
 }

@@ -527,6 +527,9 @@
     "OffKeyProfile": {
       "my-account": "My account",
       "sign-out": "Sign out"
+    },
+    "OffKeyHeaderNotConnected": {
+      "default": "Hello {customer}"
     }
   },
   "OrganizerLoyaltyCard": {

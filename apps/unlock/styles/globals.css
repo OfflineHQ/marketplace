@@ -239,7 +239,7 @@ html,
 }
 
 .off-btn-skeleton {
-  height: var(--off-btn-height);
+  height: var(--off-btn-height, 2.5rem);
 }
 
 .off-btn-skeleton:has([style*='--off-btn-height']) {

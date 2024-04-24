@@ -110,3 +110,30 @@ export const useGetEventPassNftByTokenReferenceQuery = <
     ...options
   }
     )};
+
+export const GetShopifyCustomerDocument = `
+    query GetShopifyCustomer($organizerId: String!, $customerId: String!) @cached {
+  shopifyCustomer(
+    where: {organizerId: {_eq: $organizerId}, customerId: {_eq: $customerId}}
+    limit: 1
+  ) {
+    address
+  }
+}
+    `;
+
+export const useGetShopifyCustomerQuery = <
+      TData = Types.GetShopifyCustomerQuery,
+      TError = Error
+    >(
+      variables: Types.GetShopifyCustomerQueryVariables,
+      options?: Omit<UseQueryOptions<Types.GetShopifyCustomerQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetShopifyCustomerQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetShopifyCustomerQuery, TError, TData>(
+      {
+    queryKey: ['GetShopifyCustomer', variables],
+    queryFn: fetchDataReactQuery<Types.GetShopifyCustomerQuery, Types.GetShopifyCustomerQueryVariables>(GetShopifyCustomerDocument, variables),
+    ...options
+  }
+    )};
