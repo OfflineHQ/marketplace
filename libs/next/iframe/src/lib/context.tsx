@@ -25,6 +25,7 @@ interface IFrameContextType {
   uiReady: boolean;
   offKeyState: OffKeyState | null;
   setConnectStatus: Dispatch<SetStateAction<ConnectStatus | null>>;
+  customer: ReceiveMessageValues[ReceiveMessageType.CUSTOMER] | null;
 }
 
 const defaultState: IFrameContextType = {
@@ -33,6 +34,7 @@ const defaultState: IFrameContextType = {
   setConnectStatus: () => null,
   uiReady: false,
   offKeyState: null,
+  customer: null,
 };
 
 const IFrameContext = createContext<IFrameContextType>(defaultState);
@@ -48,15 +50,17 @@ interface IFrameProviderProps {
 }
 
 export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
-  const [iframeParent, setIFrameParent] = useState<IFramePage | null>(null);
-  const [connectStatus, setConnectStatus] = useState<ConnectStatus | null>(
-    null,
-  );
-  const [offKeyState, setOffKeyState] = useState<OffKeyState | null>(null);
+  const [iframeParent, setIFrameParent] =
+    useState<IFrameContextType['iframeParent']>(null);
+  const [connectStatus, setConnectStatus] =
+    useState<IFrameContextType['connectStatus']>(null);
+  const [offKeyState, setOffKeyState] =
+    useState<IFrameContextType['offKeyState']>(null);
 
   const [cssVariables, setCssVariables] = useState<Record<string, string>>({});
   const [classes, setClasses] = useState<string>('');
   const [uiReady, setUiReady] = useState(false);
+  const [customer, setCustomer] = useState<IFrameContextType['customer']>(null);
 
   const handleIFrameReady = () => {
     setIFrameParent((window as any).parentIFrame);
@@ -89,6 +93,9 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
             .status,
         );
         break;
+      case ReceiveMessageType.CUSTOMER:
+        setCustomer(value as ReceiveMessageValues[ReceiveMessageType.CUSTOMER]);
+        break;
     }
   };
   return (
@@ -104,6 +111,7 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
           setConnectStatus,
           uiReady,
           offKeyState,
+          customer,
         }}
       >
         <div

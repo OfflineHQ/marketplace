@@ -2,6 +2,7 @@ export enum ReceiveMessageType {
   CONNECT_STATUS = 'CONNECT_STATUS',
   UPDATE_CSS_VARIABLES_AND_CLASSES = 'UPDATE_CSS_VARIABLES_AND_CLASSES',
   OFF_KEY_STATE = 'OFF_KEY_STATE',
+  CUSTOMER = 'CUSTOMER',
   // Additional message types can be added here as needed
 }
 
@@ -39,6 +40,12 @@ export interface ReceiveMessageValues {
     cssVariables: Record<string, string>;
     classes: string;
     fontFamily: FontFamily;
+  };
+  [ReceiveMessageType.CUSTOMER]: {
+    id: string;
+    email: string;
+    firstName?: string;
+    lastName?: string;
   };
   // Additional value shapes can be defined here corresponding to the ReceiveMessageType
 }

@@ -1,5 +1,6 @@
 import { OffKeyHeader } from '@features/unlock/shopify';
 import { type Locale } from '@next/i18n';
+import { Text } from '@ui/components';
 
 interface HeaderProps {
   params: {
@@ -9,5 +10,5 @@ interface HeaderProps {
 }
 
 export default function Header({ params }: HeaderProps) {
-  return <OffKeyHeader title="title" />;
+  return <OffKeyHeader title={<Text variant="h6">title</Text>} />;
 }
