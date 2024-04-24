@@ -79,9 +79,10 @@ export const useIframeConnect = () => {
 };
 
 export const useIframeOffKey = () => {
-  const { offKeyState } = useIFrame();
+  const { offKeyState, customer } = useIFrame();
 
   return {
     offKeyState,
+    customer,
   };
 };

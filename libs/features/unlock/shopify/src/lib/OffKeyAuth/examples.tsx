@@ -5,6 +5,7 @@ import {
   useWalletConnect,
   useWalletContext,
 } from '@next/wallet';
+import { Text } from '@ui/components';
 import * as nextIntl from 'next-intl';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
@@ -16,7 +17,9 @@ import { OffKeyAuth } from './OffKeyAuth';
 export function OffKeyAuthDemo() {
   return (
     <WalletProvider>
-      <OffKeyLayout header={<OffKeyHeader title="title" />}>
+      <OffKeyLayout
+        header={<OffKeyHeader title={<Text variant="h6">title</Text>} />}
+      >
         <OffKeyGateSignIn gateId="gateId" />
         <OffKeyAuth />
       </OffKeyLayout>
