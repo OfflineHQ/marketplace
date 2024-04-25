@@ -1,12 +1,12 @@
 import { ProfileAvatar } from '@features/app-nav';
-import { useWalletAuth, useWalletContext } from '@next/wallet';
+import { useWalletContext } from '@next/wallet';
 import { UseMutationResult } from '@tanstack/react-query';
 import { Button } from '@ui/components';
-import { useTranslations } from 'next-intl';
 
 export interface ConnectProps {
   walletAddress?: string;
   isCreatingAccount?: boolean;
+  walletToConnect?: string;
 }
 
 type ConnectWalletMutationType = UseMutationResult<
@@ -17,34 +17,54 @@ type ConnectWalletMutationType = UseMutationResult<
 >;
 
 export interface OffKeyAuthSignInProps
-  extends Pick<ReturnType<typeof useWalletAuth>, 'isConnecting'>,
-    Pick<ReturnType<typeof useWalletContext>, 'walletInStorage'> {
+  extends Pick<ReturnType<typeof useWalletContext>, 'walletInStorage'> {
   connectWalletMutation: ConnectWalletMutationType;
-  existingWallet: string;
+  signInText: string;
+  walletToConnect?: string;
 }
 
 export function OffKeyAuthSignIn({
-  isConnecting,
   connectWalletMutation,
+  signInText,
   walletInStorage,
-  existingWallet,
+  walletToConnect,
 }: OffKeyAuthSignInProps) {
-  const t = useTranslations('Shopify.OffKeyAuth');
-  console.log('walletInStorage', walletInStorage);
-  return walletInStorage && walletInStorage.length > 1 ? (
-    <div className="flex justify-center space-x-2">
-      {walletInStorage?.map((wallet) => (
+  if (!walletInStorage?.length) return null;
+  if (walletToConnect) {
+    return (
+      <Button
+        className="space-x-2"
+        block
+        onClick={() =>
+          connectWalletMutation.mutateAsync({
+            walletAddress: walletToConnect,
+          })
+        }
+      >
+        <ProfileAvatar
+          user={{ id: '', address: walletToConnect }}
+          size="auto"
+        />
+        <span>{signInText}</span>
+      </Button>
+    );
+  }
+  return walletInStorage.length > 1 ? (
+    <div className="flex justify-center space-x-6">
+      {walletInStorage.map((wallet) => (
         <Button
           variant="ghost"
-          size="lg"
           key={wallet.address}
           onClick={() =>
             connectWalletMutation.mutateAsync({ walletAddress: wallet.address })
           }
           isIconOnly
-          className="h-fit rounded-full p-1.5 md:p-1.5"
+          className="size-fit rounded-full p-0 md:p-0"
         >
-          <ProfileAvatar user={{ id: '', address: wallet.address }} />
+          <ProfileAvatar
+            size="auto"
+            user={{ id: '', address: wallet.address }}
+          />
         </Button>
       ))}
     </div>
@@ -54,15 +74,15 @@ export function OffKeyAuthSignIn({
       block
       onClick={() =>
         connectWalletMutation.mutateAsync({
-          walletAddress: existingWallet,
+          walletAddress: walletInStorage[0].address,
         })
       }
     >
       <ProfileAvatar
-        user={{ id: '', address: existingWallet }}
-        className="my-1 size-8 md:size-8"
+        user={{ id: '', address: walletInStorage[0].address }}
+        size="auto"
       />
-      <span>{t('sign-in')}</span>
+      <span>{signInText}</span>
     </Button>
   );
 }

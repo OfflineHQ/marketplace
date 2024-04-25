@@ -1,6 +1,7 @@
 import { useGetShopifyCustomerQuery } from '@gql/anonymous/react-query';
 import { useIframeOffKey } from '@next/iframe';
 import { useWalletContext } from '@next/wallet';
+import { ethers } from 'ethers';
 import { ShopifyCustomerStatus } from '../types';
 
 export interface UseShopifyCustomerProps {
@@ -21,12 +22,14 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
     return {
       customer: null,
       status: null,
+      walletInStorage,
     };
   // means the iframe parent is ready but the customer is not connected
   else if (!customer) {
     return {
       customer: null,
       status: ShopifyCustomerStatus.NotConnected,
+      walletInStorage,
     };
   }
   // means the iframe parent is ready and the customer is connected but the data is loading
@@ -34,6 +37,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
     return {
       customer,
       status: null,
+      walletInStorage,
     };
   }
   const shopifyCustomer = data?.shopifyCustomer?.[0];
@@ -42,8 +46,9 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
     return {
       customer,
       status: walletInStorage?.length
-        ? ShopifyCustomerStatus.NoRecordedShopifyCustomer
+        ? ShopifyCustomerStatus.ExistingAccountNewCustomer
         : ShopifyCustomerStatus.NewAccount,
+      walletInStorage,
     };
   }
   const matchingWallet = walletInStorage?.find(
@@ -53,8 +58,11 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
   return {
     customer,
     status: matchingWallet
-      ? ShopifyCustomerStatus.MatchingWallet
-      : ShopifyCustomerStatus.NoMatchingWallet,
-    walletToConnect: matchingWallet?.address,
+      ? ShopifyCustomerStatus.MatchingAccount
+      : ShopifyCustomerStatus.NoMatchingAccount,
+    walletToConnect: matchingWallet
+      ? matchingWallet.address
+      : ethers.utils.getAddress(shopifyCustomer.address),
+    walletInStorage,
   };
 }

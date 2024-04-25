@@ -1,11 +1,69 @@
-import { Text } from '@ui/components';
-import { useTranslations } from 'next-intl';
+'use client';
+
+import { interpolateString, Locale } from '@next/i18n';
+import { Text, TextSkeleton } from '@ui/components';
+import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
+import { ShopifyCustomerStatus } from '../types';
 
 export interface OffKeyGateSignInProps {
-  gateId: string;
+  organizerId: string;
+  textGateSignIn: {
+    notConnected: string;
+    existingAccountNewCustomer: string;
+    newAccount: string;
+    matchingAccount: string;
+    noMatchingAccount: string;
+  };
+  locale: Locale;
 }
 
-export function OffKeyGateSignIn({ gateId }: OffKeyGateSignInProps) {
-  const t = useTranslations('Shopify.OffKeyAuth');
-  return <Text className="px-2 pt-1.5">{t('gate-sign-in-text')}</Text>;
+export function OffKeyGateSignIn({
+  organizerId,
+  textGateSignIn,
+  locale,
+}: OffKeyGateSignInProps) {
+  const { customer, status } = useShopifyCustomer({ organizerId });
+
+  if (!status) return <TextSkeleton variant="p" className="mx-2 mt-3" />;
+
+  let displayText;
+  switch (status) {
+    case ShopifyCustomerStatus.NotConnected:
+      displayText = interpolateString(textGateSignIn.notConnected, locale);
+      break;
+    case ShopifyCustomerStatus.ExistingAccountNewCustomer:
+      displayText = interpolateString(
+        textGateSignIn.existingAccountNewCustomer,
+        locale,
+        customer,
+      );
+      break;
+    case ShopifyCustomerStatus.NewAccount:
+      displayText = interpolateString(
+        textGateSignIn.newAccount,
+        locale,
+        customer,
+      );
+      break;
+    case ShopifyCustomerStatus.MatchingAccount:
+      displayText = interpolateString(
+        textGateSignIn.matchingAccount,
+        locale,
+        customer,
+      );
+      break;
+    case ShopifyCustomerStatus.NoMatchingAccount:
+      displayText = interpolateString(
+        textGateSignIn.noMatchingAccount,
+        locale,
+        customer,
+      );
+      break;
+  }
+
+  return (
+    <Text variant="p" className="mt-2 px-2">
+      {displayText}
+    </Text>
+  );
 }

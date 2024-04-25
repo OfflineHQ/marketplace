@@ -4,7 +4,12 @@ import OffKeyHeaderNotConnected from './OffKeyHeaderNotConnected';
 import { StoryObj, type Meta } from '@storybook/react';
 
 import { ReactQueryDecorator } from '@test-utils/storybook-decorators';
-import { iframeOffKeyMocks } from '../OffKeyHeaderConnected/examples';
+import { ShopifyCustomerStatus } from '../types';
+import {
+  offKeyHeaderNotConnectedProps,
+  shopifyCustomerMocks,
+} from './examples';
+
 const meta = {
   component: OffKeyHeaderNotConnected,
   decorators: [ReactQueryDecorator],
@@ -13,21 +18,34 @@ const meta = {
     chromatic: { disableSnapshot: true },
     moduleMock: {
       mock: () => [
-        iframeOffKeyMocks({
-          offKeyState: null,
+        shopifyCustomerMocks({
+          status: null,
           customer: null,
         }),
       ],
     },
   },
+  args: offKeyHeaderNotConnectedProps,
 } satisfies Meta<typeof OffKeyHeaderNotConnected>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WaitingForCustomer: Story = {
+export const Loading: Story = {};
+
+export const WithNoCustomer: Story = {
+  parameters: {
+    moduleMock: {
+      mock: () => [
+        shopifyCustomerMocks({
+          status: ShopifyCustomerStatus.NotConnected,
+          customer: null,
+        }),
+      ],
+    },
+  },
   play: async ({ container }) => {
-    expect(screen.queryByText(/OffKeyHeaderNotConnected/i)).toBeNull();
+    expect(screen.getByText(/Connect to your account/i)).toBeInTheDocument();
   },
 };
 
@@ -35,8 +53,8 @@ export const WithCustomer: Story = {
   parameters: {
     moduleMock: {
       mock: () => [
-        iframeOffKeyMocks({
-          offKeyState: null,
+        shopifyCustomerMocks({
+          status: ShopifyCustomerStatus.NewAccount,
           customer: {
             id: '1',
             firstName: 'John',
@@ -48,6 +66,19 @@ export const WithCustomer: Story = {
     },
   },
   play: async ({ container }) => {
-    expect(screen.getByText(/OffKeyHeaderNotConnected/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Hello John!/i)).toBeInTheDocument();
+  },
+};
+
+export const WithCustomerEmail: Story = {
+  ...WithCustomer,
+  play: async ({ container }) => {
+    expect(await screen.findByText(/Hello john@doe.com!/i)).toBeInTheDocument();
+  },
+  args: {
+    textHeaderNotConnected: {
+      ...offKeyHeaderNotConnectedProps.textHeaderNotConnected,
+      customerConnected: 'Hello {email}!',
+    },
   },
 };
