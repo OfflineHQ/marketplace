@@ -2,15 +2,20 @@ import { OffKeyLogo } from '@features/unlock/app-nav';
 import { OffKeyState } from '@next/iframe';
 import { Text, TextSkeleton } from '@ui/components';
 import { Key } from '@ui/icons';
-import { useTranslations } from 'next-intl';
 
 export interface OffKeyInfoProps {
   state: OffKeyState;
+  offKeyStatusText: string;
   offKeyName: string;
   className?: string;
 }
 
-export function OffKeyInfo({ state, offKeyName, className }: OffKeyInfoProps) {
+export function OffKeyInfo({
+  state,
+  offKeyStatusText,
+  offKeyName,
+  className,
+}: OffKeyInfoProps) {
   const stateToBorderColor = {
     [OffKeyState.Unlocked]: 'border-success-border',
     [OffKeyState.Unlocking]: 'border-primary-border',
@@ -37,15 +42,6 @@ export function OffKeyInfo({ state, offKeyName, className }: OffKeyInfoProps) {
     [OffKeyState.Locked]: '',
   };
 
-  const t = useTranslations('Shopify.OffKeyInfo');
-
-  const stateToStatusText = {
-    [OffKeyState.Unlocked]: t('unlocked'),
-    [OffKeyState.Unlocking]: t('unlocking'),
-    [OffKeyState.Used]: t('used'),
-    [OffKeyState.Locked]: t('locked'),
-  };
-
   const stateToStatusTextColor = {
     [OffKeyState.Unlocked]: 'text-background',
     [OffKeyState.Unlocking]: 'text-background',
@@ -65,7 +61,7 @@ export function OffKeyInfo({ state, offKeyName, className }: OffKeyInfoProps) {
         className={`flex min-h-max items-center justify-center px-3 ${stateToStatusTextColor[state]} ${stateToStatusBackground[state]}`}
       >
         {stateToKeyIcon[state]}
-        <Text className="ml-2 font-medium">{stateToStatusText[state]}</Text>
+        <Text className="ml-2 font-medium">{offKeyStatusText}</Text>
       </div>
     </div>
   );
