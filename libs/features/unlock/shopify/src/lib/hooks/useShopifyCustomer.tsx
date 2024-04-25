@@ -8,7 +8,7 @@ export interface UseShopifyCustomerProps {
   organizerId: string;
 }
 export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
-  const { customer, isReady } = useIframeOffKey();
+  const { customer, isReady, offKeyState } = useIframeOffKey();
   const { walletInStorage } = useWalletContext();
   const { data, isLoading, error } = useGetShopifyCustomerQuery(
     {
@@ -23,6 +23,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       customer: null,
       status: null,
       walletInStorage,
+      offKeyState,
     };
   // means the iframe parent is ready but the customer is not connected
   else if (!customer) {
@@ -30,6 +31,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       customer: null,
       status: ShopifyCustomerStatus.NotConnected,
       walletInStorage,
+      offKeyState,
     };
   }
   // means the iframe parent is ready and the customer is connected but the data is loading
@@ -38,6 +40,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       customer,
       status: null,
       walletInStorage,
+      offKeyState,
     };
   }
   const shopifyCustomer = data?.shopifyCustomer?.[0];
@@ -49,6 +52,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
         ? ShopifyCustomerStatus.ExistingAccountNewCustomer
         : ShopifyCustomerStatus.NewAccount,
       walletInStorage,
+      offKeyState,
     };
   }
   const matchingWallet = walletInStorage?.find(
@@ -64,5 +68,6 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       ? matchingWallet.address
       : ethers.utils.getAddress(shopifyCustomer.address),
     walletInStorage,
+    offKeyState,
   };
 }

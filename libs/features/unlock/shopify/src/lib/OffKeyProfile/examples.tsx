@@ -1,12 +1,15 @@
-import * as walletApi from '@next/wallet';
-import { WalletProvider, useWalletAuth, useWalletContext } from '@next/wallet';
+import { WalletProvider } from '@next/wallet';
 
 import * as iframeApi from '@next/iframe';
 import { useIframeConnect } from '@next/iframe';
 
-import * as nextIntl from 'next-intl';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
+import {
+  authMocks as offKeyAuthMocks,
+  type AuthMocksParams,
+} from '../OffKeyAuth/examples';
+import { ShopifyCustomerStatus } from '../types';
 import OffKeyProfile, { OffKeyProfileProps } from './OffKeyProfile';
 
 export const OffKeyProfileExample = (props: OffKeyProfileProps) => {
@@ -19,24 +22,41 @@ export const OffKeyProfileExample = (props: OffKeyProfileProps) => {
   );
 };
 
-export function authMocks({
-  walletAuthMocks,
-  walletContextMocks,
-  useIframeConnectMocks,
-}: {
-  walletAuthMocks: ReturnType<typeof useWalletAuth>;
-  walletContextMocks: ReturnType<typeof useWalletContext>;
-  useIframeConnectMocks: ReturnType<typeof useIframeConnect>;
-}) {
-  const mockWallet = createMock(walletApi, 'useWalletAuth');
+export const offKeyProfileProps: OffKeyProfileProps = {
+  organizerId: '1',
+  user: {
+    id: '1',
+    address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
+  },
+  textProfile: {
+    myAccount: 'My Account',
+    signOut: 'Sign Out',
+  },
+  locale: 'en',
+};
 
-  mockWallet.mockReturnValue(walletAuthMocks);
-  const mockWalletContext = createMock(walletApi, 'useWalletContext');
-  mockWalletContext.mockReturnValue(walletContextMocks);
+export const shopifyCustomerMatchingAccount = {
+  customer: {
+    id: '1',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@doe.com',
+  },
+  status: ShopifyCustomerStatus.MatchingAccount,
+  walletInStorage: [{ address: offKeyProfileProps.user.address }],
+  offKeyState: null,
+};
+
+interface OffKeyProfileMocks extends AuthMocksParams {
+  useIframeConnectMocks: ReturnType<typeof useIframeConnect>;
+}
+
+export function authMocks({
+  useIframeConnectMocks,
+  ...props
+}: OffKeyProfileMocks) {
   const mockIframeConnect = createMock(iframeApi, 'useIframeConnect');
   mockIframeConnect.mockReturnValue(useIframeConnectMocks);
 
-  const mockIntl = createMock(nextIntl, 'useLocale');
-  mockIntl.mockReturnValue('en');
-  return [mockIntl, mockWallet, mockWalletContext, mockIframeConnect];
+  return [...offKeyAuthMocks(props), mockIframeConnect];
 }

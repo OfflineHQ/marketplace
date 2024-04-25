@@ -41,13 +41,15 @@ export function OffKeyAuthDemo(props: OffKeyAuthProps) {
   );
 }
 
+export type AuthMocksParams = {
+  shopifyCustomerMocks: ReturnType<typeof useShopifyCustomer>;
+  walletAuthMocks: ReturnType<typeof useWalletAuth>;
+};
+
 export function authMocks({
   shopifyCustomerMocks,
   walletAuthMocks,
-}: {
-  shopifyCustomerMocks: ReturnType<typeof useShopifyCustomer>;
-  walletAuthMocks: ReturnType<typeof useWalletAuth>;
-}) {
+}: AuthMocksParams) {
   const mockWallet = createMock(walletApi, 'useWalletAuth');
   mockWallet.mockReturnValue(walletAuthMocks);
   return [shopifyMocks(shopifyCustomerMocks), mockWallet];
