@@ -1,7 +1,10 @@
 import * as iframeApi from '@next/iframe';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
-import { OffKeyProfileExample } from '../OffKeyProfile/examples';
+import {
+  OffKeyProfileExample,
+  offKeyProfileProps,
+} from '../OffKeyProfile/examples';
 import OffKeyHeaderConnected, {
   OffKeyHeaderConnectedProps,
 } from './OffKeyHeaderConnected';
@@ -14,20 +17,25 @@ export function iframeOffKeyMocks(
   return useIframeOffKeyMock;
 }
 
+export const offKeyHeaderConnectedProps: Omit<
+  OffKeyHeaderConnectedProps,
+  'profile' | 'viewType'
+> = {
+  locale: 'en',
+  textHeaderConnected: {
+    default: 'Welcome {firstName}!',
+    howToGetKey: 'How to get the key',
+  },
+  organizerId: 'organizerId',
+};
+
 export const OffKeyHeaderConnectedExamples = (
   props: Omit<OffKeyHeaderConnectedProps, 'profile'>,
 ) => {
   return (
     <OffKeyHeaderConnected
       {...props}
-      profile={
-        <OffKeyProfileExample
-          user={{
-            id: '1',
-            address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
-          }}
-        />
-      }
+      profile={<OffKeyProfileExample {...offKeyProfileProps} />}
     />
   );
 };
