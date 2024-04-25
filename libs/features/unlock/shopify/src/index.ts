@@ -1,8 +1,3 @@
-export { ShopifyAuth } from './lib/Auth/Auth';
-export { ShopifyCard } from './lib/Card/Card';
-export * from './lib/CardConnected/CardConnected';
-export { ShopifyCardHeader } from './lib/CardHeader/CardHeader';
-export * from './lib/CardNotConnected/CardNotConnected';
 export { OffKeyAuth } from './lib/OffKeyAuth/OffKeyAuth';
 export { default as OffKeyGate } from './lib/OffKeyGate/OffKeyGate';
 export { OffKeyGateSignIn } from './lib/OffKeyGateSignIn/OffKeyGateSignIn';
