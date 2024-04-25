@@ -2,7 +2,7 @@ import * as iframeApi from '@next/iframe';
 import { ConnectStatus, IFrameProvider, useIframeOffKey } from '@next/iframe';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
-import { authMocks } from '../CardConnected/examples';
+import { authMocks } from '../OffKeyAuth/examples';
 import { OffKeyHeaderConnectedExamples } from '../OffKeyHeaderConnected/examples';
 import { OffKeyLayout } from '../OffKeyLayout/OffKeyLayout';
 import { OffKeyViewHeaderConnected } from '../types';
