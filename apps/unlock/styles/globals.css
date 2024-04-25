@@ -259,3 +259,7 @@ html,
   height: var(--off-profile-avatar-size, 3rem);
   width: var(--off-profile-avatar-size, 3rem);
 }
+
+.off-key-info {
+  height: var(--off-key-info-height, 3rem);
+}
