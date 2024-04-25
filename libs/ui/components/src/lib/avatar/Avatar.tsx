@@ -13,6 +13,7 @@ const avatarSizes = {
   lg: 'size-12 sm:size-16 text-lg',
   xl: 'size-16 sm:size-20 text-xl',
   '2xl': 'size-20 sm:size-24 text-2xl',
+  auto: 'w-full h-full aspect-square',
 };
 
 const avatarVariants = cva(
@@ -37,17 +38,36 @@ export interface AvatarProps
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   AvatarProps
->(({ className, size, ...props }, ref) => (
-  <AvatarPrimitive.Root
-    ref={ref}
-    className={cn(
-      avatarVariants({ size }),
-      'relative flex-shrink-0',
-      className,
-    )}
-    {...props}
-  />
-));
+>(({ className, size, ...props }, ref) => {
+  if (size === 'auto') {
+    return (
+      <div
+        className={cn(
+          'flex aspect-square h-full items-center justify-center',
+          className,
+        )}
+      >
+        <AvatarPrimitive.Root
+          ref={ref}
+          className={cn('h-full w-full rounded-full')}
+          {...props}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <AvatarPrimitive.Root
+      ref={ref}
+      className={cn(
+        avatarVariants({ size }),
+        'relative flex-shrink-0',
+        className,
+      )}
+      {...props}
+    />
+  );
+});
 Avatar.displayName = AvatarPrimitive.Root.displayName;
 
 const AvatarImage = React.forwardRef<

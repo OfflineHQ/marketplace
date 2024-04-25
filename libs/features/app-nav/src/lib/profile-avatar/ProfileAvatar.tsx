@@ -3,21 +3,21 @@ import { Avatar, AvatarFallback, type AvatarProps } from '@ui/components';
 import { emojiAvatarForAddress } from '@ui/shared';
 import { useMemo } from 'react';
 
-export interface ProfileAvatarProps extends Omit<AvatarProps, 'size'> {
+export interface ProfileAvatarProps extends AvatarProps {
   user: AppUser;
 }
 
-export interface EmojiAvatarProps extends Omit<AvatarProps, 'size'> {
+export interface EmojiAvatarProps extends AvatarProps {
   address: string;
 }
 
-function EmojiAvatar({ address, ...props }: EmojiAvatarProps) {
+function EmojiAvatar({ address, className, ...props }: EmojiAvatarProps) {
   const { color, emoji } = useMemo(
     () => emojiAvatarForAddress(address),
     [address],
   );
   return (
-    <Avatar {...props} className="text-2xl">
+    <Avatar {...props} className={`text-2xl ${className}`}>
       <AvatarFallback style={{ backgroundColor: color }}>
         {emoji}
       </AvatarFallback>

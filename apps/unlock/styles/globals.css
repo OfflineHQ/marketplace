@@ -228,18 +228,19 @@ html,
 
 /* Customize UI Library with CSS variables */
 
-.off-btn:not(.off-btn-link) {
-  height: var(--off-btn-height);
+.off-btn {
+  height: var(--off-btn-height, 3rem);
   font-size: var(--off-btn-font-size);
   letter-spacing: var(--off-btn-letter-spacing);
+  padding: var(--off-btn-padding, 0.25rem 1rem);
 }
 
-.off-btn:not(.off-btn-link):has([style*='--off-btn-height']) {
+.off-btn:has([style*='--off-btn-height']) {
   height: var(--off-btn-height) !important;
 }
 
 .off-btn-skeleton {
-  height: var(--off-btn-height, 2.5rem);
+  height: var(--off-btn-height, 3rem);
 }
 
 .off-btn-skeleton:has([style*='--off-btn-height']) {
