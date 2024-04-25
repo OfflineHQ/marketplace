@@ -114,6 +114,7 @@
     "graphql-ws": "^5.14.1",
     "iframe-resizer": "^4.3.9",
     "immer": "^10.0.3",
+    "intl-messageformat": "^10.5.11",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "loglevel": "^1.8.1",
