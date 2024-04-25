@@ -7,14 +7,12 @@ import { AppUser } from '@next/types';
 import { useWalletAuth, useWalletContext } from '@next/wallet';
 import { useMutation } from '@tanstack/react-query';
 import {
-  AutoAnimate,
   AvatarSkeleton,
   Button,
   DropdownMenu,
   DropdownMenuItems,
   DropdownMenuItemsProps,
   DropdownMenuTrigger,
-  Spinner,
   useToast,
 } from '@ui/components';
 import { LogOut } from '@ui/icons';
@@ -68,7 +66,7 @@ export default function OffKeyProfile({ user }: OffKeyProfileProps) {
     onError: (error: any) => {
       console.log('error connecting to dapp', error);
       signOutUserAction(true);
-      // Handle connection error
+      //TODO: Handle connection error display
     },
   });
 
@@ -160,19 +158,9 @@ export default function OffKeyProfile({ user }: OffKeyProfileProps) {
         <Button
           variant="ghost"
           isIconOnly
-          className="h-fit rounded-full p-1.5 md:p-1.5"
+          isLoading={connectStatus !== ConnectStatus.CONNECTED}
         >
-          <AutoAnimate>
-            {connectStatus !== ConnectStatus.CONNECTED ? (
-              <Spinner
-                size="lg"
-                variant="ghost"
-                className="mr-1.5 mt-2 size-8 md:mr-0 md:mt-0 md:size-12 md:p-2"
-              />
-            ) : (
-              <ProfileAvatar user={user} />
-            )}
-          </AutoAnimate>
+          <ProfileAvatar className="off-profile-avatar" user={user} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuItems items={items} />
@@ -185,7 +173,7 @@ export default function OffKeyProfile({ user }: OffKeyProfileProps) {
 export function OffKeyProfileSkeleton() {
   return (
     <div className="relative flex items-center justify-center opacity-100">
-      <AvatarSkeleton className="mx-3 size-9 md:size-10" />
+      <AvatarSkeleton className="off-profile-avatar" />
     </div>
   );
 }

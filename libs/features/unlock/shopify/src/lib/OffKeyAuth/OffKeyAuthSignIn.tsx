@@ -59,10 +59,9 @@ export function OffKeyAuthSignIn({
             connectWalletMutation.mutateAsync({ walletAddress: wallet.address })
           }
           isIconOnly
-          className="size-fit rounded-full p-0 md:p-0"
         >
           <ProfileAvatar
-            size="auto"
+            className="off-profile-avatar"
             user={{ id: '', address: wallet.address }}
           />
         </Button>
