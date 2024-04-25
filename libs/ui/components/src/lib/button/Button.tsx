@@ -132,7 +132,6 @@ export interface ButtonProps
 
 interface ButtonContentProps extends ButtonProps {
   loading: boolean;
-  isIconOnly: boolean;
   LeftIcon?: React.ReactElement<IconProps>;
   RightIcon?: React.ReactElement<IconProps>;
 }
@@ -198,6 +197,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       icon,
       iconRight,
       helperText,
+      isIconOnly,
       ...props
     },
     ref,
@@ -205,7 +205,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const [loading, setLoading] = useState(false);
     const _loading = isLoading || loading;
     const hasChildren = typeof children !== 'undefined';
-    const isIconOnly = !hasChildren && !!(icon || iconRight);
+    const detectIconOnly = !hasChildren && !!(icon || iconRight);
 
     const handleClick = async (
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -224,7 +224,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const buttonClasses = buttonVariantsCva({
       variant,
       size,
-      isIconOnly,
+      isIconOnly: detectIconOnly || isIconOnly,
       block: !!block,
       className,
     });
@@ -241,7 +241,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             loading={_loading}
             size={size}
             variant={variant}
-            isIconOnly={isIconOnly}
+            isIconOnly={detectIconOnly || isIconOnly}
             LeftIcon={icon}
             RightIcon={iconRight}
           >

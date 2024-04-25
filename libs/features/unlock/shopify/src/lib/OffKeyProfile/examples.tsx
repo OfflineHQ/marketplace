@@ -12,7 +12,9 @@ import OffKeyProfile, { OffKeyProfileProps } from './OffKeyProfile';
 export const OffKeyProfileExample = (props: OffKeyProfileProps) => {
   return (
     <WalletProvider>
-      <OffKeyProfile {...props} />
+      <div className="flex">
+        <OffKeyProfile {...props} />
+      </div>
     </WalletProvider>
   );
 };

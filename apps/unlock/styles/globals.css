@@ -239,10 +239,23 @@ html,
   height: var(--off-btn-height) !important;
 }
 
+.off-btn:has(.off-profile-avatar) {
+  height: auto;
+}
+
+.off-btn-icon-only {
+  padding: 0.25rem;
+}
+
 .off-btn-skeleton {
   height: var(--off-btn-height, 3rem);
 }
 
 .off-btn-skeleton:has([style*='--off-btn-height']) {
   height: var(--off-btn-height) !important;
+}
+
+.off-profile-avatar {
+  height: var(--off-profile-avatar-size, 3rem);
+  width: var(--off-profile-avatar-size, 3rem);
 }
