@@ -72,19 +72,10 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
 
   async extractAndVerifyShopifyRequest(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
-    // // TODO: shopify doesn't have that but `x-shop-domain`, so must check that it's an authorized shop (and use it for the allowlist check + pricing logic)
-    // const apiKey = headers().get('x-shopify-client-id') as string;
-    // if (!apiKey) {
-    //   throw new Error('Missing API key');
-    // }
-    // const secretApiKey = await this.getValidatedSecretApiKey(apiKey);
-
     const shop = this.getRequiredParam(searchParams, 'shop');
     const timestamp = this.getRequiredParam(searchParams, 'timestamp');
 
     this.guardRequestTimestamp(timestamp, 300); // 5 minutes in seconds as the allowed time difference
-    // if (secretApiKey.allowlist)
-    //   this.guardAllowListOrigin(secretApiKey.allowlist, `https://${shop}`);
 
     const queryHash = this.populateQueryHash(searchParams);
     const resultParams = this.populateResultParams(searchParams);

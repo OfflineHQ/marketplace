@@ -72,7 +72,7 @@ describe('useShopifyCustomer', () => {
     );
 
     expect(result.current.customer).toEqual({ id: 'test-id' });
-    expect(result.current.status).toBe(ShopifyCustomerStatus.MatchingWallet);
+    expect(result.current.status).toBe(ShopifyCustomerStatus.MatchingAccount);
     expect(result.current.walletToConnect).toBe('0x123');
   });
 
@@ -122,7 +122,7 @@ describe('useShopifyCustomer', () => {
 
     expect(result.current.customer).toEqual(mockCustomer);
     expect(result.current.status).toBe(
-      ShopifyCustomerStatus.NoRecordedShopifyCustomer,
+      ShopifyCustomerStatus.ExistingAccountNewCustomer,
     );
   });
 
@@ -141,7 +141,7 @@ describe('useShopifyCustomer', () => {
     );
 
     expect(result.current.customer).toEqual(mockCustomer);
-    expect(result.current.status).toBe(ShopifyCustomerStatus.NoMatchingWallet);
+    expect(result.current.status).toBe(ShopifyCustomerStatus.NoMatchingAccount);
     expect(result.current.walletToConnect).toBeUndefined();
   });
 });

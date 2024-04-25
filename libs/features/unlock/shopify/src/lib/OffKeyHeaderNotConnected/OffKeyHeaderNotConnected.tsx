@@ -1,23 +1,39 @@
 'use client';
 
-import { useIframeOffKey } from '@next/iframe';
+import { interpolateString, Locale } from '@next/i18n';
 import { Text, TextSkeleton } from '@ui/components';
-import { useTranslations } from 'next-intl';
+import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 import { OffKeyHeader } from '../OffKeyHeader/OffKeyHeader';
+import { ShopifyCustomerStatus } from '../types';
 
-export default function OffKeyHeaderNotConnected() {
-  const t = useTranslations('Shopify.OffKeyHeaderNotConnected');
-  const { customer } = useIframeOffKey();
-  if (!customer) return <OffKeyHeader title={<TextSkeleton variant="h6" />} />;
-  return (
-    <OffKeyHeader
-      title={
-        <Text variant="h6">
-          {t('default', {
-            customer: customer.firstName || customer.email,
-          })}
-        </Text>
-      }
-    />
-  );
+export interface OffKeyHeaderNotConnectedProps {
+  organizerId: string;
+  textHeaderNotConnected: {
+    customerNotConnected: string;
+    customerConnected: string;
+  };
+  locale: Locale;
+}
+
+export default function OffKeyHeaderNotConnected({
+  organizerId,
+  textHeaderNotConnected,
+  locale,
+}: OffKeyHeaderNotConnectedProps) {
+  const { customer, status } = useShopifyCustomer({ organizerId });
+  if (!status) return <OffKeyHeader title={<TextSkeleton variant="h6" />} />;
+  let title;
+  if (status !== ShopifyCustomerStatus.NotConnected) {
+    title = interpolateString(
+      textHeaderNotConnected.customerConnected,
+      locale,
+      customer,
+    );
+  } else {
+    title = interpolateString(
+      textHeaderNotConnected.customerNotConnected,
+      locale,
+    );
+  }
+  return <OffKeyHeader title={<Text variant="h6">{title}</Text>} />;
 }
