@@ -3,9 +3,32 @@ import OffKeyGate from './OffKeyGate';
 // import * as walletHook from '@next/wallet';
 import { StoryObj, type Meta } from '@storybook/react';
 
-import { OffKeyState } from '@next/iframe';
+import { ConnectStatus, OffKeyState } from '@next/iframe';
 import { ReactQueryDecorator } from '@test-utils/storybook-decorators';
-import { OffKeyGateDemo, offKeyGateMocks } from './examples';
+import {
+  authMocks,
+  shopifyCustomerMatchingAccount,
+} from '../OffKeyProfile/examples';
+import { OffKeyGateDemo, offKeyGateProps } from './examples';
+
+const authConnected = {
+  walletAuthMocks: {
+    connect: () => Promise.resolve(),
+    disconnect: () => Promise.resolve(),
+    wallet: {
+      getAddress: () => null,
+      connected: true,
+    },
+    isReady: true,
+    isConnecting: false,
+  },
+  useIframeConnectMocks: {
+    connectStatus: ConnectStatus.CONNECTED,
+    disconnectFromDapp: () => Promise.resolve(),
+    signWithEthereum: () => Promise.resolve(),
+    askForWalletConnectStatus: () => Promise.resolve(),
+  },
+};
 
 const meta = {
   component: OffKeyGate,
@@ -15,15 +38,16 @@ const meta = {
     layout: 'fullscreen',
     moduleMock: {
       mock: () =>
-        offKeyGateMocks({
-          offKeyState: OffKeyState.Unlocked,
+        authMocks({
+          ...authConnected,
+          shopifyCustomerMocks: {
+            ...shopifyCustomerMatchingAccount,
+            offKeyState: OffKeyState.Unlocked,
+          },
         }),
     },
   },
-  args: {
-    gateId: '1',
-    address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
-  },
+  args: offKeyGateProps,
 } satisfies Meta<typeof OffKeyGate>;
 export default meta;
 
@@ -39,8 +63,12 @@ export const Unlocking: Story = {
   parameters: {
     moduleMock: {
       mock: () =>
-        offKeyGateMocks({
-          offKeyState: OffKeyState.Unlocking,
+        authMocks({
+          ...authConnected,
+          shopifyCustomerMocks: {
+            ...shopifyCustomerMatchingAccount,
+            offKeyState: OffKeyState.Unlocking,
+          },
         }),
     },
   },
@@ -53,8 +81,12 @@ export const Used: Story = {
   parameters: {
     moduleMock: {
       mock: () =>
-        offKeyGateMocks({
-          offKeyState: OffKeyState.Used,
+        authMocks({
+          ...authConnected,
+          shopifyCustomerMocks: {
+            ...shopifyCustomerMatchingAccount,
+            offKeyState: OffKeyState.Used,
+          },
         }),
     },
   },
@@ -67,8 +99,12 @@ export const Locked: Story = {
   parameters: {
     moduleMock: {
       mock: () =>
-        offKeyGateMocks({
-          offKeyState: OffKeyState.Locked,
+        authMocks({
+          ...authConnected,
+          shopifyCustomerMocks: {
+            ...shopifyCustomerMatchingAccount,
+            offKeyState: OffKeyState.Locked,
+          },
         }),
     },
   },
@@ -81,8 +117,13 @@ export const Loading: Story = {
   parameters: {
     moduleMock: {
       mock: () =>
-        offKeyGateMocks({
-          offKeyState: undefined,
+        authMocks({
+          ...authConnected,
+          shopifyCustomerMocks: {
+            customer: null,
+            status: null,
+            offKeyState: undefined,
+          },
         }),
     },
   },

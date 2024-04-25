@@ -1,47 +1,115 @@
 'use client';
 
-import { OffKeyState, useIframeOffKey } from '@next/iframe';
+import { Locale, interpolateString } from '@next/i18n';
+import { OffKeyState } from '@next/iframe';
 import { AutoAnimate, Text, TextSkeleton } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import { OffKeyInfo, OffKeyInfoSkeleton } from '../OffKeyInfo/OffKeyInfo';
+import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 
 export interface OffKeyGateProps {
-  gateId: string;
-  address: string;
   className?: string;
+  organizerId: string;
+  locale: Locale;
+  textGate: {
+    subtitle: {
+      [OffKeyState.Unlocked]: string;
+      [OffKeyState.Unlocking]: string;
+      [OffKeyState.Used]: string;
+      [OffKeyState.Locked]: string;
+    };
+    mainText: {
+      [OffKeyState.Unlocked]: string;
+      [OffKeyState.Unlocking]: string;
+      [OffKeyState.Used]: string;
+      [OffKeyState.Locked]: string;
+    };
+    key: {
+      statusText: {
+        [OffKeyState.Unlocked]: string;
+        [OffKeyState.Unlocking]: string;
+        [OffKeyState.Used]: string;
+        [OffKeyState.Locked]: string;
+      };
+      name: string;
+    };
+  };
 }
 
 export default function OffKeyGate({
-  gateId,
-  address,
   className,
+  organizerId,
+  locale,
+  textGate,
 }: OffKeyGateProps) {
   const t = useTranslations('Shopify.OffKeyGate');
-  const { offKeyState } = useIframeOffKey();
-  const stateToSubtitle = {
-    [OffKeyState.Unlocked]: t('unlocked-subtitle'),
-    [OffKeyState.Unlocking]: t('unlocking-subtitle'),
-    [OffKeyState.Used]: t('used-subtitle'),
-    [OffKeyState.Locked]: t('locked-subtitle'),
+  const { offKeyState, customer } = useShopifyCustomer({ organizerId });
+  const textsSubtitle = {
+    [OffKeyState.Unlocked]: interpolateString(
+      textGate.subtitle[OffKeyState.Unlocked],
+      locale,
+      customer,
+    ),
+    [OffKeyState.Unlocking]: interpolateString(
+      textGate.subtitle[OffKeyState.Unlocking],
+      locale,
+      customer,
+    ),
+    [OffKeyState.Used]: interpolateString(
+      textGate.subtitle[OffKeyState.Used],
+      locale,
+      customer,
+    ),
+    [OffKeyState.Locked]: interpolateString(
+      textGate.subtitle[OffKeyState.Locked],
+      locale,
+      customer,
+    ),
   };
-  const stateToMainText = {
-    [OffKeyState.Unlocked]: t('unlocked-text'),
-    [OffKeyState.Unlocking]: t('unlocking-text'),
-    [OffKeyState.Used]: t('used-text'),
-    [OffKeyState.Locked]: t('locked-text'),
+  const textsMainText = {
+    [OffKeyState.Unlocked]: interpolateString(
+      textGate.mainText[OffKeyState.Unlocked],
+      locale,
+      customer,
+    ),
+    [OffKeyState.Unlocking]: interpolateString(
+      textGate.mainText[OffKeyState.Unlocking],
+      locale,
+      customer,
+    ),
+    [OffKeyState.Used]: interpolateString(
+      textGate.mainText[OffKeyState.Used],
+      locale,
+      customer,
+    ),
+    [OffKeyState.Locked]: interpolateString(
+      textGate.mainText[OffKeyState.Locked],
+      locale,
+      customer,
+    ),
   };
-  const offKeyName = t('off-key-name');
+  const textsKeyStatus = {
+    [OffKeyState.Unlocked]: textGate.key.statusText[OffKeyState.Unlocked],
+    [OffKeyState.Unlocking]: textGate.key.statusText[OffKeyState.Unlocking],
+    [OffKeyState.Used]: textGate.key.statusText[OffKeyState.Used],
+    [OffKeyState.Locked]: textGate.key.statusText[OffKeyState.Locked],
+  };
+  const gateName = interpolateString(textGate.key.name, locale, customer);
   return (
     <AutoAnimate>
-      {offKeyState ? (
+      {offKeyState && customer ? (
         <div className={`flex flex-col justify-between space-y-2 ${className}`}>
           <div className="flex flex-col space-y-2 px-2">
-            <Text variant="h6">{stateToSubtitle[offKeyState]}</Text>
-            <Text variant="p">{stateToMainText[offKeyState]}</Text>
+            <Text variant="h6">{textsSubtitle[offKeyState]}</Text>
+            <Text variant="p">{textsMainText[offKeyState]}</Text>
             {/* {gateState === OffKeyState.Locked && <OffKeyHowToGet />} */}
           </div>
           <div className="flex flex-col justify-end">
-            <OffKeyInfo state={offKeyState} offKeyName={offKeyName} />
+            <OffKeyInfo
+              offKeyStatusText={textsKeyStatus[offKeyState] as string}
+              state={offKeyState}
+              offKeyName={gateName as string}
+            />
           </div>
         </div>
       ) : (
