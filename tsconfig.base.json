@@ -126,6 +126,9 @@
       "@features/settings/server": ["libs/features/settings/src/server.ts"],
       "@features/unlock/app-nav": ["libs/features/unlock/app-nav/src/index.ts"],
       "@features/unlock/shopify": ["libs/features/unlock/shopify/src/index.ts"],
+      "@features/unlock/shopify-api": [
+        "libs/features/unlock/shopify-api/src/index.ts"
+      ],
       "@file-upload/admin": ["libs/file-upload/admin/src/index.ts"],
       "@file-upload/user": ["libs/file-upload/user/src/index.ts"],
       "@gql/admin/api": ["libs/gql/admin/api/src/index.ts"],

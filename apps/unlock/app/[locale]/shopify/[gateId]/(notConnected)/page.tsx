@@ -1,14 +1,65 @@
-import { OffKeyGateSignIn } from '@features/unlock/shopify';
+import { ShopifyCustomerStatus } from '@features/unlock/shopify';
+import { getShopifyCampaignParametersForNotConnected } from '@features/unlock/shopify-api';
 import { Locale } from '@gql/shared/types';
-interface GateSignInProps {
+import dynamic from 'next/dynamic';
+import { notFound } from 'next/navigation';
+
+const OffKeyGateNotConnected = dynamic(
+  () =>
+    import('@features/unlock/shopify').then(
+      (mod) => mod.OffKeyGateNotConnected,
+    ),
+  { ssr: false },
+);
+
+interface GateNotConnectedProps {
   params: {
     locale: Locale;
     gateId: string;
   };
 }
 
-export default function GateSignIn({
+export default async function GateSignIn({
   params: { locale, gateId },
-}: GateSignInProps) {
-  return <OffKeyGateSignIn gateId={gateId} />;
+}: GateNotConnectedProps) {
+  const campaign = await getShopifyCampaignParametersForNotConnected({
+    gateId,
+    locale,
+  });
+  if (!campaign) {
+    notFound();
+  }
+  const gateNotConnectedTexts =
+    campaign.shopifyCampaignTemplate.gateNotConnectedTexts;
+  const props = {
+    organizerId: campaign.organizerId,
+    textGateNotConnected: {
+      subtitle: {
+        [ShopifyCustomerStatus.NotConnected]:
+          gateNotConnectedTexts.subtitleCustomerNotConnected,
+        [ShopifyCustomerStatus.ExistingAccountNewCustomer]:
+          gateNotConnectedTexts.subtitleExistingAccountNewCustomer,
+        [ShopifyCustomerStatus.NewAccount]:
+          gateNotConnectedTexts.subtitleNewAccount,
+        [ShopifyCustomerStatus.MatchingAccount]:
+          gateNotConnectedTexts.subtitleMatchingAccount,
+        [ShopifyCustomerStatus.NoMatchingAccount]:
+          gateNotConnectedTexts.subtitleNoMatchingAccount,
+      },
+      mainText: {
+        [ShopifyCustomerStatus.NotConnected]:
+          gateNotConnectedTexts.paragraphCustomerNotConnected,
+        [ShopifyCustomerStatus.ExistingAccountNewCustomer]:
+          gateNotConnectedTexts.paragraphExistingAccountNewCustomer,
+        [ShopifyCustomerStatus.NewAccount]:
+          gateNotConnectedTexts.paragraphNewAccount,
+        [ShopifyCustomerStatus.MatchingAccount]:
+          gateNotConnectedTexts.paragraphMatchingAccount,
+        [ShopifyCustomerStatus.NoMatchingAccount]:
+          gateNotConnectedTexts.paragraphNoMatchingAccount,
+      },
+    },
+    locale,
+  };
+  return <OffKeyGateNotConnected className="flex-1 py-2" {...props} />;
 }
