@@ -652,13 +652,23 @@ export type GetOrganizerLatestEventsQueryVariables = Types.Exact<{
 
 export type GetOrganizerLatestEventsQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, event?: { __typename?: 'Event', slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string } } | null }> };
 
-export type GetShopifyCustomerQueryVariables = Types.Exact<{
-  organizerId: Types.Scalars['String']['input'];
-  customerId: Types.Scalars['String']['input'];
+export type GetShopifyCampaignParametersForNotConnectedQueryVariables = Types.Exact<{
+  gateId: Types.Scalars['String']['input'];
+  locale: Types.Locale;
+  stage: Types.Stage;
 }>;
 
 
-export type GetShopifyCustomerQuery = { __typename?: 'query_root', shopifyCustomer: Array<{ __typename?: 'shopifyCustomer', address: string }> };
+export type GetShopifyCampaignParametersForNotConnectedQuery = { __typename?: 'query_root', shopifyCampaignParameters_by_pk?: { __typename?: 'shopifyCampaignParameters', organizerId: string, status?: Types.ShopifyCampaignStatus_Enum | null, shopifyCampaignTemplate?: { __typename?: 'ShopifyCampaignTemplate', authTexts: { __typename?: 'ShopifyAuth', createNewAccount: string, noMatchingAccountRecoverMyAccount: string, noMatchingAccountUseExistingAccount: string, signIn: string, useAnotherAccount: string, useExistingAccount: string }, gateNotConnectedTexts: { __typename?: 'ShopifyGateNotConnected', paragraphCustomerNotConnected: string, paragraphExistingAccountNewCustomer: string, paragraphMatchingAccount: string, paragraphNewAccount: string, paragraphNoMatchingAccount: string, subtitleCustomerNotConnected: string, subtitleExistingAccountNewCustomer: string, subtitleMatchingAccount: string, subtitleNewAccount: string, subtitleNoMatchingAccount: string }, headerNotConnectedTexts: { __typename?: 'ShopifyHeaderNotConnected', titleCustomerConnected: string, titleCustomerNotConnected: string } } | null } | null };
+
+export type GetShopifyCampaignParametersForConnectedQueryVariables = Types.Exact<{
+  gateId: Types.Scalars['String']['input'];
+  locale: Types.Locale;
+  stage: Types.Stage;
+}>;
+
+
+export type GetShopifyCampaignParametersForConnectedQuery = { __typename?: 'query_root', shopifyCampaignParameters_by_pk?: { __typename?: 'shopifyCampaignParameters', organizerId: string, status?: Types.ShopifyCampaignStatus_Enum | null, shopifyCampaignTemplate?: { __typename?: 'ShopifyCampaignTemplate', gateConnectedTexts: { __typename?: 'ShopifyGateConnected', paragraphLocked: string, paragraphUnlocked: string, paragraphUnlocking: string, paragraphUsed: string, subtitleLocked: string, subtitleUnlocked: string, subtitleUnlocking: string, subtitleUsed: string, gateStatus: { __typename?: 'ShopifyGateStatus', locked: string, name: string, unlocked: string, unlocking: string, used: string } }, headerConnectedTexts: { __typename?: 'ShopifyHeaderConnected', titleDefault: string, titleHowToGet: string }, profileTexts: { __typename?: 'ShopifyProfile', menuActionSignOut: string, menuSectionMyAccount: string } } | null } | null };
 
 export type InsertShopifyCustomerMutationVariables = Types.Exact<{
   object: Types.ShopifyCustomer_Insert_Input;
@@ -666,6 +676,14 @@ export type InsertShopifyCustomerMutationVariables = Types.Exact<{
 
 
 export type InsertShopifyCustomerMutation = { __typename?: 'mutation_root', insert_shopifyCustomer_one?: { __typename?: 'shopifyCustomer', id: any } | null };
+
+export type GetShopifyCustomerQueryVariables = Types.Exact<{
+  organizerId: Types.Scalars['String']['input'];
+  customerId: Types.Scalars['String']['input'];
+}>;
+
+
+export type GetShopifyCustomerQuery = { __typename?: 'query_root', shopifyCustomer: Array<{ __typename?: 'shopifyCustomer', address: string }> };
 
 export type GetShopifyDomainQueryVariables = Types.Exact<{
   domain: Types.Scalars['String']['input'];
