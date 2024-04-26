@@ -521,12 +521,15 @@
       "off-key-name": "OffKey"
     },
     "OffKeyHeaderConnected": {
-      "connected": "Welcome",
+      "connected": "Welcome {customer}",
       "connected-how-to-get-key": "How to get the key"
     },
     "OffKeyProfile": {
       "my-account": "My account",
       "sign-out": "Sign out"
+    },
+    "OffKeyHeaderNotConnected": {
+      "default": "Hello {customer}"
     }
   },
   "OrganizerLoyaltyCard": {

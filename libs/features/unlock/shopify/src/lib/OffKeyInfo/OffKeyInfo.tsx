@@ -1,16 +1,21 @@
 import { OffKeyLogo } from '@features/unlock/app-nav';
 import { OffKeyState } from '@next/iframe';
-import { Text, TextSkeleton } from '@ui/components';
+import { Text } from '@ui/components';
 import { Key } from '@ui/icons';
-import { useTranslations } from 'next-intl';
 
 export interface OffKeyInfoProps {
   state: OffKeyState;
+  offKeyStatusText: string;
   offKeyName: string;
   className?: string;
 }
 
-export function OffKeyInfo({ state, offKeyName, className }: OffKeyInfoProps) {
+export function OffKeyInfo({
+  state,
+  offKeyStatusText,
+  offKeyName,
+  className,
+}: OffKeyInfoProps) {
   const stateToBorderColor = {
     [OffKeyState.Unlocked]: 'border-success-border',
     [OffKeyState.Unlocking]: 'border-primary-border',
@@ -37,15 +42,6 @@ export function OffKeyInfo({ state, offKeyName, className }: OffKeyInfoProps) {
     [OffKeyState.Locked]: '',
   };
 
-  const t = useTranslations('Shopify.OffKeyInfo');
-
-  const stateToStatusText = {
-    [OffKeyState.Unlocked]: t('unlocked'),
-    [OffKeyState.Unlocking]: t('unlocking'),
-    [OffKeyState.Used]: t('used'),
-    [OffKeyState.Locked]: t('locked'),
-  };
-
   const stateToStatusTextColor = {
     [OffKeyState.Unlocked]: 'text-background',
     [OffKeyState.Unlocking]: 'text-background',
@@ -55,30 +51,18 @@ export function OffKeyInfo({ state, offKeyName, className }: OffKeyInfoProps) {
 
   return (
     <div
-      className={`flex justify-between border pl-4 ${stateToBorderColor[state]} ${className}`}
+      className={`off-key-info flex justify-between border pl-4 ${stateToBorderColor[state]} ${className}`}
     >
       <div className={`flex items-center py-2 ${stateToMainTextColor[state]}`}>
-        <OffKeyLogo className="size-10" />
+        <OffKeyLogo className="size-auto" />
         <Text className="mx-4 font-medium">{offKeyName}</Text>
       </div>
       <div
         className={`flex min-h-max items-center justify-center px-3 ${stateToStatusTextColor[state]} ${stateToStatusBackground[state]}`}
       >
         {stateToKeyIcon[state]}
-        <Text className="ml-2 font-medium">{stateToStatusText[state]}</Text>
+        <Text className="ml-2 font-medium">{offKeyStatusText}</Text>
       </div>
     </div>
   );
 }
-
-export const OffKeyInfoSkeleton: React.FC = () => {
-  return (
-    <div className="flex items-center border pl-4">
-      <div className="flex items-center py-2">
-        <OffKeyLogo className="size-10" />
-        <TextSkeleton className="mx-4" />
-      </div>
-      <div className="flex h-full w-24 flex-1 animate-pulse bg-skeleton" />
-    </div>
-  );
-};

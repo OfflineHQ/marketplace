@@ -1,54 +1,59 @@
 import * as walletApi from '@next/wallet';
-import {
-  WalletProvider,
-  useWalletAuth,
-  useWalletConnect,
-  useWalletContext,
-} from '@next/wallet';
-import * as nextIntl from 'next-intl';
+import { WalletProvider, useWalletAuth } from '@next/wallet';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
-import { OffKeyGateSignIn } from '../OffKeyGateSignIn/OffKeyGateSignIn';
-import { OffKeyHeader } from '../OffKeyHeader/OffKeyHeader';
+import OffKeyGateNotConnected from '../OffKeyGateNotConnected/OffKeyGateNotConnected';
+import { offKeyGateNotConnectedProps } from '../OffKeyGateNotConnected/examples';
+import OffKeyHeaderNotConnected from '../OffKeyHeaderNotConnected/OffKeyHeaderNotConnected';
+import {
+  offKeyHeaderNotConnectedProps,
+  shopifyCustomerMocks as shopifyMocks,
+} from '../OffKeyHeaderNotConnected/examples';
 import { OffKeyLayout } from '../OffKeyLayout/OffKeyLayout';
-import { OffKeyAuth } from './OffKeyAuth';
+import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
+import OffKeyAuth, { OffKeyAuthProps } from './OffKeyAuth';
 
-export function OffKeyAuthDemo() {
+export const offKeyAuthProps: OffKeyAuthProps = {
+  organizerId: 'organizerId',
+  textAuth: {
+    createNewAccount: 'Create new account',
+    useExistingAccount: 'Use existing account',
+    useAnotherAccount: 'Use another account',
+    noMatchingAccount: {
+      useExistingAccount: 'Connect my account',
+      recoverMyAccount: 'Recover my account',
+    },
+    signIn: 'Sign in',
+  },
+  locale: 'en',
+};
+
+export function OffKeyAuthDemo(props: OffKeyAuthProps) {
   return (
     <WalletProvider>
-      <OffKeyLayout header={<OffKeyHeader title="title" />}>
-        <OffKeyGateSignIn gateId="gateId" />
-        <OffKeyAuth />
+      <OffKeyLayout
+        header={<OffKeyHeaderNotConnected {...offKeyHeaderNotConnectedProps} />}
+      >
+        <OffKeyGateNotConnected
+          className="flex-1 py-2"
+          {...offKeyGateNotConnectedProps}
+        />
+        <OffKeyAuth {...props} />
       </OffKeyLayout>
     </WalletProvider>
   );
 }
 
-export function authMocks({
-  walletAuthMocks,
-  walletConnectMocks,
-  walletContextMocks,
-}: {
+export type AuthMocksParams = {
+  shopifyCustomerMocks: ReturnType<typeof useShopifyCustomer>;
   walletAuthMocks: ReturnType<typeof useWalletAuth>;
-  walletConnectMocks: ReturnType<typeof useWalletConnect>;
-  walletContextMocks: ReturnType<typeof useWalletContext>;
-}) {
+};
+
+export function authMocks({
+  shopifyCustomerMocks,
+  walletAuthMocks,
+}: AuthMocksParams) {
   const mockWallet = createMock(walletApi, 'useWalletAuth');
-
   mockWallet.mockReturnValue(walletAuthMocks);
-  const mockWalletContext = createMock(walletApi, 'useWalletContext');
-  mockWalletContext.mockReturnValue(walletContextMocks);
-  const mockWalletConnect = createMock(walletApi, 'useWalletConnect');
-  mockWalletConnect.mockReturnValue(walletConnectMocks);
-
-  const mockIntl = createMock(nextIntl, 'useLocale');
-  mockIntl.mockReturnValue('en');
-  return [
-    // comethWallet,
-    // connectAdaptor,
-    mockIntl,
-    mockWallet,
-    mockWalletContext,
-    mockWalletConnect,
-  ];
+  return [shopifyMocks(shopifyCustomerMocks), mockWallet];
 }

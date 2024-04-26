@@ -1,11 +1,11 @@
 import { OffKeyLogo } from '@features/unlock/app-nav';
-import { Separator, Text } from '@ui/components';
+import { Separator } from '@ui/components';
 import { cn } from '@ui/shared';
 
 export interface OffKeyHeaderProps {
   profile?: React.ReactNode;
   className?: string;
-  title: string;
+  title: React.ReactNode;
 }
 
 export const OffKeyHeader: React.FC<OffKeyHeaderProps> = ({
@@ -23,7 +23,7 @@ export const OffKeyHeader: React.FC<OffKeyHeaderProps> = ({
         )}
       >
         {profile ? null : <OffKeyLogo className="size-8" />}
-        <Text variant="h6">{title}</Text>
+        {title}
         {profile ? <div className="flex justify-end">{profile}</div> : null}
       </div>
       <Separator className="mt-1.5 w-full border-primary" />

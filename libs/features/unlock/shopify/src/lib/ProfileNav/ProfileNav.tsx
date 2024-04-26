@@ -34,6 +34,8 @@ const VerifyEmailDynamic = dynamic(
   { ssr: false },
 );
 
+// !! THIS COMPONENT IS DEPRECATED
+
 export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
   user,
 }) => {
@@ -94,7 +96,7 @@ export const ShopifyProfileNav: React.FC<ShopifyProfileNavProps> = ({
       }
       // here if connectStatus is disconnected we launch the process of asking the user to connect to the dapp
       else if (connectStatus === ConnectStatus.DISCONNECTED) {
-        connectToDappMutation.mutate();
+        connectToDappMutation.mutate('Offline');
       }
     }
   }, [

@@ -51,7 +51,11 @@ export function useWalletAuth() {
     setInstance(newInstance);
   }, []);
 
-  async function connect(address?: string, createAccount?: boolean) {
+  async function connect(
+    address?: string,
+    createAccount?: boolean,
+    walletToConnect?: string,
+  ) {
     if (!instance || !walletAdaptor) return; // Ensure instance and walletAdaptor are initialized
 
     setIsConnecting(true);
@@ -68,7 +72,9 @@ export function useWalletAuth() {
       else {
         const walletAddress =
           await walletAdaptor.retrieveWalletAddressFromSigner();
-        await instance.connect(walletAddress);
+        if (walletToConnect && walletToConnect !== walletAddress) {
+          throw new Error('Wallet address does not match the one to connect');
+        } else await instance.connect(walletAddress);
       }
       const instanceProvider = new ComethProvider(instance);
       localStorage?.setItem('wallet-connected', instance.getAddress());

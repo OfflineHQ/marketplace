@@ -2,17 +2,19 @@ import { expect, screen, userEvent, waitFor } from '@storybook/test';
 import OffKeyProfile from './OffKeyProfile';
 // import * as walletHook from '@next/wallet';
 import { StoryObj, type Meta } from '@storybook/react';
-import { OffKeyProfileExample, authMocks } from './examples';
+import {
+  OffKeyProfileExample,
+  authMocks,
+  offKeyProfileProps,
+  shopifyCustomerMatchingAccount,
+} from './examples';
 
 import { ConnectStatus } from '@next/iframe';
-import {
-  ReactQueryDecorator,
-  ToasterDecorator,
-} from '@test-utils/storybook-decorators';
-const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
+import { ReactQueryDecorator } from '@test-utils/storybook-decorators';
+
 const meta = {
   component: OffKeyProfile,
-  decorators: [ToasterDecorator, ReactQueryDecorator],
+  decorators: [ReactQueryDecorator],
   parameters: {
     chromatic: { disableSnapshot: true },
     moduleMock: {
@@ -22,16 +24,13 @@ const meta = {
             connect: () => Promise.resolve(),
             disconnect: () => Promise.resolve(),
             wallet: {
-              getAddress: () => address,
+              getAddress: () => null,
               connected: true,
             },
             isReady: true,
             isConnecting: false,
           },
-          walletContextMocks: {
-            walletConnected: address,
-            autoConnectAddress: '',
-          },
+          shopifyCustomerMocks: shopifyCustomerMatchingAccount,
           useIframeConnectMocks: {
             connectStatus: ConnectStatus.CONNECTED,
             disconnectFromDapp: () => Promise.resolve(),
@@ -41,12 +40,7 @@ const meta = {
         }),
     },
   },
-  args: {
-    user: {
-      id: '1',
-      address,
-    },
-  },
+  args: offKeyProfileProps,
   render: OffKeyProfileExample,
 } satisfies Meta<typeof OffKeyProfile>;
 export default meta;
@@ -77,10 +71,7 @@ export const UserConnecting: Story = {
             isReady: true,
             isConnecting: false,
           },
-          walletContextMocks: {
-            walletConnected: address,
-            autoConnectAddress: '',
-          },
+          shopifyCustomerMocks: shopifyCustomerMatchingAccount,
           useIframeConnectMocks: {
             connectStatus: ConnectStatus.CONNECTING,
             disconnectFromDapp: () => Promise.resolve(),
@@ -110,11 +101,7 @@ export const SettingUpWallet: Story = {
             isReady: false,
             isConnecting: true,
           },
-          walletContextMocks: {
-            walletConnected: address,
-            wcUri: 'wc:fake',
-            autoConnectAddress: '',
-          },
+          shopifyCustomerMocks: shopifyCustomerMatchingAccount,
           useIframeConnectMocks: {
             connectStatus: ConnectStatus.CONNECTED,
             disconnectFromDapp: () => Promise.resolve(),
