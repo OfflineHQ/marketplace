@@ -2243,6 +2243,16 @@ enum EntityTypeName {
   """Scheduled Release system model"""
   ScheduledRelease
 
+  """Component used for the authentication"""
+  ShopifyAuth
+  ShopifyCampaignTemplate
+  ShopifyGateConnected
+  ShopifyGateNotConnected
+  ShopifyGateStatus
+  ShopifyHeaderConnected
+  ShopifyHeaderNotConnected
+  ShopifyProfile
+
   """User system model"""
   User
 }
@@ -7050,6 +7060,7 @@ type OrganizerConnection {
 input OrganizerCreateInput {
   clr7j9mmt0q2j01uo9zrs2fm7: PackCreateManyInlineInput
   cltzsen11092507ul9qlg4ywb: LoyaltyCardCreateManyInlineInput
+  clvgfekl90p9708uo1vz2avt5: ShopifyCampaignTemplateCreateManyInlineInput
   contentSpaces: ContentSpaceCreateManyInlineInput
   createdAt: DateTime
 
@@ -7607,6 +7618,7 @@ enum OrganizerOrderByInput {
 input OrganizerUpdateInput {
   clr7j9mmt0q2j01uo9zrs2fm7: PackUpdateManyInlineInput
   cltzsen11092507ul9qlg4ywb: LoyaltyCardUpdateManyInlineInput
+  clvgfekl90p9708uo1vz2avt5: ShopifyCampaignTemplateUpdateManyInlineInput
   contentSpaces: ContentSpaceUpdateManyInlineInput
 
   """description input for default locale (en)"""
@@ -9787,7 +9799,7 @@ type ScheduledOperation implements Entity & Node {
   ): User
 }
 
-union ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | LoyaltyCard | Organizer | Pack
+union ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | LoyaltyCard | Organizer | Pack | ShopifyCampaignTemplate
 
 """A connection to a list of items."""
 type ScheduledOperationConnection {
@@ -10495,6 +10507,3429 @@ input ScheduledReleaseWhereInput {
 
 """References ScheduledRelease record uniquely"""
 input ScheduledReleaseWhereUniqueInput {
+  id: ID
+}
+
+"""Component used for the authentication"""
+type ShopifyAuth implements Entity {
+  """Action button text to create a new account"""
+  createNewAccount: String!
+
+  """The unique identifier"""
+  id: ID!
+
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Potential locales that should be returned. 
+    
+    The order of locales will also override locale fall-backing behaviour in the query's subtree.
+    
+    Note any related model with localized fields in the query's subtree will be affected.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    
+    Consider using this in conjunction with forceParentLocale on the children relation fields.
+    """
+    locales: [Locale!]! = [en, fr]
+  ): [ShopifyAuth!]!
+  noMatchingAccountRecoverMyAccount: String!
+  noMatchingAccountUseExistingAccount: String!
+  signIn: String!
+
+  """System stage field"""
+  stage: Stage!
+  useAnotherAccount: String!
+  useExistingAccount: String!
+}
+
+input ShopifyAuthCreateInput {
+  """createNewAccount input for default locale (en)"""
+  createNewAccount: String!
+
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: ShopifyAuthCreateLocalizationsInput
+
+  """noMatchingAccountRecoverMyAccount input for default locale (en)"""
+  noMatchingAccountRecoverMyAccount: String!
+
+  """noMatchingAccountUseExistingAccount input for default locale (en)"""
+  noMatchingAccountUseExistingAccount: String!
+
+  """signIn input for default locale (en)"""
+  signIn: String!
+
+  """useAnotherAccount input for default locale (en)"""
+  useAnotherAccount: String!
+
+  """useExistingAccount input for default locale (en)"""
+  useExistingAccount: String!
+}
+
+input ShopifyAuthCreateLocalizationDataInput {
+  createNewAccount: String!
+  noMatchingAccountRecoverMyAccount: String!
+  noMatchingAccountUseExistingAccount: String!
+  signIn: String!
+  useAnotherAccount: String!
+  useExistingAccount: String!
+}
+
+input ShopifyAuthCreateLocalizationInput {
+  """Localization input"""
+  data: ShopifyAuthCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyAuthCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [ShopifyAuthCreateLocalizationInput!]
+}
+
+input ShopifyAuthCreateOneInlineInput {
+  """Create and connect one ShopifyAuth document"""
+  create: ShopifyAuthCreateInput
+}
+
+input ShopifyAuthUpdateInput {
+  """createNewAccount input for default locale (en)"""
+  createNewAccount: String
+
+  """Manage document localizations"""
+  localizations: ShopifyAuthUpdateLocalizationsInput
+
+  """noMatchingAccountRecoverMyAccount input for default locale (en)"""
+  noMatchingAccountRecoverMyAccount: String
+
+  """noMatchingAccountUseExistingAccount input for default locale (en)"""
+  noMatchingAccountUseExistingAccount: String
+
+  """signIn input for default locale (en)"""
+  signIn: String
+
+  """useAnotherAccount input for default locale (en)"""
+  useAnotherAccount: String
+
+  """useExistingAccount input for default locale (en)"""
+  useExistingAccount: String
+}
+
+input ShopifyAuthUpdateLocalizationDataInput {
+  createNewAccount: String
+  noMatchingAccountRecoverMyAccount: String
+  noMatchingAccountUseExistingAccount: String
+  signIn: String
+  useAnotherAccount: String
+  useExistingAccount: String
+}
+
+input ShopifyAuthUpdateLocalizationInput {
+  data: ShopifyAuthUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyAuthUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [ShopifyAuthCreateLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
+
+  """Localizations to update"""
+  update: [ShopifyAuthUpdateLocalizationInput!]
+  upsert: [ShopifyAuthUpsertLocalizationInput!]
+}
+
+input ShopifyAuthUpdateOneInlineInput {
+  """Create and connect one ShopifyAuth document"""
+  create: ShopifyAuthCreateInput
+
+  """Delete currently connected ShopifyAuth document"""
+  delete: Boolean
+
+  """Update single ShopifyAuth document"""
+  update: ShopifyAuthUpdateWithNestedWhereUniqueInput
+
+  """Upsert single ShopifyAuth document"""
+  upsert: ShopifyAuthUpsertWithNestedWhereUniqueInput
+}
+
+input ShopifyAuthUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: ShopifyAuthUpdateInput!
+
+  """Unique document search"""
+  where: ShopifyAuthWhereUniqueInput!
+}
+
+input ShopifyAuthUpsertInput {
+  """Create document if it didn't exist"""
+  create: ShopifyAuthCreateInput!
+
+  """Update document if it exists"""
+  update: ShopifyAuthUpdateInput!
+}
+
+input ShopifyAuthUpsertLocalizationInput {
+  create: ShopifyAuthCreateLocalizationDataInput!
+  locale: Locale!
+  update: ShopifyAuthUpdateLocalizationDataInput!
+}
+
+input ShopifyAuthUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: ShopifyAuthUpsertInput!
+
+  """Unique document search"""
+  where: ShopifyAuthWhereUniqueInput!
+}
+
+"""Identifies documents"""
+input ShopifyAuthWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyAuthWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyAuthWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyAuthWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  createNewAccount: String
+
+  """All values containing the given string."""
+  createNewAccount_contains: String
+
+  """All values ending with the given string."""
+  createNewAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  createNewAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  createNewAccount_not: String
+
+  """All values not containing the given string."""
+  createNewAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  createNewAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  createNewAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  createNewAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  createNewAccount_starts_with: String
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  noMatchingAccountRecoverMyAccount: String
+
+  """All values containing the given string."""
+  noMatchingAccountRecoverMyAccount_contains: String
+
+  """All values ending with the given string."""
+  noMatchingAccountRecoverMyAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  noMatchingAccountRecoverMyAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  noMatchingAccountRecoverMyAccount_not: String
+
+  """All values not containing the given string."""
+  noMatchingAccountRecoverMyAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  noMatchingAccountRecoverMyAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  noMatchingAccountRecoverMyAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  noMatchingAccountRecoverMyAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  noMatchingAccountRecoverMyAccount_starts_with: String
+  noMatchingAccountUseExistingAccount: String
+
+  """All values containing the given string."""
+  noMatchingAccountUseExistingAccount_contains: String
+
+  """All values ending with the given string."""
+  noMatchingAccountUseExistingAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  noMatchingAccountUseExistingAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  noMatchingAccountUseExistingAccount_not: String
+
+  """All values not containing the given string."""
+  noMatchingAccountUseExistingAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  noMatchingAccountUseExistingAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  noMatchingAccountUseExistingAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  noMatchingAccountUseExistingAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  noMatchingAccountUseExistingAccount_starts_with: String
+  signIn: String
+
+  """All values containing the given string."""
+  signIn_contains: String
+
+  """All values ending with the given string."""
+  signIn_ends_with: String
+
+  """All values that are contained in given list."""
+  signIn_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  signIn_not: String
+
+  """All values not containing the given string."""
+  signIn_not_contains: String
+
+  """All values not ending with the given string"""
+  signIn_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  signIn_not_in: [String]
+
+  """All values not starting with the given string."""
+  signIn_not_starts_with: String
+
+  """All values starting with the given string."""
+  signIn_starts_with: String
+  useAnotherAccount: String
+
+  """All values containing the given string."""
+  useAnotherAccount_contains: String
+
+  """All values ending with the given string."""
+  useAnotherAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  useAnotherAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  useAnotherAccount_not: String
+
+  """All values not containing the given string."""
+  useAnotherAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  useAnotherAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  useAnotherAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  useAnotherAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  useAnotherAccount_starts_with: String
+  useExistingAccount: String
+
+  """All values containing the given string."""
+  useExistingAccount_contains: String
+
+  """All values ending with the given string."""
+  useExistingAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  useExistingAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  useExistingAccount_not: String
+
+  """All values not containing the given string."""
+  useExistingAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  useExistingAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  useExistingAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  useExistingAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  useExistingAccount_starts_with: String
+}
+
+"""References ShopifyAuth record uniquely"""
+input ShopifyAuthWhereUniqueInput {
+  id: ID
+}
+
+type ShopifyCampaignTemplate implements Entity & Node {
+  authTexts(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `authTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `authTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): ShopifyAuth!
+
+  """The time the document was created"""
+  createdAt(
+    """
+    Variation of DateTime field to return, allows value from base document, current localization, or combined by returning the newer value of both
+    """
+    variation: SystemDateTimeFieldVariation! = COMBINED
+  ): DateTime!
+
+  """User that created this document"""
+  createdBy(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `createdBy` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `createdBy` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): User
+  description: String
+
+  """Get the document in other stages"""
+  documentInStages(
+    """Decides if the current stage should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Decides if the documents should match the parent documents locale or should use the fallback order defined in the tree
+    """
+    inheritLocale: Boolean! = false
+
+    """Potential stages that should be returned"""
+    stages: [Stage!]! = [DRAFT, PUBLISHED]
+  ): [ShopifyCampaignTemplate!]!
+  gateConnectedTexts(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `gateConnectedTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `gateConnectedTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): ShopifyGateConnected!
+  gateNotConnectedTexts(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `gateNotConnectedTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `gateNotConnectedTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): ShopifyGateNotConnected!
+  headerConnectedTexts(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `headerConnectedTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `headerConnectedTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): ShopifyHeaderConnected!
+  headerNotConnectedTexts(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `headerNotConnectedTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `headerNotConnectedTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): ShopifyHeaderNotConnected!
+
+  """List of ShopifyCampaignTemplate versions"""
+  history(
+    limit: Int! = 10
+    skip: Int! = 0
+
+    """
+    This is optional and can be used to fetch the document version history for a specific stage instead of the current one
+    """
+    stageOverride: Stage
+  ): [Version!]!
+
+  """The unique identifier"""
+  id: ID!
+
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Potential locales that should be returned. 
+    
+    The order of locales will also override locale fall-backing behaviour in the query's subtree.
+    
+    Note any related model with localized fields in the query's subtree will be affected.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    
+    Consider using this in conjunction with forceParentLocale on the children relation fields.
+    """
+    locales: [Locale!]! = [en, fr]
+  ): [ShopifyCampaignTemplate!]!
+
+  """Name of the template"""
+  name: String!
+  organizer(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `organizer` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): Organizer
+  profileTexts(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `profileTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `profileTexts` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): ShopifyProfile!
+
+  """The time the document was published. Null on documents in draft stage."""
+  publishedAt(
+    """
+    Variation of DateTime field to return, allows value from base document, current localization, or combined by returning the newer value of both
+    """
+    variation: SystemDateTimeFieldVariation! = COMBINED
+  ): DateTime
+
+  """User that last published this document"""
+  publishedBy(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `publishedBy` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `publishedBy` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): User
+  scheduledIn(
+    after: String
+    before: String
+    first: Int
+
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `scheduledIn` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+    last: Int
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `scheduledIn` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+    skip: Int
+    where: ScheduledOperationWhereInput
+  ): [ScheduledOperation!]!
+
+  """System stage field"""
+  stage: Stage!
+
+  """The time the document was updated"""
+  updatedAt(
+    """
+    Variation of DateTime field to return, allows value from base document, current localization, or combined by returning the newer value of both
+    """
+    variation: SystemDateTimeFieldVariation! = COMBINED
+  ): DateTime!
+
+  """User that last updated this document"""
+  updatedBy(
+    """
+    Sets the locale of the resolved parent document as the only locale in the query's subtree.
+    
+    Note that `updatedBy` is a model without localized fields and will not be affected directly by this argument, however the locale will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `updatedBy` is a model without localized fields and will not be affected directly by this argument, however the locales will be passed on to any relational fields in the query's subtree for filtering.
+    For related models with localized fields in the query's subtree, the first locale matching the provided list of locales will be returned, entries with non matching locales will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): User
+}
+
+input ShopifyCampaignTemplateConnectInput {
+  """
+  Allow to specify document position in list of connected documents, will default to appending at end of list
+  """
+  position: ConnectPositionInput
+
+  """Document to connect"""
+  where: ShopifyCampaignTemplateWhereUniqueInput!
+}
+
+"""A connection to a list of items."""
+type ShopifyCampaignTemplateConnection {
+  aggregate: Aggregate!
+
+  """A list of edges."""
+  edges: [ShopifyCampaignTemplateEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+input ShopifyCampaignTemplateCreateInput {
+  authTexts: ShopifyAuthCreateOneInlineInput!
+  createdAt: DateTime
+
+  """description input for default locale (en)"""
+  description: String
+  gateConnectedTexts: ShopifyGateConnectedCreateOneInlineInput!
+  gateNotConnectedTexts: ShopifyGateNotConnectedCreateOneInlineInput!
+  headerConnectedTexts: ShopifyHeaderConnectedCreateOneInlineInput!
+  headerNotConnectedTexts: ShopifyHeaderNotConnectedCreateOneInlineInput!
+
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: ShopifyCampaignTemplateCreateLocalizationsInput
+
+  """name input for default locale (en)"""
+  name: String!
+  organizer: OrganizerCreateOneInlineInput
+  profileTexts: ShopifyProfileCreateOneInlineInput!
+  updatedAt: DateTime
+}
+
+input ShopifyCampaignTemplateCreateLocalizationDataInput {
+  createdAt: DateTime
+  description: String
+  name: String!
+  updatedAt: DateTime
+}
+
+input ShopifyCampaignTemplateCreateLocalizationInput {
+  """Localization input"""
+  data: ShopifyCampaignTemplateCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyCampaignTemplateCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [ShopifyCampaignTemplateCreateLocalizationInput!]
+}
+
+input ShopifyCampaignTemplateCreateManyInlineInput {
+  """Connect multiple existing ShopifyCampaignTemplate documents"""
+  connect: [ShopifyCampaignTemplateWhereUniqueInput!]
+
+  """Create and connect multiple existing ShopifyCampaignTemplate documents"""
+  create: [ShopifyCampaignTemplateCreateInput!]
+}
+
+"""An edge in a connection."""
+type ShopifyCampaignTemplateEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: ShopifyCampaignTemplate!
+}
+
+"""Identifies documents"""
+input ShopifyCampaignTemplateManyWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyCampaignTemplateWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyCampaignTemplateWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyCampaignTemplateWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  authTexts: ShopifyAuthWhereInput
+  createdAt: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  createdAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime]
+  createdBy: UserWhereInput
+  documentInStages_every: ShopifyCampaignTemplateWhereStageInput
+  documentInStages_none: ShopifyCampaignTemplateWhereStageInput
+  documentInStages_some: ShopifyCampaignTemplateWhereStageInput
+  gateConnectedTexts: ShopifyGateConnectedWhereInput
+  gateNotConnectedTexts: ShopifyGateNotConnectedWhereInput
+  headerConnectedTexts: ShopifyHeaderConnectedWhereInput
+  headerNotConnectedTexts: ShopifyHeaderNotConnectedWhereInput
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  organizer: OrganizerWhereInput
+  profileTexts: ShopifyProfileWhereInput
+  publishedAt: DateTime
+
+  """All values greater than the given value."""
+  publishedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  publishedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  publishedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  publishedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  publishedAt_not_in: [DateTime]
+  publishedBy: UserWhereInput
+  scheduledIn_every: ScheduledOperationWhereInput
+  scheduledIn_none: ScheduledOperationWhereInput
+  scheduledIn_some: ScheduledOperationWhereInput
+  updatedAt: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  updatedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime]
+  updatedBy: UserWhereInput
+}
+
+enum ShopifyCampaignTemplateOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  description_ASC
+  description_DESC
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  publishedAt_ASC
+  publishedAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+input ShopifyCampaignTemplateUpdateInput {
+  authTexts: ShopifyAuthUpdateOneInlineInput
+
+  """description input for default locale (en)"""
+  description: String
+  gateConnectedTexts: ShopifyGateConnectedUpdateOneInlineInput
+  gateNotConnectedTexts: ShopifyGateNotConnectedUpdateOneInlineInput
+  headerConnectedTexts: ShopifyHeaderConnectedUpdateOneInlineInput
+  headerNotConnectedTexts: ShopifyHeaderNotConnectedUpdateOneInlineInput
+
+  """Manage document localizations"""
+  localizations: ShopifyCampaignTemplateUpdateLocalizationsInput
+
+  """name input for default locale (en)"""
+  name: String
+  organizer: OrganizerUpdateOneInlineInput
+  profileTexts: ShopifyProfileUpdateOneInlineInput
+}
+
+input ShopifyCampaignTemplateUpdateLocalizationDataInput {
+  description: String
+  name: String
+}
+
+input ShopifyCampaignTemplateUpdateLocalizationInput {
+  data: ShopifyCampaignTemplateUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyCampaignTemplateUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [ShopifyCampaignTemplateCreateLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
+
+  """Localizations to update"""
+  update: [ShopifyCampaignTemplateUpdateLocalizationInput!]
+  upsert: [ShopifyCampaignTemplateUpsertLocalizationInput!]
+}
+
+input ShopifyCampaignTemplateUpdateManyInlineInput {
+  """Connect multiple existing ShopifyCampaignTemplate documents"""
+  connect: [ShopifyCampaignTemplateConnectInput!]
+
+  """Create and connect multiple ShopifyCampaignTemplate documents"""
+  create: [ShopifyCampaignTemplateCreateInput!]
+
+  """Delete multiple ShopifyCampaignTemplate documents"""
+  delete: [ShopifyCampaignTemplateWhereUniqueInput!]
+
+  """Disconnect multiple ShopifyCampaignTemplate documents"""
+  disconnect: [ShopifyCampaignTemplateWhereUniqueInput!]
+
+  """
+  Override currently-connected documents with multiple existing ShopifyCampaignTemplate documents
+  """
+  set: [ShopifyCampaignTemplateWhereUniqueInput!]
+
+  """Update multiple ShopifyCampaignTemplate documents"""
+  update: [ShopifyCampaignTemplateUpdateWithNestedWhereUniqueInput!]
+
+  """Upsert multiple ShopifyCampaignTemplate documents"""
+  upsert: [ShopifyCampaignTemplateUpsertWithNestedWhereUniqueInput!]
+}
+
+input ShopifyCampaignTemplateUpdateManyInput {
+  """description input for default locale (en)"""
+  description: String
+
+  """Optional updates to localizations"""
+  localizations: ShopifyCampaignTemplateUpdateManyLocalizationsInput
+
+  """name input for default locale (en)"""
+  name: String
+}
+
+input ShopifyCampaignTemplateUpdateManyLocalizationDataInput {
+  description: String
+  name: String
+}
+
+input ShopifyCampaignTemplateUpdateManyLocalizationInput {
+  data: ShopifyCampaignTemplateUpdateManyLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyCampaignTemplateUpdateManyLocalizationsInput {
+  """Localizations to update"""
+  update: [ShopifyCampaignTemplateUpdateManyLocalizationInput!]
+}
+
+input ShopifyCampaignTemplateUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: ShopifyCampaignTemplateUpdateInput!
+
+  """Unique document search"""
+  where: ShopifyCampaignTemplateWhereUniqueInput!
+}
+
+input ShopifyCampaignTemplateUpsertInput {
+  """Create document if it didn't exist"""
+  create: ShopifyCampaignTemplateCreateInput!
+
+  """Update document if it exists"""
+  update: ShopifyCampaignTemplateUpdateInput!
+}
+
+input ShopifyCampaignTemplateUpsertLocalizationInput {
+  create: ShopifyCampaignTemplateCreateLocalizationDataInput!
+  locale: Locale!
+  update: ShopifyCampaignTemplateUpdateLocalizationDataInput!
+}
+
+input ShopifyCampaignTemplateUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: ShopifyCampaignTemplateUpsertInput!
+
+  """Unique document search"""
+  where: ShopifyCampaignTemplateWhereUniqueInput!
+}
+
+"""
+This contains a set of filters that can be used to compare values internally
+"""
+input ShopifyCampaignTemplateWhereComparatorInput {
+  """
+  This field can be used to request to check if the entry is outdated by internal comparison
+  """
+  outdated_to: Boolean
+}
+
+"""Identifies documents"""
+input ShopifyCampaignTemplateWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyCampaignTemplateWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyCampaignTemplateWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyCampaignTemplateWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  authTexts: ShopifyAuthWhereInput
+  createdAt: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  createdAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime]
+  createdBy: UserWhereInput
+  description: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values that are contained in given list."""
+  description_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  description_not: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values not ending with the given string"""
+  description_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  description_not_in: [String]
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+  documentInStages_every: ShopifyCampaignTemplateWhereStageInput
+  documentInStages_none: ShopifyCampaignTemplateWhereStageInput
+  documentInStages_some: ShopifyCampaignTemplateWhereStageInput
+  gateConnectedTexts: ShopifyGateConnectedWhereInput
+  gateNotConnectedTexts: ShopifyGateNotConnectedWhereInput
+  headerConnectedTexts: ShopifyHeaderConnectedWhereInput
+  headerNotConnectedTexts: ShopifyHeaderNotConnectedWhereInput
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  name: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values that are contained in given list."""
+  name_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  name_not: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values not ending with the given string"""
+  name_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  name_not_in: [String]
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+  organizer: OrganizerWhereInput
+  profileTexts: ShopifyProfileWhereInput
+  publishedAt: DateTime
+
+  """All values greater than the given value."""
+  publishedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  publishedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  publishedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  publishedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  publishedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  publishedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  publishedAt_not_in: [DateTime]
+  publishedBy: UserWhereInput
+  scheduledIn_every: ScheduledOperationWhereInput
+  scheduledIn_none: ScheduledOperationWhereInput
+  scheduledIn_some: ScheduledOperationWhereInput
+  updatedAt: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """Any other value that exists and is not equal to the given value."""
+  updatedAt_not: DateTime
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime]
+  updatedBy: UserWhereInput
+}
+
+"""
+The document in stages filter allows specifying a stage entry to cross compare the same document between different stages
+"""
+input ShopifyCampaignTemplateWhereStageInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyCampaignTemplateWhereStageInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyCampaignTemplateWhereStageInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyCampaignTemplateWhereStageInput!]
+
+  """
+  This field contains fields which can be set as true or false to specify an internal comparison
+  """
+  compareWithParent: ShopifyCampaignTemplateWhereComparatorInput
+
+  """Specify the stage to compare with"""
+  stage: Stage
+}
+
+"""References ShopifyCampaignTemplate record uniquely"""
+input ShopifyCampaignTemplateWhereUniqueInput {
+  id: ID
+}
+
+type ShopifyGateConnected implements Entity {
+  gateStatus(
+    """
+    Sets the locale of the parent document as the first locale in the fallback locales in the query's subtree.
+    
+    Note that `gateStatus` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will affect any existing locale filtering defined in the query's tree for the subtree.
+    """
+    forceParentLocale: Boolean
+
+    """
+    Allows to optionally override locale filtering behaviour in the query's subtree.
+    
+    Note that `gateStatus` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    """
+    locales: [Locale!]
+  ): ShopifyGateStatus!
+
+  """The unique identifier"""
+  id: ID!
+
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Potential locales that should be returned. 
+    
+    The order of locales will also override locale fall-backing behaviour in the query's subtree.
+    
+    Note any related model with localized fields in the query's subtree will be affected.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    
+    Consider using this in conjunction with forceParentLocale on the children relation fields.
+    """
+    locales: [Locale!]! = [en, fr]
+  ): [ShopifyGateConnected!]!
+  paragraphLocked: String!
+  paragraphUnlocked: String!
+  paragraphUnlocking: String!
+  paragraphUsed: String!
+
+  """System stage field"""
+  stage: Stage!
+  subtitleLocked: String!
+  subtitleUnlocked: String!
+  subtitleUnlocking: String!
+  subtitleUsed: String!
+}
+
+input ShopifyGateConnectedCreateInput {
+  gateStatus: ShopifyGateStatusCreateOneInlineInput!
+
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: ShopifyGateConnectedCreateLocalizationsInput
+
+  """paragraphLocked input for default locale (en)"""
+  paragraphLocked: String!
+
+  """paragraphUnlocked input for default locale (en)"""
+  paragraphUnlocked: String!
+
+  """paragraphUnlocking input for default locale (en)"""
+  paragraphUnlocking: String!
+
+  """paragraphUsed input for default locale (en)"""
+  paragraphUsed: String!
+
+  """subtitleLocked input for default locale (en)"""
+  subtitleLocked: String!
+
+  """subtitleUnlocked input for default locale (en)"""
+  subtitleUnlocked: String!
+
+  """subtitleUnlocking input for default locale (en)"""
+  subtitleUnlocking: String!
+
+  """subtitleUsed input for default locale (en)"""
+  subtitleUsed: String!
+}
+
+input ShopifyGateConnectedCreateLocalizationDataInput {
+  paragraphLocked: String!
+  paragraphUnlocked: String!
+  paragraphUnlocking: String!
+  paragraphUsed: String!
+  subtitleLocked: String!
+  subtitleUnlocked: String!
+  subtitleUnlocking: String!
+  subtitleUsed: String!
+}
+
+input ShopifyGateConnectedCreateLocalizationInput {
+  """Localization input"""
+  data: ShopifyGateConnectedCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyGateConnectedCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [ShopifyGateConnectedCreateLocalizationInput!]
+}
+
+input ShopifyGateConnectedCreateOneInlineInput {
+  """Create and connect one ShopifyGateConnected document"""
+  create: ShopifyGateConnectedCreateInput
+}
+
+input ShopifyGateConnectedUpdateInput {
+  gateStatus: ShopifyGateStatusUpdateOneInlineInput
+
+  """Manage document localizations"""
+  localizations: ShopifyGateConnectedUpdateLocalizationsInput
+
+  """paragraphLocked input for default locale (en)"""
+  paragraphLocked: String
+
+  """paragraphUnlocked input for default locale (en)"""
+  paragraphUnlocked: String
+
+  """paragraphUnlocking input for default locale (en)"""
+  paragraphUnlocking: String
+
+  """paragraphUsed input for default locale (en)"""
+  paragraphUsed: String
+
+  """subtitleLocked input for default locale (en)"""
+  subtitleLocked: String
+
+  """subtitleUnlocked input for default locale (en)"""
+  subtitleUnlocked: String
+
+  """subtitleUnlocking input for default locale (en)"""
+  subtitleUnlocking: String
+
+  """subtitleUsed input for default locale (en)"""
+  subtitleUsed: String
+}
+
+input ShopifyGateConnectedUpdateLocalizationDataInput {
+  paragraphLocked: String
+  paragraphUnlocked: String
+  paragraphUnlocking: String
+  paragraphUsed: String
+  subtitleLocked: String
+  subtitleUnlocked: String
+  subtitleUnlocking: String
+  subtitleUsed: String
+}
+
+input ShopifyGateConnectedUpdateLocalizationInput {
+  data: ShopifyGateConnectedUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyGateConnectedUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [ShopifyGateConnectedCreateLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
+
+  """Localizations to update"""
+  update: [ShopifyGateConnectedUpdateLocalizationInput!]
+  upsert: [ShopifyGateConnectedUpsertLocalizationInput!]
+}
+
+input ShopifyGateConnectedUpdateOneInlineInput {
+  """Create and connect one ShopifyGateConnected document"""
+  create: ShopifyGateConnectedCreateInput
+
+  """Delete currently connected ShopifyGateConnected document"""
+  delete: Boolean
+
+  """Update single ShopifyGateConnected document"""
+  update: ShopifyGateConnectedUpdateWithNestedWhereUniqueInput
+
+  """Upsert single ShopifyGateConnected document"""
+  upsert: ShopifyGateConnectedUpsertWithNestedWhereUniqueInput
+}
+
+input ShopifyGateConnectedUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: ShopifyGateConnectedUpdateInput!
+
+  """Unique document search"""
+  where: ShopifyGateConnectedWhereUniqueInput!
+}
+
+input ShopifyGateConnectedUpsertInput {
+  """Create document if it didn't exist"""
+  create: ShopifyGateConnectedCreateInput!
+
+  """Update document if it exists"""
+  update: ShopifyGateConnectedUpdateInput!
+}
+
+input ShopifyGateConnectedUpsertLocalizationInput {
+  create: ShopifyGateConnectedCreateLocalizationDataInput!
+  locale: Locale!
+  update: ShopifyGateConnectedUpdateLocalizationDataInput!
+}
+
+input ShopifyGateConnectedUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: ShopifyGateConnectedUpsertInput!
+
+  """Unique document search"""
+  where: ShopifyGateConnectedWhereUniqueInput!
+}
+
+"""Identifies documents"""
+input ShopifyGateConnectedWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyGateConnectedWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyGateConnectedWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyGateConnectedWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  gateStatus: ShopifyGateStatusWhereInput
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  paragraphLocked: String
+
+  """All values containing the given string."""
+  paragraphLocked_contains: String
+
+  """All values ending with the given string."""
+  paragraphLocked_ends_with: String
+
+  """All values that are contained in given list."""
+  paragraphLocked_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  paragraphLocked_not: String
+
+  """All values not containing the given string."""
+  paragraphLocked_not_contains: String
+
+  """All values not ending with the given string"""
+  paragraphLocked_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  paragraphLocked_not_in: [String]
+
+  """All values not starting with the given string."""
+  paragraphLocked_not_starts_with: String
+
+  """All values starting with the given string."""
+  paragraphLocked_starts_with: String
+  paragraphUnlocked: String
+
+  """All values containing the given string."""
+  paragraphUnlocked_contains: String
+
+  """All values ending with the given string."""
+  paragraphUnlocked_ends_with: String
+
+  """All values that are contained in given list."""
+  paragraphUnlocked_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  paragraphUnlocked_not: String
+
+  """All values not containing the given string."""
+  paragraphUnlocked_not_contains: String
+
+  """All values not ending with the given string"""
+  paragraphUnlocked_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  paragraphUnlocked_not_in: [String]
+
+  """All values not starting with the given string."""
+  paragraphUnlocked_not_starts_with: String
+
+  """All values starting with the given string."""
+  paragraphUnlocked_starts_with: String
+  paragraphUnlocking: String
+
+  """All values containing the given string."""
+  paragraphUnlocking_contains: String
+
+  """All values ending with the given string."""
+  paragraphUnlocking_ends_with: String
+
+  """All values that are contained in given list."""
+  paragraphUnlocking_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  paragraphUnlocking_not: String
+
+  """All values not containing the given string."""
+  paragraphUnlocking_not_contains: String
+
+  """All values not ending with the given string"""
+  paragraphUnlocking_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  paragraphUnlocking_not_in: [String]
+
+  """All values not starting with the given string."""
+  paragraphUnlocking_not_starts_with: String
+
+  """All values starting with the given string."""
+  paragraphUnlocking_starts_with: String
+  paragraphUsed: String
+
+  """All values containing the given string."""
+  paragraphUsed_contains: String
+
+  """All values ending with the given string."""
+  paragraphUsed_ends_with: String
+
+  """All values that are contained in given list."""
+  paragraphUsed_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  paragraphUsed_not: String
+
+  """All values not containing the given string."""
+  paragraphUsed_not_contains: String
+
+  """All values not ending with the given string"""
+  paragraphUsed_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  paragraphUsed_not_in: [String]
+
+  """All values not starting with the given string."""
+  paragraphUsed_not_starts_with: String
+
+  """All values starting with the given string."""
+  paragraphUsed_starts_with: String
+  subtitleLocked: String
+
+  """All values containing the given string."""
+  subtitleLocked_contains: String
+
+  """All values ending with the given string."""
+  subtitleLocked_ends_with: String
+
+  """All values that are contained in given list."""
+  subtitleLocked_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  subtitleLocked_not: String
+
+  """All values not containing the given string."""
+  subtitleLocked_not_contains: String
+
+  """All values not ending with the given string"""
+  subtitleLocked_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  subtitleLocked_not_in: [String]
+
+  """All values not starting with the given string."""
+  subtitleLocked_not_starts_with: String
+
+  """All values starting with the given string."""
+  subtitleLocked_starts_with: String
+  subtitleUnlocked: String
+
+  """All values containing the given string."""
+  subtitleUnlocked_contains: String
+
+  """All values ending with the given string."""
+  subtitleUnlocked_ends_with: String
+
+  """All values that are contained in given list."""
+  subtitleUnlocked_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  subtitleUnlocked_not: String
+
+  """All values not containing the given string."""
+  subtitleUnlocked_not_contains: String
+
+  """All values not ending with the given string"""
+  subtitleUnlocked_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  subtitleUnlocked_not_in: [String]
+
+  """All values not starting with the given string."""
+  subtitleUnlocked_not_starts_with: String
+
+  """All values starting with the given string."""
+  subtitleUnlocked_starts_with: String
+  subtitleUnlocking: String
+
+  """All values containing the given string."""
+  subtitleUnlocking_contains: String
+
+  """All values ending with the given string."""
+  subtitleUnlocking_ends_with: String
+
+  """All values that are contained in given list."""
+  subtitleUnlocking_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  subtitleUnlocking_not: String
+
+  """All values not containing the given string."""
+  subtitleUnlocking_not_contains: String
+
+  """All values not ending with the given string"""
+  subtitleUnlocking_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  subtitleUnlocking_not_in: [String]
+
+  """All values not starting with the given string."""
+  subtitleUnlocking_not_starts_with: String
+
+  """All values starting with the given string."""
+  subtitleUnlocking_starts_with: String
+  subtitleUsed: String
+
+  """All values containing the given string."""
+  subtitleUsed_contains: String
+
+  """All values ending with the given string."""
+  subtitleUsed_ends_with: String
+
+  """All values that are contained in given list."""
+  subtitleUsed_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  subtitleUsed_not: String
+
+  """All values not containing the given string."""
+  subtitleUsed_not_contains: String
+
+  """All values not ending with the given string"""
+  subtitleUsed_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  subtitleUsed_not_in: [String]
+
+  """All values not starting with the given string."""
+  subtitleUsed_not_starts_with: String
+
+  """All values starting with the given string."""
+  subtitleUsed_starts_with: String
+}
+
+"""References ShopifyGateConnected record uniquely"""
+input ShopifyGateConnectedWhereUniqueInput {
+  id: ID
+}
+
+type ShopifyGateNotConnected implements Entity {
+  """The unique identifier"""
+  id: ID!
+
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Potential locales that should be returned. 
+    
+    The order of locales will also override locale fall-backing behaviour in the query's subtree.
+    
+    Note any related model with localized fields in the query's subtree will be affected.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    
+    Consider using this in conjunction with forceParentLocale on the children relation fields.
+    """
+    locales: [Locale!]! = [en, fr]
+  ): [ShopifyGateNotConnected!]!
+  paragraphCustomerNotConnected: String!
+  paragraphExistingAccountNewCustomer: String!
+  paragraphMatchingAccount: String!
+  paragraphNewAccount: String!
+  paragraphNoMatchingAccount: String!
+
+  """System stage field"""
+  stage: Stage!
+  subtitleCustomerNotConnected: String!
+  subtitleExistingAccountNewCustomer: String!
+  subtitleMatchingAccount: String!
+  subtitleNewAccount: String!
+  subtitleNoMatchingAccount: String!
+}
+
+input ShopifyGateNotConnectedCreateInput {
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: ShopifyGateNotConnectedCreateLocalizationsInput
+
+  """paragraphCustomerNotConnected input for default locale (en)"""
+  paragraphCustomerNotConnected: String!
+
+  """paragraphExistingAccountNewCustomer input for default locale (en)"""
+  paragraphExistingAccountNewCustomer: String!
+
+  """paragraphMatchingAccount input for default locale (en)"""
+  paragraphMatchingAccount: String!
+
+  """paragraphNewAccount input for default locale (en)"""
+  paragraphNewAccount: String!
+
+  """paragraphNoMatchingAccount input for default locale (en)"""
+  paragraphNoMatchingAccount: String!
+
+  """subtitleCustomerNotConnected input for default locale (en)"""
+  subtitleCustomerNotConnected: String!
+
+  """subtitleExistingAccountNewCustomer input for default locale (en)"""
+  subtitleExistingAccountNewCustomer: String!
+
+  """subtitleMatchingAccount input for default locale (en)"""
+  subtitleMatchingAccount: String!
+
+  """subtitleNewAccount input for default locale (en)"""
+  subtitleNewAccount: String!
+
+  """subtitleNoMatchingAccount input for default locale (en)"""
+  subtitleNoMatchingAccount: String!
+}
+
+input ShopifyGateNotConnectedCreateLocalizationDataInput {
+  paragraphCustomerNotConnected: String!
+  paragraphExistingAccountNewCustomer: String!
+  paragraphMatchingAccount: String!
+  paragraphNewAccount: String!
+  paragraphNoMatchingAccount: String!
+  subtitleCustomerNotConnected: String!
+  subtitleExistingAccountNewCustomer: String!
+  subtitleMatchingAccount: String!
+  subtitleNewAccount: String!
+  subtitleNoMatchingAccount: String!
+}
+
+input ShopifyGateNotConnectedCreateLocalizationInput {
+  """Localization input"""
+  data: ShopifyGateNotConnectedCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyGateNotConnectedCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [ShopifyGateNotConnectedCreateLocalizationInput!]
+}
+
+input ShopifyGateNotConnectedCreateOneInlineInput {
+  """Create and connect one ShopifyGateNotConnected document"""
+  create: ShopifyGateNotConnectedCreateInput
+}
+
+input ShopifyGateNotConnectedUpdateInput {
+  """Manage document localizations"""
+  localizations: ShopifyGateNotConnectedUpdateLocalizationsInput
+
+  """paragraphCustomerNotConnected input for default locale (en)"""
+  paragraphCustomerNotConnected: String
+
+  """paragraphExistingAccountNewCustomer input for default locale (en)"""
+  paragraphExistingAccountNewCustomer: String
+
+  """paragraphMatchingAccount input for default locale (en)"""
+  paragraphMatchingAccount: String
+
+  """paragraphNewAccount input for default locale (en)"""
+  paragraphNewAccount: String
+
+  """paragraphNoMatchingAccount input for default locale (en)"""
+  paragraphNoMatchingAccount: String
+
+  """subtitleCustomerNotConnected input for default locale (en)"""
+  subtitleCustomerNotConnected: String
+
+  """subtitleExistingAccountNewCustomer input for default locale (en)"""
+  subtitleExistingAccountNewCustomer: String
+
+  """subtitleMatchingAccount input for default locale (en)"""
+  subtitleMatchingAccount: String
+
+  """subtitleNewAccount input for default locale (en)"""
+  subtitleNewAccount: String
+
+  """subtitleNoMatchingAccount input for default locale (en)"""
+  subtitleNoMatchingAccount: String
+}
+
+input ShopifyGateNotConnectedUpdateLocalizationDataInput {
+  paragraphCustomerNotConnected: String
+  paragraphExistingAccountNewCustomer: String
+  paragraphMatchingAccount: String
+  paragraphNewAccount: String
+  paragraphNoMatchingAccount: String
+  subtitleCustomerNotConnected: String
+  subtitleExistingAccountNewCustomer: String
+  subtitleMatchingAccount: String
+  subtitleNewAccount: String
+  subtitleNoMatchingAccount: String
+}
+
+input ShopifyGateNotConnectedUpdateLocalizationInput {
+  data: ShopifyGateNotConnectedUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyGateNotConnectedUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [ShopifyGateNotConnectedCreateLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
+
+  """Localizations to update"""
+  update: [ShopifyGateNotConnectedUpdateLocalizationInput!]
+  upsert: [ShopifyGateNotConnectedUpsertLocalizationInput!]
+}
+
+input ShopifyGateNotConnectedUpdateOneInlineInput {
+  """Create and connect one ShopifyGateNotConnected document"""
+  create: ShopifyGateNotConnectedCreateInput
+
+  """Delete currently connected ShopifyGateNotConnected document"""
+  delete: Boolean
+
+  """Update single ShopifyGateNotConnected document"""
+  update: ShopifyGateNotConnectedUpdateWithNestedWhereUniqueInput
+
+  """Upsert single ShopifyGateNotConnected document"""
+  upsert: ShopifyGateNotConnectedUpsertWithNestedWhereUniqueInput
+}
+
+input ShopifyGateNotConnectedUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: ShopifyGateNotConnectedUpdateInput!
+
+  """Unique document search"""
+  where: ShopifyGateNotConnectedWhereUniqueInput!
+}
+
+input ShopifyGateNotConnectedUpsertInput {
+  """Create document if it didn't exist"""
+  create: ShopifyGateNotConnectedCreateInput!
+
+  """Update document if it exists"""
+  update: ShopifyGateNotConnectedUpdateInput!
+}
+
+input ShopifyGateNotConnectedUpsertLocalizationInput {
+  create: ShopifyGateNotConnectedCreateLocalizationDataInput!
+  locale: Locale!
+  update: ShopifyGateNotConnectedUpdateLocalizationDataInput!
+}
+
+input ShopifyGateNotConnectedUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: ShopifyGateNotConnectedUpsertInput!
+
+  """Unique document search"""
+  where: ShopifyGateNotConnectedWhereUniqueInput!
+}
+
+"""Identifies documents"""
+input ShopifyGateNotConnectedWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyGateNotConnectedWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyGateNotConnectedWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyGateNotConnectedWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  paragraphCustomerNotConnected: String
+
+  """All values containing the given string."""
+  paragraphCustomerNotConnected_contains: String
+
+  """All values ending with the given string."""
+  paragraphCustomerNotConnected_ends_with: String
+
+  """All values that are contained in given list."""
+  paragraphCustomerNotConnected_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  paragraphCustomerNotConnected_not: String
+
+  """All values not containing the given string."""
+  paragraphCustomerNotConnected_not_contains: String
+
+  """All values not ending with the given string"""
+  paragraphCustomerNotConnected_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  paragraphCustomerNotConnected_not_in: [String]
+
+  """All values not starting with the given string."""
+  paragraphCustomerNotConnected_not_starts_with: String
+
+  """All values starting with the given string."""
+  paragraphCustomerNotConnected_starts_with: String
+  paragraphExistingAccountNewCustomer: String
+
+  """All values containing the given string."""
+  paragraphExistingAccountNewCustomer_contains: String
+
+  """All values ending with the given string."""
+  paragraphExistingAccountNewCustomer_ends_with: String
+
+  """All values that are contained in given list."""
+  paragraphExistingAccountNewCustomer_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  paragraphExistingAccountNewCustomer_not: String
+
+  """All values not containing the given string."""
+  paragraphExistingAccountNewCustomer_not_contains: String
+
+  """All values not ending with the given string"""
+  paragraphExistingAccountNewCustomer_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  paragraphExistingAccountNewCustomer_not_in: [String]
+
+  """All values not starting with the given string."""
+  paragraphExistingAccountNewCustomer_not_starts_with: String
+
+  """All values starting with the given string."""
+  paragraphExistingAccountNewCustomer_starts_with: String
+  paragraphMatchingAccount: String
+
+  """All values containing the given string."""
+  paragraphMatchingAccount_contains: String
+
+  """All values ending with the given string."""
+  paragraphMatchingAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  paragraphMatchingAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  paragraphMatchingAccount_not: String
+
+  """All values not containing the given string."""
+  paragraphMatchingAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  paragraphMatchingAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  paragraphMatchingAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  paragraphMatchingAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  paragraphMatchingAccount_starts_with: String
+  paragraphNewAccount: String
+
+  """All values containing the given string."""
+  paragraphNewAccount_contains: String
+
+  """All values ending with the given string."""
+  paragraphNewAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  paragraphNewAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  paragraphNewAccount_not: String
+
+  """All values not containing the given string."""
+  paragraphNewAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  paragraphNewAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  paragraphNewAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  paragraphNewAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  paragraphNewAccount_starts_with: String
+  paragraphNoMatchingAccount: String
+
+  """All values containing the given string."""
+  paragraphNoMatchingAccount_contains: String
+
+  """All values ending with the given string."""
+  paragraphNoMatchingAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  paragraphNoMatchingAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  paragraphNoMatchingAccount_not: String
+
+  """All values not containing the given string."""
+  paragraphNoMatchingAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  paragraphNoMatchingAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  paragraphNoMatchingAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  paragraphNoMatchingAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  paragraphNoMatchingAccount_starts_with: String
+  subtitleCustomerNotConnected: String
+
+  """All values containing the given string."""
+  subtitleCustomerNotConnected_contains: String
+
+  """All values ending with the given string."""
+  subtitleCustomerNotConnected_ends_with: String
+
+  """All values that are contained in given list."""
+  subtitleCustomerNotConnected_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  subtitleCustomerNotConnected_not: String
+
+  """All values not containing the given string."""
+  subtitleCustomerNotConnected_not_contains: String
+
+  """All values not ending with the given string"""
+  subtitleCustomerNotConnected_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  subtitleCustomerNotConnected_not_in: [String]
+
+  """All values not starting with the given string."""
+  subtitleCustomerNotConnected_not_starts_with: String
+
+  """All values starting with the given string."""
+  subtitleCustomerNotConnected_starts_with: String
+  subtitleExistingAccountNewCustomer: String
+
+  """All values containing the given string."""
+  subtitleExistingAccountNewCustomer_contains: String
+
+  """All values ending with the given string."""
+  subtitleExistingAccountNewCustomer_ends_with: String
+
+  """All values that are contained in given list."""
+  subtitleExistingAccountNewCustomer_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  subtitleExistingAccountNewCustomer_not: String
+
+  """All values not containing the given string."""
+  subtitleExistingAccountNewCustomer_not_contains: String
+
+  """All values not ending with the given string"""
+  subtitleExistingAccountNewCustomer_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  subtitleExistingAccountNewCustomer_not_in: [String]
+
+  """All values not starting with the given string."""
+  subtitleExistingAccountNewCustomer_not_starts_with: String
+
+  """All values starting with the given string."""
+  subtitleExistingAccountNewCustomer_starts_with: String
+  subtitleMatchingAccount: String
+
+  """All values containing the given string."""
+  subtitleMatchingAccount_contains: String
+
+  """All values ending with the given string."""
+  subtitleMatchingAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  subtitleMatchingAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  subtitleMatchingAccount_not: String
+
+  """All values not containing the given string."""
+  subtitleMatchingAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  subtitleMatchingAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  subtitleMatchingAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  subtitleMatchingAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  subtitleMatchingAccount_starts_with: String
+  subtitleNewAccount: String
+
+  """All values containing the given string."""
+  subtitleNewAccount_contains: String
+
+  """All values ending with the given string."""
+  subtitleNewAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  subtitleNewAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  subtitleNewAccount_not: String
+
+  """All values not containing the given string."""
+  subtitleNewAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  subtitleNewAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  subtitleNewAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  subtitleNewAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  subtitleNewAccount_starts_with: String
+  subtitleNoMatchingAccount: String
+
+  """All values containing the given string."""
+  subtitleNoMatchingAccount_contains: String
+
+  """All values ending with the given string."""
+  subtitleNoMatchingAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  subtitleNoMatchingAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  subtitleNoMatchingAccount_not: String
+
+  """All values not containing the given string."""
+  subtitleNoMatchingAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  subtitleNoMatchingAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  subtitleNoMatchingAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  subtitleNoMatchingAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  subtitleNoMatchingAccount_starts_with: String
+}
+
+"""References ShopifyGateNotConnected record uniquely"""
+input ShopifyGateNotConnectedWhereUniqueInput {
+  id: ID
+}
+
+type ShopifyGateStatus implements Entity {
+  """The unique identifier"""
+  id: ID!
+
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Potential locales that should be returned. 
+    
+    The order of locales will also override locale fall-backing behaviour in the query's subtree.
+    
+    Note any related model with localized fields in the query's subtree will be affected.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    
+    Consider using this in conjunction with forceParentLocale on the children relation fields.
+    """
+    locales: [Locale!]! = [en, fr]
+  ): [ShopifyGateStatus!]!
+  locked: String!
+  name: String!
+
+  """System stage field"""
+  stage: Stage!
+  unlocked: String!
+  unlocking: String!
+  used: String!
+}
+
+input ShopifyGateStatusCreateInput {
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: ShopifyGateStatusCreateLocalizationsInput
+
+  """locked input for default locale (en)"""
+  locked: String!
+
+  """name input for default locale (en)"""
+  name: String!
+
+  """unlocked input for default locale (en)"""
+  unlocked: String!
+
+  """unlocking input for default locale (en)"""
+  unlocking: String!
+
+  """used input for default locale (en)"""
+  used: String!
+}
+
+input ShopifyGateStatusCreateLocalizationDataInput {
+  locked: String!
+  name: String!
+  unlocked: String!
+  unlocking: String!
+  used: String!
+}
+
+input ShopifyGateStatusCreateLocalizationInput {
+  """Localization input"""
+  data: ShopifyGateStatusCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyGateStatusCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [ShopifyGateStatusCreateLocalizationInput!]
+}
+
+input ShopifyGateStatusCreateOneInlineInput {
+  """Create and connect one ShopifyGateStatus document"""
+  create: ShopifyGateStatusCreateInput
+}
+
+input ShopifyGateStatusUpdateInput {
+  """Manage document localizations"""
+  localizations: ShopifyGateStatusUpdateLocalizationsInput
+
+  """locked input for default locale (en)"""
+  locked: String
+
+  """name input for default locale (en)"""
+  name: String
+
+  """unlocked input for default locale (en)"""
+  unlocked: String
+
+  """unlocking input for default locale (en)"""
+  unlocking: String
+
+  """used input for default locale (en)"""
+  used: String
+}
+
+input ShopifyGateStatusUpdateLocalizationDataInput {
+  locked: String
+  name: String
+  unlocked: String
+  unlocking: String
+  used: String
+}
+
+input ShopifyGateStatusUpdateLocalizationInput {
+  data: ShopifyGateStatusUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyGateStatusUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [ShopifyGateStatusCreateLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
+
+  """Localizations to update"""
+  update: [ShopifyGateStatusUpdateLocalizationInput!]
+  upsert: [ShopifyGateStatusUpsertLocalizationInput!]
+}
+
+input ShopifyGateStatusUpdateOneInlineInput {
+  """Create and connect one ShopifyGateStatus document"""
+  create: ShopifyGateStatusCreateInput
+
+  """Delete currently connected ShopifyGateStatus document"""
+  delete: Boolean
+
+  """Update single ShopifyGateStatus document"""
+  update: ShopifyGateStatusUpdateWithNestedWhereUniqueInput
+
+  """Upsert single ShopifyGateStatus document"""
+  upsert: ShopifyGateStatusUpsertWithNestedWhereUniqueInput
+}
+
+input ShopifyGateStatusUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: ShopifyGateStatusUpdateInput!
+
+  """Unique document search"""
+  where: ShopifyGateStatusWhereUniqueInput!
+}
+
+input ShopifyGateStatusUpsertInput {
+  """Create document if it didn't exist"""
+  create: ShopifyGateStatusCreateInput!
+
+  """Update document if it exists"""
+  update: ShopifyGateStatusUpdateInput!
+}
+
+input ShopifyGateStatusUpsertLocalizationInput {
+  create: ShopifyGateStatusCreateLocalizationDataInput!
+  locale: Locale!
+  update: ShopifyGateStatusUpdateLocalizationDataInput!
+}
+
+input ShopifyGateStatusUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: ShopifyGateStatusUpsertInput!
+
+  """Unique document search"""
+  where: ShopifyGateStatusWhereUniqueInput!
+}
+
+"""Identifies documents"""
+input ShopifyGateStatusWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyGateStatusWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyGateStatusWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyGateStatusWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  locked: String
+
+  """All values containing the given string."""
+  locked_contains: String
+
+  """All values ending with the given string."""
+  locked_ends_with: String
+
+  """All values that are contained in given list."""
+  locked_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  locked_not: String
+
+  """All values not containing the given string."""
+  locked_not_contains: String
+
+  """All values not ending with the given string"""
+  locked_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  locked_not_in: [String]
+
+  """All values not starting with the given string."""
+  locked_not_starts_with: String
+
+  """All values starting with the given string."""
+  locked_starts_with: String
+  name: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values that are contained in given list."""
+  name_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  name_not: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values not ending with the given string"""
+  name_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  name_not_in: [String]
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+  unlocked: String
+
+  """All values containing the given string."""
+  unlocked_contains: String
+
+  """All values ending with the given string."""
+  unlocked_ends_with: String
+
+  """All values that are contained in given list."""
+  unlocked_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  unlocked_not: String
+
+  """All values not containing the given string."""
+  unlocked_not_contains: String
+
+  """All values not ending with the given string"""
+  unlocked_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  unlocked_not_in: [String]
+
+  """All values not starting with the given string."""
+  unlocked_not_starts_with: String
+
+  """All values starting with the given string."""
+  unlocked_starts_with: String
+  unlocking: String
+
+  """All values containing the given string."""
+  unlocking_contains: String
+
+  """All values ending with the given string."""
+  unlocking_ends_with: String
+
+  """All values that are contained in given list."""
+  unlocking_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  unlocking_not: String
+
+  """All values not containing the given string."""
+  unlocking_not_contains: String
+
+  """All values not ending with the given string"""
+  unlocking_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  unlocking_not_in: [String]
+
+  """All values not starting with the given string."""
+  unlocking_not_starts_with: String
+
+  """All values starting with the given string."""
+  unlocking_starts_with: String
+  used: String
+
+  """All values containing the given string."""
+  used_contains: String
+
+  """All values ending with the given string."""
+  used_ends_with: String
+
+  """All values that are contained in given list."""
+  used_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  used_not: String
+
+  """All values not containing the given string."""
+  used_not_contains: String
+
+  """All values not ending with the given string"""
+  used_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  used_not_in: [String]
+
+  """All values not starting with the given string."""
+  used_not_starts_with: String
+
+  """All values starting with the given string."""
+  used_starts_with: String
+}
+
+"""References ShopifyGateStatus record uniquely"""
+input ShopifyGateStatusWhereUniqueInput {
+  id: ID
+}
+
+type ShopifyHeaderConnected implements Entity {
+  """The unique identifier"""
+  id: ID!
+
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Potential locales that should be returned. 
+    
+    The order of locales will also override locale fall-backing behaviour in the query's subtree.
+    
+    Note any related model with localized fields in the query's subtree will be affected.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    
+    Consider using this in conjunction with forceParentLocale on the children relation fields.
+    """
+    locales: [Locale!]! = [en, fr]
+  ): [ShopifyHeaderConnected!]!
+
+  """System stage field"""
+  stage: Stage!
+  titleDefault: String!
+  titleHowToGet: String!
+}
+
+input ShopifyHeaderConnectedCreateInput {
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: ShopifyHeaderConnectedCreateLocalizationsInput
+
+  """titleDefault input for default locale (en)"""
+  titleDefault: String!
+
+  """titleHowToGet input for default locale (en)"""
+  titleHowToGet: String!
+}
+
+input ShopifyHeaderConnectedCreateLocalizationDataInput {
+  titleDefault: String!
+  titleHowToGet: String!
+}
+
+input ShopifyHeaderConnectedCreateLocalizationInput {
+  """Localization input"""
+  data: ShopifyHeaderConnectedCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyHeaderConnectedCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [ShopifyHeaderConnectedCreateLocalizationInput!]
+}
+
+input ShopifyHeaderConnectedCreateOneInlineInput {
+  """Create and connect one ShopifyHeaderConnected document"""
+  create: ShopifyHeaderConnectedCreateInput
+}
+
+input ShopifyHeaderConnectedUpdateInput {
+  """Manage document localizations"""
+  localizations: ShopifyHeaderConnectedUpdateLocalizationsInput
+
+  """titleDefault input for default locale (en)"""
+  titleDefault: String
+
+  """titleHowToGet input for default locale (en)"""
+  titleHowToGet: String
+}
+
+input ShopifyHeaderConnectedUpdateLocalizationDataInput {
+  titleDefault: String
+  titleHowToGet: String
+}
+
+input ShopifyHeaderConnectedUpdateLocalizationInput {
+  data: ShopifyHeaderConnectedUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyHeaderConnectedUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [ShopifyHeaderConnectedCreateLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
+
+  """Localizations to update"""
+  update: [ShopifyHeaderConnectedUpdateLocalizationInput!]
+  upsert: [ShopifyHeaderConnectedUpsertLocalizationInput!]
+}
+
+input ShopifyHeaderConnectedUpdateOneInlineInput {
+  """Create and connect one ShopifyHeaderConnected document"""
+  create: ShopifyHeaderConnectedCreateInput
+
+  """Delete currently connected ShopifyHeaderConnected document"""
+  delete: Boolean
+
+  """Update single ShopifyHeaderConnected document"""
+  update: ShopifyHeaderConnectedUpdateWithNestedWhereUniqueInput
+
+  """Upsert single ShopifyHeaderConnected document"""
+  upsert: ShopifyHeaderConnectedUpsertWithNestedWhereUniqueInput
+}
+
+input ShopifyHeaderConnectedUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: ShopifyHeaderConnectedUpdateInput!
+
+  """Unique document search"""
+  where: ShopifyHeaderConnectedWhereUniqueInput!
+}
+
+input ShopifyHeaderConnectedUpsertInput {
+  """Create document if it didn't exist"""
+  create: ShopifyHeaderConnectedCreateInput!
+
+  """Update document if it exists"""
+  update: ShopifyHeaderConnectedUpdateInput!
+}
+
+input ShopifyHeaderConnectedUpsertLocalizationInput {
+  create: ShopifyHeaderConnectedCreateLocalizationDataInput!
+  locale: Locale!
+  update: ShopifyHeaderConnectedUpdateLocalizationDataInput!
+}
+
+input ShopifyHeaderConnectedUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: ShopifyHeaderConnectedUpsertInput!
+
+  """Unique document search"""
+  where: ShopifyHeaderConnectedWhereUniqueInput!
+}
+
+"""Identifies documents"""
+input ShopifyHeaderConnectedWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyHeaderConnectedWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyHeaderConnectedWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyHeaderConnectedWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  titleDefault: String
+
+  """All values containing the given string."""
+  titleDefault_contains: String
+
+  """All values ending with the given string."""
+  titleDefault_ends_with: String
+
+  """All values that are contained in given list."""
+  titleDefault_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  titleDefault_not: String
+
+  """All values not containing the given string."""
+  titleDefault_not_contains: String
+
+  """All values not ending with the given string"""
+  titleDefault_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  titleDefault_not_in: [String]
+
+  """All values not starting with the given string."""
+  titleDefault_not_starts_with: String
+
+  """All values starting with the given string."""
+  titleDefault_starts_with: String
+  titleHowToGet: String
+
+  """All values containing the given string."""
+  titleHowToGet_contains: String
+
+  """All values ending with the given string."""
+  titleHowToGet_ends_with: String
+
+  """All values that are contained in given list."""
+  titleHowToGet_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  titleHowToGet_not: String
+
+  """All values not containing the given string."""
+  titleHowToGet_not_contains: String
+
+  """All values not ending with the given string"""
+  titleHowToGet_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  titleHowToGet_not_in: [String]
+
+  """All values not starting with the given string."""
+  titleHowToGet_not_starts_with: String
+
+  """All values starting with the given string."""
+  titleHowToGet_starts_with: String
+}
+
+"""References ShopifyHeaderConnected record uniquely"""
+input ShopifyHeaderConnectedWhereUniqueInput {
+  id: ID
+}
+
+type ShopifyHeaderNotConnected implements Entity {
+  """The unique identifier"""
+  id: ID!
+
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Potential locales that should be returned. 
+    
+    The order of locales will also override locale fall-backing behaviour in the query's subtree.
+    
+    Note any related model with localized fields in the query's subtree will be affected.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    
+    Consider using this in conjunction with forceParentLocale on the children relation fields.
+    """
+    locales: [Locale!]! = [en, fr]
+  ): [ShopifyHeaderNotConnected!]!
+
+  """System stage field"""
+  stage: Stage!
+  titleCustomerConnected: String!
+  titleCustomerNotConnected: String!
+}
+
+input ShopifyHeaderNotConnectedCreateInput {
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: ShopifyHeaderNotConnectedCreateLocalizationsInput
+
+  """titleCustomerConnected input for default locale (en)"""
+  titleCustomerConnected: String!
+
+  """titleCustomerNotConnected input for default locale (en)"""
+  titleCustomerNotConnected: String!
+}
+
+input ShopifyHeaderNotConnectedCreateLocalizationDataInput {
+  titleCustomerConnected: String!
+  titleCustomerNotConnected: String!
+}
+
+input ShopifyHeaderNotConnectedCreateLocalizationInput {
+  """Localization input"""
+  data: ShopifyHeaderNotConnectedCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyHeaderNotConnectedCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [ShopifyHeaderNotConnectedCreateLocalizationInput!]
+}
+
+input ShopifyHeaderNotConnectedCreateOneInlineInput {
+  """Create and connect one ShopifyHeaderNotConnected document"""
+  create: ShopifyHeaderNotConnectedCreateInput
+}
+
+input ShopifyHeaderNotConnectedUpdateInput {
+  """Manage document localizations"""
+  localizations: ShopifyHeaderNotConnectedUpdateLocalizationsInput
+
+  """titleCustomerConnected input for default locale (en)"""
+  titleCustomerConnected: String
+
+  """titleCustomerNotConnected input for default locale (en)"""
+  titleCustomerNotConnected: String
+}
+
+input ShopifyHeaderNotConnectedUpdateLocalizationDataInput {
+  titleCustomerConnected: String
+  titleCustomerNotConnected: String
+}
+
+input ShopifyHeaderNotConnectedUpdateLocalizationInput {
+  data: ShopifyHeaderNotConnectedUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyHeaderNotConnectedUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [ShopifyHeaderNotConnectedCreateLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
+
+  """Localizations to update"""
+  update: [ShopifyHeaderNotConnectedUpdateLocalizationInput!]
+  upsert: [ShopifyHeaderNotConnectedUpsertLocalizationInput!]
+}
+
+input ShopifyHeaderNotConnectedUpdateOneInlineInput {
+  """Create and connect one ShopifyHeaderNotConnected document"""
+  create: ShopifyHeaderNotConnectedCreateInput
+
+  """Delete currently connected ShopifyHeaderNotConnected document"""
+  delete: Boolean
+
+  """Update single ShopifyHeaderNotConnected document"""
+  update: ShopifyHeaderNotConnectedUpdateWithNestedWhereUniqueInput
+
+  """Upsert single ShopifyHeaderNotConnected document"""
+  upsert: ShopifyHeaderNotConnectedUpsertWithNestedWhereUniqueInput
+}
+
+input ShopifyHeaderNotConnectedUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: ShopifyHeaderNotConnectedUpdateInput!
+
+  """Unique document search"""
+  where: ShopifyHeaderNotConnectedWhereUniqueInput!
+}
+
+input ShopifyHeaderNotConnectedUpsertInput {
+  """Create document if it didn't exist"""
+  create: ShopifyHeaderNotConnectedCreateInput!
+
+  """Update document if it exists"""
+  update: ShopifyHeaderNotConnectedUpdateInput!
+}
+
+input ShopifyHeaderNotConnectedUpsertLocalizationInput {
+  create: ShopifyHeaderNotConnectedCreateLocalizationDataInput!
+  locale: Locale!
+  update: ShopifyHeaderNotConnectedUpdateLocalizationDataInput!
+}
+
+input ShopifyHeaderNotConnectedUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: ShopifyHeaderNotConnectedUpsertInput!
+
+  """Unique document search"""
+  where: ShopifyHeaderNotConnectedWhereUniqueInput!
+}
+
+"""Identifies documents"""
+input ShopifyHeaderNotConnectedWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyHeaderNotConnectedWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyHeaderNotConnectedWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyHeaderNotConnectedWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  titleCustomerConnected: String
+
+  """All values containing the given string."""
+  titleCustomerConnected_contains: String
+
+  """All values ending with the given string."""
+  titleCustomerConnected_ends_with: String
+
+  """All values that are contained in given list."""
+  titleCustomerConnected_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  titleCustomerConnected_not: String
+
+  """All values not containing the given string."""
+  titleCustomerConnected_not_contains: String
+
+  """All values not ending with the given string"""
+  titleCustomerConnected_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  titleCustomerConnected_not_in: [String]
+
+  """All values not starting with the given string."""
+  titleCustomerConnected_not_starts_with: String
+
+  """All values starting with the given string."""
+  titleCustomerConnected_starts_with: String
+  titleCustomerNotConnected: String
+
+  """All values containing the given string."""
+  titleCustomerNotConnected_contains: String
+
+  """All values ending with the given string."""
+  titleCustomerNotConnected_ends_with: String
+
+  """All values that are contained in given list."""
+  titleCustomerNotConnected_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  titleCustomerNotConnected_not: String
+
+  """All values not containing the given string."""
+  titleCustomerNotConnected_not_contains: String
+
+  """All values not ending with the given string"""
+  titleCustomerNotConnected_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  titleCustomerNotConnected_not_in: [String]
+
+  """All values not starting with the given string."""
+  titleCustomerNotConnected_not_starts_with: String
+
+  """All values starting with the given string."""
+  titleCustomerNotConnected_starts_with: String
+}
+
+"""References ShopifyHeaderNotConnected record uniquely"""
+input ShopifyHeaderNotConnectedWhereUniqueInput {
+  id: ID
+}
+
+type ShopifyProfile implements Entity {
+  """The unique identifier"""
+  id: ID!
+
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+
+    """
+    Potential locales that should be returned. 
+    
+    The order of locales will also override locale fall-backing behaviour in the query's subtree.
+    
+    Note any related model with localized fields in the query's subtree will be affected.
+    The first locale matching the provided list will be returned, localized entries that do not have the provided locale defined will be filtered out.
+    This argument will overwrite any existing locale filtering defined in the query's tree for the subtree.
+    
+    Consider using this in conjunction with forceParentLocale on the children relation fields.
+    """
+    locales: [Locale!]! = [en, fr]
+  ): [ShopifyProfile!]!
+  menuActionSignOut: String!
+  menuSectionMyAccount: String!
+
+  """System stage field"""
+  stage: Stage!
+}
+
+input ShopifyProfileCreateInput {
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: ShopifyProfileCreateLocalizationsInput
+
+  """menuActionSignOut input for default locale (en)"""
+  menuActionSignOut: String!
+
+  """menuSectionMyAccount input for default locale (en)"""
+  menuSectionMyAccount: String!
+}
+
+input ShopifyProfileCreateLocalizationDataInput {
+  menuActionSignOut: String!
+  menuSectionMyAccount: String!
+}
+
+input ShopifyProfileCreateLocalizationInput {
+  """Localization input"""
+  data: ShopifyProfileCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyProfileCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [ShopifyProfileCreateLocalizationInput!]
+}
+
+input ShopifyProfileCreateOneInlineInput {
+  """Create and connect one ShopifyProfile document"""
+  create: ShopifyProfileCreateInput
+}
+
+input ShopifyProfileUpdateInput {
+  """Manage document localizations"""
+  localizations: ShopifyProfileUpdateLocalizationsInput
+
+  """menuActionSignOut input for default locale (en)"""
+  menuActionSignOut: String
+
+  """menuSectionMyAccount input for default locale (en)"""
+  menuSectionMyAccount: String
+}
+
+input ShopifyProfileUpdateLocalizationDataInput {
+  menuActionSignOut: String
+  menuSectionMyAccount: String
+}
+
+input ShopifyProfileUpdateLocalizationInput {
+  data: ShopifyProfileUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input ShopifyProfileUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [ShopifyProfileCreateLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
+
+  """Localizations to update"""
+  update: [ShopifyProfileUpdateLocalizationInput!]
+  upsert: [ShopifyProfileUpsertLocalizationInput!]
+}
+
+input ShopifyProfileUpdateOneInlineInput {
+  """Create and connect one ShopifyProfile document"""
+  create: ShopifyProfileCreateInput
+
+  """Delete currently connected ShopifyProfile document"""
+  delete: Boolean
+
+  """Update single ShopifyProfile document"""
+  update: ShopifyProfileUpdateWithNestedWhereUniqueInput
+
+  """Upsert single ShopifyProfile document"""
+  upsert: ShopifyProfileUpsertWithNestedWhereUniqueInput
+}
+
+input ShopifyProfileUpdateWithNestedWhereUniqueInput {
+  """Document to update"""
+  data: ShopifyProfileUpdateInput!
+
+  """Unique document search"""
+  where: ShopifyProfileWhereUniqueInput!
+}
+
+input ShopifyProfileUpsertInput {
+  """Create document if it didn't exist"""
+  create: ShopifyProfileCreateInput!
+
+  """Update document if it exists"""
+  update: ShopifyProfileUpdateInput!
+}
+
+input ShopifyProfileUpsertLocalizationInput {
+  create: ShopifyProfileCreateLocalizationDataInput!
+  locale: Locale!
+  update: ShopifyProfileUpdateLocalizationDataInput!
+}
+
+input ShopifyProfileUpsertWithNestedWhereUniqueInput {
+  """Upsert data"""
+  data: ShopifyProfileUpsertInput!
+
+  """Unique document search"""
+  where: ShopifyProfileWhereUniqueInput!
+}
+
+"""Identifies documents"""
+input ShopifyProfileWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ShopifyProfileWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ShopifyProfileWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ShopifyProfileWhereInput!]
+
+  """Contains search across all appropriate fields."""
+  _search: String
+  id: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID]
+
+  """Any other value that exists and is not equal to the given value."""
+  id_not: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values not ending with the given string"""
+  id_not_ends_with: ID
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID]
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+  menuActionSignOut: String
+
+  """All values containing the given string."""
+  menuActionSignOut_contains: String
+
+  """All values ending with the given string."""
+  menuActionSignOut_ends_with: String
+
+  """All values that are contained in given list."""
+  menuActionSignOut_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  menuActionSignOut_not: String
+
+  """All values not containing the given string."""
+  menuActionSignOut_not_contains: String
+
+  """All values not ending with the given string"""
+  menuActionSignOut_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  menuActionSignOut_not_in: [String]
+
+  """All values not starting with the given string."""
+  menuActionSignOut_not_starts_with: String
+
+  """All values starting with the given string."""
+  menuActionSignOut_starts_with: String
+  menuSectionMyAccount: String
+
+  """All values containing the given string."""
+  menuSectionMyAccount_contains: String
+
+  """All values ending with the given string."""
+  menuSectionMyAccount_ends_with: String
+
+  """All values that are contained in given list."""
+  menuSectionMyAccount_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  menuSectionMyAccount_not: String
+
+  """All values not containing the given string."""
+  menuSectionMyAccount_not_contains: String
+
+  """All values not ending with the given string"""
+  menuSectionMyAccount_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  menuSectionMyAccount_not_in: [String]
+
+  """All values not starting with the given string."""
+  menuSectionMyAccount_not_starts_with: String
+
+  """All values starting with the given string."""
+  menuSectionMyAccount_starts_with: String
+}
+
+"""References ShopifyProfile record uniquely"""
+input ShopifyProfileWhereUniqueInput {
   id: ID
 }
 
@@ -12345,6 +15780,9 @@ type mutation_root {
   """Create one scheduledRelease"""
   createScheduledRelease(data: ScheduledReleaseCreateInput!): ScheduledRelease
 
+  """Create one shopifyCampaignTemplate"""
+  createShopifyCampaignTemplate(data: ShopifyCampaignTemplateCreateInput!): ShopifyCampaignTemplate
+
   """Delete one asset from _all_ existing stages. Returns deleted document."""
   deleteAsset(
     """Document to delete"""
@@ -12535,6 +15973,26 @@ type mutation_root {
     where: PackManyWhereInput
   ): PackConnection!
 
+  """Delete many ShopifyCampaignTemplate documents"""
+  deleteManyShopifyCampaignTemplates(
+    """Documents to delete"""
+    where: ShopifyCampaignTemplateManyWhereInput
+  ): BatchPayload!
+
+  """
+  Delete many ShopifyCampaignTemplate documents, return deleted documents
+  """
+  deleteManyShopifyCampaignTemplatesConnection(
+    after: ID
+    before: ID
+    first: Int
+    last: Int
+    skip: Int
+
+    """Documents to delete"""
+    where: ShopifyCampaignTemplateManyWhereInput
+  ): ShopifyCampaignTemplateConnection!
+
   """
   Delete one organizer from _all_ existing stages. Returns deleted document.
   """
@@ -12562,6 +16020,14 @@ type mutation_root {
     """Document to delete"""
     where: ScheduledReleaseWhereUniqueInput!
   ): ScheduledRelease
+
+  """
+  Delete one shopifyCampaignTemplate from _all_ existing stages. Returns deleted document.
+  """
+  deleteShopifyCampaignTemplate(
+    """Document to delete"""
+    where: ShopifyCampaignTemplateWhereUniqueInput!
+  ): ShopifyCampaignTemplate
 
   """
   delete data from the table: "follow"
@@ -13092,6 +16558,51 @@ type mutation_root {
     withDefaultLocale: Boolean = true
   ): PackConnection!
 
+  """Publish many ShopifyCampaignTemplate documents"""
+  publishManyShopifyCampaignTemplates(
+    """Document localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+
+    """Stages to publish documents to"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Identifies documents in each stage to be published"""
+    where: ShopifyCampaignTemplateManyWhereInput
+
+    """Whether to include the default locale when publishBase is true"""
+    withDefaultLocale: Boolean = true
+  ): BatchPayload!
+
+  """Publish many ShopifyCampaignTemplate documents"""
+  publishManyShopifyCampaignTemplatesConnection(
+    after: ID
+    before: ID
+    first: Int
+
+    """Stage to find matching documents in"""
+    from: Stage = DRAFT
+    last: Int
+
+    """Document localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+    skip: Int
+
+    """Stages to publish documents to"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Identifies documents in each stage to be published"""
+    where: ShopifyCampaignTemplateManyWhereInput
+
+    """Whether to include the default locale when publishBase is true"""
+    withDefaultLocale: Boolean = true
+  ): ShopifyCampaignTemplateConnection!
+
   """Publish one organizer"""
   publishOrganizer(
     """Optional localizations to publish"""
@@ -13127,6 +16638,24 @@ type mutation_root {
     """Whether to include the default locale when publishBase is set"""
     withDefaultLocale: Boolean = true
   ): Pack
+
+  """Publish one shopifyCampaignTemplate"""
+  publishShopifyCampaignTemplate(
+    """Optional localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+
+    """Publishing target stage"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Document to publish"""
+    where: ShopifyCampaignTemplateWhereUniqueInput!
+
+    """Whether to include the default locale when publishBase is set"""
+    withDefaultLocale: Boolean = true
+  ): ShopifyCampaignTemplate
 
   """Schedule to publish one asset"""
   schedulePublishAsset(
@@ -13326,6 +16855,32 @@ type mutation_root {
     """Whether to include the default locale when publishBase is set"""
     withDefaultLocale: Boolean = true
   ): Pack
+
+  """Schedule to publish one shopifyCampaignTemplate"""
+  schedulePublishShopifyCampaignTemplate(
+    """Optional localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+
+    """
+    Release at point in time, will create new release containing this operation
+    """
+    releaseAt: DateTime
+
+    """Optionally attach this scheduled operation to an existing release"""
+    releaseId: String
+
+    """Publishing target stage"""
+    to: [Stage!]! = [PUBLISHED]
+
+    """Document to publish"""
+    where: ShopifyCampaignTemplateWhereUniqueInput!
+
+    """Whether to include the default locale when publishBase is set"""
+    withDefaultLocale: Boolean = true
+  ): ShopifyCampaignTemplate
 
   """
   Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
@@ -13548,6 +17103,35 @@ type mutation_root {
     """Document to unpublish"""
     where: PackWhereUniqueInput!
   ): Pack
+
+  """
+  Unpublish one shopifyCampaignTemplate from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
+  """
+  scheduleUnpublishShopifyCampaignTemplate(
+    """Stages to unpublish document from"""
+    from: [Stage!]! = [PUBLISHED]
+
+    """
+    Optional locales to unpublish. Unpublishing the default locale will completely remove the document from the selected stages
+    """
+    locales: [Locale!]
+
+    """
+    Release at point in time, will create new release containing this operation
+    """
+    releaseAt: DateTime
+
+    """Optionally attach this scheduled operation to an existing release"""
+    releaseId: String
+
+    """
+    Unpublish complete document including default localization and relations from stages. Can be disabled.
+    """
+    unpublishBase: Boolean = true
+
+    """Document to unpublish"""
+    where: ShopifyCampaignTemplateWhereUniqueInput!
+  ): ShopifyCampaignTemplate
 
   """
   Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
@@ -13981,6 +17565,47 @@ type mutation_root {
     where: PackManyWhereInput
   ): PackConnection!
 
+  """Unpublish many ShopifyCampaignTemplate documents"""
+  unpublishManyShopifyCampaignTemplates(
+    """Stages to unpublish documents from"""
+    from: [Stage!]! = [PUBLISHED]
+
+    """Locales to unpublish"""
+    locales: [Locale!]
+
+    """Whether to unpublish the base document and default localization"""
+    unpublishBase: Boolean = true
+
+    """Identifies documents in each stage"""
+    where: ShopifyCampaignTemplateManyWhereInput
+  ): BatchPayload!
+
+  """
+  Find many ShopifyCampaignTemplate documents that match criteria in specified stage and unpublish from target stages
+  """
+  unpublishManyShopifyCampaignTemplatesConnection(
+    after: ID
+    before: ID
+    first: Int
+
+    """Stages to unpublish documents from"""
+    from: [Stage!]! = [PUBLISHED]
+    last: Int
+
+    """Locales to unpublish"""
+    locales: [Locale!]
+    skip: Int
+
+    """Stage to find matching documents in"""
+    stage: Stage = DRAFT
+
+    """Whether to unpublish the base document and default localization"""
+    unpublishBase: Boolean = true
+
+    """Identifies documents in draft stage"""
+    where: ShopifyCampaignTemplateManyWhereInput
+  ): ShopifyCampaignTemplateConnection!
+
   """
   Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
   """
@@ -14022,6 +17647,27 @@ type mutation_root {
     """Document to unpublish"""
     where: PackWhereUniqueInput!
   ): Pack
+
+  """
+  Unpublish one shopifyCampaignTemplate from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only.
+  """
+  unpublishShopifyCampaignTemplate(
+    """Stages to unpublish document from"""
+    from: [Stage!]! = [PUBLISHED]
+
+    """
+    Optional locales to unpublish. Unpublishing the default locale will completely remove the document from the selected stages
+    """
+    locales: [Locale!]
+
+    """
+    Unpublish complete document including default localization and relations from stages. Can be disabled.
+    """
+    unpublishBase: Boolean = true
+
+    """Document to unpublish"""
+    where: ShopifyCampaignTemplateWhereUniqueInput!
+  ): ShopifyCampaignTemplate
 
   """Update one asset"""
   updateAsset(data: AssetUpdateInput!, where: AssetWhereUniqueInput!): Asset
@@ -14233,6 +17879,30 @@ type mutation_root {
     where: PackManyWhereInput
   ): PackConnection!
 
+  """Update many shopifyCampaignTemplates"""
+  updateManyShopifyCampaignTemplates(
+    """Updates to document content"""
+    data: ShopifyCampaignTemplateUpdateManyInput!
+
+    """Documents to apply update on"""
+    where: ShopifyCampaignTemplateManyWhereInput
+  ): BatchPayload!
+
+  """Update many ShopifyCampaignTemplate documents"""
+  updateManyShopifyCampaignTemplatesConnection(
+    after: ID
+    before: ID
+
+    """Updates to document content"""
+    data: ShopifyCampaignTemplateUpdateManyInput!
+    first: Int
+    last: Int
+    skip: Int
+
+    """Documents to apply update on"""
+    where: ShopifyCampaignTemplateManyWhereInput
+  ): ShopifyCampaignTemplateConnection!
+
   """Update one organizer"""
   updateOrganizer(data: OrganizerUpdateInput!, where: OrganizerWhereUniqueInput!): Organizer
 
@@ -14241,6 +17911,9 @@ type mutation_root {
 
   """Update one scheduledRelease"""
   updateScheduledRelease(data: ScheduledReleaseUpdateInput!, where: ScheduledReleaseWhereUniqueInput!): ScheduledRelease
+
+  """Update one shopifyCampaignTemplate"""
+  updateShopifyCampaignTemplate(data: ShopifyCampaignTemplateUpdateInput!, where: ShopifyCampaignTemplateWhereUniqueInput!): ShopifyCampaignTemplate
 
   """
   update data of the table: "pendingOrder"
@@ -14299,6 +17972,9 @@ type mutation_root {
 
   """Upsert one pack"""
   upsertPack(upsert: PackUpsertInput!, where: PackWhereUniqueInput!): Pack
+
+  """Upsert one shopifyCampaignTemplate"""
+  upsertShopifyCampaignTemplate(upsert: ShopifyCampaignTemplateUpsertInput!, where: ShopifyCampaignTemplateWhereUniqueInput!): ShopifyCampaignTemplate
 }
 
 """
@@ -16077,6 +19753,70 @@ type query_root {
     stage: Stage! = PUBLISHED
     where: ScheduledReleaseWhereInput
   ): ScheduledReleaseConnection!
+
+  """Retrieve a single shopifyCampaignTemplate"""
+  shopifyCampaignTemplate(
+    """
+    Defines which locales should be returned.
+    
+    Note that `ShopifyCampaignTemplate` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    stage: Stage! = PUBLISHED
+    where: ShopifyCampaignTemplateWhereUniqueInput!
+  ): ShopifyCampaignTemplate
+
+  """Retrieve document version"""
+  shopifyCampaignTemplateVersion(where: VersionWhereInput!): DocumentVersion
+
+  """Retrieve multiple shopifyCampaignTemplates"""
+  shopifyCampaignTemplates(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    Defines which locales should be returned.
+    
+    Note that `ShopifyCampaignTemplate` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    orderBy: ShopifyCampaignTemplateOrderByInput
+    skip: Int
+    stage: Stage! = PUBLISHED
+    where: ShopifyCampaignTemplateWhereInput
+  ): [ShopifyCampaignTemplate!]!
+
+  """
+  Retrieve multiple shopifyCampaignTemplates using the Relay connection interface
+  """
+  shopifyCampaignTemplatesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    """
+    Defines which locales should be returned.
+    
+    Note that `ShopifyCampaignTemplate` will be affected directly by this argument, as well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
+    
+    This argument may be overwritten by another locales definition in a relational child field, this will effectively use the overwritten argument for the affected query's subtree.
+    """
+    locales: [Locale!]! = [en]
+    orderBy: ShopifyCampaignTemplateOrderByInput
+    skip: Int
+    stage: Stage! = PUBLISHED
+    where: ShopifyCampaignTemplateWhereInput
+  ): ShopifyCampaignTemplateConnection!
 
   """
   fetch data from the table: "stripeCustomer"

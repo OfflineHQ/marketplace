@@ -1640,6 +1640,15 @@ export const enum EntityTypeName {
   ScheduledOperation = 'ScheduledOperation',
   /** Scheduled Release system model */
   ScheduledRelease = 'ScheduledRelease',
+  /** Component used for the authentication */
+  ShopifyAuth = 'ShopifyAuth',
+  ShopifyCampaignTemplate = 'ShopifyCampaignTemplate',
+  ShopifyGateConnected = 'ShopifyGateConnected',
+  ShopifyGateNotConnected = 'ShopifyGateNotConnected',
+  ShopifyGateStatus = 'ShopifyGateStatus',
+  ShopifyHeaderConnected = 'ShopifyHeaderConnected',
+  ShopifyHeaderNotConnected = 'ShopifyHeaderNotConnected',
+  ShopifyProfile = 'ShopifyProfile',
   /** User system model */
   User = 'User'
 };
@@ -4957,6 +4966,7 @@ export type OrganizerConnection = {
 export type OrganizerCreateInput = {
   clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackCreateManyInlineInput>;
   cltzsen11092507ul9qlg4ywb?: InputMaybe<LoyaltyCardCreateManyInlineInput>;
+  clvgfekl90p9708uo1vz2avt5?: InputMaybe<ShopifyCampaignTemplateCreateManyInlineInput>;
   contentSpaces?: InputMaybe<ContentSpaceCreateManyInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** description input for default locale (en) */
@@ -5384,6 +5394,7 @@ export const enum OrganizerOrderByInput {
 export type OrganizerUpdateInput = {
   clr7j9mmt0q2j01uo9zrs2fm7?: InputMaybe<PackUpdateManyInlineInput>;
   cltzsen11092507ul9qlg4ywb?: InputMaybe<LoyaltyCardUpdateManyInlineInput>;
+  clvgfekl90p9708uo1vz2avt5?: InputMaybe<ShopifyCampaignTemplateUpdateManyInlineInput>;
   contentSpaces?: InputMaybe<ContentSpaceUpdateManyInlineInput>;
   /** description input for default locale (en) */
   description?: InputMaybe<Scalars['RichTextAST']['input']>;
@@ -6967,7 +6978,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | LoyaltyCard | Organizer | Pack;
+export type ScheduledOperationAffectedDocument = Asset | ContentSpace | Event | EventPass | EventPassDelayedRevealed | LoyaltyCard | Organizer | Pack | ShopifyCampaignTemplate;
 
 /** A connection to a list of items. */
 export type ScheduledOperationConnection = {
@@ -7474,6 +7485,2483 @@ export type ScheduledReleaseWhereInput = {
 
 /** References ScheduledRelease record uniquely */
 export type ScheduledReleaseWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+/** Component used for the authentication */
+export type ShopifyAuth = Entity & {
+  __typename?: 'ShopifyAuth';
+  /** Action button text to create a new account */
+  createNewAccount: Scalars['String']['output'];
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<ShopifyAuth>;
+  noMatchingAccountRecoverMyAccount: Scalars['String']['output'];
+  noMatchingAccountUseExistingAccount: Scalars['String']['output'];
+  signIn: Scalars['String']['output'];
+  /** System stage field */
+  stage: Stage;
+  useAnotherAccount: Scalars['String']['output'];
+  useExistingAccount: Scalars['String']['output'];
+};
+
+
+/** Component used for the authentication */
+export type ShopifyAuthLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  locales?: Array<Locale>;
+};
+
+export type ShopifyAuthCreateInput = {
+  /** createNewAccount input for default locale (en) */
+  createNewAccount: Scalars['String']['input'];
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<ShopifyAuthCreateLocalizationsInput>;
+  /** noMatchingAccountRecoverMyAccount input for default locale (en) */
+  noMatchingAccountRecoverMyAccount: Scalars['String']['input'];
+  /** noMatchingAccountUseExistingAccount input for default locale (en) */
+  noMatchingAccountUseExistingAccount: Scalars['String']['input'];
+  /** signIn input for default locale (en) */
+  signIn: Scalars['String']['input'];
+  /** useAnotherAccount input for default locale (en) */
+  useAnotherAccount: Scalars['String']['input'];
+  /** useExistingAccount input for default locale (en) */
+  useExistingAccount: Scalars['String']['input'];
+};
+
+export type ShopifyAuthCreateLocalizationDataInput = {
+  createNewAccount: Scalars['String']['input'];
+  noMatchingAccountRecoverMyAccount: Scalars['String']['input'];
+  noMatchingAccountUseExistingAccount: Scalars['String']['input'];
+  signIn: Scalars['String']['input'];
+  useAnotherAccount: Scalars['String']['input'];
+  useExistingAccount: Scalars['String']['input'];
+};
+
+export type ShopifyAuthCreateLocalizationInput = {
+  /** Localization input */
+  data: ShopifyAuthCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyAuthCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<ShopifyAuthCreateLocalizationInput>>;
+};
+
+export type ShopifyAuthCreateOneInlineInput = {
+  /** Create and connect one ShopifyAuth document */
+  create?: InputMaybe<ShopifyAuthCreateInput>;
+};
+
+export type ShopifyAuthUpdateInput = {
+  /** createNewAccount input for default locale (en) */
+  createNewAccount?: InputMaybe<Scalars['String']['input']>;
+  /** Manage document localizations */
+  localizations?: InputMaybe<ShopifyAuthUpdateLocalizationsInput>;
+  /** noMatchingAccountRecoverMyAccount input for default locale (en) */
+  noMatchingAccountRecoverMyAccount?: InputMaybe<Scalars['String']['input']>;
+  /** noMatchingAccountUseExistingAccount input for default locale (en) */
+  noMatchingAccountUseExistingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** signIn input for default locale (en) */
+  signIn?: InputMaybe<Scalars['String']['input']>;
+  /** useAnotherAccount input for default locale (en) */
+  useAnotherAccount?: InputMaybe<Scalars['String']['input']>;
+  /** useExistingAccount input for default locale (en) */
+  useExistingAccount?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyAuthUpdateLocalizationDataInput = {
+  createNewAccount?: InputMaybe<Scalars['String']['input']>;
+  noMatchingAccountRecoverMyAccount?: InputMaybe<Scalars['String']['input']>;
+  noMatchingAccountUseExistingAccount?: InputMaybe<Scalars['String']['input']>;
+  signIn?: InputMaybe<Scalars['String']['input']>;
+  useAnotherAccount?: InputMaybe<Scalars['String']['input']>;
+  useExistingAccount?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyAuthUpdateLocalizationInput = {
+  data: ShopifyAuthUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyAuthUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<ShopifyAuthCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<ShopifyAuthUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<ShopifyAuthUpsertLocalizationInput>>;
+};
+
+export type ShopifyAuthUpdateOneInlineInput = {
+  /** Create and connect one ShopifyAuth document */
+  create?: InputMaybe<ShopifyAuthCreateInput>;
+  /** Delete currently connected ShopifyAuth document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single ShopifyAuth document */
+  update?: InputMaybe<ShopifyAuthUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single ShopifyAuth document */
+  upsert?: InputMaybe<ShopifyAuthUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ShopifyAuthUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ShopifyAuthUpdateInput;
+  /** Unique document search */
+  where: ShopifyAuthWhereUniqueInput;
+};
+
+export type ShopifyAuthUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ShopifyAuthCreateInput;
+  /** Update document if it exists */
+  update: ShopifyAuthUpdateInput;
+};
+
+export type ShopifyAuthUpsertLocalizationInput = {
+  create: ShopifyAuthCreateLocalizationDataInput;
+  locale: Locale;
+  update: ShopifyAuthUpdateLocalizationDataInput;
+};
+
+export type ShopifyAuthUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ShopifyAuthUpsertInput;
+  /** Unique document search */
+  where: ShopifyAuthWhereUniqueInput;
+};
+
+/** Identifies documents */
+export type ShopifyAuthWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyAuthWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyAuthWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyAuthWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  createNewAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  createNewAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  createNewAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  createNewAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  createNewAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  createNewAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  createNewAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  createNewAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  createNewAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  createNewAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  noMatchingAccountRecoverMyAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  noMatchingAccountRecoverMyAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  noMatchingAccountRecoverMyAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  noMatchingAccountRecoverMyAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  noMatchingAccountRecoverMyAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  noMatchingAccountRecoverMyAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  noMatchingAccountRecoverMyAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  noMatchingAccountRecoverMyAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  noMatchingAccountRecoverMyAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  noMatchingAccountRecoverMyAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+  noMatchingAccountUseExistingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  noMatchingAccountUseExistingAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  noMatchingAccountUseExistingAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  noMatchingAccountUseExistingAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  noMatchingAccountUseExistingAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  noMatchingAccountUseExistingAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  noMatchingAccountUseExistingAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  noMatchingAccountUseExistingAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  noMatchingAccountUseExistingAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  noMatchingAccountUseExistingAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+  signIn?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  signIn_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  signIn_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  signIn_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  signIn_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  signIn_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  signIn_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  signIn_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  signIn_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  signIn_starts_with?: InputMaybe<Scalars['String']['input']>;
+  useAnotherAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  useAnotherAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  useAnotherAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  useAnotherAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  useAnotherAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  useAnotherAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  useAnotherAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  useAnotherAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  useAnotherAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  useAnotherAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+  useExistingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  useExistingAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  useExistingAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  useExistingAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  useExistingAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  useExistingAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  useExistingAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  useExistingAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  useExistingAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  useExistingAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References ShopifyAuth record uniquely */
+export type ShopifyAuthWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ShopifyCampaignTemplate = Entity & Node & {
+  __typename?: 'ShopifyCampaignTemplate';
+  authTexts: ShopifyAuth;
+  /** The time the document was created */
+  createdAt: Scalars['DateTime']['output'];
+  /** User that created this document */
+  createdBy?: Maybe<User>;
+  description?: Maybe<Scalars['String']['output']>;
+  /** Get the document in other stages */
+  documentInStages: Array<ShopifyCampaignTemplate>;
+  gateConnectedTexts: ShopifyGateConnected;
+  gateNotConnectedTexts: ShopifyGateNotConnected;
+  headerConnectedTexts: ShopifyHeaderConnected;
+  headerNotConnectedTexts: ShopifyHeaderNotConnected;
+  /** List of ShopifyCampaignTemplate versions */
+  history: Array<Version>;
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<ShopifyCampaignTemplate>;
+  /** Name of the template */
+  name: Scalars['String']['output'];
+  organizer?: Maybe<Organizer>;
+  profileTexts: ShopifyProfile;
+  /** The time the document was published. Null on documents in draft stage. */
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** User that last published this document */
+  publishedBy?: Maybe<User>;
+  scheduledIn: Array<ScheduledOperation>;
+  /** System stage field */
+  stage: Stage;
+  /** The time the document was updated */
+  updatedAt: Scalars['DateTime']['output'];
+  /** User that last updated this document */
+  updatedBy?: Maybe<User>;
+};
+
+
+export type ShopifyCampaignTemplateAuthTextsArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyCampaignTemplateCreatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+export type ShopifyCampaignTemplateCreatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyCampaignTemplateDocumentInStagesArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  inheritLocale?: Scalars['Boolean']['input'];
+  stages?: Array<Stage>;
+};
+
+
+export type ShopifyCampaignTemplateGateConnectedTextsArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyCampaignTemplateGateNotConnectedTextsArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyCampaignTemplateHeaderConnectedTextsArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyCampaignTemplateHeaderNotConnectedTextsArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyCampaignTemplateHistoryArgs = {
+  limit?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
+  stageOverride?: InputMaybe<Stage>;
+};
+
+
+export type ShopifyCampaignTemplateLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  locales?: Array<Locale>;
+};
+
+
+export type ShopifyCampaignTemplateOrganizerArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyCampaignTemplateProfileTextsArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyCampaignTemplatePublishedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+export type ShopifyCampaignTemplatePublishedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyCampaignTemplateScheduledInArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ScheduledOperationWhereInput>;
+};
+
+
+export type ShopifyCampaignTemplateUpdatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
+export type ShopifyCampaignTemplateUpdatedByArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+export type ShopifyCampaignTemplateConnectInput = {
+  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
+  position?: InputMaybe<ConnectPositionInput>;
+  /** Document to connect */
+  where: ShopifyCampaignTemplateWhereUniqueInput;
+};
+
+/** A connection to a list of items. */
+export type ShopifyCampaignTemplateConnection = {
+  __typename?: 'ShopifyCampaignTemplateConnection';
+  aggregate: Aggregate;
+  /** A list of edges. */
+  edges: Array<ShopifyCampaignTemplateEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+export type ShopifyCampaignTemplateCreateInput = {
+  authTexts: ShopifyAuthCreateOneInlineInput;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['String']['input']>;
+  gateConnectedTexts: ShopifyGateConnectedCreateOneInlineInput;
+  gateNotConnectedTexts: ShopifyGateNotConnectedCreateOneInlineInput;
+  headerConnectedTexts: ShopifyHeaderConnectedCreateOneInlineInput;
+  headerNotConnectedTexts: ShopifyHeaderNotConnectedCreateOneInlineInput;
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<ShopifyCampaignTemplateCreateLocalizationsInput>;
+  /** name input for default locale (en) */
+  name: Scalars['String']['input'];
+  organizer?: InputMaybe<OrganizerCreateOneInlineInput>;
+  profileTexts: ShopifyProfileCreateOneInlineInput;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type ShopifyCampaignTemplateCreateLocalizationDataInput = {
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type ShopifyCampaignTemplateCreateLocalizationInput = {
+  /** Localization input */
+  data: ShopifyCampaignTemplateCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyCampaignTemplateCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<ShopifyCampaignTemplateCreateLocalizationInput>>;
+};
+
+export type ShopifyCampaignTemplateCreateManyInlineInput = {
+  /** Connect multiple existing ShopifyCampaignTemplate documents */
+  connect?: InputMaybe<Array<ShopifyCampaignTemplateWhereUniqueInput>>;
+  /** Create and connect multiple existing ShopifyCampaignTemplate documents */
+  create?: InputMaybe<Array<ShopifyCampaignTemplateCreateInput>>;
+};
+
+/** An edge in a connection. */
+export type ShopifyCampaignTemplateEdge = {
+  __typename?: 'ShopifyCampaignTemplateEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String']['output'];
+  /** The item at the end of the edge. */
+  node: ShopifyCampaignTemplate;
+};
+
+/** Identifies documents */
+export type ShopifyCampaignTemplateManyWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyCampaignTemplateWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyCampaignTemplateWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyCampaignTemplateWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  authTexts?: InputMaybe<ShopifyAuthWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  documentInStages_every?: InputMaybe<ShopifyCampaignTemplateWhereStageInput>;
+  documentInStages_none?: InputMaybe<ShopifyCampaignTemplateWhereStageInput>;
+  documentInStages_some?: InputMaybe<ShopifyCampaignTemplateWhereStageInput>;
+  gateConnectedTexts?: InputMaybe<ShopifyGateConnectedWhereInput>;
+  gateNotConnectedTexts?: InputMaybe<ShopifyGateNotConnectedWhereInput>;
+  headerConnectedTexts?: InputMaybe<ShopifyHeaderConnectedWhereInput>;
+  headerNotConnectedTexts?: InputMaybe<ShopifyHeaderNotConnectedWhereInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
+  profileTexts?: InputMaybe<ShopifyProfileWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+export const enum ShopifyCampaignTemplateOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  DescriptionAsc = 'description_ASC',
+  DescriptionDesc = 'description_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
+  PublishedAtAsc = 'publishedAt_ASC',
+  PublishedAtDesc = 'publishedAt_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+};
+
+export type ShopifyCampaignTemplateUpdateInput = {
+  authTexts?: InputMaybe<ShopifyAuthUpdateOneInlineInput>;
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['String']['input']>;
+  gateConnectedTexts?: InputMaybe<ShopifyGateConnectedUpdateOneInlineInput>;
+  gateNotConnectedTexts?: InputMaybe<ShopifyGateNotConnectedUpdateOneInlineInput>;
+  headerConnectedTexts?: InputMaybe<ShopifyHeaderConnectedUpdateOneInlineInput>;
+  headerNotConnectedTexts?: InputMaybe<ShopifyHeaderNotConnectedUpdateOneInlineInput>;
+  /** Manage document localizations */
+  localizations?: InputMaybe<ShopifyCampaignTemplateUpdateLocalizationsInput>;
+  /** name input for default locale (en) */
+  name?: InputMaybe<Scalars['String']['input']>;
+  organizer?: InputMaybe<OrganizerUpdateOneInlineInput>;
+  profileTexts?: InputMaybe<ShopifyProfileUpdateOneInlineInput>;
+};
+
+export type ShopifyCampaignTemplateUpdateLocalizationDataInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyCampaignTemplateUpdateLocalizationInput = {
+  data: ShopifyCampaignTemplateUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyCampaignTemplateUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<ShopifyCampaignTemplateCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<ShopifyCampaignTemplateUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<ShopifyCampaignTemplateUpsertLocalizationInput>>;
+};
+
+export type ShopifyCampaignTemplateUpdateManyInlineInput = {
+  /** Connect multiple existing ShopifyCampaignTemplate documents */
+  connect?: InputMaybe<Array<ShopifyCampaignTemplateConnectInput>>;
+  /** Create and connect multiple ShopifyCampaignTemplate documents */
+  create?: InputMaybe<Array<ShopifyCampaignTemplateCreateInput>>;
+  /** Delete multiple ShopifyCampaignTemplate documents */
+  delete?: InputMaybe<Array<ShopifyCampaignTemplateWhereUniqueInput>>;
+  /** Disconnect multiple ShopifyCampaignTemplate documents */
+  disconnect?: InputMaybe<Array<ShopifyCampaignTemplateWhereUniqueInput>>;
+  /** Override currently-connected documents with multiple existing ShopifyCampaignTemplate documents */
+  set?: InputMaybe<Array<ShopifyCampaignTemplateWhereUniqueInput>>;
+  /** Update multiple ShopifyCampaignTemplate documents */
+  update?: InputMaybe<Array<ShopifyCampaignTemplateUpdateWithNestedWhereUniqueInput>>;
+  /** Upsert multiple ShopifyCampaignTemplate documents */
+  upsert?: InputMaybe<Array<ShopifyCampaignTemplateUpsertWithNestedWhereUniqueInput>>;
+};
+
+export type ShopifyCampaignTemplateUpdateManyInput = {
+  /** description input for default locale (en) */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** Optional updates to localizations */
+  localizations?: InputMaybe<ShopifyCampaignTemplateUpdateManyLocalizationsInput>;
+  /** name input for default locale (en) */
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyCampaignTemplateUpdateManyLocalizationDataInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyCampaignTemplateUpdateManyLocalizationInput = {
+  data: ShopifyCampaignTemplateUpdateManyLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyCampaignTemplateUpdateManyLocalizationsInput = {
+  /** Localizations to update */
+  update?: InputMaybe<Array<ShopifyCampaignTemplateUpdateManyLocalizationInput>>;
+};
+
+export type ShopifyCampaignTemplateUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ShopifyCampaignTemplateUpdateInput;
+  /** Unique document search */
+  where: ShopifyCampaignTemplateWhereUniqueInput;
+};
+
+export type ShopifyCampaignTemplateUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ShopifyCampaignTemplateCreateInput;
+  /** Update document if it exists */
+  update: ShopifyCampaignTemplateUpdateInput;
+};
+
+export type ShopifyCampaignTemplateUpsertLocalizationInput = {
+  create: ShopifyCampaignTemplateCreateLocalizationDataInput;
+  locale: Locale;
+  update: ShopifyCampaignTemplateUpdateLocalizationDataInput;
+};
+
+export type ShopifyCampaignTemplateUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ShopifyCampaignTemplateUpsertInput;
+  /** Unique document search */
+  where: ShopifyCampaignTemplateWhereUniqueInput;
+};
+
+/** This contains a set of filters that can be used to compare values internally */
+export type ShopifyCampaignTemplateWhereComparatorInput = {
+  /** This field can be used to request to check if the entry is outdated by internal comparison */
+  outdated_to?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Identifies documents */
+export type ShopifyCampaignTemplateWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyCampaignTemplateWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyCampaignTemplateWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyCampaignTemplateWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  authTexts?: InputMaybe<ShopifyAuthWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  createdBy?: InputMaybe<UserWhereInput>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  description_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  description_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  description_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  description_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
+  documentInStages_every?: InputMaybe<ShopifyCampaignTemplateWhereStageInput>;
+  documentInStages_none?: InputMaybe<ShopifyCampaignTemplateWhereStageInput>;
+  documentInStages_some?: InputMaybe<ShopifyCampaignTemplateWhereStageInput>;
+  gateConnectedTexts?: InputMaybe<ShopifyGateConnectedWhereInput>;
+  gateNotConnectedTexts?: InputMaybe<ShopifyGateNotConnectedWhereInput>;
+  headerConnectedTexts?: InputMaybe<ShopifyHeaderConnectedWhereInput>;
+  headerNotConnectedTexts?: InputMaybe<ShopifyHeaderNotConnectedWhereInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  name_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  name_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  organizer?: InputMaybe<OrganizerWhereInput>;
+  profileTexts?: InputMaybe<ShopifyProfileWhereInput>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  publishedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  publishedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  publishedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  publishedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  publishedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  publishedBy?: InputMaybe<UserWhereInput>;
+  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
+  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
+  updatedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  /** Any other value that exists and is not equal to the given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']['input']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  updatedBy?: InputMaybe<UserWhereInput>;
+};
+
+/** The document in stages filter allows specifying a stage entry to cross compare the same document between different stages */
+export type ShopifyCampaignTemplateWhereStageInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyCampaignTemplateWhereStageInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyCampaignTemplateWhereStageInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyCampaignTemplateWhereStageInput>>;
+  /** This field contains fields which can be set as true or false to specify an internal comparison */
+  compareWithParent?: InputMaybe<ShopifyCampaignTemplateWhereComparatorInput>;
+  /** Specify the stage to compare with */
+  stage?: InputMaybe<Stage>;
+};
+
+/** References ShopifyCampaignTemplate record uniquely */
+export type ShopifyCampaignTemplateWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ShopifyGateConnected = Entity & {
+  __typename?: 'ShopifyGateConnected';
+  gateStatus: ShopifyGateStatus;
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<ShopifyGateConnected>;
+  paragraphLocked: Scalars['String']['output'];
+  paragraphUnlocked: Scalars['String']['output'];
+  paragraphUnlocking: Scalars['String']['output'];
+  paragraphUsed: Scalars['String']['output'];
+  /** System stage field */
+  stage: Stage;
+  subtitleLocked: Scalars['String']['output'];
+  subtitleUnlocked: Scalars['String']['output'];
+  subtitleUnlocking: Scalars['String']['output'];
+  subtitleUsed: Scalars['String']['output'];
+};
+
+
+export type ShopifyGateConnectedGateStatusArgs = {
+  forceParentLocale?: InputMaybe<Scalars['Boolean']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+};
+
+
+export type ShopifyGateConnectedLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  locales?: Array<Locale>;
+};
+
+export type ShopifyGateConnectedCreateInput = {
+  gateStatus: ShopifyGateStatusCreateOneInlineInput;
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<ShopifyGateConnectedCreateLocalizationsInput>;
+  /** paragraphLocked input for default locale (en) */
+  paragraphLocked: Scalars['String']['input'];
+  /** paragraphUnlocked input for default locale (en) */
+  paragraphUnlocked: Scalars['String']['input'];
+  /** paragraphUnlocking input for default locale (en) */
+  paragraphUnlocking: Scalars['String']['input'];
+  /** paragraphUsed input for default locale (en) */
+  paragraphUsed: Scalars['String']['input'];
+  /** subtitleLocked input for default locale (en) */
+  subtitleLocked: Scalars['String']['input'];
+  /** subtitleUnlocked input for default locale (en) */
+  subtitleUnlocked: Scalars['String']['input'];
+  /** subtitleUnlocking input for default locale (en) */
+  subtitleUnlocking: Scalars['String']['input'];
+  /** subtitleUsed input for default locale (en) */
+  subtitleUsed: Scalars['String']['input'];
+};
+
+export type ShopifyGateConnectedCreateLocalizationDataInput = {
+  paragraphLocked: Scalars['String']['input'];
+  paragraphUnlocked: Scalars['String']['input'];
+  paragraphUnlocking: Scalars['String']['input'];
+  paragraphUsed: Scalars['String']['input'];
+  subtitleLocked: Scalars['String']['input'];
+  subtitleUnlocked: Scalars['String']['input'];
+  subtitleUnlocking: Scalars['String']['input'];
+  subtitleUsed: Scalars['String']['input'];
+};
+
+export type ShopifyGateConnectedCreateLocalizationInput = {
+  /** Localization input */
+  data: ShopifyGateConnectedCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyGateConnectedCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<ShopifyGateConnectedCreateLocalizationInput>>;
+};
+
+export type ShopifyGateConnectedCreateOneInlineInput = {
+  /** Create and connect one ShopifyGateConnected document */
+  create?: InputMaybe<ShopifyGateConnectedCreateInput>;
+};
+
+export type ShopifyGateConnectedUpdateInput = {
+  gateStatus?: InputMaybe<ShopifyGateStatusUpdateOneInlineInput>;
+  /** Manage document localizations */
+  localizations?: InputMaybe<ShopifyGateConnectedUpdateLocalizationsInput>;
+  /** paragraphLocked input for default locale (en) */
+  paragraphLocked?: InputMaybe<Scalars['String']['input']>;
+  /** paragraphUnlocked input for default locale (en) */
+  paragraphUnlocked?: InputMaybe<Scalars['String']['input']>;
+  /** paragraphUnlocking input for default locale (en) */
+  paragraphUnlocking?: InputMaybe<Scalars['String']['input']>;
+  /** paragraphUsed input for default locale (en) */
+  paragraphUsed?: InputMaybe<Scalars['String']['input']>;
+  /** subtitleLocked input for default locale (en) */
+  subtitleLocked?: InputMaybe<Scalars['String']['input']>;
+  /** subtitleUnlocked input for default locale (en) */
+  subtitleUnlocked?: InputMaybe<Scalars['String']['input']>;
+  /** subtitleUnlocking input for default locale (en) */
+  subtitleUnlocking?: InputMaybe<Scalars['String']['input']>;
+  /** subtitleUsed input for default locale (en) */
+  subtitleUsed?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyGateConnectedUpdateLocalizationDataInput = {
+  paragraphLocked?: InputMaybe<Scalars['String']['input']>;
+  paragraphUnlocked?: InputMaybe<Scalars['String']['input']>;
+  paragraphUnlocking?: InputMaybe<Scalars['String']['input']>;
+  paragraphUsed?: InputMaybe<Scalars['String']['input']>;
+  subtitleLocked?: InputMaybe<Scalars['String']['input']>;
+  subtitleUnlocked?: InputMaybe<Scalars['String']['input']>;
+  subtitleUnlocking?: InputMaybe<Scalars['String']['input']>;
+  subtitleUsed?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyGateConnectedUpdateLocalizationInput = {
+  data: ShopifyGateConnectedUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyGateConnectedUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<ShopifyGateConnectedCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<ShopifyGateConnectedUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<ShopifyGateConnectedUpsertLocalizationInput>>;
+};
+
+export type ShopifyGateConnectedUpdateOneInlineInput = {
+  /** Create and connect one ShopifyGateConnected document */
+  create?: InputMaybe<ShopifyGateConnectedCreateInput>;
+  /** Delete currently connected ShopifyGateConnected document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single ShopifyGateConnected document */
+  update?: InputMaybe<ShopifyGateConnectedUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single ShopifyGateConnected document */
+  upsert?: InputMaybe<ShopifyGateConnectedUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ShopifyGateConnectedUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ShopifyGateConnectedUpdateInput;
+  /** Unique document search */
+  where: ShopifyGateConnectedWhereUniqueInput;
+};
+
+export type ShopifyGateConnectedUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ShopifyGateConnectedCreateInput;
+  /** Update document if it exists */
+  update: ShopifyGateConnectedUpdateInput;
+};
+
+export type ShopifyGateConnectedUpsertLocalizationInput = {
+  create: ShopifyGateConnectedCreateLocalizationDataInput;
+  locale: Locale;
+  update: ShopifyGateConnectedUpdateLocalizationDataInput;
+};
+
+export type ShopifyGateConnectedUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ShopifyGateConnectedUpsertInput;
+  /** Unique document search */
+  where: ShopifyGateConnectedWhereUniqueInput;
+};
+
+/** Identifies documents */
+export type ShopifyGateConnectedWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyGateConnectedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyGateConnectedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyGateConnectedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  gateStatus?: InputMaybe<ShopifyGateStatusWhereInput>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  paragraphLocked?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  paragraphLocked_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  paragraphLocked_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  paragraphLocked_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  paragraphLocked_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  paragraphLocked_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  paragraphLocked_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  paragraphLocked_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  paragraphLocked_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  paragraphLocked_starts_with?: InputMaybe<Scalars['String']['input']>;
+  paragraphUnlocked?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  paragraphUnlocked_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  paragraphUnlocked_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  paragraphUnlocked_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  paragraphUnlocked_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  paragraphUnlocked_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  paragraphUnlocked_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  paragraphUnlocked_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  paragraphUnlocked_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  paragraphUnlocked_starts_with?: InputMaybe<Scalars['String']['input']>;
+  paragraphUnlocking?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  paragraphUnlocking_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  paragraphUnlocking_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  paragraphUnlocking_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  paragraphUnlocking_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  paragraphUnlocking_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  paragraphUnlocking_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  paragraphUnlocking_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  paragraphUnlocking_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  paragraphUnlocking_starts_with?: InputMaybe<Scalars['String']['input']>;
+  paragraphUsed?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  paragraphUsed_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  paragraphUsed_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  paragraphUsed_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  paragraphUsed_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  paragraphUsed_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  paragraphUsed_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  paragraphUsed_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  paragraphUsed_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  paragraphUsed_starts_with?: InputMaybe<Scalars['String']['input']>;
+  subtitleLocked?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  subtitleLocked_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  subtitleLocked_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  subtitleLocked_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  subtitleLocked_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  subtitleLocked_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  subtitleLocked_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  subtitleLocked_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  subtitleLocked_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  subtitleLocked_starts_with?: InputMaybe<Scalars['String']['input']>;
+  subtitleUnlocked?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  subtitleUnlocked_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  subtitleUnlocked_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  subtitleUnlocked_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  subtitleUnlocked_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  subtitleUnlocked_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  subtitleUnlocked_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  subtitleUnlocked_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  subtitleUnlocked_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  subtitleUnlocked_starts_with?: InputMaybe<Scalars['String']['input']>;
+  subtitleUnlocking?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  subtitleUnlocking_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  subtitleUnlocking_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  subtitleUnlocking_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  subtitleUnlocking_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  subtitleUnlocking_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  subtitleUnlocking_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  subtitleUnlocking_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  subtitleUnlocking_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  subtitleUnlocking_starts_with?: InputMaybe<Scalars['String']['input']>;
+  subtitleUsed?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  subtitleUsed_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  subtitleUsed_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  subtitleUsed_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  subtitleUsed_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  subtitleUsed_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  subtitleUsed_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  subtitleUsed_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  subtitleUsed_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  subtitleUsed_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References ShopifyGateConnected record uniquely */
+export type ShopifyGateConnectedWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ShopifyGateNotConnected = Entity & {
+  __typename?: 'ShopifyGateNotConnected';
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<ShopifyGateNotConnected>;
+  paragraphCustomerNotConnected: Scalars['String']['output'];
+  paragraphExistingAccountNewCustomer: Scalars['String']['output'];
+  paragraphMatchingAccount: Scalars['String']['output'];
+  paragraphNewAccount: Scalars['String']['output'];
+  paragraphNoMatchingAccount: Scalars['String']['output'];
+  /** System stage field */
+  stage: Stage;
+  subtitleCustomerNotConnected: Scalars['String']['output'];
+  subtitleExistingAccountNewCustomer: Scalars['String']['output'];
+  subtitleMatchingAccount: Scalars['String']['output'];
+  subtitleNewAccount: Scalars['String']['output'];
+  subtitleNoMatchingAccount: Scalars['String']['output'];
+};
+
+
+export type ShopifyGateNotConnectedLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  locales?: Array<Locale>;
+};
+
+export type ShopifyGateNotConnectedCreateInput = {
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<ShopifyGateNotConnectedCreateLocalizationsInput>;
+  /** paragraphCustomerNotConnected input for default locale (en) */
+  paragraphCustomerNotConnected: Scalars['String']['input'];
+  /** paragraphExistingAccountNewCustomer input for default locale (en) */
+  paragraphExistingAccountNewCustomer: Scalars['String']['input'];
+  /** paragraphMatchingAccount input for default locale (en) */
+  paragraphMatchingAccount: Scalars['String']['input'];
+  /** paragraphNewAccount input for default locale (en) */
+  paragraphNewAccount: Scalars['String']['input'];
+  /** paragraphNoMatchingAccount input for default locale (en) */
+  paragraphNoMatchingAccount: Scalars['String']['input'];
+  /** subtitleCustomerNotConnected input for default locale (en) */
+  subtitleCustomerNotConnected: Scalars['String']['input'];
+  /** subtitleExistingAccountNewCustomer input for default locale (en) */
+  subtitleExistingAccountNewCustomer: Scalars['String']['input'];
+  /** subtitleMatchingAccount input for default locale (en) */
+  subtitleMatchingAccount: Scalars['String']['input'];
+  /** subtitleNewAccount input for default locale (en) */
+  subtitleNewAccount: Scalars['String']['input'];
+  /** subtitleNoMatchingAccount input for default locale (en) */
+  subtitleNoMatchingAccount: Scalars['String']['input'];
+};
+
+export type ShopifyGateNotConnectedCreateLocalizationDataInput = {
+  paragraphCustomerNotConnected: Scalars['String']['input'];
+  paragraphExistingAccountNewCustomer: Scalars['String']['input'];
+  paragraphMatchingAccount: Scalars['String']['input'];
+  paragraphNewAccount: Scalars['String']['input'];
+  paragraphNoMatchingAccount: Scalars['String']['input'];
+  subtitleCustomerNotConnected: Scalars['String']['input'];
+  subtitleExistingAccountNewCustomer: Scalars['String']['input'];
+  subtitleMatchingAccount: Scalars['String']['input'];
+  subtitleNewAccount: Scalars['String']['input'];
+  subtitleNoMatchingAccount: Scalars['String']['input'];
+};
+
+export type ShopifyGateNotConnectedCreateLocalizationInput = {
+  /** Localization input */
+  data: ShopifyGateNotConnectedCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyGateNotConnectedCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<ShopifyGateNotConnectedCreateLocalizationInput>>;
+};
+
+export type ShopifyGateNotConnectedCreateOneInlineInput = {
+  /** Create and connect one ShopifyGateNotConnected document */
+  create?: InputMaybe<ShopifyGateNotConnectedCreateInput>;
+};
+
+export type ShopifyGateNotConnectedUpdateInput = {
+  /** Manage document localizations */
+  localizations?: InputMaybe<ShopifyGateNotConnectedUpdateLocalizationsInput>;
+  /** paragraphCustomerNotConnected input for default locale (en) */
+  paragraphCustomerNotConnected?: InputMaybe<Scalars['String']['input']>;
+  /** paragraphExistingAccountNewCustomer input for default locale (en) */
+  paragraphExistingAccountNewCustomer?: InputMaybe<Scalars['String']['input']>;
+  /** paragraphMatchingAccount input for default locale (en) */
+  paragraphMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** paragraphNewAccount input for default locale (en) */
+  paragraphNewAccount?: InputMaybe<Scalars['String']['input']>;
+  /** paragraphNoMatchingAccount input for default locale (en) */
+  paragraphNoMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** subtitleCustomerNotConnected input for default locale (en) */
+  subtitleCustomerNotConnected?: InputMaybe<Scalars['String']['input']>;
+  /** subtitleExistingAccountNewCustomer input for default locale (en) */
+  subtitleExistingAccountNewCustomer?: InputMaybe<Scalars['String']['input']>;
+  /** subtitleMatchingAccount input for default locale (en) */
+  subtitleMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** subtitleNewAccount input for default locale (en) */
+  subtitleNewAccount?: InputMaybe<Scalars['String']['input']>;
+  /** subtitleNoMatchingAccount input for default locale (en) */
+  subtitleNoMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyGateNotConnectedUpdateLocalizationDataInput = {
+  paragraphCustomerNotConnected?: InputMaybe<Scalars['String']['input']>;
+  paragraphExistingAccountNewCustomer?: InputMaybe<Scalars['String']['input']>;
+  paragraphMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  paragraphNewAccount?: InputMaybe<Scalars['String']['input']>;
+  paragraphNoMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  subtitleCustomerNotConnected?: InputMaybe<Scalars['String']['input']>;
+  subtitleExistingAccountNewCustomer?: InputMaybe<Scalars['String']['input']>;
+  subtitleMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  subtitleNewAccount?: InputMaybe<Scalars['String']['input']>;
+  subtitleNoMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyGateNotConnectedUpdateLocalizationInput = {
+  data: ShopifyGateNotConnectedUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyGateNotConnectedUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<ShopifyGateNotConnectedCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<ShopifyGateNotConnectedUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<ShopifyGateNotConnectedUpsertLocalizationInput>>;
+};
+
+export type ShopifyGateNotConnectedUpdateOneInlineInput = {
+  /** Create and connect one ShopifyGateNotConnected document */
+  create?: InputMaybe<ShopifyGateNotConnectedCreateInput>;
+  /** Delete currently connected ShopifyGateNotConnected document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single ShopifyGateNotConnected document */
+  update?: InputMaybe<ShopifyGateNotConnectedUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single ShopifyGateNotConnected document */
+  upsert?: InputMaybe<ShopifyGateNotConnectedUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ShopifyGateNotConnectedUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ShopifyGateNotConnectedUpdateInput;
+  /** Unique document search */
+  where: ShopifyGateNotConnectedWhereUniqueInput;
+};
+
+export type ShopifyGateNotConnectedUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ShopifyGateNotConnectedCreateInput;
+  /** Update document if it exists */
+  update: ShopifyGateNotConnectedUpdateInput;
+};
+
+export type ShopifyGateNotConnectedUpsertLocalizationInput = {
+  create: ShopifyGateNotConnectedCreateLocalizationDataInput;
+  locale: Locale;
+  update: ShopifyGateNotConnectedUpdateLocalizationDataInput;
+};
+
+export type ShopifyGateNotConnectedUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ShopifyGateNotConnectedUpsertInput;
+  /** Unique document search */
+  where: ShopifyGateNotConnectedWhereUniqueInput;
+};
+
+/** Identifies documents */
+export type ShopifyGateNotConnectedWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyGateNotConnectedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyGateNotConnectedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyGateNotConnectedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  paragraphCustomerNotConnected?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  paragraphCustomerNotConnected_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  paragraphCustomerNotConnected_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  paragraphCustomerNotConnected_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  paragraphCustomerNotConnected_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  paragraphCustomerNotConnected_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  paragraphCustomerNotConnected_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  paragraphCustomerNotConnected_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  paragraphCustomerNotConnected_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  paragraphCustomerNotConnected_starts_with?: InputMaybe<Scalars['String']['input']>;
+  paragraphExistingAccountNewCustomer?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  paragraphExistingAccountNewCustomer_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  paragraphExistingAccountNewCustomer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  paragraphExistingAccountNewCustomer_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  paragraphExistingAccountNewCustomer_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  paragraphExistingAccountNewCustomer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  paragraphExistingAccountNewCustomer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  paragraphExistingAccountNewCustomer_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  paragraphExistingAccountNewCustomer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  paragraphExistingAccountNewCustomer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  paragraphMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  paragraphMatchingAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  paragraphMatchingAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  paragraphMatchingAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  paragraphMatchingAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  paragraphMatchingAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  paragraphMatchingAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  paragraphMatchingAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  paragraphMatchingAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  paragraphMatchingAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+  paragraphNewAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  paragraphNewAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  paragraphNewAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  paragraphNewAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  paragraphNewAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  paragraphNewAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  paragraphNewAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  paragraphNewAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  paragraphNewAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  paragraphNewAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+  paragraphNoMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  paragraphNoMatchingAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  paragraphNoMatchingAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  paragraphNoMatchingAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  paragraphNoMatchingAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  paragraphNoMatchingAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  paragraphNoMatchingAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  paragraphNoMatchingAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  paragraphNoMatchingAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  paragraphNoMatchingAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+  subtitleCustomerNotConnected?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  subtitleCustomerNotConnected_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  subtitleCustomerNotConnected_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  subtitleCustomerNotConnected_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  subtitleCustomerNotConnected_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  subtitleCustomerNotConnected_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  subtitleCustomerNotConnected_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  subtitleCustomerNotConnected_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  subtitleCustomerNotConnected_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  subtitleCustomerNotConnected_starts_with?: InputMaybe<Scalars['String']['input']>;
+  subtitleExistingAccountNewCustomer?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  subtitleExistingAccountNewCustomer_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  subtitleExistingAccountNewCustomer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  subtitleExistingAccountNewCustomer_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  subtitleExistingAccountNewCustomer_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  subtitleExistingAccountNewCustomer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  subtitleExistingAccountNewCustomer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  subtitleExistingAccountNewCustomer_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  subtitleExistingAccountNewCustomer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  subtitleExistingAccountNewCustomer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  subtitleMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  subtitleMatchingAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  subtitleMatchingAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  subtitleMatchingAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  subtitleMatchingAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  subtitleMatchingAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  subtitleMatchingAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  subtitleMatchingAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  subtitleMatchingAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  subtitleMatchingAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+  subtitleNewAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  subtitleNewAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  subtitleNewAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  subtitleNewAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  subtitleNewAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  subtitleNewAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  subtitleNewAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  subtitleNewAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  subtitleNewAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  subtitleNewAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+  subtitleNoMatchingAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  subtitleNoMatchingAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  subtitleNoMatchingAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  subtitleNoMatchingAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  subtitleNoMatchingAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  subtitleNoMatchingAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  subtitleNoMatchingAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  subtitleNoMatchingAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  subtitleNoMatchingAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  subtitleNoMatchingAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References ShopifyGateNotConnected record uniquely */
+export type ShopifyGateNotConnectedWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ShopifyGateStatus = Entity & {
+  __typename?: 'ShopifyGateStatus';
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<ShopifyGateStatus>;
+  locked: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  /** System stage field */
+  stage: Stage;
+  unlocked: Scalars['String']['output'];
+  unlocking: Scalars['String']['output'];
+  used: Scalars['String']['output'];
+};
+
+
+export type ShopifyGateStatusLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  locales?: Array<Locale>;
+};
+
+export type ShopifyGateStatusCreateInput = {
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<ShopifyGateStatusCreateLocalizationsInput>;
+  /** locked input for default locale (en) */
+  locked: Scalars['String']['input'];
+  /** name input for default locale (en) */
+  name: Scalars['String']['input'];
+  /** unlocked input for default locale (en) */
+  unlocked: Scalars['String']['input'];
+  /** unlocking input for default locale (en) */
+  unlocking: Scalars['String']['input'];
+  /** used input for default locale (en) */
+  used: Scalars['String']['input'];
+};
+
+export type ShopifyGateStatusCreateLocalizationDataInput = {
+  locked: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  unlocked: Scalars['String']['input'];
+  unlocking: Scalars['String']['input'];
+  used: Scalars['String']['input'];
+};
+
+export type ShopifyGateStatusCreateLocalizationInput = {
+  /** Localization input */
+  data: ShopifyGateStatusCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyGateStatusCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<ShopifyGateStatusCreateLocalizationInput>>;
+};
+
+export type ShopifyGateStatusCreateOneInlineInput = {
+  /** Create and connect one ShopifyGateStatus document */
+  create?: InputMaybe<ShopifyGateStatusCreateInput>;
+};
+
+export type ShopifyGateStatusUpdateInput = {
+  /** Manage document localizations */
+  localizations?: InputMaybe<ShopifyGateStatusUpdateLocalizationsInput>;
+  /** locked input for default locale (en) */
+  locked?: InputMaybe<Scalars['String']['input']>;
+  /** name input for default locale (en) */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** unlocked input for default locale (en) */
+  unlocked?: InputMaybe<Scalars['String']['input']>;
+  /** unlocking input for default locale (en) */
+  unlocking?: InputMaybe<Scalars['String']['input']>;
+  /** used input for default locale (en) */
+  used?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyGateStatusUpdateLocalizationDataInput = {
+  locked?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  unlocked?: InputMaybe<Scalars['String']['input']>;
+  unlocking?: InputMaybe<Scalars['String']['input']>;
+  used?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyGateStatusUpdateLocalizationInput = {
+  data: ShopifyGateStatusUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyGateStatusUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<ShopifyGateStatusCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<ShopifyGateStatusUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<ShopifyGateStatusUpsertLocalizationInput>>;
+};
+
+export type ShopifyGateStatusUpdateOneInlineInput = {
+  /** Create and connect one ShopifyGateStatus document */
+  create?: InputMaybe<ShopifyGateStatusCreateInput>;
+  /** Delete currently connected ShopifyGateStatus document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single ShopifyGateStatus document */
+  update?: InputMaybe<ShopifyGateStatusUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single ShopifyGateStatus document */
+  upsert?: InputMaybe<ShopifyGateStatusUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ShopifyGateStatusUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ShopifyGateStatusUpdateInput;
+  /** Unique document search */
+  where: ShopifyGateStatusWhereUniqueInput;
+};
+
+export type ShopifyGateStatusUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ShopifyGateStatusCreateInput;
+  /** Update document if it exists */
+  update: ShopifyGateStatusUpdateInput;
+};
+
+export type ShopifyGateStatusUpsertLocalizationInput = {
+  create: ShopifyGateStatusCreateLocalizationDataInput;
+  locale: Locale;
+  update: ShopifyGateStatusUpdateLocalizationDataInput;
+};
+
+export type ShopifyGateStatusUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ShopifyGateStatusUpsertInput;
+  /** Unique document search */
+  where: ShopifyGateStatusWhereUniqueInput;
+};
+
+/** Identifies documents */
+export type ShopifyGateStatusWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyGateStatusWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyGateStatusWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyGateStatusWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  locked?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  locked_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  locked_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  locked_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  locked_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  locked_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  locked_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  locked_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  locked_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  locked_starts_with?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  name_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  name_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  name_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  name_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  name_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  name_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  name_starts_with?: InputMaybe<Scalars['String']['input']>;
+  unlocked?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  unlocked_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  unlocked_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  unlocked_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  unlocked_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  unlocked_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  unlocked_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  unlocked_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  unlocked_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  unlocked_starts_with?: InputMaybe<Scalars['String']['input']>;
+  unlocking?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  unlocking_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  unlocking_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  unlocking_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  unlocking_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  unlocking_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  unlocking_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  unlocking_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  unlocking_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  unlocking_starts_with?: InputMaybe<Scalars['String']['input']>;
+  used?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  used_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  used_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  used_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  used_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  used_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  used_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  used_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  used_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  used_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References ShopifyGateStatus record uniquely */
+export type ShopifyGateStatusWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ShopifyHeaderConnected = Entity & {
+  __typename?: 'ShopifyHeaderConnected';
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<ShopifyHeaderConnected>;
+  /** System stage field */
+  stage: Stage;
+  titleDefault: Scalars['String']['output'];
+  titleHowToGet: Scalars['String']['output'];
+};
+
+
+export type ShopifyHeaderConnectedLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  locales?: Array<Locale>;
+};
+
+export type ShopifyHeaderConnectedCreateInput = {
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<ShopifyHeaderConnectedCreateLocalizationsInput>;
+  /** titleDefault input for default locale (en) */
+  titleDefault: Scalars['String']['input'];
+  /** titleHowToGet input for default locale (en) */
+  titleHowToGet: Scalars['String']['input'];
+};
+
+export type ShopifyHeaderConnectedCreateLocalizationDataInput = {
+  titleDefault: Scalars['String']['input'];
+  titleHowToGet: Scalars['String']['input'];
+};
+
+export type ShopifyHeaderConnectedCreateLocalizationInput = {
+  /** Localization input */
+  data: ShopifyHeaderConnectedCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyHeaderConnectedCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<ShopifyHeaderConnectedCreateLocalizationInput>>;
+};
+
+export type ShopifyHeaderConnectedCreateOneInlineInput = {
+  /** Create and connect one ShopifyHeaderConnected document */
+  create?: InputMaybe<ShopifyHeaderConnectedCreateInput>;
+};
+
+export type ShopifyHeaderConnectedUpdateInput = {
+  /** Manage document localizations */
+  localizations?: InputMaybe<ShopifyHeaderConnectedUpdateLocalizationsInput>;
+  /** titleDefault input for default locale (en) */
+  titleDefault?: InputMaybe<Scalars['String']['input']>;
+  /** titleHowToGet input for default locale (en) */
+  titleHowToGet?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyHeaderConnectedUpdateLocalizationDataInput = {
+  titleDefault?: InputMaybe<Scalars['String']['input']>;
+  titleHowToGet?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyHeaderConnectedUpdateLocalizationInput = {
+  data: ShopifyHeaderConnectedUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyHeaderConnectedUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<ShopifyHeaderConnectedCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<ShopifyHeaderConnectedUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<ShopifyHeaderConnectedUpsertLocalizationInput>>;
+};
+
+export type ShopifyHeaderConnectedUpdateOneInlineInput = {
+  /** Create and connect one ShopifyHeaderConnected document */
+  create?: InputMaybe<ShopifyHeaderConnectedCreateInput>;
+  /** Delete currently connected ShopifyHeaderConnected document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single ShopifyHeaderConnected document */
+  update?: InputMaybe<ShopifyHeaderConnectedUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single ShopifyHeaderConnected document */
+  upsert?: InputMaybe<ShopifyHeaderConnectedUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ShopifyHeaderConnectedUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ShopifyHeaderConnectedUpdateInput;
+  /** Unique document search */
+  where: ShopifyHeaderConnectedWhereUniqueInput;
+};
+
+export type ShopifyHeaderConnectedUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ShopifyHeaderConnectedCreateInput;
+  /** Update document if it exists */
+  update: ShopifyHeaderConnectedUpdateInput;
+};
+
+export type ShopifyHeaderConnectedUpsertLocalizationInput = {
+  create: ShopifyHeaderConnectedCreateLocalizationDataInput;
+  locale: Locale;
+  update: ShopifyHeaderConnectedUpdateLocalizationDataInput;
+};
+
+export type ShopifyHeaderConnectedUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ShopifyHeaderConnectedUpsertInput;
+  /** Unique document search */
+  where: ShopifyHeaderConnectedWhereUniqueInput;
+};
+
+/** Identifies documents */
+export type ShopifyHeaderConnectedWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyHeaderConnectedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyHeaderConnectedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyHeaderConnectedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  titleDefault?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  titleDefault_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  titleDefault_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  titleDefault_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  titleDefault_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  titleDefault_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  titleDefault_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  titleDefault_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  titleDefault_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  titleDefault_starts_with?: InputMaybe<Scalars['String']['input']>;
+  titleHowToGet?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  titleHowToGet_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  titleHowToGet_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  titleHowToGet_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  titleHowToGet_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  titleHowToGet_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  titleHowToGet_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  titleHowToGet_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  titleHowToGet_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  titleHowToGet_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References ShopifyHeaderConnected record uniquely */
+export type ShopifyHeaderConnectedWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ShopifyHeaderNotConnected = Entity & {
+  __typename?: 'ShopifyHeaderNotConnected';
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<ShopifyHeaderNotConnected>;
+  /** System stage field */
+  stage: Stage;
+  titleCustomerConnected: Scalars['String']['output'];
+  titleCustomerNotConnected: Scalars['String']['output'];
+};
+
+
+export type ShopifyHeaderNotConnectedLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  locales?: Array<Locale>;
+};
+
+export type ShopifyHeaderNotConnectedCreateInput = {
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<ShopifyHeaderNotConnectedCreateLocalizationsInput>;
+  /** titleCustomerConnected input for default locale (en) */
+  titleCustomerConnected: Scalars['String']['input'];
+  /** titleCustomerNotConnected input for default locale (en) */
+  titleCustomerNotConnected: Scalars['String']['input'];
+};
+
+export type ShopifyHeaderNotConnectedCreateLocalizationDataInput = {
+  titleCustomerConnected: Scalars['String']['input'];
+  titleCustomerNotConnected: Scalars['String']['input'];
+};
+
+export type ShopifyHeaderNotConnectedCreateLocalizationInput = {
+  /** Localization input */
+  data: ShopifyHeaderNotConnectedCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyHeaderNotConnectedCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<ShopifyHeaderNotConnectedCreateLocalizationInput>>;
+};
+
+export type ShopifyHeaderNotConnectedCreateOneInlineInput = {
+  /** Create and connect one ShopifyHeaderNotConnected document */
+  create?: InputMaybe<ShopifyHeaderNotConnectedCreateInput>;
+};
+
+export type ShopifyHeaderNotConnectedUpdateInput = {
+  /** Manage document localizations */
+  localizations?: InputMaybe<ShopifyHeaderNotConnectedUpdateLocalizationsInput>;
+  /** titleCustomerConnected input for default locale (en) */
+  titleCustomerConnected?: InputMaybe<Scalars['String']['input']>;
+  /** titleCustomerNotConnected input for default locale (en) */
+  titleCustomerNotConnected?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyHeaderNotConnectedUpdateLocalizationDataInput = {
+  titleCustomerConnected?: InputMaybe<Scalars['String']['input']>;
+  titleCustomerNotConnected?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyHeaderNotConnectedUpdateLocalizationInput = {
+  data: ShopifyHeaderNotConnectedUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyHeaderNotConnectedUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<ShopifyHeaderNotConnectedCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<ShopifyHeaderNotConnectedUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<ShopifyHeaderNotConnectedUpsertLocalizationInput>>;
+};
+
+export type ShopifyHeaderNotConnectedUpdateOneInlineInput = {
+  /** Create and connect one ShopifyHeaderNotConnected document */
+  create?: InputMaybe<ShopifyHeaderNotConnectedCreateInput>;
+  /** Delete currently connected ShopifyHeaderNotConnected document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single ShopifyHeaderNotConnected document */
+  update?: InputMaybe<ShopifyHeaderNotConnectedUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single ShopifyHeaderNotConnected document */
+  upsert?: InputMaybe<ShopifyHeaderNotConnectedUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ShopifyHeaderNotConnectedUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ShopifyHeaderNotConnectedUpdateInput;
+  /** Unique document search */
+  where: ShopifyHeaderNotConnectedWhereUniqueInput;
+};
+
+export type ShopifyHeaderNotConnectedUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ShopifyHeaderNotConnectedCreateInput;
+  /** Update document if it exists */
+  update: ShopifyHeaderNotConnectedUpdateInput;
+};
+
+export type ShopifyHeaderNotConnectedUpsertLocalizationInput = {
+  create: ShopifyHeaderNotConnectedCreateLocalizationDataInput;
+  locale: Locale;
+  update: ShopifyHeaderNotConnectedUpdateLocalizationDataInput;
+};
+
+export type ShopifyHeaderNotConnectedUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ShopifyHeaderNotConnectedUpsertInput;
+  /** Unique document search */
+  where: ShopifyHeaderNotConnectedWhereUniqueInput;
+};
+
+/** Identifies documents */
+export type ShopifyHeaderNotConnectedWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyHeaderNotConnectedWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyHeaderNotConnectedWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyHeaderNotConnectedWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  titleCustomerConnected?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  titleCustomerConnected_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  titleCustomerConnected_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  titleCustomerConnected_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  titleCustomerConnected_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  titleCustomerConnected_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  titleCustomerConnected_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  titleCustomerConnected_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  titleCustomerConnected_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  titleCustomerConnected_starts_with?: InputMaybe<Scalars['String']['input']>;
+  titleCustomerNotConnected?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  titleCustomerNotConnected_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  titleCustomerNotConnected_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  titleCustomerNotConnected_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  titleCustomerNotConnected_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  titleCustomerNotConnected_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  titleCustomerNotConnected_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  titleCustomerNotConnected_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  titleCustomerNotConnected_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  titleCustomerNotConnected_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References ShopifyHeaderNotConnected record uniquely */
+export type ShopifyHeaderNotConnectedWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ShopifyProfile = Entity & {
+  __typename?: 'ShopifyProfile';
+  /** The unique identifier */
+  id: Scalars['ID']['output'];
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<ShopifyProfile>;
+  menuActionSignOut: Scalars['String']['output'];
+  menuSectionMyAccount: Scalars['String']['output'];
+  /** System stage field */
+  stage: Stage;
+};
+
+
+export type ShopifyProfileLocalizationsArgs = {
+  includeCurrent?: Scalars['Boolean']['input'];
+  locales?: Array<Locale>;
+};
+
+export type ShopifyProfileCreateInput = {
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: InputMaybe<ShopifyProfileCreateLocalizationsInput>;
+  /** menuActionSignOut input for default locale (en) */
+  menuActionSignOut: Scalars['String']['input'];
+  /** menuSectionMyAccount input for default locale (en) */
+  menuSectionMyAccount: Scalars['String']['input'];
+};
+
+export type ShopifyProfileCreateLocalizationDataInput = {
+  menuActionSignOut: Scalars['String']['input'];
+  menuSectionMyAccount: Scalars['String']['input'];
+};
+
+export type ShopifyProfileCreateLocalizationInput = {
+  /** Localization input */
+  data: ShopifyProfileCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyProfileCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: InputMaybe<Array<ShopifyProfileCreateLocalizationInput>>;
+};
+
+export type ShopifyProfileCreateOneInlineInput = {
+  /** Create and connect one ShopifyProfile document */
+  create?: InputMaybe<ShopifyProfileCreateInput>;
+};
+
+export type ShopifyProfileUpdateInput = {
+  /** Manage document localizations */
+  localizations?: InputMaybe<ShopifyProfileUpdateLocalizationsInput>;
+  /** menuActionSignOut input for default locale (en) */
+  menuActionSignOut?: InputMaybe<Scalars['String']['input']>;
+  /** menuSectionMyAccount input for default locale (en) */
+  menuSectionMyAccount?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyProfileUpdateLocalizationDataInput = {
+  menuActionSignOut?: InputMaybe<Scalars['String']['input']>;
+  menuSectionMyAccount?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type ShopifyProfileUpdateLocalizationInput = {
+  data: ShopifyProfileUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type ShopifyProfileUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: InputMaybe<Array<ShopifyProfileCreateLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: InputMaybe<Array<Locale>>;
+  /** Localizations to update */
+  update?: InputMaybe<Array<ShopifyProfileUpdateLocalizationInput>>;
+  upsert?: InputMaybe<Array<ShopifyProfileUpsertLocalizationInput>>;
+};
+
+export type ShopifyProfileUpdateOneInlineInput = {
+  /** Create and connect one ShopifyProfile document */
+  create?: InputMaybe<ShopifyProfileCreateInput>;
+  /** Delete currently connected ShopifyProfile document */
+  delete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Update single ShopifyProfile document */
+  update?: InputMaybe<ShopifyProfileUpdateWithNestedWhereUniqueInput>;
+  /** Upsert single ShopifyProfile document */
+  upsert?: InputMaybe<ShopifyProfileUpsertWithNestedWhereUniqueInput>;
+};
+
+export type ShopifyProfileUpdateWithNestedWhereUniqueInput = {
+  /** Document to update */
+  data: ShopifyProfileUpdateInput;
+  /** Unique document search */
+  where: ShopifyProfileWhereUniqueInput;
+};
+
+export type ShopifyProfileUpsertInput = {
+  /** Create document if it didn't exist */
+  create: ShopifyProfileCreateInput;
+  /** Update document if it exists */
+  update: ShopifyProfileUpdateInput;
+};
+
+export type ShopifyProfileUpsertLocalizationInput = {
+  create: ShopifyProfileCreateLocalizationDataInput;
+  locale: Locale;
+  update: ShopifyProfileUpdateLocalizationDataInput;
+};
+
+export type ShopifyProfileUpsertWithNestedWhereUniqueInput = {
+  /** Upsert data */
+  data: ShopifyProfileUpsertInput;
+  /** Unique document search */
+  where: ShopifyProfileWhereUniqueInput;
+};
+
+/** Identifies documents */
+export type ShopifyProfileWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<ShopifyProfileWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<ShopifyProfileWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<ShopifyProfileWhereInput>>;
+  /** Contains search across all appropriate fields. */
+  _search?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']['input']>;
+  /** All values not ending with the given string */
+  id_not_ends_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']['input']>;
+  menuActionSignOut?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  menuActionSignOut_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  menuActionSignOut_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  menuActionSignOut_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  menuActionSignOut_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  menuActionSignOut_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  menuActionSignOut_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  menuActionSignOut_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  menuActionSignOut_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  menuActionSignOut_starts_with?: InputMaybe<Scalars['String']['input']>;
+  menuSectionMyAccount?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  menuSectionMyAccount_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  menuSectionMyAccount_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  menuSectionMyAccount_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  menuSectionMyAccount_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  menuSectionMyAccount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  menuSectionMyAccount_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  menuSectionMyAccount_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  menuSectionMyAccount_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  menuSectionMyAccount_starts_with?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** References ShopifyProfile record uniquely */
+export type ShopifyProfileWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
 };
 
@@ -13799,6 +16287,8 @@ export type Mutation_Root = {
   createPack?: Maybe<Pack>;
   /** Create one scheduledRelease */
   createScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Create one shopifyCampaignTemplate */
+  createShopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
   /** Delete one asset from _all_ existing stages. Returns deleted document. */
   deleteAsset?: Maybe<Asset>;
   /** Delete one contentSpace from _all_ existing stages. Returns deleted document. */
@@ -13843,6 +16333,10 @@ export type Mutation_Root = {
   deleteManyPacks: BatchPayload;
   /** Delete many Pack documents, return deleted documents */
   deleteManyPacksConnection: PackConnection;
+  /** Delete many ShopifyCampaignTemplate documents */
+  deleteManyShopifyCampaignTemplates: BatchPayload;
+  /** Delete many ShopifyCampaignTemplate documents, return deleted documents */
+  deleteManyShopifyCampaignTemplatesConnection: ShopifyCampaignTemplateConnection;
   /** Delete one organizer from _all_ existing stages. Returns deleted document. */
   deleteOrganizer?: Maybe<Organizer>;
   /** Delete one pack from _all_ existing stages. Returns deleted document. */
@@ -13851,6 +16345,8 @@ export type Mutation_Root = {
   deleteScheduledOperation?: Maybe<ScheduledOperation>;
   /** Delete one scheduledRelease from _all_ existing stages. Returns deleted document. */
   deleteScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Delete one shopifyCampaignTemplate from _all_ existing stages. Returns deleted document. */
+  deleteShopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
   /** delete data from the table: "account" */
   delete_account?: Maybe<Account_Mutation_Response>;
   /** delete single row from the table: "account" */
@@ -14323,10 +16819,16 @@ export type Mutation_Root = {
   publishManyPacks: BatchPayload;
   /** Publish many Pack documents */
   publishManyPacksConnection: PackConnection;
+  /** Publish many ShopifyCampaignTemplate documents */
+  publishManyShopifyCampaignTemplates: BatchPayload;
+  /** Publish many ShopifyCampaignTemplate documents */
+  publishManyShopifyCampaignTemplatesConnection: ShopifyCampaignTemplateConnection;
   /** Publish one organizer */
   publishOrganizer?: Maybe<Organizer>;
   /** Publish one pack */
   publishPack?: Maybe<Pack>;
+  /** Publish one shopifyCampaignTemplate */
+  publishShopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
   /** Schedule to publish one asset */
   schedulePublishAsset?: Maybe<Asset>;
   /** Schedule to publish one contentSpace */
@@ -14343,6 +16845,8 @@ export type Mutation_Root = {
   schedulePublishOrganizer?: Maybe<Organizer>;
   /** Schedule to publish one pack */
   schedulePublishPack?: Maybe<Pack>;
+  /** Schedule to publish one shopifyCampaignTemplate */
+  schedulePublishShopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishAsset?: Maybe<Asset>;
   /** Unpublish one contentSpace from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -14359,6 +16863,8 @@ export type Mutation_Root = {
   scheduleUnpublishOrganizer?: Maybe<Organizer>;
   /** Unpublish one pack from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishPack?: Maybe<Pack>;
+  /** Unpublish one shopifyCampaignTemplate from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  scheduleUnpublishShopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
   /** Unpublish one asset from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishAsset?: Maybe<Asset>;
   /** Unpublish one contentSpace from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -14403,10 +16909,16 @@ export type Mutation_Root = {
   unpublishManyPacks: BatchPayload;
   /** Find many Pack documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyPacksConnection: PackConnection;
+  /** Unpublish many ShopifyCampaignTemplate documents */
+  unpublishManyShopifyCampaignTemplates: BatchPayload;
+  /** Find many ShopifyCampaignTemplate documents that match criteria in specified stage and unpublish from target stages */
+  unpublishManyShopifyCampaignTemplatesConnection: ShopifyCampaignTemplateConnection;
   /** Unpublish one organizer from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishOrganizer?: Maybe<Organizer>;
   /** Unpublish one pack from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishPack?: Maybe<Pack>;
+  /** Unpublish one shopifyCampaignTemplate from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
+  unpublishShopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
   /** Update one asset */
   updateAsset?: Maybe<Asset>;
   /** Update one contentSpace */
@@ -14451,12 +16963,18 @@ export type Mutation_Root = {
   updateManyPacks: BatchPayload;
   /** Update many Pack documents */
   updateManyPacksConnection: PackConnection;
+  /** Update many shopifyCampaignTemplates */
+  updateManyShopifyCampaignTemplates: BatchPayload;
+  /** Update many ShopifyCampaignTemplate documents */
+  updateManyShopifyCampaignTemplatesConnection: ShopifyCampaignTemplateConnection;
   /** Update one organizer */
   updateOrganizer?: Maybe<Organizer>;
   /** Update one pack */
   updatePack?: Maybe<Pack>;
   /** Update one scheduledRelease */
   updateScheduledRelease?: Maybe<ScheduledRelease>;
+  /** Update one shopifyCampaignTemplate */
+  updateShopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
   /** update data of the table: "account" */
   update_account?: Maybe<Account_Mutation_Response>;
   /** update single row of the table: "account" */
@@ -14793,6 +17311,8 @@ export type Mutation_Root = {
   upsertOrganizer?: Maybe<Organizer>;
   /** Upsert one pack */
   upsertPack?: Maybe<Pack>;
+  /** Upsert one shopifyCampaignTemplate */
+  upsertShopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
 };
 
 
@@ -14847,6 +17367,12 @@ export type Mutation_RootCreatePackArgs = {
 /** mutation root */
 export type Mutation_RootCreateScheduledReleaseArgs = {
   data: ScheduledReleaseCreateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateShopifyCampaignTemplateArgs = {
+  data: ShopifyCampaignTemplateCreateInput;
 };
 
 
@@ -15023,6 +17549,23 @@ export type Mutation_RootDeleteManyPacksConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteManyShopifyCampaignTemplatesArgs = {
+  where?: InputMaybe<ShopifyCampaignTemplateManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteManyShopifyCampaignTemplatesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShopifyCampaignTemplateManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteOrganizerArgs = {
   where: OrganizerWhereUniqueInput;
 };
@@ -15043,6 +17586,12 @@ export type Mutation_RootDeleteScheduledOperationArgs = {
 /** mutation root */
 export type Mutation_RootDeleteScheduledReleaseArgs = {
   where: ScheduledReleaseWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteShopifyCampaignTemplateArgs = {
+  where: ShopifyCampaignTemplateWhereUniqueInput;
 };
 
 
@@ -16702,6 +19251,32 @@ export type Mutation_RootPublishManyPacksConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootPublishManyShopifyCampaignTemplatesArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<ShopifyCampaignTemplateManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishManyShopifyCampaignTemplatesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: InputMaybe<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  to?: Array<Stage>;
+  where?: InputMaybe<ShopifyCampaignTemplateManyWhereInput>;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
 export type Mutation_RootPublishOrganizerArgs = {
   locales?: InputMaybe<Array<Locale>>;
   publishBase?: InputMaybe<Scalars['Boolean']['input']>;
@@ -16717,6 +19292,16 @@ export type Mutation_RootPublishPackArgs = {
   publishBase?: InputMaybe<Scalars['Boolean']['input']>;
   to?: Array<Stage>;
   where: PackWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootPublishShopifyCampaignTemplateArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  to?: Array<Stage>;
+  where: ShopifyCampaignTemplateWhereUniqueInput;
   withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
@@ -16815,6 +19400,18 @@ export type Mutation_RootSchedulePublishPackArgs = {
 
 
 /** mutation root */
+export type Mutation_RootSchedulePublishShopifyCampaignTemplateArgs = {
+  locales?: InputMaybe<Array<Locale>>;
+  publishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  to?: Array<Stage>;
+  where: ShopifyCampaignTemplateWhereUniqueInput;
+  withDefaultLocale?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** mutation root */
 export type Mutation_RootScheduleUnpublishAssetArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -16897,6 +19494,17 @@ export type Mutation_RootScheduleUnpublishPackArgs = {
   releaseId?: InputMaybe<Scalars['String']['input']>;
   unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: PackWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootScheduleUnpublishShopifyCampaignTemplateArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  releaseAt?: InputMaybe<Scalars['DateTime']['input']>;
+  releaseId?: InputMaybe<Scalars['String']['input']>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  where: ShopifyCampaignTemplateWhereUniqueInput;
 };
 
 
@@ -17141,6 +19749,30 @@ export type Mutation_RootUnpublishManyPacksConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUnpublishManyShopifyCampaignTemplatesArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<ShopifyCampaignTemplateManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishManyShopifyCampaignTemplatesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  from?: Array<Stage>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: InputMaybe<Array<Locale>>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: InputMaybe<Stage>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  where?: InputMaybe<ShopifyCampaignTemplateManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUnpublishOrganizerArgs = {
   from?: Array<Stage>;
   locales?: InputMaybe<Array<Locale>>;
@@ -17155,6 +19787,15 @@ export type Mutation_RootUnpublishPackArgs = {
   locales?: InputMaybe<Array<Locale>>;
   unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
   where: PackWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUnpublishShopifyCampaignTemplateArgs = {
+  from?: Array<Stage>;
+  locales?: InputMaybe<Array<Locale>>;
+  unpublishBase?: InputMaybe<Scalars['Boolean']['input']>;
+  where: ShopifyCampaignTemplateWhereUniqueInput;
 };
 
 
@@ -17353,6 +19994,25 @@ export type Mutation_RootUpdateManyPacksConnectionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateManyShopifyCampaignTemplatesArgs = {
+  data: ShopifyCampaignTemplateUpdateManyInput;
+  where?: InputMaybe<ShopifyCampaignTemplateManyWhereInput>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateManyShopifyCampaignTemplatesConnectionArgs = {
+  after?: InputMaybe<Scalars['ID']['input']>;
+  before?: InputMaybe<Scalars['ID']['input']>;
+  data: ShopifyCampaignTemplateUpdateManyInput;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ShopifyCampaignTemplateManyWhereInput>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateOrganizerArgs = {
   data: OrganizerUpdateInput;
   where: OrganizerWhereUniqueInput;
@@ -17370,6 +20030,13 @@ export type Mutation_RootUpdatePackArgs = {
 export type Mutation_RootUpdateScheduledReleaseArgs = {
   data: ScheduledReleaseUpdateInput;
   where: ScheduledReleaseWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateShopifyCampaignTemplateArgs = {
+  data: ShopifyCampaignTemplateUpdateInput;
+  where: ShopifyCampaignTemplateWhereUniqueInput;
 };
 
 
@@ -18560,6 +21227,13 @@ export type Mutation_RootUpsertOrganizerArgs = {
 export type Mutation_RootUpsertPackArgs = {
   upsert: PackUpsertInput;
   where: PackWhereUniqueInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpsertShopifyCampaignTemplateArgs = {
+  upsert: ShopifyCampaignTemplateUpsertInput;
+  where: ShopifyCampaignTemplateWhereUniqueInput;
 };
 
 /** The nftMintPassword table stores unique passwords that allow for the minting of NFTs on a specific contract. Each password is associated with a contract address, chain ID, and organizer ID, ensuring it can only be used for the intended NFT. Once a password is used to mint an NFT, the minterAddress and tokenId fields are populated, marking the password as consumed and linking it to the minted NFT. */
@@ -23273,6 +25947,14 @@ export type Query_Root = {
   shopifyCampaignStatus_aggregate: ShopifyCampaignStatus_Aggregate;
   /** fetch data from the table: "shopifyCampaignStatus" using primary key columns */
   shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
+  /** Retrieve a single shopifyCampaignTemplate */
+  shopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
+  /** Retrieve document version */
+  shopifyCampaignTemplateVersion?: Maybe<DocumentVersion>;
+  /** Retrieve multiple shopifyCampaignTemplates */
+  shopifyCampaignTemplates: Array<ShopifyCampaignTemplate>;
+  /** Retrieve multiple shopifyCampaignTemplates using the Relay connection interface */
+  shopifyCampaignTemplatesConnection: ShopifyCampaignTemplateConnection;
   /** fetch data from the table: "shopifyCustomer" */
   shopifyCustomer: Array<ShopifyCustomer>;
   /** fetch aggregated fields from the table: "shopifyCustomer" */
@@ -24733,6 +27415,44 @@ export type Query_RootShopifyCampaignStatus_By_PkArgs = {
 };
 
 
+export type Query_RootShopifyCampaignTemplateArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
+  where: ShopifyCampaignTemplateWhereUniqueInput;
+};
+
+
+export type Query_RootShopifyCampaignTemplateVersionArgs = {
+  where: VersionWhereInput;
+};
+
+
+export type Query_RootShopifyCampaignTemplatesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ShopifyCampaignTemplateOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<ShopifyCampaignTemplateWhereInput>;
+};
+
+
+export type Query_RootShopifyCampaignTemplatesConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  locales?: Array<Locale>;
+  orderBy?: InputMaybe<ShopifyCampaignTemplateOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  stage?: Stage;
+  where?: InputMaybe<ShopifyCampaignTemplateWhereInput>;
+};
+
+
 export type Query_RootShopifyCustomerArgs = {
   distinct_on?: InputMaybe<Array<ShopifyCustomer_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -25800,11 +28520,19 @@ export type ShopifyCampaignParameters = {
   gateId: Scalars['String']['output'];
   /** Identifier for the organizer responsible for the campaign. */
   organizerId: Scalars['String']['output'];
+  shopifyCampaignTemplate?: Maybe<ShopifyCampaignTemplate>;
   /** Foreign key linking to the shopifyCampaignTemplate model in the CRM. */
   shopifyCampaignTemplateId: Scalars['String']['output'];
   status?: Maybe<ShopifyCampaignStatus_Enum>;
   /** Timestamp indicating the last update time for the record, set automatically on creation and updated via trigger on modification. */
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+
+/** This table stores parameters specific to Shopify campaigns, including gate identifiers and links to campaign data in the CRM. It supports context resolution in offline unlock iframes and enables tailored content display. */
+export type ShopifyCampaignParametersShopifyCampaignTemplateArgs = {
+  locales?: Array<Locale>;
+  stage?: Stage;
 };
 
 /** aggregated selection of "shopifyCampaignParameters" */

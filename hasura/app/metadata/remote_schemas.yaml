@@ -88,3 +88,5 @@
                 schema: public
           name: loyaltyCardParameters
       type_name: LoyaltyCard
+    - relationships: []
+      type_name: ShopifyCampaignTemplate
