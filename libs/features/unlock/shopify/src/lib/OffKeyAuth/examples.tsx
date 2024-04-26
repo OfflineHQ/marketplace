@@ -2,7 +2,7 @@ import * as walletApi from '@next/wallet';
 import { WalletProvider, useWalletAuth } from '@next/wallet';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
-import { OffKeyGateSignIn } from '../OffKeyGateSignIn/OffKeyGateSignIn';
+import OffKeyGateSignIn from '../OffKeyGateSignIn/OffKeyGateSignIn';
 import { offKeyGateSignInProps } from '../OffKeyGateSignIn/examples';
 import OffKeyHeaderNotConnected from '../OffKeyHeaderNotConnected/OffKeyHeaderNotConnected';
 import {
@@ -11,7 +11,7 @@ import {
 } from '../OffKeyHeaderNotConnected/examples';
 import { OffKeyLayout } from '../OffKeyLayout/OffKeyLayout';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
-import { OffKeyAuth, OffKeyAuthProps } from './OffKeyAuth';
+import OffKeyAuth, { OffKeyAuthProps } from './OffKeyAuth';
 
 export const offKeyAuthProps: OffKeyAuthProps = {
   organizerId: 'organizerId',

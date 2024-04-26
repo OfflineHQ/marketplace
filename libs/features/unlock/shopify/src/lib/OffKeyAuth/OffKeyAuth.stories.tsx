@@ -5,7 +5,7 @@ import {
   ToasterDecorator,
 } from '@test-utils/storybook-decorators';
 import { ShopifyCustomerStatus } from '../types';
-import { OffKeyAuth } from './OffKeyAuth';
+import OffKeyAuth from './OffKeyAuth';
 import { OffKeyAuthDemo, authMocks, offKeyAuthProps } from './examples';
 
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
@@ -110,7 +110,7 @@ export const ExistingAccountNewCustomer: Story = {
     screen.findByText(/Sign in/i);
     userEvent.click(await screen.findByText(/🌶/i));
     userEvent.click(await screen.findByText(/create new account/i));
-    userEvent.click(await screen.findByText(/use existing account/i));
+    userEvent.click(await screen.findByText(/use another account/i));
   },
 };
 
@@ -139,9 +139,9 @@ export const ExistingSeveralAccountNewCustomer: Story = {
   },
   play: async ({ container }) => {
     userEvent.click(await screen.findByText(/create new account/i));
-    userEvent.click(await screen.findByText(/use existing account/i));
+    userEvent.click(await screen.findByText(/use another account/i));
     userEvent.click(await screen.findByText(/🌶/i));
-    userEvent.click(await screen.findByText(/🐧/i));
+    userEvent.click(await screen.findByText(/🦩/i));
   },
 };
 
