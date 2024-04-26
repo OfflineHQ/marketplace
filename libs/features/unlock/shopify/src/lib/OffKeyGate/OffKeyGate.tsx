@@ -3,7 +3,6 @@
 import { Locale, interpolateString } from '@next/i18n';
 import { OffKeyState } from '@next/iframe';
 import { AutoAnimate, Text, TextSkeleton } from '@ui/components';
-import { useTranslations } from 'next-intl';
 import { OffKeyInfo, OffKeyInfoSkeleton } from '../OffKeyInfo/OffKeyInfo';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 
@@ -42,7 +41,6 @@ export default function OffKeyGate({
   locale,
   textGate,
 }: OffKeyGateProps) {
-  const t = useTranslations('Shopify.OffKeyGate');
   const { offKeyState, customer } = useShopifyCustomer({ organizerId });
   const textsSubtitle = {
     [OffKeyState.Unlocked]: interpolateString(

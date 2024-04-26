@@ -28,7 +28,11 @@ export interface OffKeyAuthProps {
   locale: Locale;
 }
 
-export function OffKeyAuth({ organizerId, locale, textAuth }: OffKeyAuthProps) {
+export default function OffKeyAuth({
+  organizerId,
+  locale,
+  textAuth,
+}: OffKeyAuthProps) {
   const {
     connect,
     isReady: isWalletReady,

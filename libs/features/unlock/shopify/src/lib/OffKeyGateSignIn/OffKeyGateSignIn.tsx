@@ -17,7 +17,7 @@ export interface OffKeyGateSignInProps {
   locale: Locale;
 }
 
-export function OffKeyGateSignIn({
+export default function OffKeyGateSignIn({
   organizerId,
   textGateSignIn,
   locale,
