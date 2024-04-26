@@ -5,6 +5,7 @@ import { GetShopifyCustomerQueryVariables } from '@gql/admin/types';
 import handleApiRequest, {
   ApiHandlerOptions,
   BadRequestError,
+  ForbiddenError,
   CustomError,
   InternalServerError,
   NotAuthorizedError,
@@ -19,12 +20,16 @@ import {
   HasLoyaltyCardParams,
   MintLoyaltyCardWithCustomerIdParams,
   MintLoyaltyCardWithPasswordParams,
+  CreateShopifyCustomerParams,
+  GetShopifyCustomerParams,
 } from './validators';
 
 export enum RequestType {
   MintLoyaltyCardWithPassword = 'MintLoyaltyCardWithPassword',
   MintLoyaltyCardWithCustomerId = 'MintLoyaltyCardWithCustomerId',
   HasLoyaltyCard = 'HasLoyaltyCard',
+  CreateShopifyCustomer = 'CreateShopifyCustomer',
+  GetShopifyCustomer = 'GetShopifyCustomer',
 }
 
 const requestTypeValidators = {
@@ -32,6 +37,8 @@ const requestTypeValidators = {
   [RequestType.MintLoyaltyCardWithCustomerId]:
     MintLoyaltyCardWithCustomerIdParams,
   [RequestType.HasLoyaltyCard]: HasLoyaltyCardParams,
+  [RequestType.CreateShopifyCustomer]: CreateShopifyCustomerParams,
+  [RequestType.GetShopifyCustomer]: GetShopifyCustomerParams,
 };
 
 type RequestTypeToValidator = {
@@ -42,6 +49,10 @@ type RequestTypeToValidator = {
     typeof MintLoyaltyCardWithCustomerIdParams
   >;
   [RequestType.HasLoyaltyCard]: z.infer<typeof HasLoyaltyCardParams>;
+  [RequestType.CreateShopifyCustomer]: z.infer<
+    typeof CreateShopifyCustomerParams
+  >;
+  [RequestType.GetShopifyCustomer]: z.infer<typeof GetShopifyCustomerParams>;
 };
 
 export interface MintLoyaltyCardOptions extends ApiHandlerOptions {
@@ -49,6 +60,12 @@ export interface MintLoyaltyCardOptions extends ApiHandlerOptions {
   loyaltyCardSdk?: LoyaltyCardNftWrapper;
 }
 export type HasLoyaltyCardOptions = MintLoyaltyCardOptions;
+
+export interface CreateShopifyCustomerOptions extends ApiHandlerOptions {
+  id: string;
+}
+
+export type GetShopifyCustomerOptions = CreateShopifyCustomerOptions;
 
 export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   constructor() {
@@ -162,6 +179,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     return res?.shopifyCustomer?.[0];
   }
 
+  // POST apps/web/app/api/shopify/loyalty-card/[contractAddress]/route.ts
   mintLoyaltyCardWithCustomerId = handleApiRequest<MintLoyaltyCardOptions>(
     async (options) => {
       const { req, contractAddress } = options;
@@ -178,8 +196,11 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         organizerId,
         customerId,
       });
-      if (shopifyCustomer && shopifyCustomer.address !== ownerAddress) {
-        throw new NotAuthorizedError(
+      if (
+        shopifyCustomer &&
+        shopifyCustomer.address.toLowerCase() !== ownerAddress.toLowerCase()
+      ) {
+        throw new ForbiddenError(
           'Invalid owner address. The owner address must match the address of the customer.',
         );
       }
@@ -215,7 +236,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
           object: {
             organizerId,
             customerId,
-            address: ownerAddress,
+            address: ownerAddress.toLowerCase(),
           },
         });
       }
@@ -274,6 +295,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     },
   );
 
+  // GET apps/web/app/api/shopify/loyalty-card/[contractAddress]/route.ts
   hasLoyaltyCard = handleApiRequest<HasLoyaltyCardOptions>(async (options) => {
     const { req, contractAddress } = options;
 
@@ -307,4 +329,65 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       headers: { 'Content-Type': 'application/json' },
     });
   });
+
+  // POST apps/web/app/api/shopify/customer/[id]/route.ts
+  createShopifyCustomer = handleApiRequest<CreateShopifyCustomerOptions>(
+    async (options) => {
+      const { req, id } = options;
+      const { resultParams, organizerId } =
+        await this.extractAndVerifyShopifyRequest(req);
+      const validatedParams = await this.serializeAndValidateParams(
+        RequestType.CreateShopifyCustomer,
+        resultParams,
+      );
+      const shopifyCustomer = await this.getShopifyCustomer({
+        organizerId,
+        id,
+      });
+      if (shopifyCustomer) {
+        throw new BadRequestError('Customer already exists');
+      }
+      await adminSdk.InsertShopifyCustomer({
+        object: {
+          organizerId,
+          id,
+          address: validatedParams.address.toLowerCase(),
+        },
+      });
+      return new NextResponse(JSON.stringify({}), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    },
+  );
+
+  // GET apps/web/app/api/shopify/customer/[id]/route.ts
+  hasShopifyCustomer = handleApiRequest<GetShopifyCustomerOptions>(
+    async (options) => {
+      const { req, id } = options;
+      const { resultParams, organizerId } =
+        await this.extractAndVerifyShopifyRequest(req);
+      const validatedParams = await this.serializeAndValidateParams(
+        RequestType.CreateShopifyCustomer,
+        resultParams,
+      );
+      const shopifyCustomer = await this.getShopifyCustomer({
+        organizerId,
+        id,
+      });
+      if (
+        shopifyCustomer &&
+        shopifyCustomer.address.toLowerCase() !==
+          validatedParams.address.toLowerCase()
+      ) {
+        throw new ForbiddenError(
+          'Invalid address. The address must match the address of the customer.',
+        );
+      }
+      return new NextResponse(JSON.stringify(shopifyCustomer), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    },
+  );
 }

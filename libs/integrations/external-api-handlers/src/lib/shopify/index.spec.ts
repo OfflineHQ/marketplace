@@ -220,7 +220,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
       };
       const response =
         await shopifyHandler.mintLoyaltyCardWithPassword(options);
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(401);
     });
     it('throws BadRequestError for invalid query parameters', async () => {
       shopifyHandler.serializeAndValidateParams = jest
@@ -370,7 +370,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
         contractAddress: 'test-contract',
         loyaltyCardSdk: mockLoyaltyCardSdk,
       });
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(401);
       expect(JSON.parse(response.body)).toEqual(
         expect.objectContaining({
           error: expect.stringContaining('Not Authorized: Invalid API key'),
@@ -491,7 +491,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
       });
     });
 
-    it('should throw NotAuthorizedError if the owner address does not match the customer address', async () => {
+    it('should throw ForbiddenError if the owner address does not match the customer address', async () => {
       (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
         shopifyCustomer: [
           {
@@ -546,6 +546,124 @@ describe('ShopifyWebhookAndApiHandler', () => {
       expect(JSON.parse(response.body)).toEqual(
         expect.objectContaining({
           error: expect.any(String),
+        }),
+      );
+    });
+  });
+  describe('ShopifyWebhookAndApiHandler - createShopifyCustomer', () => {
+    let handler: ShopifyWebhookAndApiHandler;
+    let mockRequest: NextRequest;
+
+    beforeEach(() => {
+      handler = new ShopifyWebhookAndApiHandler();
+      mockRequest = createMockRequest(
+        new URLSearchParams({
+          address: 'test-address',
+          shop: 'example.myshopify.com',
+          timestamp: Date.now().toString(),
+          signature: 'validSignature',
+        }),
+      );
+
+      handler.extractAndVerifyShopifyRequest = jest.fn().mockResolvedValue({
+        resultParams: {
+          address: 'test-address',
+        },
+        organizerId: 'test-organizer-id',
+      });
+
+      (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
+        shopifyCustomer: [],
+      });
+    });
+
+    it('should create a new Shopify customer', async () => {
+      const response = await handler.createShopifyCustomer({
+        req: mockRequest,
+        id: 'test-customer-id',
+      });
+
+      expect(response.status).toBe(200);
+      expect(adminSdk.InsertShopifyCustomer).toHaveBeenCalledWith({
+        object: {
+          organizerId: 'test-organizer-id',
+          id: 'test-customer-id',
+          address: 'test-address',
+        },
+      });
+    });
+
+    it('should throw BadRequestError if the customer already exists', async () => {
+      (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
+        shopifyCustomer: [{ address: 'test-address' }],
+      });
+
+      const response = await handler.createShopifyCustomer({
+        req: mockRequest,
+        id: 'test-customer-id',
+      });
+
+      expect(response.status).toBe(400);
+      expect(JSON.parse(response.body)).toEqual(
+        expect.objectContaining({
+          error: expect.stringContaining('Customer already exists'),
+        }),
+      );
+    });
+  });
+
+  describe('ShopifyWebhookAndApiHandler - hasShopifyCustomer', () => {
+    let handler: ShopifyWebhookAndApiHandler;
+    let mockRequest: NextRequest;
+
+    beforeEach(() => {
+      handler = new ShopifyWebhookAndApiHandler();
+      mockRequest = createMockRequest(
+        new URLSearchParams({
+          address: 'test-address',
+          shop: 'example.myshopify.com',
+          timestamp: Date.now().toString(),
+          signature: 'validSignature',
+        }),
+      );
+
+      handler.extractAndVerifyShopifyRequest = jest.fn().mockResolvedValue({
+        resultParams: {
+          address: 'test-address',
+        },
+        organizerId: 'test-organizer-id',
+      });
+
+      (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
+        shopifyCustomer: [{ address: 'test-address' }],
+      });
+    });
+
+    it('should return the Shopify customer', async () => {
+      const response = await handler.hasShopifyCustomer({
+        req: mockRequest,
+        id: 'test-customer-id',
+      });
+
+      expect(response.status).toBe(200);
+      expect(JSON.parse(response.body)).toEqual({ address: 'test-address' });
+    });
+
+    it('should throw ForbiddenError if the address does not match', async () => {
+      (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
+        shopifyCustomer: [{ address: 'different-address' }],
+      });
+      const response = await handler.hasShopifyCustomer({
+        req: mockRequest,
+        id: 'test-customer-id',
+      });
+
+      expect(response.status).toBe(403);
+      expect(JSON.parse(response.body)).toEqual(
+        expect.objectContaining({
+          error: expect.stringContaining(
+            'Invalid address. The address must match the address of the customer.',
+          ),
         }),
       );
     });
