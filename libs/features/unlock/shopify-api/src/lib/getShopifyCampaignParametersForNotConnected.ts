@@ -1,9 +1,6 @@
 import env from '@env/server';
 import { adminSdk } from '@gql/admin/api';
-import {
-  GetShopifyCampaignParametersForNotConnectedQuery,
-  GetShopifyCampaignParametersForNotConnectedQueryVariables,
-} from '@gql/admin/types';
+import { GetShopifyCampaignParametersForNotConnectedQueryVariables } from '@gql/admin/types';
 import { Stage } from '@gql/shared/types';
 import { cache } from 'react';
 
@@ -12,23 +9,8 @@ type GetShopifyCampaignParametersForNotConnectedProps = Omit<
   'stage'
 >;
 
-type ShopifyCampaignParameters = NonNullable<
-  GetShopifyCampaignParametersForNotConnectedQuery['shopifyCampaignParameters_by_pk']
->;
-
-type ShopifyCampaignTemplate = NonNullable<
-  ShopifyCampaignParameters['shopifyCampaignTemplate']
->;
-
-interface ShopifyCampaignParametersForNotConnected
-  extends Omit<ShopifyCampaignParameters, 'shopifyCampaignTemplate'> {
-  shopifyCampaignTemplate: ShopifyCampaignTemplate;
-}
-
 export const getShopifyCampaignParametersForNotConnected = cache(
-  async (
-    props: GetShopifyCampaignParametersForNotConnectedProps,
-  ): Promise<ShopifyCampaignParametersForNotConnected | null> => {
+  async (props: GetShopifyCampaignParametersForNotConnectedProps) => {
     const data = await adminSdk.GetShopifyCampaignParametersForNotConnected({
       ...props,
       stage: env.HYGRAPH_STAGE as Stage,
@@ -37,6 +19,9 @@ export const getShopifyCampaignParametersForNotConnected = cache(
     if (!campaign || !campaign.shopifyCampaignTemplate) {
       return null;
     }
-    return campaign;
+    return {
+      ...campaign,
+      shopifyCampaignTemplate: campaign.shopifyCampaignTemplate!,
+    };
   },
 );

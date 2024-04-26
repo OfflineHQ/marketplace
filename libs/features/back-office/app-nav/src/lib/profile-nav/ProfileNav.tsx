@@ -17,7 +17,7 @@ import { truncateEmailString, truncateString } from '@utils';
 import { RoleAvatar } from '../role-avatar/RoleAvatar';
 
 export interface ProfileNavProps
-  extends Omit<ProfileNavUserProps, 'user'>,
+  extends Omit<ProfileNavUserProps, 'user' | 'size'>,
     Omit<ProfileNavRoleProps, 'role'>,
     ProfileNavNotConnectedProps,
     DropdownMenuItemsProps {

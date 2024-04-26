@@ -31,11 +31,10 @@ export function getLocalizedUrls(url: string) {
 }
 
 interface StringMap {
-  [key: string]: PrimitiveType | React.ReactElement | FormatXMLElementFn;
+  [key: string]: PrimitiveType | FormatXMLElementFn;
 }
-
 interface FormatXMLElementFn {
-  (parts: React.ReactElement[]): React.ReactElement;
+  (parts: string[]): string;
 }
 
 interface Options {
@@ -52,7 +51,11 @@ function interpolateString(
 ) {
   try {
     const messageFormat = new IntlMessageFormat(str, locale, formats, opts);
-    return messageFormat.format<string>(values);
+    const result = messageFormat.format(values ?? {});
+    if (Array.isArray(result)) {
+      return result.join('') as string; // Join parts without any separator
+    }
+    return result as string;
   } catch (error) {
     console.error('Error interpolating string:', error);
     return str;

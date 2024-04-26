@@ -34,8 +34,8 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       offKeyState,
     };
   }
-  // means the iframe parent is ready and the customer is connected but the data is loading
-  else if (isLoading) {
+  // means the iframe parent is ready and the customer is connected but the data is loading or got an error
+  else if (isLoading || error) {
     return {
       customer,
       status: null,

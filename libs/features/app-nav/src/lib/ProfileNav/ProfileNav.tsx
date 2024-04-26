@@ -10,14 +10,14 @@ import {
   TextSkeleton,
 } from '@ui/components';
 import { OutlineUserCircle } from '@ui/icons';
-import { truncateEmailString, truncateString } from '@utils';
+import { truncateEmailString } from '@utils';
 import {
   ProfileAvatar,
   ProfileAvatarProps,
 } from '../profile-avatar/ProfileAvatar';
 
 export interface ProfileNavProps
-  extends Omit<ProfileAvatarProps, 'user'>,
+  extends Omit<ProfileAvatarProps, 'user' | 'size'>,
     DropdownMenuItemsProps {
   user?: ProfileAvatarProps['user'];
   signInText?: React.ReactNode;

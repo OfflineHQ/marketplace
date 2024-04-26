@@ -2,9 +2,10 @@
 
 import { Locale, interpolateString } from '@next/i18n';
 import { OffKeyState } from '@next/iframe';
-import { AutoAnimate, Text, TextSkeleton } from '@ui/components';
-import { OffKeyInfo, OffKeyInfoSkeleton } from '../OffKeyInfo/OffKeyInfo';
+import { AutoAnimate, Text } from '@ui/components';
+import { OffKeyInfo } from '../OffKeyInfo/OffKeyInfo';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
+import { OffKeyGateSkeleton } from './OffKeyGateSkeleton';
 
 export interface OffKeyGateProps {
   className?: string;
@@ -114,19 +115,5 @@ export default function OffKeyGate({
         <OffKeyGateSkeleton className={className} />
       )}
     </AutoAnimate>
-  );
-}
-
-export function OffKeyGateSkeleton({ className }: { className?: string }) {
-  return (
-    <div className={`flex flex-col justify-between space-y-4 ${className}`}>
-      <div className="flex flex-col space-y-4 px-2">
-        <TextSkeleton variant="h6" />
-        <TextSkeleton variant="p" />
-      </div>
-      <div className="flex flex-col justify-end">
-        <OffKeyInfoSkeleton />
-      </div>
-    </div>
   );
 }

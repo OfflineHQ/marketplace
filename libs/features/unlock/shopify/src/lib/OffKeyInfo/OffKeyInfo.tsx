@@ -1,6 +1,6 @@
 import { OffKeyLogo } from '@features/unlock/app-nav';
 import { OffKeyState } from '@next/iframe';
-import { Text, TextSkeleton } from '@ui/components';
+import { Text } from '@ui/components';
 import { Key } from '@ui/icons';
 
 export interface OffKeyInfoProps {
@@ -66,15 +66,3 @@ export function OffKeyInfo({
     </div>
   );
 }
-
-export const OffKeyInfoSkeleton: React.FC = () => {
-  return (
-    <div className="off-key-info flex justify-between border pl-4">
-      <div className="flex items-center py-2">
-        <OffKeyLogo className="size-auto" />
-        <TextSkeleton className="mx-4" />
-      </div>
-      <div className="flex h-full w-32 animate-pulse bg-skeleton" />
-    </div>
-  );
-};
