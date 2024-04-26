@@ -4,7 +4,7 @@ import {
   buttonSizes,
   type ButtonProps,
 } from './Button';
-import { delayData } from '@test-utils/functions';
+import { sleep } from '@utils';
 import { OutlineArrowRight } from '@ui/icons';
 
 export const variantOptions = Object.keys(buttonVariants);
@@ -65,7 +65,7 @@ export const AllbuttonVariantsLoadingComponent: React.FC<
         key={variant}
         size={size}
         variant={variant as keyof typeof buttonVariants}
-        onClick={() => delayData(3000, null)}
+        onClick={() => sleep(3000)}
         isLoading
       >
         {variant} Loading
@@ -83,7 +83,7 @@ export const AllbuttonSizesLoadingComponent: React.FC<
         key={size}
         size={size as keyof typeof buttonSizes}
         variant={variant}
-        onClick={() => delayData(3000, null)}
+        onClick={() => sleep(3000)}
         isLoading
       >
         {size} Loading

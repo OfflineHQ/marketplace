@@ -56,13 +56,6 @@ export const Opened: Story = {
   play: async () => {
     await userEvent.click(
       await screen.findByRole('button', {
-        name: /Lorem ipsum/i,
-      }),
-    );
-    await screen.findByText(/6 x/i);
-    await screen.findByText(/General Admission/i);
-    await userEvent.click(
-      await screen.findByRole('button', {
         name: /World cup/i,
       }),
     );

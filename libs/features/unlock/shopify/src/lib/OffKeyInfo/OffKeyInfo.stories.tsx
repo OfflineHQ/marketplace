@@ -1,7 +1,8 @@
 import { OffKeyState } from '@next/iframe';
 import { StoryObj, type Meta } from '@storybook/react';
 import React from 'react';
-import { OffKeyInfo, OffKeyInfoSkeleton } from './OffKeyInfo';
+import { OffKeyInfo } from './OffKeyInfo';
+import { OffKeyInfoSkeleton } from './OffKeyInfoSkeleton';
 
 const meta = {
   component: OffKeyInfo,
