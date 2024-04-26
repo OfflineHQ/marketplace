@@ -1,7 +1,5 @@
-// import { ShopifyCard, ShopifyCardHeader } from '@features/unlock/shopify';
 import { OffKeyLayout } from '@features/unlock/shopify';
-import { messages, type Locale } from '@next/i18n';
-import { deepPick } from '@utils';
+import { type Locale } from '@next/i18n';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -19,21 +17,10 @@ export default function Layout({
   header,
   params: { locale },
 }: LayoutProps) {
-  const localeMessages = deepPick(messages[locale], ['Shopify.Auth']);
   return (
     <OffKeyLayout header={header}>
       {children}
       {auth}
     </OffKeyLayout>
-    // <ShopifyCard
-    //   footer={
-    //     <NextIntlClientProvider locale={locale} messages={localeMessages}>
-    //       {auth}
-    //     </NextIntlClientProvider>
-    //   }
-    //   header={<ShopifyCardHeader />}
-    // >
-    //   {children}
-    // </ShopifyCard>
   );
 }

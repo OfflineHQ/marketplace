@@ -11,7 +11,7 @@ export interface OffKeyHeaderConnectedProps
   viewType: OffKeyViewHeaderConnected;
   textHeaderConnected: {
     default: string;
-    howToGetKey: string;
+    howToGet: string;
   };
   organizerId: string;
   locale: Locale;
@@ -38,7 +38,7 @@ export default function OffKeyHeaderConnected({
       customer,
     ),
     [OffKeyViewHeaderConnected.HowToGet]: interpolateString(
-      textHeaderConnected.howToGetKey,
+      textHeaderConnected.howToGet,
       locale,
       customer,
     ),

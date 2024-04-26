@@ -2,8 +2,8 @@ import * as walletApi from '@next/wallet';
 import { WalletProvider, useWalletAuth } from '@next/wallet';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
-import OffKeyGateSignIn from '../OffKeyGateSignIn/OffKeyGateSignIn';
-import { offKeyGateSignInProps } from '../OffKeyGateSignIn/examples';
+import OffKeyGateNotConnected from '../OffKeyGateNotConnected/OffKeyGateNotConnected';
+import { offKeyGateNotConnectedProps } from '../OffKeyGateNotConnected/examples';
 import OffKeyHeaderNotConnected from '../OffKeyHeaderNotConnected/OffKeyHeaderNotConnected';
 import {
   offKeyHeaderNotConnectedProps,
@@ -34,7 +34,10 @@ export function OffKeyAuthDemo(props: OffKeyAuthProps) {
       <OffKeyLayout
         header={<OffKeyHeaderNotConnected {...offKeyHeaderNotConnectedProps} />}
       >
-        <OffKeyGateSignIn {...offKeyGateSignInProps} />
+        <OffKeyGateNotConnected
+          className="flex-1 py-2"
+          {...offKeyGateNotConnectedProps}
+        />
         <OffKeyAuth {...props} />
       </OffKeyLayout>
     </WalletProvider>

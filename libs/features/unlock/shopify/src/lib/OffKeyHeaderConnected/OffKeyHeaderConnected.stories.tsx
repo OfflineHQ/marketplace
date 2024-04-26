@@ -90,7 +90,7 @@ export const Default: Story = {
   },
 };
 
-export const howToGetKey: Story = {
+export const howToGet: Story = {
   args: {
     viewType: OffKeyViewHeaderConnected.HowToGet,
   },
