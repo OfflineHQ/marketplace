@@ -9,11 +9,20 @@ abstract class CustomError extends Error {
 }
 
 class NotAuthorizedError extends CustomError {
-  statusCode = 403; // HTTP status code for Forbidden
+  statusCode = 401; // HTTP status code for Unauthorized
 
   constructor(message = 'Not Authorized') {
     super(message);
     this.name = 'NotAuthorizedError';
+  }
+}
+
+class ForbiddenError extends CustomError {
+  statusCode = 403; // HTTP status code for Forbidden
+
+  constructor(message = 'Forbidden') {
+    super(message);
+    this.name = 'ForbiddenError';
   }
 }
 
@@ -49,6 +58,7 @@ export {
   BadRequestError,
   CustomError,
   InternalServerError,
+  ForbiddenError,
   NotAuthorizedError,
   NotFoundError,
 };
