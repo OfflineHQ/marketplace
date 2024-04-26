@@ -6,7 +6,6 @@ import {
   waitForElementToBeRemoved,
   within,
 } from '@storybook/test';
-import { delayData } from '@test-utils/functions';
 import { Settings } from '@ui/icons';
 
 import { sleep } from '@utils';
@@ -54,7 +53,7 @@ type Story = StoryObj<typeof meta>;
 export const DefaultButton = {
   args: {
     children: 'Button with Click and Loading',
-    onClick: () => delayData(1000, null),
+    onClick: () => sleep(1000),
   },
   play: async ({ canvasElement, controls }) => {
     const canvas = within(canvasElement);
