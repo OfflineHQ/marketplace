@@ -5,6 +5,7 @@ import { Text, TextSkeleton } from '@ui/components';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 import { OffKeyHeader } from '../OffKeyHeader/OffKeyHeader';
 import { ShopifyCustomerStatus } from '../types';
+import { OffKeyHeaderNotConnectedSkeleton } from './OffKeyHeaderNotConnectedSkeleton';
 
 export interface OffKeyHeaderNotConnectedProps {
   organizerId: string;
@@ -21,7 +22,7 @@ export default function OffKeyHeaderNotConnected({
   locale,
 }: OffKeyHeaderNotConnectedProps) {
   const { customer, status } = useShopifyCustomer({ organizerId });
-  if (!status) return <OffKeyHeader title={<TextSkeleton variant="h6" />} />;
+  if (!status) return <OffKeyHeaderNotConnectedSkeleton />;
   let title;
   if (status !== ShopifyCustomerStatus.NotConnected) {
     title = interpolateString(

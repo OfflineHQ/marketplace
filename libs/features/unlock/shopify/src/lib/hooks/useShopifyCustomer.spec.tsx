@@ -128,12 +128,34 @@ describe('useShopifyCustomer', () => {
 
   it('returns correct status when wallet does not match', () => {
     (useGetShopifyCustomerQuery as jest.Mock).mockReturnValue({
-      data: { shopifyCustomer: [{ address: '0x123' }] },
+      data: {
+        shopifyCustomer: [
+          { address: '0x1234567890123456789012345678901234567890' },
+        ],
+      },
       isLoading: false,
       error: null,
     });
     (useWalletContext as jest.Mock).mockReturnValue({
-      walletInStorage: [{ address: '0x456' }],
+      walletInStorage: [
+        { address: '0x0987654321098765432109876543210987654321' },
+      ],
+    });
+
+    const { result } = renderHook(() =>
+      useShopifyCustomer({ organizerId: mockOrganizerId }),
+    );
+    expect(result.current.customer).toEqual(mockCustomer);
+    expect(result.current.status).toBe(ShopifyCustomerStatus.NoMatchingAccount);
+    expect(result.current.walletToConnect).toBe(
+      '0x1234567890123456789012345678901234567890',
+    );
+  });
+  it('returns correct status when query returns an error', () => {
+    (useGetShopifyCustomerQuery as jest.Mock).mockReturnValue({
+      data: null,
+      isLoading: false,
+      error: new Error('Query error'),
     });
 
     const { result } = renderHook(() =>
@@ -141,7 +163,6 @@ describe('useShopifyCustomer', () => {
     );
 
     expect(result.current.customer).toEqual(mockCustomer);
-    expect(result.current.status).toBe(ShopifyCustomerStatus.NoMatchingAccount);
-    expect(result.current.walletToConnect).toBeUndefined();
+    expect(result.current.status).toBeNull();
   });
 });

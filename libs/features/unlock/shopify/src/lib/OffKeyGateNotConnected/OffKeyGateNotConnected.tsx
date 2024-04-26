@@ -4,6 +4,7 @@ import { interpolateString, Locale } from '@next/i18n';
 import { AutoAnimate, Text, TextSkeleton } from '@ui/components';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 import { ShopifyCustomerStatus } from '../types';
+import { OffKeyGateNotConnectedSkeleton } from './OffKeyGateNotConnectedSkeleton';
 
 export interface OffKeyGateNotConnectedProps {
   className?: string;
@@ -106,20 +107,5 @@ export default function OffKeyGateNotConnected({
         <OffKeyGateNotConnectedSkeleton className={className} />
       )}
     </AutoAnimate>
-  );
-}
-
-export function OffKeyGateNotConnectedSkeleton({
-  className,
-}: {
-  className?: string;
-}) {
-  return (
-    <div className={`flex flex-col justify-between space-y-4 ${className}`}>
-      <div className="flex flex-col space-y-4 px-2">
-        <TextSkeleton variant="h6" />
-        <TextSkeleton variant="p" />
-      </div>
-    </div>
   );
 }

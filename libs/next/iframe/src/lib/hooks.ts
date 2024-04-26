@@ -26,7 +26,7 @@ export const useIframeConnect = () => {
     } satisfies IFrameChildMessage<SendMessageType.DISCONNECT>);
   };
 
-  const signWithEthereum = async (messageToSign) => {
+  const signWithEthereum = async (messageToSign: string) => {
     if (!iframeParent) {
       throw new Error(
         'Cannot send signature message to Dapp, iframe parent not found',
@@ -41,7 +41,7 @@ export const useIframeConnect = () => {
       const signature = await wallet.signMessage(messageToSign);
       iframeParent?.sendMessage({
         type: SendMessageType.SIGNATURE,
-        value: { address, message, signature },
+        value: { address, message: messageToSign, signature },
       } satisfies IFrameChildMessage<SendMessageType.SIGNATURE>);
     } catch (e) {
       setConnectStatus(ConnectStatus.ERROR);

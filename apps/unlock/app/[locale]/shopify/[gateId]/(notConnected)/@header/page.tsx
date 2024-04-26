@@ -11,7 +11,10 @@ interface HeaderProps {
 }
 
 const OffKeyHeaderNotConnected = dynamic(
-  () => import('@features/unlock/shopify').then((mod) => mod.OffKeyHeader),
+  () =>
+    import('@features/unlock/shopify').then(
+      (mod) => mod.OffKeyHeaderNotConnected,
+    ),
   { ssr: false },
 );
 

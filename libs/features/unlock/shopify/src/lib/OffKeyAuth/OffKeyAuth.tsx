@@ -5,11 +5,12 @@ import { interpolateString, Locale } from '@next/i18n';
 import { usePathname, useRouter } from '@next/navigation';
 import { useWalletAuth } from '@next/wallet';
 import { useMutation } from '@tanstack/react-query';
-import { Button, ButtonSkeleton } from '@ui/components';
+import { Button } from '@ui/components';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 import { ShopifyCustomerStatus } from '../types';
+import { OffKeyAuthSkelton } from './OffKeyAuthSkelton';
 
 import { ConnectProps, OffKeyAuthSignIn } from './OffKeyAuthSignIn';
 
@@ -216,15 +217,6 @@ export default function OffKeyAuth({
   return (
     <div className="flex w-full flex-1 flex-col justify-end space-y-3">
       {renderStatusActions()}
-    </div>
-  );
-}
-
-export function OffKeyAuthSkelton() {
-  return (
-    <div className="flex w-full flex-1 flex-col justify-end space-y-3">
-      <ButtonSkeleton className="w-full bg-primary" />
-      <ButtonSkeleton className="w-full" />
     </div>
   );
 }
