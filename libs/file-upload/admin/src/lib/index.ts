@@ -46,9 +46,6 @@ export async function executeJobWithRetry(
       minTimeout: 2000, // the number of milliseconds before starting the first retry
       onRetry: (error) =>
         console.log(`Retrying due to error: ${getErrorMessage(error)}`), // called when a retry is happening
-      errorFilter: (error: unknown) =>
-        getErrorMessage(error).startsWith('Job still running') ||
-        getErrorMessage(error).startsWith('Job failed'),
     });
   } catch (error) {
     if (getErrorMessage(error).startsWith('Job still running')) {
