@@ -342,7 +342,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       );
       const shopifyCustomer = await this.getShopifyCustomer({
         organizerId,
-        id,
+        customerId: id,
       });
       if (shopifyCustomer) {
         throw new BadRequestError('Customer already exists');
@@ -373,7 +373,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       );
       const shopifyCustomer = await this.getShopifyCustomer({
         organizerId,
-        id,
+        customerId: id,
       });
       if (
         shopifyCustomer &&
