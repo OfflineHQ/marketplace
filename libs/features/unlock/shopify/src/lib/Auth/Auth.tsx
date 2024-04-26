@@ -16,6 +16,8 @@ const AuthDialogDynamic = dynamic(
   { ssr: false },
 );
 
+// !! THIS COMPONENT IS DEPRECATED
+
 export function ShopifyAuth() {
   const t = useTranslations('Shopify.Auth');
   const { toast } = useToast();

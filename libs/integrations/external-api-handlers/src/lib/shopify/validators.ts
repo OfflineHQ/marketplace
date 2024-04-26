@@ -14,6 +14,14 @@ export const HasLoyaltyCardParams = z.object({
   ownerAddress: z.string(),
 });
 
+export const CreateShopifyCustomerParams = z.object({
+  address: z.string(),
+});
+
+export const GetShopifyCustomerParams = z.object({
+  address: z.string(),
+});
+
 export const LineItemSchema = z.object({
   key: z.string(),
   destination_location_id: z.number(),

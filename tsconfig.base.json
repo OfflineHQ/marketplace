@@ -126,6 +126,9 @@
       "@features/settings/server": ["libs/features/settings/src/server.ts"],
       "@features/unlock/app-nav": ["libs/features/unlock/app-nav/src/index.ts"],
       "@features/unlock/shopify": ["libs/features/unlock/shopify/src/index.ts"],
+      "@features/unlock/shopify-api": [
+        "libs/features/unlock/shopify-api/src/index.ts"
+      ],
       "@file-upload/admin": ["libs/file-upload/admin/src/index.ts"],
       "@file-upload/user": ["libs/file-upload/user/src/index.ts"],
       "@gql/admin/api": ["libs/gql/admin/api/src/index.ts"],
@@ -216,7 +219,6 @@
       "@smart-wallet/admin": ["libs/smart-wallet/admin/src/index.ts"],
       "@test-utils/cache": ["libs/test-utils/cache/src/index.ts"],
       "@test-utils/db": ["libs/test-utils/db/src/index.ts"],
-      "@test-utils/functions": ["libs/test-utils/functions/src/index.ts"],
       "@test-utils/gql": ["libs/test-utils/gql/src/index.ts"],
       "@test-utils/hasura": ["libs/test-utils/hasura/src/index.ts"],
       "@test-utils/next-intl": ["libs/test-utils/next-intl/src/index.tsx"],

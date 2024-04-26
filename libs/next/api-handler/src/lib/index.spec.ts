@@ -3,6 +3,7 @@ import {
   BadRequestError,
   InternalServerError,
   NotAuthorizedError,
+  ForbiddenError,
   NotFoundError,
 } from './apiErrorHandlers';
 import handleApiRequest from './index';
@@ -44,7 +45,7 @@ describe('handleApiRequest', () => {
     expect(response.status).toBeUndefined(); // Success does not set a status code
   });
 
-  it('should handle NotAuthorizedError with a 403 status', async () => {
+  it('should handle NotAuthorizedError with a 401 status', async () => {
     const handler = jest
       .fn()
       .mockRejectedValue(new NotAuthorizedError('Unauthorized access'));
@@ -55,6 +56,18 @@ describe('handleApiRequest', () => {
     expect(response.body).toBe(
       JSON.stringify({ error: 'Unauthorized access' }),
     );
+    expect(response.status).toBe(401);
+  });
+
+  it('should handle ForbiddenError with a 403 status', async () => {
+    const handler = jest
+      .fn()
+      .mockRejectedValue(new ForbiddenError('Forbidden'));
+    const wrappedHandler = handleApiRequest(handler);
+
+    const response = await wrappedHandler(mockRequest);
+
+    expect(response.body).toBe(JSON.stringify({ error: 'Forbidden' }));
     expect(response.status).toBe(403);
   });
 

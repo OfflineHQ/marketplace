@@ -26,7 +26,7 @@ export const useIframeConnect = () => {
     } satisfies IFrameChildMessage<SendMessageType.DISCONNECT>);
   };
 
-  const signWithEthereum = async () => {
+  const signWithEthereum = async (messageToSign: string) => {
     if (!iframeParent) {
       throw new Error(
         'Cannot send signature message to Dapp, iframe parent not found',
@@ -38,11 +38,10 @@ export const useIframeConnect = () => {
     try {
       setConnectStatus(ConnectStatus.CONNECTING);
       const address = wallet.getAddress();
-      const message = 'Offline';
-      const signature = await wallet.signMessage(message);
+      const signature = await wallet.signMessage(messageToSign);
       iframeParent?.sendMessage({
         type: SendMessageType.SIGNATURE,
-        value: { address, message, signature },
+        value: { address, message: messageToSign, signature },
       } satisfies IFrameChildMessage<SendMessageType.SIGNATURE>);
     } catch (e) {
       setConnectStatus(ConnectStatus.ERROR);
@@ -78,10 +77,19 @@ export const useIframeConnect = () => {
   };
 };
 
+// Here we rely on uiReady to determine if the iframe has been set (here means the iframe received css settings from the parent)
+export const useIframeReady = () => {
+  const { uiReady } = useIFrame();
+  return uiReady;
+};
+
 export const useIframeOffKey = () => {
-  const { offKeyState } = useIFrame();
+  const { offKeyState, customer, iframeParent } = useIFrame();
+  const isIframeReady = useIframeReady();
 
   return {
     offKeyState,
+    customer,
+    isReady: isIframeReady,
   };
 };

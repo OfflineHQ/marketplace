@@ -1,3 +1,15 @@
 table:
   name: shopifyCampaignParameters
   schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - shopifyCampaignTemplateId
+        remote_field:
+          shopifyCampaignTemplate:
+            arguments:
+              where:
+                id: $shopifyCampaignTemplateId
+        remote_schema: Hygraph CMS Remote Schema
+    name: shopifyCampaignTemplate

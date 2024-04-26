@@ -1,33 +1,40 @@
 'use client';
 
 import { ProfileAvatar } from '@features/app-nav';
+import { interpolateString, Locale } from '@next/i18n';
 import { ConnectStatus, useIframeConnect } from '@next/iframe';
 import { usePathname, useRouter } from '@next/navigation';
 import { AppUser } from '@next/types';
-import { useWalletAuth, useWalletContext } from '@next/wallet';
+import { useWalletAuth } from '@next/wallet';
 import { useMutation } from '@tanstack/react-query';
 import {
-  AutoAnimate,
   AvatarSkeleton,
   Button,
   DropdownMenu,
   DropdownMenuItems,
   DropdownMenuItemsProps,
   DropdownMenuTrigger,
-  Spinner,
-  useToast,
 } from '@ui/components';
 import { LogOut } from '@ui/icons';
-import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 
 export interface OffKeyProfileProps {
+  organizerId: string;
   user: AppUser;
+  textProfile: {
+    myAccount: string;
+    signOut: string;
+  };
+  locale: Locale;
 }
-export default function OffKeyProfile({ user }: OffKeyProfileProps) {
-  const t = useTranslations('Shopify.OffKeyProfile');
-  const { toast } = useToast();
+export default function OffKeyProfile({
+  user,
+  textProfile,
+  locale,
+  organizerId,
+}: OffKeyProfileProps) {
   const {
     connect,
     disconnect,
@@ -43,10 +50,19 @@ export default function OffKeyProfile({ user }: OffKeyProfileProps) {
     signWithEthereum,
     askForWalletConnectStatus,
   } = useIframeConnect();
-  const { walletConnected, autoConnectAddress } = useWalletContext();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [userActionLoading, setUserActionLoading] = useState(false);
+
+  const { customer, walletToConnect, walletInStorage } = useShopifyCustomer({
+    organizerId,
+  });
+
+  const texts = {
+    myAccount: interpolateString(textProfile.myAccount, locale, customer),
+    signOut: interpolateString(textProfile.signOut, locale, customer),
+  };
 
   const connectWalletMutation = useMutation({
     mutationFn: (newWallet: string) => connect(newWallet),
@@ -68,7 +84,7 @@ export default function OffKeyProfile({ user }: OffKeyProfileProps) {
     onError: (error: any) => {
       console.log('error connecting to dapp', error);
       signOutUserAction(true);
-      // Handle connection error
+      //TODO: Handle connection error display
     },
   });
 
@@ -78,16 +94,18 @@ export default function OffKeyProfile({ user }: OffKeyProfileProps) {
       connectStatus,
       connectToDappMutationStatus: connectToDappMutation.status,
     });
+    if (!customer?.id) return;
     if (isWalletReady && wallet && connectToDappMutation.status === 'idle') {
       if (!connectStatus) {
         askForWalletConnectStatus();
       }
       // here if connectStatus is disconnected we launch the process of asking the user to connect to the dapp
       else if (connectStatus === ConnectStatus.DISCONNECTED) {
-        connectToDappMutation.mutate();
+        connectToDappMutation.mutate(customer.id);
       }
     }
   }, [
+    customer?.id,
     connectStatus,
     isWalletReady,
     wallet,
@@ -97,49 +115,52 @@ export default function OffKeyProfile({ user }: OffKeyProfileProps) {
 
   useEffect(() => {
     console.log({
+      userAddress: user.address,
       isWalletReady,
-      autoConnectAddress,
-      walletConnected,
+      walletToConnect,
       wallet,
       connectWalletMutationStatus: connectWalletMutation.status,
     });
-    const walletToConnect = autoConnectAddress || walletConnected;
-    if (
-      walletToConnect &&
+    // here means the wrong wallet is connected (not the same as the one defined for shopify customer)
+    if (walletToConnect && walletToConnect !== user.address) {
+      signOutUserAction(true);
+    } else if (
       isWalletReady &&
       !wallet &&
       connectWalletMutation.status !== 'pending'
     ) {
-      connectWalletMutation.mutate(walletToConnect);
+      connectWalletMutation.mutate(walletToConnect || user.address);
     }
-  }, [
-    walletConnected,
-    isWalletReady,
-    wallet,
-    autoConnectAddress,
-    connectWalletMutation.status,
-  ]);
+  }, [user.address, isWalletReady, wallet, connectWalletMutation.status]);
 
   const signOutUserAction = useCallback(
     async (error?: boolean) => {
-      // TODO: handle error, display error on the sign in page with an alert ? Would need to unset error afterwards
-      disconnectFromDapp(user.address);
-      await disconnect();
-      let newPathname = pathname.split('/0x')[0];
-      if (searchParams?.toString()) {
-        const params = new URLSearchParams(searchParams.toString());
-        newPathname += `?${params.toString()}`;
+      try {
+        setUserActionLoading(true);
+        // TODO: handle error, display error on the sign in page with an alert ? Would need to unset error afterwards
+        disconnectFromDapp(user.address);
+        await disconnect();
+        let newPathname = pathname.split('/0x')[0];
+        if (searchParams?.toString()) {
+          const params = new URLSearchParams(searchParams.toString());
+          newPathname += `?${params.toString()}`;
+        }
+        await router.replace(newPathname);
+      } catch (e) {
+        console.error('Error signing out', e);
+        throw e;
+      } finally {
+        setUserActionLoading(false);
       }
-      await router.replace(newPathname);
     },
-    [disconnect, toast],
+    [disconnect],
   );
 
   const items: DropdownMenuItemsProps['items'] = useMemo(
     () => [
       {
         type: 'label',
-        text: t('my-account'),
+        text: texts.myAccount as string,
         className: 'pt-2 pb-0',
       },
       { type: 'separator' },
@@ -148,31 +169,23 @@ export default function OffKeyProfile({ user }: OffKeyProfileProps) {
         icon: <LogOut />,
         className: 'cursor-pointer',
         action: signOutUserAction,
-        text: t('sign-out'),
+        text: texts.signOut as string,
       },
     ],
-    [user, signOutUserAction],
+    [user, signOutUserAction, texts],
   );
 
-  return isWalletReady ? (
+  return isWalletReady && customer ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           isIconOnly
-          className="h-fit rounded-full p-1.5 md:p-1.5"
+          isLoading={
+            connectStatus !== ConnectStatus.CONNECTED || userActionLoading
+          }
         >
-          <AutoAnimate>
-            {connectStatus !== ConnectStatus.CONNECTED ? (
-              <Spinner
-                size="lg"
-                variant="ghost"
-                className="mr-1.5 mt-2 size-8 md:mr-0 md:mt-0 md:size-12 md:p-2"
-              />
-            ) : (
-              <ProfileAvatar user={user} />
-            )}
-          </AutoAnimate>
+          <ProfileAvatar className="off-profile-avatar" user={user} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuItems items={items} />
@@ -185,7 +198,7 @@ export default function OffKeyProfile({ user }: OffKeyProfileProps) {
 export function OffKeyProfileSkeleton() {
   return (
     <div className="relative flex items-center justify-center opacity-100">
-      <AvatarSkeleton className="mx-3 size-9 md:size-10" />
+      <AvatarSkeleton className="off-profile-avatar" />
     </div>
   );
 }

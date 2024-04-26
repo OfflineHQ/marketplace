@@ -29,8 +29,19 @@ module.exports = {
   },
   framework: {
     name: '@storybook/react-webpack5',
-    options: {},
+    options: {
+      builder: { useSWC: true },
+    },
   },
+  swc: (config, options) => ({
+    jsc: {
+      transform: {
+        react: {
+          runtime: 'automatic',
+        },
+      },
+    },
+  }),
   docs: {
     autodocs: true,
   },

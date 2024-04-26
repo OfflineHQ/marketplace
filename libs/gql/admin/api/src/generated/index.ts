@@ -1357,13 +1357,72 @@ ${EventParametersFieldsFragmentDoc}`;
   }
 }
     `;
- const GetShopifyCustomerDocument = `
-    query GetShopifyCustomer($organizerId: String!, $customerId: String!) @cached {
-  shopifyCustomer(
-    where: {organizerId: {_eq: $organizerId}, customerId: {_eq: $customerId}}
-    limit: 1
-  ) {
-    address
+ const GetShopifyCampaignParametersForNotConnectedDocument = `
+    query GetShopifyCampaignParametersForNotConnected($gateId: String!, $locale: Locale!, $stage: Stage!) {
+  shopifyCampaignParameters_by_pk(gateId: $gateId) {
+    organizerId
+    status
+    shopifyCampaignTemplate(locales: [$locale, en], stage: $stage) {
+      authTexts {
+        createNewAccount
+        noMatchingAccountRecoverMyAccount
+        noMatchingAccountUseExistingAccount
+        signIn
+        useAnotherAccount
+        useExistingAccount
+      }
+      gateNotConnectedTexts {
+        paragraphCustomerNotConnected
+        paragraphExistingAccountNewCustomer
+        paragraphMatchingAccount
+        paragraphNewAccount
+        paragraphNoMatchingAccount
+        subtitleCustomerNotConnected
+        subtitleExistingAccountNewCustomer
+        subtitleMatchingAccount
+        subtitleNewAccount
+        subtitleNoMatchingAccount
+      }
+      headerNotConnectedTexts {
+        titleCustomerConnected
+        titleCustomerNotConnected
+      }
+    }
+  }
+}
+    `;
+ const GetShopifyCampaignParametersForConnectedDocument = `
+    query GetShopifyCampaignParametersForConnected($gateId: String!, $locale: Locale!, $stage: Stage!) {
+  shopifyCampaignParameters_by_pk(gateId: $gateId) {
+    organizerId
+    status
+    shopifyCampaignTemplate(locales: [$locale, en], stage: $stage) {
+      gateConnectedTexts {
+        paragraphLocked
+        paragraphUnlocked
+        paragraphUnlocking
+        paragraphUsed
+        subtitleLocked
+        subtitleUnlocked
+        subtitleUnlocking
+        subtitleUsed
+        gateStatus {
+          locked
+          name
+          unlocked
+          unlocking
+          used
+        }
+      }
+      headerConnectedTexts {
+        titleDefault
+        titleHowToGet
+      }
+      profileTexts {
+        menuActionSignOut
+        menuSectionMyAccount
+      }
+    }
   }
 }
     `;
@@ -1371,6 +1430,16 @@ ${EventParametersFieldsFragmentDoc}`;
     mutation InsertShopifyCustomer($object: shopifyCustomer_insert_input!) {
   insert_shopifyCustomer_one(object: $object) {
     id
+  }
+}
+    `;
+ const GetShopifyCustomerDocument = `
+    query GetShopifyCustomer($organizerId: String!, $customerId: String!) @cached {
+  shopifyCustomer(
+    where: {organizerId: {_eq: $organizerId}, customerId: {_eq: $customerId}}
+    limit: 1
+  ) {
+    address
   }
 }
     `;
@@ -1808,11 +1877,17 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     GetOrganizerLatestEvents(variables: Types.GetOrganizerLatestEventsQueryVariables, options?: C): Promise<Types.GetOrganizerLatestEventsQuery> {
       return requester<Types.GetOrganizerLatestEventsQuery, Types.GetOrganizerLatestEventsQueryVariables>(GetOrganizerLatestEventsDocument, variables, options) as Promise<Types.GetOrganizerLatestEventsQuery>;
     },
-    GetShopifyCustomer(variables: Types.GetShopifyCustomerQueryVariables, options?: C): Promise<Types.GetShopifyCustomerQuery> {
-      return requester<Types.GetShopifyCustomerQuery, Types.GetShopifyCustomerQueryVariables>(GetShopifyCustomerDocument, variables, options) as Promise<Types.GetShopifyCustomerQuery>;
+    GetShopifyCampaignParametersForNotConnected(variables: Types.GetShopifyCampaignParametersForNotConnectedQueryVariables, options?: C): Promise<Types.GetShopifyCampaignParametersForNotConnectedQuery> {
+      return requester<Types.GetShopifyCampaignParametersForNotConnectedQuery, Types.GetShopifyCampaignParametersForNotConnectedQueryVariables>(GetShopifyCampaignParametersForNotConnectedDocument, variables, options) as Promise<Types.GetShopifyCampaignParametersForNotConnectedQuery>;
+    },
+    GetShopifyCampaignParametersForConnected(variables: Types.GetShopifyCampaignParametersForConnectedQueryVariables, options?: C): Promise<Types.GetShopifyCampaignParametersForConnectedQuery> {
+      return requester<Types.GetShopifyCampaignParametersForConnectedQuery, Types.GetShopifyCampaignParametersForConnectedQueryVariables>(GetShopifyCampaignParametersForConnectedDocument, variables, options) as Promise<Types.GetShopifyCampaignParametersForConnectedQuery>;
     },
     InsertShopifyCustomer(variables: Types.InsertShopifyCustomerMutationVariables, options?: C): Promise<Types.InsertShopifyCustomerMutation> {
       return requester<Types.InsertShopifyCustomerMutation, Types.InsertShopifyCustomerMutationVariables>(InsertShopifyCustomerDocument, variables, options) as Promise<Types.InsertShopifyCustomerMutation>;
+    },
+    GetShopifyCustomer(variables: Types.GetShopifyCustomerQueryVariables, options?: C): Promise<Types.GetShopifyCustomerQuery> {
+      return requester<Types.GetShopifyCustomerQuery, Types.GetShopifyCustomerQueryVariables>(GetShopifyCustomerDocument, variables, options) as Promise<Types.GetShopifyCustomerQuery>;
     },
     GetShopifyDomain(variables: Types.GetShopifyDomainQueryVariables, options?: C): Promise<Types.GetShopifyDomainQuery> {
       return requester<Types.GetShopifyDomainQuery, Types.GetShopifyDomainQueryVariables>(GetShopifyDomainDocument, variables, options) as Promise<Types.GetShopifyDomainQuery>;

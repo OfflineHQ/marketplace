@@ -36,9 +36,9 @@
     "vercel-build": "npm i -g node-gyp",
     "lint:all": "pnpm nx run-many -t lint --all",
     "test:all": "NODE_ENV=test pnpm nx run-many -t test --all",
-    "build:web": "pnpm nx build web --prod --no-cache --verbose",
-    "build:back-office": "pnpm nx build back-office --prod --no-cache --verbose",
-    "build:unlock": "pnpm nx build unlock --prod --no-cache --verbose"
+    "build:web": "pnpm nx run web:build:production -- --no-cache --verbose",
+    "build:back-office": "pnpm nx run back-office:build:production -- --no-cache --verbose",
+    "build:unlock": "pnpm nx run unlock:build:production -- --no-cache --verbose"
   },
   "private": true,
   "dependencies": {
@@ -114,6 +114,7 @@
     "graphql-ws": "^5.14.1",
     "iframe-resizer": "^4.3.9",
     "immer": "^10.0.3",
+    "intl-messageformat": "^10.5.11",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "loglevel": "^1.8.1",
