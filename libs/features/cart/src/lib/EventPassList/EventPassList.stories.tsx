@@ -47,18 +47,8 @@ export const Default: Story = {
     // await screen.findByText(/1 pass/i);
     await screen.findByText(/Lorem ipsum/i);
     await screen.findByText(/World cup/i);
-    // screen.getByText(/5 passes/i);
-  },
-};
-
-export const Opened: Story = {
-  ...Default,
-  play: async () => {
-    await userEvent.click(
-      await screen.findByRole('button', {
-        name: /World cup/i,
-      }),
-    );
+    await screen.findByText(/6 x/i);
+    await screen.findByText(/General Admission/i);
     await screen.findByText(/2 x/i);
     await screen.findByText(/Family Pass/i);
     const removeButtons = await screen.findAllByRole('button', {
@@ -73,7 +63,10 @@ export const Opened: Story = {
 };
 
 export const Remove: Story = {
-  ...Opened,
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+  ...Default,
   play: async (context) => {
     const deleteMock = getMock(
       context.parameters,
