@@ -8,6 +8,7 @@ import { getCurrentChain } from '@next/chains';
 import { LoyaltyCardNftWrapper } from '@nft/loyalty-card';
 import { NextRequest } from 'next/server';
 import { MintLoyaltyCardOptions, ShopifyWebhookAndApiHandler } from './index';
+import { handleAccount } from '@features/account/api';
 
 jest.mock('@features/account/api');
 jest.mock('@integrations/api-keys');
@@ -582,7 +583,9 @@ describe('ShopifyWebhookAndApiHandler', () => {
         req: mockRequest,
         id: 'test-customer-id',
       });
-
+      expect(handleAccount as jest.Mock).toHaveBeenCalledWith({
+        address: 'test-address',
+      });
       expect(response.status).toBe(200);
       expect(adminSdk.InsertShopifyCustomer).toHaveBeenCalledWith({
         object: {

@@ -92,24 +92,11 @@ export const EventPassNftFieldsFragmentDoc = `
 }
     ${EventPassNftFieldsFragmentDoc}
 ${EventPassFieldsFragmentDoc}`;
- const GetShopifyCustomerDocument = `
-    query GetShopifyCustomer($organizerId: String!, $customerId: String!) @cached {
-  shopifyCustomer(
-    where: {organizerId: {_eq: $organizerId}, customerId: {_eq: $customerId}}
-    limit: 1
-  ) {
-    address
-  }
-}
-    `;
 export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     GetEventPassNftByTokenReference(variables: Types.GetEventPassNftByTokenReferenceQueryVariables, options?: C): Promise<Types.GetEventPassNftByTokenReferenceQuery> {
       return requester<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables, options) as Promise<Types.GetEventPassNftByTokenReferenceQuery>;
-    },
-    GetShopifyCustomer(variables: Types.GetShopifyCustomerQueryVariables, options?: C): Promise<Types.GetShopifyCustomerQuery> {
-      return requester<Types.GetShopifyCustomerQuery, Types.GetShopifyCustomerQueryVariables>(GetShopifyCustomerDocument, variables, options) as Promise<Types.GetShopifyCustomerQuery>;
     }
   };
 }

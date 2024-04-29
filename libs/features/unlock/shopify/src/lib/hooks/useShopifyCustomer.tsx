@@ -1,4 +1,3 @@
-import { useGetShopifyCustomerQuery } from '@gql/anonymous/react-query';
 import { useIframeOffKey } from '@next/iframe';
 import { useWalletContext } from '@next/wallet';
 import { ethers } from 'ethers';
@@ -8,15 +7,8 @@ export interface UseShopifyCustomerProps {
   organizerId: string;
 }
 export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
-  const { customer, isReady, offKeyState } = useIframeOffKey();
+  const { customer, isReady, offKeyState, linkedCustomer } = useIframeOffKey();
   const { walletInStorage } = useWalletContext();
-  const { data, isLoading, error } = useGetShopifyCustomerQuery(
-    {
-      organizerId,
-      customerId: customer?.id || '',
-    },
-    { enabled: !!customer?.id },
-  );
   // means the iframe parent is not ready
   if (!isReady)
     return {
@@ -34,8 +26,8 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       offKeyState,
     };
   }
-  // means the iframe parent is ready and the customer is connected but the data is loading or got an error
-  else if (isLoading || error) {
+  // means the iframe parent is ready and the customer is connected but the call to get linked customer is still loading
+  else if (!linkedCustomer) {
     return {
       customer,
       status: null,
@@ -43,9 +35,8 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       offKeyState,
     };
   }
-  const shopifyCustomer = data?.shopifyCustomer?.[0];
   // means the iframe parent is ready and the customer is connected but the customer does not have a recorded wallet yet
-  if (!shopifyCustomer) {
+  if (!linkedCustomer?.address) {
     return {
       customer,
       status: walletInStorage?.length
@@ -57,7 +48,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
   }
   const matchingWallet = walletInStorage?.find(
     (wallet) =>
-      wallet.address.toLowerCase() === shopifyCustomer.address.toLowerCase(),
+      wallet.address.toLowerCase() === linkedCustomer.address.toLowerCase(),
   );
   return {
     customer,
@@ -66,7 +57,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       : ShopifyCustomerStatus.NoMatchingAccount,
     walletToConnect: matchingWallet
       ? matchingWallet.address
-      : ethers.utils.getAddress(shopifyCustomer.address),
+      : ethers.utils.getAddress(linkedCustomer.address),
     walletInStorage,
     offKeyState,
   };
