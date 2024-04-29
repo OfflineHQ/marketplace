@@ -26,6 +26,9 @@ interface IFrameContextType {
   offKeyState: OffKeyState | null;
   setConnectStatus: Dispatch<SetStateAction<ConnectStatus | null>>;
   customer: ReceiveMessageValues[ReceiveMessageType.CUSTOMER] | null;
+  linkedCustomer:
+    | ReceiveMessageValues[ReceiveMessageType.LINKED_CUSTOMER]
+    | null;
 }
 
 const defaultState: IFrameContextType = {
@@ -35,6 +38,7 @@ const defaultState: IFrameContextType = {
   uiReady: false,
   offKeyState: null,
   customer: null,
+  linkedCustomer: null,
 };
 
 const IFrameContext = createContext<IFrameContextType>(defaultState);
@@ -61,6 +65,8 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   const [classes, setClasses] = useState<string>('');
   const [uiReady, setUiReady] = useState(false);
   const [customer, setCustomer] = useState<IFrameContextType['customer']>(null);
+  const [linkedCustomer, setLinkedCustomer] =
+    useState<IFrameContextType['linkedCustomer']>(null);
 
   const handleIFrameReady = () => {
     setIFrameParent((window as any).parentIFrame);
@@ -96,6 +102,11 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
       case ReceiveMessageType.CUSTOMER:
         setCustomer(value as ReceiveMessageValues[ReceiveMessageType.CUSTOMER]);
         break;
+      case ReceiveMessageType.LINKED_CUSTOMER:
+        setLinkedCustomer(
+          value as ReceiveMessageValues[ReceiveMessageType.LINKED_CUSTOMER],
+        );
+        break;
     }
   };
   return (
@@ -112,6 +123,7 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
           uiReady,
           offKeyState,
           customer,
+          linkedCustomer,
         }}
       >
         <div

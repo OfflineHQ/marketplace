@@ -5,24 +5,15 @@ import { renderHook } from '@testing-library/react';
 import { ShopifyCustomerStatus } from '../types';
 import { useShopifyCustomer } from './useShopifyCustomer';
 
-jest.mock('@gql/anonymous/react-query');
 jest.mock('@next/iframe');
 jest.mock('@next/wallet');
 
 describe('useShopifyCustomer', () => {
   const mockOrganizerId = 'test-organizer-id';
   const mockCustomer = { id: 'test-id' };
+  const mockLinkedCustomer = { address: '0x123' };
 
   beforeEach(() => {
-    (useIframeOffKey as jest.Mock).mockReturnValue({
-      isReady: true,
-      customer: mockCustomer,
-    });
-    (useGetShopifyCustomerQuery as jest.Mock).mockReturnValue({
-      data: null,
-      isLoading: false,
-      error: null,
-    });
     (useWalletContext as jest.Mock).mockReturnValue({
       walletInStorage: [],
     });
@@ -43,6 +34,7 @@ describe('useShopifyCustomer', () => {
     (useIframeOffKey as jest.Mock).mockReturnValue({
       isReady: true,
       customer: null,
+      linkedCustomer: null,
     });
 
     const { result } = renderHook(() =>
@@ -54,14 +46,10 @@ describe('useShopifyCustomer', () => {
   });
 
   it('returns correct status when wallet matches', () => {
-    (useGetShopifyCustomerQuery as jest.Mock).mockReturnValue({
-      data: { shopifyCustomer: [{ id: 'test-id', address: '0x123' }] },
-      isLoading: false,
-      error: null,
-    });
     (useIframeOffKey as jest.Mock).mockReturnValue({
       isReady: true,
-      customer: { id: 'test-id' },
+      customer: mockCustomer,
+      linkedCustomer: mockLinkedCustomer,
     });
     (useWalletContext as jest.Mock).mockReturnValue({
       walletInStorage: [{ address: '0x123' }],
@@ -71,16 +59,16 @@ describe('useShopifyCustomer', () => {
       useShopifyCustomer({ organizerId: mockOrganizerId }),
     );
 
-    expect(result.current.customer).toEqual({ id: 'test-id' });
+    expect(result.current.customer).toEqual(mockCustomer);
     expect(result.current.status).toBe(ShopifyCustomerStatus.MatchingAccount);
     expect(result.current.walletToConnect).toBe('0x123');
   });
 
-  it('returns correct status when data is loading', () => {
-    (useGetShopifyCustomerQuery as jest.Mock).mockReturnValue({
-      data: null,
-      isLoading: true,
-      error: null,
+  it('returns correct status when data for linked customer is loading', () => {
+    (useIframeOffKey as jest.Mock).mockReturnValue({
+      isReady: true,
+      customer: mockCustomer,
+      linkedCustomer: null,
     });
 
     const { result } = renderHook(() =>
@@ -92,12 +80,13 @@ describe('useShopifyCustomer', () => {
   });
 
   it('returns correct status when customer has no recorded wallet', () => {
-    (useGetShopifyCustomerQuery as jest.Mock).mockReturnValue({
-      data: { shopifyCustomer: [] },
-      isLoading: false,
-      error: null,
+    (useIframeOffKey as jest.Mock).mockReturnValue({
+      isReady: true,
+      customer: mockCustomer,
+      linkedCustomer: {
+        address: null,
+      },
     });
-
     const { result } = renderHook(() =>
       useShopifyCustomer({ organizerId: mockOrganizerId }),
     );
@@ -107,10 +96,12 @@ describe('useShopifyCustomer', () => {
   });
 
   it('returns correct status when customer has no recorded wallet but wallet in storage', () => {
-    (useGetShopifyCustomerQuery as jest.Mock).mockReturnValue({
-      data: { shopifyCustomer: [] },
-      isLoading: false,
-      error: null,
+    (useIframeOffKey as jest.Mock).mockReturnValue({
+      isReady: true,
+      customer: { id: 'test-id' },
+      linkedCustomer: {
+        address: null,
+      },
     });
     (useWalletContext as jest.Mock).mockReturnValue({
       walletInStorage: [{ address: '0x123' }],
@@ -127,14 +118,12 @@ describe('useShopifyCustomer', () => {
   });
 
   it('returns correct status when wallet does not match', () => {
-    (useGetShopifyCustomerQuery as jest.Mock).mockReturnValue({
-      data: {
-        shopifyCustomer: [
-          { address: '0x1234567890123456789012345678901234567890' },
-        ],
+    (useIframeOffKey as jest.Mock).mockReturnValue({
+      isReady: true,
+      customer: { id: 'test-id' },
+      linkedCustomer: {
+        address: '0x1234567890123456789012345678901234567890',
       },
-      isLoading: false,
-      error: null,
     });
     (useWalletContext as jest.Mock).mockReturnValue({
       walletInStorage: [
@@ -150,19 +139,5 @@ describe('useShopifyCustomer', () => {
     expect(result.current.walletToConnect).toBe(
       '0x1234567890123456789012345678901234567890',
     );
-  });
-  it('returns correct status when query returns an error', () => {
-    (useGetShopifyCustomerQuery as jest.Mock).mockReturnValue({
-      data: null,
-      isLoading: false,
-      error: new Error('Query error'),
-    });
-
-    const { result } = renderHook(() =>
-      useShopifyCustomer({ organizerId: mockOrganizerId }),
-    );
-
-    expect(result.current.customer).toEqual(mockCustomer);
-    expect(result.current.status).toBeNull();
   });
 });

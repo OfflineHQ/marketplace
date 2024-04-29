@@ -284,10 +284,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
             );
           }
         });
-      // get or create a new account
-      await handleAccount({
-        address: validatedParams.ownerAddress,
-      });
       return new NextResponse(JSON.stringify(res), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
@@ -347,6 +343,10 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       if (shopifyCustomer) {
         throw new BadRequestError('Customer already exists');
       }
+      // get or create a new account
+      await handleAccount({
+        address: validatedParams.address.toLowerCase(),
+      });
       await adminSdk.InsertShopifyCustomer({
         object: {
           organizerId,

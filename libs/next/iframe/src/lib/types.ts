@@ -3,6 +3,7 @@ export enum ReceiveMessageType {
   UPDATE_CSS_VARIABLES_AND_CLASSES = 'UPDATE_CSS_VARIABLES_AND_CLASSES',
   OFF_KEY_STATE = 'OFF_KEY_STATE',
   CUSTOMER = 'CUSTOMER',
+  LINKED_CUSTOMER = 'LINKED_CUSTOMER',
   // Additional message types can be added here as needed
 }
 
@@ -46,6 +47,9 @@ export interface ReceiveMessageValues {
     email: string;
     firstName?: string;
     lastName?: string;
+  };
+  [ReceiveMessageType.LINKED_CUSTOMER]: {
+    address: string | null; // null means data loaded but no linked customer
   };
   // Additional value shapes can be defined here corresponding to the ReceiveMessageType
 }

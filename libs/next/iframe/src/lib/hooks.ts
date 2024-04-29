@@ -84,12 +84,13 @@ export const useIframeReady = () => {
 };
 
 export const useIframeOffKey = () => {
-  const { offKeyState, customer, iframeParent } = useIFrame();
+  const { offKeyState, customer, iframeParent, linkedCustomer } = useIFrame();
   const isIframeReady = useIframeReady();
 
   return {
     offKeyState,
     customer,
     isReady: isIframeReady,
+    linkedCustomer,
   };
 };
