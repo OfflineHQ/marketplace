@@ -18,9 +18,7 @@ export const CreateShopifyCustomerParams = z.object({
   address: z.string(),
 });
 
-export const GetShopifyCustomerParams = z.object({
-  address: z.string(),
-});
+export const GetShopifyCustomerParams = z.object({});
 
 export const LineItemSchema = z.object({
   key: z.string(),

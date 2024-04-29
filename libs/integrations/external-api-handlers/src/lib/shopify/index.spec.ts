@@ -631,9 +631,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
       );
 
       handler.extractAndVerifyShopifyRequest = jest.fn().mockResolvedValue({
-        resultParams: {
-          address: 'test-address',
-        },
+        resultParams: {},
         organizerId: 'test-organizer-id',
       });
 
@@ -652,23 +650,18 @@ describe('ShopifyWebhookAndApiHandler', () => {
       expect(JSON.parse(response.body)).toEqual({ address: 'test-address' });
     });
 
-    it('should throw ForbiddenError if the address does not match', async () => {
+    it('should return empty address if the customer does not exist', async () => {
       (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
-        shopifyCustomer: [{ address: 'different-address' }],
+        shopifyCustomer: [],
       });
+
       const response = await handler.hasShopifyCustomer({
         req: mockRequest,
         id: 'test-customer-id',
       });
 
-      expect(response.status).toBe(403);
-      expect(JSON.parse(response.body)).toEqual(
-        expect.objectContaining({
-          error: expect.stringContaining(
-            'Invalid address. The address must match the address of the customer.',
-          ),
-        }),
-      );
+      expect(response.status).toBe(200);
+      expect(JSON.parse(response.body)).toEqual({ address: null });
     });
   });
 });
