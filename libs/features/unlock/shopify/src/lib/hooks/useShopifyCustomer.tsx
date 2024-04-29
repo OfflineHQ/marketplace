@@ -48,7 +48,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
   }
   const matchingWallet = walletInStorage?.find(
     (wallet) =>
-      wallet.address.toLowerCase() === linkedCustomer.address.toLowerCase(),
+      wallet.address.toLowerCase() === linkedCustomer?.address?.toLowerCase(),
   );
   return {
     customer,
@@ -57,7 +57,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       : ShopifyCustomerStatus.NoMatchingAccount,
     walletToConnect: matchingWallet
       ? matchingWallet.address
-      : ethers.utils.getAddress(linkedCustomer.address),
+      : ethers.utils.getAddress(linkedCustomer?.address),
     walletInStorage,
     offKeyState,
   };
