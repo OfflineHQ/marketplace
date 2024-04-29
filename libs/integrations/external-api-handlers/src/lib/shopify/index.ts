@@ -72,7 +72,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     super();
   }
 
-  async serializeAndValidateParams<T extends RequestType>(
+  private async serializeAndValidateParams<T extends RequestType>(
     requestType: T,
     params: { [key: string]: string | string[] },
   ): Promise<RequestTypeToValidator[T]> {
@@ -87,7 +87,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     return validator.parse(deserializedParams) as RequestTypeToValidator[T];
   }
 
-  async extractAndVerifyShopifyRequest(req: NextRequest) {
+  private async extractAndVerifyShopifyRequest(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams;
     const shop = this.getRequiredParam(searchParams, 'shop');
     const timestamp = this.getRequiredParam(searchParams, 'timestamp');
@@ -284,7 +284,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
             );
           }
         });
-      return new NextResponse(JSON.stringify(res), {
+      return new NextResponse(JSON.stringify(res || {}), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -330,12 +330,11 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   createShopifyCustomer = handleApiRequest<CreateShopifyCustomerOptions>(
     async (options) => {
       const { req, id } = options;
-      const { resultParams, organizerId } =
-        await this.extractAndVerifyShopifyRequest(req);
-      const validatedParams = await this.serializeAndValidateParams(
-        RequestType.CreateShopifyCustomer,
-        resultParams,
-      );
+      const { address, organizerId } =
+        await this.extractAndValidateShopifyParams(
+          req,
+          RequestType.CreateShopifyCustomer,
+        );
       const shopifyCustomer = await this.getShopifyCustomer({
         organizerId,
         customerId: id,
@@ -345,13 +344,13 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       }
       // get or create a new account
       await handleAccount({
-        address: validatedParams.address.toLowerCase(),
+        address: address.toLowerCase(),
       });
       await adminSdk.InsertShopifyCustomer({
         object: {
           organizerId,
           id,
-          address: validatedParams.address.toLowerCase(),
+          address: address.toLowerCase(),
         },
       });
       return new NextResponse(JSON.stringify({}), {
@@ -365,29 +364,25 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   hasShopifyCustomer = handleApiRequest<GetShopifyCustomerOptions>(
     async (options) => {
       const { req, id } = options;
-      const { resultParams, organizerId } =
-        await this.extractAndVerifyShopifyRequest(req);
-      const validatedParams = await this.serializeAndValidateParams(
-        RequestType.CreateShopifyCustomer,
-        resultParams,
+      const { organizerId } = await this.extractAndValidateShopifyParams(
+        req,
+        RequestType.GetShopifyCustomer,
       );
       const shopifyCustomer = await this.getShopifyCustomer({
         organizerId,
         customerId: id,
       });
-      if (
-        shopifyCustomer &&
-        shopifyCustomer.address.toLowerCase() !==
-          validatedParams.address.toLowerCase()
-      ) {
-        throw new ForbiddenError(
-          'Invalid address. The address must match the address of the customer.',
-        );
-      }
-      return new NextResponse(JSON.stringify(shopifyCustomer), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return new NextResponse(
+        JSON.stringify(
+          shopifyCustomer
+            ? { address: shopifyCustomer.address }
+            : { address: null },
+        ),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
     },
   );
 }
