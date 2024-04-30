@@ -1,10 +1,11 @@
 'use client';
 
 import { interpolateString, Locale } from '@next/i18n';
-import { Text, TextSkeleton } from '@ui/components';
-import { OffKeyHeader, OffKeyHeaderProps } from '../OffKeyHeader/OffKeyHeader';
+import { Text } from '@ui/components';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
+import { OffKeyHeader, OffKeyHeaderProps } from '../OffKeyHeader/OffKeyHeader';
 import { OffKeyViewHeaderConnected } from '../types';
+import { OffKeyHeaderConnectedSkeleton } from './OffKeyHeaderConnectedSkeleton';
 
 export interface OffKeyHeaderConnectedProps
   extends Required<Pick<OffKeyHeaderProps, 'profile'>> {
@@ -27,10 +28,7 @@ export default function OffKeyHeaderConnected({
   const { customer } = useShopifyCustomer({
     organizerId,
   });
-  if (!customer)
-    return (
-      <OffKeyHeader profile={profile} title={<TextSkeleton variant="h6" />} />
-    );
+  if (!customer) return <OffKeyHeaderConnectedSkeleton />;
   const texts = {
     [OffKeyViewHeaderConnected.Default]: interpolateString(
       textHeaderConnected.default,

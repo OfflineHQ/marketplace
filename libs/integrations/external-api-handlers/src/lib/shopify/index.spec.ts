@@ -1,3 +1,4 @@
+import { handleAccount } from '@features/account/api';
 import { adminSdk } from '@gql/admin/api';
 import {
   BadRequestError,
@@ -8,7 +9,6 @@ import { getCurrentChain } from '@next/chains';
 import { LoyaltyCardNftWrapper } from '@nft/loyalty-card';
 import { NextRequest } from 'next/server';
 import { MintLoyaltyCardOptions, ShopifyWebhookAndApiHandler } from './index';
-import { handleAccount } from '@features/account/api';
 
 jest.mock('@features/account/api');
 jest.mock('@integrations/api-keys');
@@ -466,7 +466,6 @@ describe('ShopifyWebhookAndApiHandler', () => {
         chainId: getCurrentChain().chainIdHex,
         organizerId: 'test-organizer-id',
       });
-      expect(adminSdk.InsertShopifyCustomer).not.toHaveBeenCalled();
     });
 
     it('should create a new Shopify customer if one does not exist', async () => {
@@ -481,14 +480,6 @@ describe('ShopifyWebhookAndApiHandler', () => {
         req: mockRequest,
         contractAddress: 'test-contract',
         loyaltyCardSdk: mockLoyaltyCardSdk,
-      });
-
-      expect(adminSdk.InsertShopifyCustomer).toHaveBeenCalledWith({
-        object: {
-          organizerId: 'test-organizer-id',
-          customerId: 'test-customer-id',
-          address: 'test-address',
-        },
       });
     });
 
@@ -579,6 +570,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
     });
 
     it('should create a new Shopify customer', async () => {
+      (adminSdk.InsertShopifyCustomer as jest.Mock).mockResolvedValue({});
       const response = await handler.createShopifyCustomer({
         req: mockRequest,
         id: 'test-customer-id',
@@ -590,7 +582,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
       expect(adminSdk.InsertShopifyCustomer).toHaveBeenCalledWith({
         object: {
           organizerId: 'test-organizer-id',
-          id: 'test-customer-id',
+          customerId: 'test-customer-id',
           address: 'test-address',
         },
       });
@@ -600,6 +592,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
       (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
         shopifyCustomer: [{ address: 'test-address' }],
       });
+      (adminSdk.InsertShopifyCustomer as jest.Mock).mockReset();
 
       const response = await handler.createShopifyCustomer({
         req: mockRequest,
@@ -607,6 +600,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
       });
 
       expect(response.status).toBe(400);
+      expect(adminSdk.InsertShopifyCustomer).not.toHaveBeenCalled();
       expect(JSON.parse(response.body)).toEqual(
         expect.objectContaining({
           error: expect.stringContaining('Customer already exists'),

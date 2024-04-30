@@ -1,8 +1,12 @@
-import { ShopifyCustomerStatus } from '@features/unlock/shopify';
+import {
+  OffKeyGateNotConnectedSkeleton,
+  ShopifyCustomerStatus,
+} from '@features/unlock/shopify';
 import { getShopifyCampaignParametersForNotConnected } from '@features/unlock/shopify-api';
 import { Locale } from '@gql/shared/types';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 const OffKeyGateNotConnected = dynamic(
   () =>
@@ -19,7 +23,15 @@ interface GateNotConnectedProps {
   };
 }
 
-export default async function GateSignIn({
+export default function GateNotConnectedSection(props: GateNotConnectedProps) {
+  return (
+    <Suspense fallback={<OffKeyGateNotConnectedSkeleton />}>
+      <GateNotConnected {...props} />
+    </Suspense>
+  );
+}
+
+async function GateNotConnected({
   params: { locale, gateId },
 }: GateNotConnectedProps) {
   const campaign = await getShopifyCampaignParametersForNotConnected({

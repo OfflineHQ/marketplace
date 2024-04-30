@@ -1,7 +1,9 @@
+import { OffKeyAuthSkelton } from '@features/unlock/shopify';
 import { getShopifyCampaignParametersForNotConnected } from '@features/unlock/shopify-api';
 import { Locale } from '@gql/shared/types';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 interface AuthProps {
   params: {
@@ -15,7 +17,15 @@ const OffKeyAuth = dynamic(
   { ssr: false },
 );
 
-export default async function Auth({ params: { locale, gateId } }: AuthProps) {
+export default function AuthSection(props: AuthProps) {
+  return (
+    <Suspense fallback={<OffKeyAuthSkelton />}>
+      <Auth {...props} />
+    </Suspense>
+  );
+}
+
+async function Auth({ params: { locale, gateId } }: AuthProps) {
   const campaign = await getShopifyCampaignParametersForNotConnected({
     gateId,
     locale,

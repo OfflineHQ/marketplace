@@ -5,8 +5,8 @@ import { GetShopifyCustomerQueryVariables } from '@gql/admin/types';
 import handleApiRequest, {
   ApiHandlerOptions,
   BadRequestError,
-  ForbiddenError,
   CustomError,
+  ForbiddenError,
   InternalServerError,
   NotAuthorizedError,
 } from '@next/api-handler';
@@ -17,11 +17,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { BaseWebhookAndApiHandler } from '../baseWebhookAndApiHandler';
 import {
+  CreateShopifyCustomerParams,
+  GetShopifyCustomerParams,
   HasLoyaltyCardParams,
   MintLoyaltyCardWithCustomerIdParams,
   MintLoyaltyCardWithPasswordParams,
-  CreateShopifyCustomerParams,
-  GetShopifyCustomerParams,
 } from './validators';
 
 export enum RequestType {
@@ -196,8 +196,9 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         organizerId,
         customerId,
       });
-      if (
-        shopifyCustomer &&
+      if (!shopifyCustomer) {
+        throw new BadRequestError('Customer not found');
+      } else if (
         shopifyCustomer.address.toLowerCase() !== ownerAddress.toLowerCase()
       ) {
         throw new ForbiddenError(
@@ -226,20 +227,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
             );
           }
         });
-      // get or create a new account
-      await handleAccount({
-        address: ownerAddress,
-      });
-
-      if (!shopifyCustomer) {
-        await adminSdk.InsertShopifyCustomer({
-          object: {
-            organizerId,
-            customerId,
-            address: ownerAddress.toLowerCase(),
-          },
-        });
-      }
       return new NextResponse(JSON.stringify({}), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
@@ -303,7 +290,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         req,
         RequestType.HasLoyaltyCard,
       );
-
+    console.log({ ownerAddress, organizerId });
     const loyaltyCard = await loyaltyCardSdk
       .getLoyaltyCardOwnedByAddress({
         ownerAddress,
@@ -312,6 +299,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         organizerId,
       })
       .catch((error: Error) => {
+        console.log({ error });
         console.error(
           `Error checking NFT existence: ${getErrorMessage(error)}`,
         );
@@ -319,7 +307,10 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
           `Error checking NFT existence: ${getErrorMessage(error)}`,
         );
       });
-
+    console.log({
+      loyaltyCard,
+      res: JSON.stringify({ isOwned: !!loyaltyCard }),
+    });
     return new NextResponse(JSON.stringify({ isOwned: !!loyaltyCard }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -335,6 +326,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
           req,
           RequestType.CreateShopifyCustomer,
         );
+      console.log({ address, organizerId });
       const shopifyCustomer = await this.getShopifyCustomer({
         organizerId,
         customerId: id,
@@ -346,13 +338,19 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       await handleAccount({
         address: address.toLowerCase(),
       });
-      await adminSdk.InsertShopifyCustomer({
-        object: {
-          organizerId,
-          id,
-          address: address.toLowerCase(),
-        },
-      });
+      await adminSdk
+        .InsertShopifyCustomer({
+          object: {
+            organizerId,
+            customerId: id,
+            address: address.toLowerCase(),
+          },
+        })
+        .catch((error: Error) => {
+          throw new InternalServerError(
+            `Error creating shopify customer: ${getErrorMessage(error)}`,
+          );
+        });
       return new NextResponse(JSON.stringify({}), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
