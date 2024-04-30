@@ -78,7 +78,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
   ): Promise<RequestTypeToValidator[T]> {
     const deserializedParams = this.deserializeParams(params);
     const validator = requestTypeValidators[requestType];
-
     if (!validator) {
       throw new Error(`Validator for request type ${requestType} not found.`);
     }
@@ -97,8 +96,9 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     const queryHash = this.populateQueryHash(searchParams);
     const resultParams = this.populateResultParams(searchParams);
     const signature = searchParams.get('signature');
-    if (!signature || !this.verifyRequestSignature(queryHash, signature))
+    if (!signature || !this.verifyRequestSignature(queryHash, signature)) {
       throw new Error('Invalid signature');
+    }
     const res = await adminSdk.GetShopifyDomain({
       domain: shop,
     });
@@ -121,6 +121,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
           'Not Authorized: ' + getErrorMessage(error),
         );
       });
+    console.log({ resultParams, organizerId });
     const validatedParams = await this.serializeAndValidateParams(
       requestType,
       resultParams,
@@ -194,7 +195,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         );
       const shopifyCustomer = await this.getShopifyCustomer({
         organizerId,
-        customerId,
+        customerId: customerId.toString(),
       });
       if (!shopifyCustomer) {
         throw new BadRequestError('Customer not found');
@@ -208,8 +209,8 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
       // Attempt to mint loyalty card
       await loyaltyCardSdk
         .mint({
-          contractAddress,
-          ownerAddress,
+          contractAddress: contractAddress.toLowerCase(),
+          ownerAddress: ownerAddress.toLowerCase(),
           chainId: getCurrentChain().chainIdHex,
           organizerId,
         })
