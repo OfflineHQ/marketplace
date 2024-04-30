@@ -7,7 +7,7 @@ export const MintLoyaltyCardWithPasswordParams = z.object({
 
 export const MintLoyaltyCardWithCustomerIdParams = z.object({
   ownerAddress: z.string(),
-  customerId: z.string(),
+  customerId: z.string().or(z.number()),
 });
 
 export const HasLoyaltyCardParams = z.object({

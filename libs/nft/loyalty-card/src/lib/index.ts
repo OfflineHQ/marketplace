@@ -37,8 +37,11 @@ export class LoyaltyCardNftWrapper {
       await this.adminSdk.GetLoyaltyCardNftContractByContractAddress(props);
     return res.loyaltyCardNftContract?.[0];
   }
-  async mint(props: MintProps) {
-    const loyaltyCard = await this.getLoyaltyCardOwnedByAddress(props);
+  async mint({ ownerAddress, ...props }: MintProps) {
+    const loyaltyCard = await this.getLoyaltyCardOwnedByAddress({
+      ...props,
+      ownerAddress,
+    });
     if (
       loyaltyCard &&
       (loyaltyCard.status !== NftStatus_Enum.Burned ||
@@ -57,6 +60,7 @@ export class LoyaltyCardNftWrapper {
       object: {
         loyaltyCardId,
         status: NftStatus_Enum.Confirmed,
+        ownerAddress,
         ...props,
       },
     });
