@@ -1,10 +1,8 @@
-import { OffKeyGateSkeleton } from '@features/unlock/shopify';
 import { getShopifyCampaignParametersForConnected } from '@features/unlock/shopify-api';
 import { Locale } from '@gql/shared/types';
 import { OffKeyState } from '@next/iframe';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 
 interface GateProps {
   params: {
@@ -19,15 +17,9 @@ const OffKeyGate = dynamic(
   { ssr: false },
 );
 
-export default function GateSection(props: GateProps) {
-  return (
-    <Suspense fallback={<OffKeyGateSkeleton />}>
-      <Gate {...props} />
-    </Suspense>
-  );
-}
-
-async function Gate({ params: { locale, gateId, address } }: GateProps) {
+export default async function Gate({
+  params: { locale, gateId, address },
+}: GateProps) {
   const campaign = await getShopifyCampaignParametersForConnected({
     gateId,
     locale,

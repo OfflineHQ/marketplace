@@ -57,7 +57,6 @@ function interpolateString(
     }
     return result as string;
   } catch (error) {
-    console.error('Error interpolating string:', error);
     return str;
   }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { interpolateString, Locale } from '@next/i18n';
-import { AutoAnimate, Text, TextSkeleton } from '@ui/components';
+import { AutoAnimate, Text } from '@ui/components';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 import { ShopifyCustomerStatus } from '../types';
 import { OffKeyGateNotConnectedSkeleton } from './OffKeyGateNotConnectedSkeleton';
