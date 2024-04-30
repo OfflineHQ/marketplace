@@ -1,7 +1,9 @@
+import { OffKeyHeaderNotConnectedSkeleton } from '@features/unlock/shopify';
 import { getShopifyCampaignParametersForNotConnected } from '@features/unlock/shopify-api';
 import { Locale } from '@gql/shared/types';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 interface HeaderProps {
   params: {
@@ -18,9 +20,15 @@ const OffKeyHeaderNotConnected = dynamic(
   { ssr: false },
 );
 
-export default async function Header({
-  params: { locale, gateId },
-}: HeaderProps) {
+export default function HeaderSection(props: HeaderProps) {
+  return (
+    <Suspense fallback={<OffKeyHeaderNotConnectedSkeleton />}>
+      <Header {...props} />
+    </Suspense>
+  );
+}
+
+async function Header({ params: { locale, gateId } }: HeaderProps) {
   const campaign = await getShopifyCampaignParametersForNotConnected({
     gateId,
     locale,

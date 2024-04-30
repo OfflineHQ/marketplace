@@ -1,8 +1,12 @@
-import { OffKeyViewHeaderConnected } from '@features/unlock/shopify';
+import {
+  OffKeyHeaderConnectedSkeleton,
+  OffKeyViewHeaderConnected,
+} from '@features/unlock/shopify';
 import { getShopifyCampaignParametersForConnected } from '@features/unlock/shopify-api';
 import { Locale } from '@gql/shared/types';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 interface HeaderProps {
   params: {
@@ -22,9 +26,15 @@ const OffKeyHeaderConnected = dynamic(
   { ssr: false },
 );
 
-export default async function Header({
-  params: { locale, gateId, address },
-}: HeaderProps) {
+export default function HeaderSection(props: HeaderProps) {
+  return (
+    <Suspense fallback={<OffKeyHeaderConnectedSkeleton />}>
+      <Header {...props} />
+    </Suspense>
+  );
+}
+
+async function Header({ params: { locale, gateId, address } }: HeaderProps) {
   const campaign = await getShopifyCampaignParametersForConnected({
     gateId,
     locale,
