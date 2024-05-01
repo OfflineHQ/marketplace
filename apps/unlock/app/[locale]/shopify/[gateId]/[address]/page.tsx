@@ -1,3 +1,7 @@
+import {
+  OffKeyLayout,
+  OffKeyViewHeaderConnected,
+} from '@features/unlock/shopify';
 import { getShopifyCampaignParametersForConnected } from '@features/unlock/shopify-api';
 import { Locale } from '@gql/shared/types';
 import { OffKeyState } from '@next/iframe';
@@ -17,6 +21,16 @@ const OffKeyGate = dynamic(
   { ssr: false },
 );
 
+const OffKeyProfile = dynamic(
+  () => import('@features/unlock/shopify').then((mod) => mod.OffKeyProfile),
+  { ssr: false },
+);
+const OffKeyHeaderConnected = dynamic(
+  () =>
+    import('@features/unlock/shopify').then((mod) => mod.OffKeyHeaderConnected),
+  { ssr: false },
+);
+
 export default async function Gate({
   params: { locale, gateId, address },
 }: GateProps) {
@@ -29,7 +43,7 @@ export default async function Gate({
   }
   const gateConnectedTexts =
     campaign.shopifyCampaignTemplate.gateConnectedTexts;
-  const props = {
+  const gateProps = {
     organizerId: campaign.organizerId,
     textGate: {
       subtitle: {
@@ -56,5 +70,38 @@ export default async function Gate({
     },
     locale,
   };
-  return <OffKeyGate className="flex-1 pt-2" {...props} />;
+  const headerConnectedTexts =
+    campaign.shopifyCampaignTemplate.headerConnectedTexts;
+  const headerProps = {
+    organizerId: campaign.organizerId,
+    textHeaderConnected: {
+      default: headerConnectedTexts.titleDefault,
+      howToGet: headerConnectedTexts.titleHowToGet,
+    },
+    locale,
+  };
+  const profileTexts = campaign.shopifyCampaignTemplate.profileTexts;
+  const profileProps = {
+    organizerId: campaign.organizerId,
+    textProfile: {
+      myAccount: profileTexts.menuSectionMyAccount,
+      signOut: profileTexts.menuActionSignOut,
+    },
+    locale,
+  };
+  return (
+    <OffKeyLayout
+      header={
+        <OffKeyHeaderConnected
+          {...headerProps}
+          viewType={OffKeyViewHeaderConnected.Default}
+          profile={
+            <OffKeyProfile {...profileProps} user={{ id: '', address }} />
+          }
+        />
+      }
+    >
+      <OffKeyGate className="flex-1 pt-2" {...gateProps} />
+    </OffKeyLayout>
+  );
 }
