@@ -1129,7 +1129,7 @@ ${EventParametersFieldsFragmentDoc}`;
 }
     `;
  const GetLoyaltyCardOwnedByAddressDocument = `
-    query GetLoyaltyCardOwnedByAddress($contractAddress: String!, $chainId: String!, $ownerAddress: String!, $organizerId: String!) @cached {
+    query GetLoyaltyCardOwnedByAddress($contractAddress: String!, $chainId: String!, $ownerAddress: String!, $organizerId: String!) {
   loyaltyCardNft(
     where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, ownerAddress: {_eq: $ownerAddress}, organizerId: {_eq: $organizerId}}
     limit: 1
@@ -1286,7 +1286,7 @@ ${EventParametersFieldsFragmentDoc}`;
 }
     `;
  const GetNftMintPasswordsForContractAvailableDocument = `
-    query GetNftMintPasswordsForContractAvailable($contractAddress: String!, $chainId: String!, $organizerId: String!) @cached {
+    query GetNftMintPasswordsForContractAvailable($contractAddress: String!, $chainId: String!, $organizerId: String!) {
   nftMintPassword(
     where: {contractAddress: {_eq: $contractAddress}, chainId: {_eq: $chainId}, minterAddress: {_is_null: true}, organizerId: {_eq: $organizerId}}
   ) {
@@ -1434,7 +1434,7 @@ ${EventParametersFieldsFragmentDoc}`;
 }
     `;
  const GetShopifyCustomerDocument = `
-    query GetShopifyCustomer($organizerId: String!, $customerId: String!) @cached {
+    query GetShopifyCustomer($organizerId: String!, $customerId: String!) {
   shopifyCustomer(
     where: {organizerId: {_eq: $organizerId}, customerId: {_eq: $customerId}}
     limit: 1

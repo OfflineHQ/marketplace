@@ -1,4 +1,4 @@
-query GetShopifyCustomer($organizerId: String!, $customerId: String!) @cached {
+query GetShopifyCustomer($organizerId: String!, $customerId: String!) {
   shopifyCustomer(
     where: {
       organizerId: { _eq: $organizerId }
