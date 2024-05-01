@@ -97,7 +97,7 @@ export default function OffKeyGate({
   };
   const gateName = interpolateString(textGate.key.name, locale, shopifyContext);
   return (
-    <AutoAnimate>
+    <AutoAnimate className="flex h-full flex-1 flex-col">
       {offKeyState && customer ? (
         <div className={`flex flex-col justify-between space-y-2 ${className}`}>
           <div className="flex flex-col space-y-2 px-2">
