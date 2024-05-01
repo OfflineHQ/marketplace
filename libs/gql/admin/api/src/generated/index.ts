@@ -1358,7 +1358,7 @@ ${EventParametersFieldsFragmentDoc}`;
 }
     `;
  const GetShopifyCampaignParametersForNotConnectedDocument = `
-    query GetShopifyCampaignParametersForNotConnected($gateId: String!, $locale: Locale!, $stage: Stage!) {
+    query GetShopifyCampaignParametersForNotConnected($gateId: String!, $locale: Locale!, $stage: Stage!) @cached {
   shopifyCampaignParameters_by_pk(gateId: $gateId) {
     organizerId
     status
@@ -1393,7 +1393,7 @@ ${EventParametersFieldsFragmentDoc}`;
 }
     `;
  const GetShopifyCampaignParametersForConnectedDocument = `
-    query GetShopifyCampaignParametersForConnected($gateId: String!, $locale: Locale!, $stage: Stage!) {
+    query GetShopifyCampaignParametersForConnected($gateId: String!, $locale: Locale!, $stage: Stage!) @cached {
   shopifyCampaignParameters_by_pk(gateId: $gateId) {
     organizerId
     status

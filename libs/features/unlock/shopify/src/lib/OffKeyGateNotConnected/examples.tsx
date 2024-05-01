@@ -1,5 +1,5 @@
-import { OffKeyGateNotConnectedProps } from './OffKeyGateNotConnected';
 import { ShopifyCustomerStatus } from '../types';
+import { OffKeyGateNotConnectedProps } from './OffKeyGateNotConnected';
 
 export const offKeyGateNotConnectedProps: OffKeyGateNotConnectedProps = {
   locale: 'en',
@@ -21,7 +21,8 @@ export const offKeyGateNotConnectedProps: OffKeyGateNotConnectedProps = {
         'Welcome! Please create a new account.',
       [ShopifyCustomerStatus.MatchingAccount]:
         'Your account is successfully linked.',
-      [ShopifyCustomerStatus.NoMatchingAccount]: 'No matching accounts found.',
+      [ShopifyCustomerStatus.NoMatchingAccount]:
+        'No account where found for "{customerEmail}".\n\nPlease try to connect to an existing one or proceed with the recovery process.',
     },
   },
 } satisfies OffKeyGateNotConnectedProps;

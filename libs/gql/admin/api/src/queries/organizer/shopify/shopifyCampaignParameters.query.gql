@@ -2,7 +2,7 @@ query GetShopifyCampaignParametersForNotConnected(
   $gateId: String!
   $locale: Locale!
   $stage: Stage!
-) {
+) @cached {
   shopifyCampaignParameters_by_pk(gateId: $gateId) {
     organizerId
     status
@@ -40,7 +40,7 @@ query GetShopifyCampaignParametersForConnected(
   $gateId: String!
   $locale: Locale!
   $stage: Stage!
-) {
+) @cached {
   shopifyCampaignParameters_by_pk(gateId: $gateId) {
     organizerId
     status
