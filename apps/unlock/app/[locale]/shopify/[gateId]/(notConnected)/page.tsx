@@ -78,6 +78,7 @@ export default async function GateNotConnected({
   const propsAuth = {
     organizerId: campaign.organizerId,
     textAuth: {
+      connectToShopify: authTexts.connectToShopify,
       createNewAccount: authTexts.createNewAccount,
       useExistingAccount: authTexts.useExistingAccount,
       useAnotherAccount: authTexts.useAnotherAccount,

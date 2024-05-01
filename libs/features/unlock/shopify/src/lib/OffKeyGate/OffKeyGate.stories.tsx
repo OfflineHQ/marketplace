@@ -56,6 +56,7 @@ type Story = StoryObj<typeof meta>;
 export const Unlocked: Story = {
   play: async ({ container }) => {
     await screen.findAllByText(/Unlocked/i);
+    await screen.findByText(/My Product/i);
   },
 };
 
@@ -91,6 +92,7 @@ export const Used: Story = {
     },
   },
   play: async ({ container }) => {
+    await screen.findByText(/My Product/i);
     await screen.findAllByText(/Used/i);
   },
 };
@@ -109,6 +111,7 @@ export const Locked: Story = {
     },
   },
   play: async ({ container }) => {
+    await screen.findByText(/My Product/i);
     await screen.findAllByText(/Locked/i);
   },
 };

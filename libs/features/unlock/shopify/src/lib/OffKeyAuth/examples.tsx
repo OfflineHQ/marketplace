@@ -16,6 +16,7 @@ import OffKeyAuth, { OffKeyAuthProps } from './OffKeyAuth';
 export const offKeyAuthProps: OffKeyAuthProps = {
   organizerId: 'organizerId',
   textAuth: {
+    connectToShopify: 'Connect to my account',
     createNewAccount: 'Create new account',
     useExistingAccount: 'Use existing account',
     useAnotherAccount: 'Use another account',
@@ -57,3 +58,18 @@ export function authMocks({
   mockWallet.mockReturnValue(walletAuthMocks);
   return [shopifyMocks(shopifyCustomerMocks), mockWallet];
 }
+
+export const customer = {
+  id: '1',
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john@doe.com',
+};
+
+export const shopifyContext = {
+  customerFirstName: customer.firstName,
+  customerLastName: customer.lastName,
+  customerEmail: customer.email,
+  productTitle: 'My Product',
+  productAvailable: true,
+};

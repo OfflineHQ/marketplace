@@ -55,13 +55,14 @@ export default function OffKeyProfile({
   const searchParams = useSearchParams();
   const [userActionLoading, setUserActionLoading] = useState(false);
 
-  const { customer, walletToConnect, walletInStorage } = useShopifyCustomer({
-    organizerId,
-  });
+  const { customer, walletToConnect, walletInStorage, shopifyContext } =
+    useShopifyCustomer({
+      organizerId,
+    });
 
   const texts = {
-    myAccount: interpolateString(textProfile.myAccount, locale, customer),
-    signOut: interpolateString(textProfile.signOut, locale, customer),
+    myAccount: interpolateString(textProfile.myAccount, locale, shopifyContext),
+    signOut: interpolateString(textProfile.signOut, locale, shopifyContext),
   };
 
   const connectWalletMutation = useMutation({

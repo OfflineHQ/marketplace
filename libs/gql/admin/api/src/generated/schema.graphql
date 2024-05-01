@@ -10533,6 +10533,8 @@ input ScheduledReleaseWhereUniqueInput {
 
 """Component used for the authentication"""
 type ShopifyAuth implements Entity {
+  connectToShopify: String!
+
   """Action button text to create a new account"""
   createNewAccount: String!
 
@@ -10571,6 +10573,9 @@ type ShopifyAuth implements Entity {
 }
 
 input ShopifyAuthCreateInput {
+  """connectToShopify input for default locale (en)"""
+  connectToShopify: String!
+
   """createNewAccount input for default locale (en)"""
   createNewAccount: String!
 
@@ -10596,6 +10601,7 @@ input ShopifyAuthCreateInput {
 }
 
 input ShopifyAuthCreateLocalizationDataInput {
+  connectToShopify: String!
   createNewAccount: String!
   noMatchingAccountRecoverMyAccount: String!
   noMatchingAccountUseExistingAccount: String!
@@ -10621,6 +10627,9 @@ input ShopifyAuthCreateOneInlineInput {
 }
 
 input ShopifyAuthUpdateInput {
+  """connectToShopify input for default locale (en)"""
+  connectToShopify: String
+
   """createNewAccount input for default locale (en)"""
   createNewAccount: String
 
@@ -10644,6 +10653,7 @@ input ShopifyAuthUpdateInput {
 }
 
 input ShopifyAuthUpdateLocalizationDataInput {
+  connectToShopify: String
   createNewAccount: String
   noMatchingAccountRecoverMyAccount: String
   noMatchingAccountUseExistingAccount: String
@@ -10726,6 +10736,34 @@ input ShopifyAuthWhereInput {
 
   """Contains search across all appropriate fields."""
   _search: String
+  connectToShopify: String
+
+  """All values containing the given string."""
+  connectToShopify_contains: String
+
+  """All values ending with the given string."""
+  connectToShopify_ends_with: String
+
+  """All values that are contained in given list."""
+  connectToShopify_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  connectToShopify_not: String
+
+  """All values not containing the given string."""
+  connectToShopify_not_contains: String
+
+  """All values not ending with the given string"""
+  connectToShopify_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  connectToShopify_not_in: [String]
+
+  """All values not starting with the given string."""
+  connectToShopify_not_starts_with: String
+
+  """All values starting with the given string."""
+  connectToShopify_starts_with: String
   createNewAccount: String
 
   """All values containing the given string."""
@@ -23242,6 +23280,14 @@ type mutation_root {
   ): shopifyCustomer_mutation_response
 
   """
+  delete single row from the table: "shopifyCustomer"
+  """
+  delete_shopifyCustomer_by_pk(
+    """Unique identifier for each entry, generated automatically as a UUID."""
+    id: uuid!
+  ): shopifyCustomer
+
+  """
   delete data from the table: "shopifyDomain"
   """
   delete_shopifyDomain(
@@ -27760,6 +27806,15 @@ type mutation_root {
     """filter the rows which have to be updated"""
     where: shopifyCustomer_bool_exp!
   ): shopifyCustomer_mutation_response
+
+  """
+  update single row of the table: "shopifyCustomer"
+  """
+  update_shopifyCustomer_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: shopifyCustomer_set_input
+    pk_columns: shopifyCustomer_pk_columns_input!
+  ): shopifyCustomer
 
   """
   update multiples rows of table: "shopifyCustomer"
@@ -36724,6 +36779,12 @@ type query_root {
     where: shopifyCustomer_bool_exp
   ): shopifyCustomer_aggregate!
 
+  """fetch data from the table: "shopifyCustomer" using primary key columns"""
+  shopifyCustomer_by_pk(
+    """Unique identifier for each entry, generated automatically as a UUID."""
+    id: uuid!
+  ): shopifyCustomer
+
   """
   fetch data from the table: "shopifyDomain"
   """
@@ -38678,7 +38739,6 @@ type shopifyCustomer {
   Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently.
   """
   organizerId: String!
-  updated_at: timestamptz
 }
 
 """
@@ -38710,7 +38770,6 @@ input shopifyCustomer_bool_exp {
   customerId: String_comparison_exp
   id: uuid_comparison_exp
   organizerId: String_comparison_exp
-  updated_at: timestamptz_comparison_exp
 }
 
 """
@@ -38721,6 +38780,11 @@ enum shopifyCustomer_constraint {
   unique or primary key constraint on columns "customerId", "address", "organizerId"
   """
   shopifyCustomer_address_organizerId_customerId_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  shopifyCustomer_pkey
 }
 
 """
@@ -38749,7 +38813,6 @@ input shopifyCustomer_insert_input {
   Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently.
   """
   organizerId: String
-  updated_at: timestamptz
 }
 
 """aggregate max on columns"""
@@ -38776,7 +38839,6 @@ type shopifyCustomer_max_fields {
   Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently.
   """
   organizerId: String
-  updated_at: timestamptz
 }
 
 """aggregate min on columns"""
@@ -38803,7 +38865,6 @@ type shopifyCustomer_min_fields {
   Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently.
   """
   organizerId: String
-  updated_at: timestamptz
 }
 
 """
@@ -38833,7 +38894,12 @@ input shopifyCustomer_order_by {
   customerId: order_by
   id: order_by
   organizerId: order_by
-  updated_at: order_by
+}
+
+"""primary key columns input for table: shopifyCustomer"""
+input shopifyCustomer_pk_columns_input {
+  """Unique identifier for each entry, generated automatically as a UUID."""
+  id: uuid!
 }
 
 """
@@ -38854,9 +38920,6 @@ enum shopifyCustomer_select_column {
 
   """column name"""
   organizerId
-
-  """column name"""
-  updated_at
 }
 
 """
@@ -38885,7 +38948,6 @@ input shopifyCustomer_set_input {
   Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently.
   """
   organizerId: String
-  updated_at: timestamptz
 }
 
 """
@@ -38923,7 +38985,6 @@ input shopifyCustomer_stream_cursor_value_input {
   Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently.
   """
   organizerId: String
-  updated_at: timestamptz
 }
 
 """
@@ -38944,9 +39005,6 @@ enum shopifyCustomer_update_column {
 
   """column name"""
   organizerId
-
-  """column name"""
-  updated_at
 }
 
 input shopifyCustomer_updates {
@@ -43935,6 +43993,12 @@ type subscription_root {
     """filter the rows returned"""
     where: shopifyCustomer_bool_exp
   ): shopifyCustomer_aggregate!
+
+  """fetch data from the table: "shopifyCustomer" using primary key columns"""
+  shopifyCustomer_by_pk(
+    """Unique identifier for each entry, generated automatically as a UUID."""
+    id: uuid!
+  ): shopifyCustomer
 
   """
   fetch data from the table in a streaming manner: "shopifyCustomer"

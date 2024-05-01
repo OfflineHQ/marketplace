@@ -42,49 +42,51 @@ export default function OffKeyGate({
   locale,
   textGate,
 }: OffKeyGateProps) {
-  const { offKeyState, customer } = useShopifyCustomer({ organizerId });
+  const { offKeyState, customer, shopifyContext } = useShopifyCustomer({
+    organizerId,
+  });
   const textsSubtitle = {
     [OffKeyState.Unlocked]: interpolateString(
       textGate.subtitle[OffKeyState.Unlocked],
       locale,
-      customer,
+      shopifyContext,
     ),
     [OffKeyState.Unlocking]: interpolateString(
       textGate.subtitle[OffKeyState.Unlocking],
       locale,
-      customer,
+      shopifyContext,
     ),
     [OffKeyState.Used]: interpolateString(
       textGate.subtitle[OffKeyState.Used],
       locale,
-      customer,
+      shopifyContext,
     ),
     [OffKeyState.Locked]: interpolateString(
       textGate.subtitle[OffKeyState.Locked],
       locale,
-      customer,
+      shopifyContext,
     ),
   };
   const textsMainText = {
     [OffKeyState.Unlocked]: interpolateString(
       textGate.mainText[OffKeyState.Unlocked],
       locale,
-      customer,
+      shopifyContext,
     ),
     [OffKeyState.Unlocking]: interpolateString(
       textGate.mainText[OffKeyState.Unlocking],
       locale,
-      customer,
+      shopifyContext,
     ),
     [OffKeyState.Used]: interpolateString(
       textGate.mainText[OffKeyState.Used],
       locale,
-      customer,
+      shopifyContext,
     ),
     [OffKeyState.Locked]: interpolateString(
       textGate.mainText[OffKeyState.Locked],
       locale,
-      customer,
+      shopifyContext,
     ),
   };
   const textsKeyStatus = {
@@ -93,7 +95,7 @@ export default function OffKeyGate({
     [OffKeyState.Used]: textGate.key.statusText[OffKeyState.Used],
     [OffKeyState.Locked]: textGate.key.statusText[OffKeyState.Locked],
   };
-  const gateName = interpolateString(textGate.key.name, locale, customer);
+  const gateName = interpolateString(textGate.key.name, locale, shopifyContext);
   return (
     <AutoAnimate>
       {offKeyState && customer ? (

@@ -1,7 +1,7 @@
 'use client';
 
 import { interpolateString, Locale } from '@next/i18n';
-import { Text, TextSkeleton } from '@ui/components';
+import { Text } from '@ui/components';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 import { OffKeyHeader } from '../OffKeyHeader/OffKeyHeader';
 import { ShopifyCustomerStatus } from '../types';
@@ -21,14 +21,16 @@ export default function OffKeyHeaderNotConnected({
   textHeaderNotConnected,
   locale,
 }: OffKeyHeaderNotConnectedProps) {
-  const { customer, status } = useShopifyCustomer({ organizerId });
+  const { customer, status, shopifyContext } = useShopifyCustomer({
+    organizerId,
+  });
   if (!status) return <OffKeyHeaderNotConnectedSkeleton />;
   let title;
   if (status !== ShopifyCustomerStatus.NotConnected) {
     title = interpolateString(
       textHeaderNotConnected.customerConnected,
       locale,
-      customer,
+      shopifyContext,
     );
   } else {
     title = interpolateString(

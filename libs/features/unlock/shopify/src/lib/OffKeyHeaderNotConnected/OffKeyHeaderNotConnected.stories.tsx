@@ -4,6 +4,7 @@ import OffKeyHeaderNotConnected from './OffKeyHeaderNotConnected';
 import { StoryObj, type Meta } from '@storybook/react';
 
 import { ReactQueryDecorator } from '@test-utils/storybook-decorators';
+import { customer, shopifyContext } from '../OffKeyAuth/examples';
 import { ShopifyCustomerStatus } from '../types';
 import {
   offKeyHeaderNotConnectedProps,
@@ -55,12 +56,8 @@ export const WithCustomer: Story = {
       mock: () => [
         shopifyCustomerMocks({
           status: ShopifyCustomerStatus.NewAccount,
-          customer: {
-            id: '1',
-            firstName: 'John',
-            lastName: 'Doe',
-            email: 'john@doe.com',
-          },
+          customer,
+          shopifyContext,
         }),
       ],
     },
@@ -78,7 +75,7 @@ export const WithCustomerEmail: Story = {
   args: {
     textHeaderNotConnected: {
       ...offKeyHeaderNotConnectedProps.textHeaderNotConnected,
-      customerConnected: 'Hello {email}!',
+      customerConnected: 'Hello {customerEmail}!',
     },
   },
 };

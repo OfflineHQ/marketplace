@@ -22,13 +22,13 @@ export const offKeyGateProps: OffKeyGateProps = {
     },
     mainText: {
       [OffKeyState.Unlocked]:
-        'You have unlocked this item and can now add it to your cart.',
+        'You have unlocked "{productTitle}" and can now add it to your cart.',
       [OffKeyState.Unlocking]:
         'Your key is being created and will be ready in a few seconds.',
       [OffKeyState.Used]:
-        "Unfortunately your key has already been used so you can't proceed with the purchase of this item",
+        'Unfortunately your key has already been used so you can\'t proceed with the purchase of "{productTitle}"',
       [OffKeyState.Locked]:
-        'Unfortunately as of now you do not have access to the key to unlock this product. Check out how to get the key and proceed with the purchase.',
+        'Unfortunately as of now you do not have access to the key to unlock "{productTitle}". Check out how to get the key and proceed with the purchase.',
     },
     key: {
       statusText: {

@@ -1,4 +1,3 @@
-import { useGetShopifyCustomerQuery } from '@gql/anonymous/react-query';
 import { useIframeOffKey } from '@next/iframe';
 import { useWalletContext } from '@next/wallet';
 import { renderHook } from '@testing-library/react';
@@ -11,7 +10,9 @@ jest.mock('@next/wallet');
 describe('useShopifyCustomer', () => {
   const mockOrganizerId = 'test-organizer-id';
   const mockCustomer = { id: 'test-id' };
-  const mockLinkedCustomer = { address: '0x123' };
+  const mockLinkedCustomer = {
+    address: '0x1234567890123456789012345678901234567890',
+  };
 
   beforeEach(() => {
     (useWalletContext as jest.Mock).mockReturnValue({
@@ -52,7 +53,7 @@ describe('useShopifyCustomer', () => {
       linkedCustomer: mockLinkedCustomer,
     });
     (useWalletContext as jest.Mock).mockReturnValue({
-      walletInStorage: [{ address: '0x123' }],
+      walletInStorage: [{ address: mockLinkedCustomer.address }],
     });
 
     const { result } = renderHook(() =>
@@ -61,7 +62,7 @@ describe('useShopifyCustomer', () => {
 
     expect(result.current.customer).toEqual(mockCustomer);
     expect(result.current.status).toBe(ShopifyCustomerStatus.MatchingAccount);
-    expect(result.current.walletToConnect).toBe('0x123');
+    expect(result.current.walletToConnect).toBe(mockLinkedCustomer.address);
   });
 
   it('returns correct status when data for linked customer is loading', () => {
@@ -104,7 +105,9 @@ describe('useShopifyCustomer', () => {
       },
     });
     (useWalletContext as jest.Mock).mockReturnValue({
-      walletInStorage: [{ address: '0x123' }],
+      walletInStorage: [
+        { address: '0x1234567890123456789012345678901234567890' },
+      ],
     });
 
     const { result } = renderHook(() =>
@@ -139,5 +142,32 @@ describe('useShopifyCustomer', () => {
     expect(result.current.walletToConnect).toBe(
       '0x1234567890123456789012345678901234567890',
     );
+  });
+  it('returns correct shopifyContext when customer is connected', () => {
+    (useIframeOffKey as jest.Mock).mockReturnValue({
+      isReady: true,
+      customer: {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+      },
+      product: {
+        title: 'Exclusive T-Shirt',
+        available: true,
+      },
+      linkedCustomer: mockLinkedCustomer,
+    });
+
+    const { result } = renderHook(() =>
+      useShopifyCustomer({ organizerId: mockOrganizerId }),
+    );
+
+    expect(result.current.shopifyContext).toEqual({
+      customerFirstName: 'John',
+      customerLastName: 'Doe',
+      customerEmail: 'john.doe@example.com',
+      productTitle: 'Exclusive T-Shirt',
+      productAvailable: true,
+    });
   });
 });

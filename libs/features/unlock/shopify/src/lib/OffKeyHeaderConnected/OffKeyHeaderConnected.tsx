@@ -25,7 +25,7 @@ export default function OffKeyHeaderConnected({
   locale,
   textHeaderConnected,
 }: OffKeyHeaderConnectedProps) {
-  const { customer } = useShopifyCustomer({
+  const { customer, shopifyContext } = useShopifyCustomer({
     organizerId,
   });
   if (!customer) return <OffKeyHeaderConnectedSkeleton />;
@@ -33,12 +33,12 @@ export default function OffKeyHeaderConnected({
     [OffKeyViewHeaderConnected.Default]: interpolateString(
       textHeaderConnected.default,
       locale,
-      customer,
+      shopifyContext,
     ),
     [OffKeyViewHeaderConnected.HowToGet]: interpolateString(
       textHeaderConnected.howToGet,
       locale,
-      customer,
+      shopifyContext,
     ),
   };
   return (

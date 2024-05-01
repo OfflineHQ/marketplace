@@ -1364,6 +1364,7 @@ ${EventParametersFieldsFragmentDoc}`;
     status
     shopifyCampaignTemplate(locales: [$locale, en], stage: $stage) {
       authTexts {
+        connectToShopify
         createNewAccount
         noMatchingAccountRecoverMyAccount
         noMatchingAccountUseExistingAccount

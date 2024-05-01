@@ -7491,6 +7491,7 @@ export type ScheduledReleaseWhereUniqueInput = {
 /** Component used for the authentication */
 export type ShopifyAuth = Entity & {
   __typename?: 'ShopifyAuth';
+  connectToShopify: Scalars['String']['output'];
   /** Action button text to create a new account */
   createNewAccount: Scalars['String']['output'];
   /** The unique identifier */
@@ -7516,6 +7517,8 @@ export type ShopifyAuthLocalizationsArgs = {
 };
 
 export type ShopifyAuthCreateInput = {
+  /** connectToShopify input for default locale (en) */
+  connectToShopify: Scalars['String']['input'];
   /** createNewAccount input for default locale (en) */
   createNewAccount: Scalars['String']['input'];
   /** Inline mutations for managing document localizations excluding the default locale */
@@ -7533,6 +7536,7 @@ export type ShopifyAuthCreateInput = {
 };
 
 export type ShopifyAuthCreateLocalizationDataInput = {
+  connectToShopify: Scalars['String']['input'];
   createNewAccount: Scalars['String']['input'];
   noMatchingAccountRecoverMyAccount: Scalars['String']['input'];
   noMatchingAccountUseExistingAccount: Scalars['String']['input'];
@@ -7558,6 +7562,8 @@ export type ShopifyAuthCreateOneInlineInput = {
 };
 
 export type ShopifyAuthUpdateInput = {
+  /** connectToShopify input for default locale (en) */
+  connectToShopify?: InputMaybe<Scalars['String']['input']>;
   /** createNewAccount input for default locale (en) */
   createNewAccount?: InputMaybe<Scalars['String']['input']>;
   /** Manage document localizations */
@@ -7575,6 +7581,7 @@ export type ShopifyAuthUpdateInput = {
 };
 
 export type ShopifyAuthUpdateLocalizationDataInput = {
+  connectToShopify?: InputMaybe<Scalars['String']['input']>;
   createNewAccount?: InputMaybe<Scalars['String']['input']>;
   noMatchingAccountRecoverMyAccount?: InputMaybe<Scalars['String']['input']>;
   noMatchingAccountUseExistingAccount?: InputMaybe<Scalars['String']['input']>;
@@ -7646,6 +7653,25 @@ export type ShopifyAuthWhereInput = {
   OR?: InputMaybe<Array<ShopifyAuthWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']['input']>;
+  connectToShopify?: InputMaybe<Scalars['String']['input']>;
+  /** All values containing the given string. */
+  connectToShopify_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values ending with the given string. */
+  connectToShopify_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are contained in given list. */
+  connectToShopify_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Any other value that exists and is not equal to the given value. */
+  connectToShopify_not?: InputMaybe<Scalars['String']['input']>;
+  /** All values not containing the given string. */
+  connectToShopify_not_contains?: InputMaybe<Scalars['String']['input']>;
+  /** All values not ending with the given string */
+  connectToShopify_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values that are not contained in given list. */
+  connectToShopify_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** All values not starting with the given string. */
+  connectToShopify_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  /** All values starting with the given string. */
+  connectToShopify_starts_with?: InputMaybe<Scalars['String']['input']>;
   createNewAccount?: InputMaybe<Scalars['String']['input']>;
   /** All values containing the given string. */
   createNewAccount_contains?: InputMaybe<Scalars['String']['input']>;
@@ -16523,6 +16549,8 @@ export type Mutation_Root = {
   delete_shopifyCampaignStatus_by_pk?: Maybe<ShopifyCampaignStatus>;
   /** delete data from the table: "shopifyCustomer" */
   delete_shopifyCustomer?: Maybe<ShopifyCustomer_Mutation_Response>;
+  /** delete single row from the table: "shopifyCustomer" */
+  delete_shopifyCustomer_by_pk?: Maybe<ShopifyCustomer>;
   /** delete data from the table: "shopifyDomain" */
   delete_shopifyDomain?: Maybe<ShopifyDomain_Mutation_Response>;
   /** delete single row from the table: "shopifyDomain" */
@@ -17239,6 +17267,8 @@ export type Mutation_Root = {
   update_shopifyCampaignStatus_many?: Maybe<Array<Maybe<ShopifyCampaignStatus_Mutation_Response>>>;
   /** update data of the table: "shopifyCustomer" */
   update_shopifyCustomer?: Maybe<ShopifyCustomer_Mutation_Response>;
+  /** update single row of the table: "shopifyCustomer" */
+  update_shopifyCustomer_by_pk?: Maybe<ShopifyCustomer>;
   /** update multiples rows of table: "shopifyCustomer" */
   update_shopifyCustomer_many?: Maybe<Array<Maybe<ShopifyCustomer_Mutation_Response>>>;
   /** update data of the table: "shopifyDomain" */
@@ -18123,6 +18153,12 @@ export type Mutation_RootDelete_ShopifyCampaignStatus_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootDelete_ShopifyCustomerArgs = {
   where: ShopifyCustomer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ShopifyCustomer_By_PkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -20961,6 +20997,13 @@ export type Mutation_RootUpdate_ShopifyCampaignStatus_ManyArgs = {
 export type Mutation_RootUpdate_ShopifyCustomerArgs = {
   _set?: InputMaybe<ShopifyCustomer_Set_Input>;
   where: ShopifyCustomer_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ShopifyCustomer_By_PkArgs = {
+  _set?: InputMaybe<ShopifyCustomer_Set_Input>;
+  pk_columns: ShopifyCustomer_Pk_Columns_Input;
 };
 
 
@@ -25959,6 +26002,8 @@ export type Query_Root = {
   shopifyCustomer: Array<ShopifyCustomer>;
   /** fetch aggregated fields from the table: "shopifyCustomer" */
   shopifyCustomer_aggregate: ShopifyCustomer_Aggregate;
+  /** fetch data from the table: "shopifyCustomer" using primary key columns */
+  shopifyCustomer_by_pk?: Maybe<ShopifyCustomer>;
   /** fetch data from the table: "shopifyDomain" */
   shopifyDomain: Array<ShopifyDomain>;
   /** fetch aggregated fields from the table: "shopifyDomain" */
@@ -27471,6 +27516,11 @@ export type Query_RootShopifyCustomer_AggregateArgs = {
 };
 
 
+export type Query_RootShopifyCustomer_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
 export type Query_RootShopifyDomainArgs = {
   distinct_on?: InputMaybe<Array<ShopifyDomain_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -28879,7 +28929,6 @@ export type ShopifyCustomer = {
   id: Scalars['uuid']['output'];
   /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
   organizerId: Scalars['String']['output'];
-  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregated selection of "shopifyCustomer" */
@@ -28914,13 +28963,14 @@ export type ShopifyCustomer_Bool_Exp = {
   customerId?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   organizerId?: InputMaybe<String_Comparison_Exp>;
-  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "shopifyCustomer" */
 export const enum ShopifyCustomer_Constraint {
   /** unique or primary key constraint on columns "customerId", "address", "organizerId" */
-  ShopifyCustomerAddressOrganizerIdCustomerIdKey = 'shopifyCustomer_address_organizerId_customerId_key'
+  ShopifyCustomerAddressOrganizerIdCustomerIdKey = 'shopifyCustomer_address_organizerId_customerId_key',
+  /** unique or primary key constraint on columns "id" */
+  ShopifyCustomerPkey = 'shopifyCustomer_pkey'
 };
 
 /** input type for inserting data into table "shopifyCustomer" */
@@ -28935,7 +28985,6 @@ export type ShopifyCustomer_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** aggregate max on columns */
@@ -28951,7 +29000,6 @@ export type ShopifyCustomer_Max_Fields = {
   id?: Maybe<Scalars['uuid']['output']>;
   /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
   organizerId?: Maybe<Scalars['String']['output']>;
-  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** aggregate min on columns */
@@ -28967,7 +29015,6 @@ export type ShopifyCustomer_Min_Fields = {
   id?: Maybe<Scalars['uuid']['output']>;
   /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
   organizerId?: Maybe<Scalars['String']['output']>;
-  updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
 /** response of any mutation on the table "shopifyCustomer" */
@@ -28993,7 +29040,12 @@ export type ShopifyCustomer_Order_By = {
   customerId?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   organizerId?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: shopifyCustomer */
+export type ShopifyCustomer_Pk_Columns_Input = {
+  /** Unique identifier for each entry, generated automatically as a UUID. */
+  id: Scalars['uuid']['input'];
 };
 
 /** select columns of table "shopifyCustomer" */
@@ -29007,9 +29059,7 @@ export const enum ShopifyCustomer_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId',
-  /** column name */
-  UpdatedAt = 'updated_at'
+  OrganizerId = 'organizerId'
 };
 
 /** input type for updating data in table "shopifyCustomer" */
@@ -29024,7 +29074,6 @@ export type ShopifyCustomer_Set_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** Streaming cursor of the table "shopifyCustomer" */
@@ -29047,7 +29096,6 @@ export type ShopifyCustomer_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   /** Identifier for the organizer, used to scope Shopify customer data to specific organizers, allowing them to manage their client data independently. */
   organizerId?: InputMaybe<Scalars['String']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
 /** update columns of table "shopifyCustomer" */
@@ -29061,9 +29109,7 @@ export const enum ShopifyCustomer_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  OrganizerId = 'organizerId',
-  /** column name */
-  UpdatedAt = 'updated_at'
+  OrganizerId = 'organizerId'
 };
 
 export type ShopifyCustomer_Updates = {
@@ -31261,6 +31307,8 @@ export type Subscription_Root = {
   shopifyCustomer: Array<ShopifyCustomer>;
   /** fetch aggregated fields from the table: "shopifyCustomer" */
   shopifyCustomer_aggregate: ShopifyCustomer_Aggregate;
+  /** fetch data from the table: "shopifyCustomer" using primary key columns */
+  shopifyCustomer_by_pk?: Maybe<ShopifyCustomer>;
   /** fetch data from the table in a streaming manner: "shopifyCustomer" */
   shopifyCustomer_stream: Array<ShopifyCustomer>;
   /** fetch data from the table: "shopifyDomain" */
@@ -32671,6 +32719,11 @@ export type Subscription_RootShopifyCustomer_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<ShopifyCustomer_Order_By>>;
   where?: InputMaybe<ShopifyCustomer_Bool_Exp>;
+};
+
+
+export type Subscription_RootShopifyCustomer_By_PkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 

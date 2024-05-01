@@ -29,6 +29,7 @@ interface IFrameContextType {
   linkedCustomer:
     | ReceiveMessageValues[ReceiveMessageType.LINKED_CUSTOMER]
     | null;
+  product: ReceiveMessageValues[ReceiveMessageType.PRODUCT] | null;
 }
 
 const defaultState: IFrameContextType = {
@@ -39,6 +40,7 @@ const defaultState: IFrameContextType = {
   offKeyState: null,
   customer: null,
   linkedCustomer: null,
+  product: null,
 };
 
 const IFrameContext = createContext<IFrameContextType>(defaultState);
@@ -67,6 +69,7 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   const [customer, setCustomer] = useState<IFrameContextType['customer']>(null);
   const [linkedCustomer, setLinkedCustomer] =
     useState<IFrameContextType['linkedCustomer']>(null);
+  const [product, setProduct] = useState<IFrameContextType['product']>(null);
 
   const handleIFrameReady = () => {
     setIFrameParent((window as any).parentIFrame);
@@ -107,6 +110,9 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
           value as ReceiveMessageValues[ReceiveMessageType.LINKED_CUSTOMER],
         );
         break;
+      case ReceiveMessageType.PRODUCT:
+        setProduct(value as ReceiveMessageValues[ReceiveMessageType.PRODUCT]);
+        break;
     }
   };
   return (
@@ -124,6 +130,7 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
           offKeyState,
           customer,
           linkedCustomer,
+          product,
         }}
       >
         <div

@@ -26,6 +26,19 @@ export const useIframeConnect = () => {
     } satisfies IFrameChildMessage<SendMessageType.DISCONNECT>);
   };
 
+  const connectToShopify = () => {
+    if (!iframeParent) {
+      console.warn(
+        'Cannot send connect to Shopify message to Dapp, iframe parent not found',
+      );
+      return;
+    }
+    iframeParent?.sendMessage({
+      type: SendMessageType.CONNECT_TO_SHOPIFY,
+      value: null,
+    } satisfies IFrameChildMessage<SendMessageType.CONNECT_TO_SHOPIFY>);
+  };
+
   const signWithEthereum = async (messageToSign: string) => {
     if (!iframeParent) {
       throw new Error(
@@ -71,6 +84,7 @@ export const useIframeConnect = () => {
 
   return {
     connectStatus,
+    connectToShopify,
     disconnectFromDapp,
     signWithEthereum,
     askForWalletConnectStatus,
@@ -84,12 +98,14 @@ export const useIframeReady = () => {
 };
 
 export const useIframeOffKey = () => {
-  const { offKeyState, customer, iframeParent, linkedCustomer } = useIFrame();
+  const { offKeyState, customer, product, iframeParent, linkedCustomer } =
+    useIFrame();
   const isIframeReady = useIframeReady();
 
   return {
     offKeyState,
     customer,
+    product,
     isReady: isIframeReady,
     linkedCustomer,
   };
