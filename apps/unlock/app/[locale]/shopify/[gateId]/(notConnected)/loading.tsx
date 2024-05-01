@@ -1,5 +1,15 @@
-import { OffKeyGateNotConnectedSkeleton } from '@features/unlock/shopify';
+import {
+  OffKeyAuthSkelton,
+  OffKeyGateNotConnectedSkeleton,
+  OffKeyHeaderNotConnectedSkeleton,
+  OffKeyLayout,
+} from '@features/unlock/shopify';
 
 export default function Page() {
-  return <OffKeyGateNotConnectedSkeleton />;
+  return (
+    <OffKeyLayout header={<OffKeyHeaderNotConnectedSkeleton />}>
+      <OffKeyGateNotConnectedSkeleton />
+      <OffKeyAuthSkelton />
+    </OffKeyLayout>
+  );
 }
