@@ -294,9 +294,9 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     console.log({ ownerAddress, organizerId });
     const loyaltyCard = await loyaltyCardSdk
       .getLoyaltyCardOwnedByAddress({
-        ownerAddress,
+        ownerAddress: ownerAddress.toLowerCase(),
         chainId: getCurrentChain().chainIdHex,
-        contractAddress,
+        contractAddress: contractAddress.toLowerCase(),
         organizerId,
       })
       .catch((error: Error) => {
