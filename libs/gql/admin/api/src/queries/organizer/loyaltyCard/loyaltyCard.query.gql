@@ -45,7 +45,7 @@ query GetLoyaltyCardOwnedByAddress(
   $chainId: String!
   $ownerAddress: String!
   $organizerId: String!
-) @cached {
+) {
   loyaltyCardNft(
     where: {
       contractAddress: { _eq: $contractAddress }
