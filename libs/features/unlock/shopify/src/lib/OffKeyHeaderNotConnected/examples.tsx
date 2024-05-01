@@ -6,7 +6,7 @@ export const offKeyHeaderNotConnectedProps = {
   organizerId: 'organizerId',
   textHeaderNotConnected: {
     customerNotConnected: 'Connect to your account',
-    customerConnected: 'Hello {firstName}!',
+    customerConnected: 'Hello {customerFirstName}!',
   },
   locale: 'en',
 } satisfies OffKeyHeaderNotConnectedProps;

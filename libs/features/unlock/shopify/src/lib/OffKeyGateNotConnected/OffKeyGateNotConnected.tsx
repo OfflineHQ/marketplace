@@ -34,34 +34,35 @@ export default function OffKeyGateNotConnected({
   textGateNotConnected,
   locale,
 }: OffKeyGateNotConnectedProps) {
-  const { customer, status } = useShopifyCustomer({ organizerId });
+  const { shopifyContext, status } = useShopifyCustomer({ organizerId });
 
   const textsSubtitle = {
     [ShopifyCustomerStatus.NotConnected]: interpolateString(
       textGateNotConnected.subtitle[ShopifyCustomerStatus.NotConnected],
       locale,
+      shopifyContext,
     ),
     [ShopifyCustomerStatus.ExistingAccountNewCustomer]: interpolateString(
       textGateNotConnected.subtitle[
         ShopifyCustomerStatus.ExistingAccountNewCustomer
       ],
       locale,
-      customer,
+      shopifyContext,
     ),
     [ShopifyCustomerStatus.NewAccount]: interpolateString(
       textGateNotConnected.subtitle[ShopifyCustomerStatus.NewAccount],
       locale,
-      customer,
+      shopifyContext,
     ),
     [ShopifyCustomerStatus.MatchingAccount]: interpolateString(
       textGateNotConnected.subtitle[ShopifyCustomerStatus.MatchingAccount],
       locale,
-      customer,
+      shopifyContext,
     ),
     [ShopifyCustomerStatus.NoMatchingAccount]: interpolateString(
       textGateNotConnected.subtitle[ShopifyCustomerStatus.NoMatchingAccount],
       locale,
-      customer,
+      shopifyContext,
     ),
   };
 
@@ -69,28 +70,29 @@ export default function OffKeyGateNotConnected({
     [ShopifyCustomerStatus.NotConnected]: interpolateString(
       textGateNotConnected.mainText[ShopifyCustomerStatus.NotConnected],
       locale,
+      shopifyContext,
     ),
     [ShopifyCustomerStatus.ExistingAccountNewCustomer]: interpolateString(
       textGateNotConnected.mainText[
         ShopifyCustomerStatus.ExistingAccountNewCustomer
       ],
       locale,
-      customer,
+      shopifyContext,
     ),
     [ShopifyCustomerStatus.NewAccount]: interpolateString(
       textGateNotConnected.mainText[ShopifyCustomerStatus.NewAccount],
       locale,
-      customer,
+      shopifyContext,
     ),
     [ShopifyCustomerStatus.MatchingAccount]: interpolateString(
       textGateNotConnected.mainText[ShopifyCustomerStatus.MatchingAccount],
       locale,
-      customer,
+      shopifyContext,
     ),
     [ShopifyCustomerStatus.NoMatchingAccount]: interpolateString(
       textGateNotConnected.mainText[ShopifyCustomerStatus.NoMatchingAccount],
       locale,
-      customer,
+      shopifyContext,
     ),
   };
 

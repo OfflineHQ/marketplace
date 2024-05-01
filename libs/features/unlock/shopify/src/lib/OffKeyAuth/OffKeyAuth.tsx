@@ -12,11 +12,13 @@ import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 import { ShopifyCustomerStatus } from '../types';
 import { OffKeyAuthSkelton } from './OffKeyAuthSkelton';
 
+import { useIframeConnect } from '@next/iframe';
 import { ConnectProps, OffKeyAuthSignIn } from './OffKeyAuthSignIn';
 
 export interface OffKeyAuthProps {
   organizerId: string;
   textAuth: {
+    connectToShopify: string;
     createNewAccount: string;
     useExistingAccount: string;
     useAnotherAccount: string;
@@ -47,13 +49,14 @@ export default function OffKeyAuth({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const {
-    customer,
+    shopifyContext,
     status: shopifyCustomerStatus,
     walletToConnect,
     walletInStorage,
   } = useShopifyCustomer({
     organizerId,
   });
+  const { connectToShopify } = useIframeConnect();
 
   const connectWalletMutation = useMutation({
     mutationFn: ({
@@ -85,40 +88,49 @@ export default function OffKeyAuth({
     },
   });
   if (!isWalletReady || !shopifyCustomerStatus) return <OffKeyAuthSkelton />;
-  else if (shopifyCustomerStatus === ShopifyCustomerStatus.NotConnected)
-    return null;
   const texts = {
+    connectToShopify: interpolateString(
+      textAuth.connectToShopify,
+      locale,
+      shopifyContext,
+    ),
     createNewAccount: interpolateString(
       textAuth.createNewAccount,
       locale,
-      customer,
+      shopifyContext,
     ),
     useExistingAccount: interpolateString(
       textAuth.useExistingAccount,
       locale,
-      customer,
+      shopifyContext,
     ),
     noMatchingAccount: {
       useExistingAccount: interpolateString(
         textAuth.noMatchingAccount.useExistingAccount,
         locale,
-        customer,
+        shopifyContext,
       ),
       recoverMyAccount: interpolateString(
         textAuth.noMatchingAccount.recoverMyAccount,
         locale,
-        customer,
+        shopifyContext,
       ),
     },
-    signIn: interpolateString(textAuth.signIn, locale, customer),
+    signIn: interpolateString(textAuth.signIn, locale, shopifyContext),
     useAnotherAccount: interpolateString(
       textAuth.useAnotherAccount,
       locale,
-      customer,
+      shopifyContext,
     ),
   };
   const renderStatusActions = () => {
     switch (shopifyCustomerStatus) {
+      case ShopifyCustomerStatus.NotConnected:
+        return (
+          <Button block onClick={() => connectToShopify()}>
+            {texts.connectToShopify}
+          </Button>
+        );
       case ShopifyCustomerStatus.NewAccount:
         return (
           <>

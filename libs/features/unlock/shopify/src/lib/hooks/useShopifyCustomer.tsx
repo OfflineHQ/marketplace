@@ -7,8 +7,17 @@ export interface UseShopifyCustomerProps {
   organizerId: string;
 }
 export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
-  const { customer, isReady, offKeyState, linkedCustomer } = useIframeOffKey();
+  const { customer, product, isReady, offKeyState, linkedCustomer } =
+    useIframeOffKey();
   const { walletInStorage } = useWalletContext();
+
+  const shopifyContext = {
+    customerFirstName: customer?.firstName,
+    customerLastName: customer?.lastName,
+    customerEmail: customer?.email,
+    productTitle: product?.title,
+    productAvailable: product?.available,
+  };
   // means the iframe parent is not ready
   if (!isReady)
     return {
@@ -16,6 +25,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       status: null,
       walletInStorage,
       offKeyState,
+      shopifyContext,
     };
   // means the iframe parent is ready but the customer is not connected
   else if (!customer) {
@@ -24,6 +34,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       status: ShopifyCustomerStatus.NotConnected,
       walletInStorage,
       offKeyState,
+      shopifyContext,
     };
   }
   // means the iframe parent is ready and the customer is connected but the call to get linked customer is still loading
@@ -33,6 +44,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       status: null,
       walletInStorage,
       offKeyState,
+      shopifyContext,
     };
   }
   // means the iframe parent is ready and the customer is connected but the customer does not have a recorded wallet yet
@@ -44,6 +56,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
         : ShopifyCustomerStatus.NewAccount,
       walletInStorage,
       offKeyState,
+      shopifyContext,
     };
   }
   const matchingWallet = walletInStorage?.find(
@@ -60,5 +73,6 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       : ethers.utils.getAddress(linkedCustomer?.address),
     walletInStorage,
     offKeyState,
+    shopifyContext,
   };
 }

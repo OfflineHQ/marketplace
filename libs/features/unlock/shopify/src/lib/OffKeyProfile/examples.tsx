@@ -6,7 +6,9 @@ import { useIframeConnect } from '@next/iframe';
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
 import {
+  customer,
   authMocks as offKeyAuthMocks,
+  shopifyContext,
   type AuthMocksParams,
 } from '../OffKeyAuth/examples';
 import { ShopifyCustomerStatus } from '../types';
@@ -36,15 +38,11 @@ export const offKeyProfileProps: OffKeyProfileProps = {
 };
 
 export const shopifyCustomerMatchingAccount = {
-  customer: {
-    id: '1',
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john@doe.com',
-  },
+  customer,
   status: ShopifyCustomerStatus.MatchingAccount,
   walletInStorage: [{ address: offKeyProfileProps.user.address }],
   offKeyState: null,
+  shopifyContext,
 };
 
 interface OffKeyProfileMocks extends AuthMocksParams {

@@ -6,16 +6,15 @@ import {
 } from '@test-utils/storybook-decorators';
 import { ShopifyCustomerStatus } from '../types';
 import OffKeyAuth from './OffKeyAuth';
-import { OffKeyAuthDemo, authMocks, offKeyAuthProps } from './examples';
+import {
+  OffKeyAuthDemo,
+  authMocks,
+  customer,
+  offKeyAuthProps,
+  shopifyContext,
+} from './examples';
 
 const address = '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D';
-
-const customer = {
-  id: '1',
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'john@doe.com',
-};
 
 const walletConnectedProps = {
   walletAuthMocks: {
@@ -43,6 +42,7 @@ const meta = {
             status: null,
             customer: null,
             walletInStorage: [{ address }, { address: '0x214123135' }],
+            shopifyContext,
           },
           ...walletConnectedProps,
         }),
@@ -65,10 +65,14 @@ export const NotConnected: Story = {
             status: ShopifyCustomerStatus.NotConnected,
             customer: null,
             walletInStorage: [{ address }, { address: '0x214123135' }],
+            shopifyContext,
           },
           ...walletConnectedProps,
         }),
     },
+  },
+  play: async ({ container }) => {
+    userEvent.click(await screen.findByText(/connect to my account/i));
   },
 };
 
@@ -81,6 +85,7 @@ export const NewAccount: Story = {
             status: ShopifyCustomerStatus.NewAccount,
             customer,
             walletInStorage: [],
+            shopifyContext,
           },
           ...walletConnectedProps,
         }),
@@ -101,6 +106,7 @@ export const ExistingAccountNewCustomer: Story = {
             status: ShopifyCustomerStatus.ExistingAccountNewCustomer,
             customer,
             walletInStorage: [{ address }],
+            shopifyContext,
           },
           ...walletConnectedProps,
         }),
@@ -123,6 +129,7 @@ export const ExistingSeveralAccountNewCustomer: Story = {
             status: ShopifyCustomerStatus.ExistingAccountNewCustomer,
             customer,
             walletInStorage: [{ address }, { address: '0x214123135' }],
+            shopifyContext,
           },
           walletAuthMocks: {
             connect: () => Promise.resolve(),
@@ -172,6 +179,7 @@ export const NoMatchingAccount: Story = {
             customer,
             walletInStorage: [{ address }, { address: '0x214123135' }],
             walletToConnect: '0x123456789',
+            shopifyContext,
           },
           ...walletConnectedProps,
         }),

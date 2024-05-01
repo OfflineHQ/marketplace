@@ -23,7 +23,7 @@ export const offKeyHeaderConnectedProps: Omit<
 > = {
   locale: 'en',
   textHeaderConnected: {
-    default: 'Welcome {firstName}!',
+    default: 'Welcome {customerFirstName}!',
     howToGet: 'How to get the key',
   },
   organizerId: 'organizerId',

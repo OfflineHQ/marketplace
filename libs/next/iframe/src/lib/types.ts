@@ -4,6 +4,7 @@ export enum ReceiveMessageType {
   OFF_KEY_STATE = 'OFF_KEY_STATE',
   CUSTOMER = 'CUSTOMER',
   LINKED_CUSTOMER = 'LINKED_CUSTOMER',
+  PRODUCT = 'PRODUCT',
   // Additional message types can be added here as needed
 }
 
@@ -51,6 +52,11 @@ export interface ReceiveMessageValues {
   [ReceiveMessageType.LINKED_CUSTOMER]: {
     address: string | null; // null means data loaded but no linked customer
   };
+  [ReceiveMessageType.PRODUCT]: {
+    id: string;
+    title: string;
+    available: boolean;
+  };
   // Additional value shapes can be defined here corresponding to the ReceiveMessageType
 }
 
@@ -59,6 +65,7 @@ export enum SendMessageType {
   SIGNATURE = 'SIGNATURE',
   OFF_KEY_MINT = 'OFF_KEY_MINT',
   CONNECT_STATUS = 'CONNECT_STATUS',
+  CONNECT_TO_SHOPIFY = 'CONNECT_TO_SHOPIFY',
 }
 
 export interface SendMessageValues {
@@ -76,6 +83,7 @@ export interface SendMessageValues {
   [SendMessageType.CONNECT_STATUS]: {
     address: string;
   };
+  [SendMessageType.CONNECT_TO_SHOPIFY]: null;
   // Additional value shapes can be defined here corresponding to the SendMessageType
 }
 

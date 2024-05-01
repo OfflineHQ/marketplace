@@ -10493,6 +10493,8 @@ input ScheduledReleaseWhereUniqueInput {
 
 """Component used for the authentication"""
 type ShopifyAuth implements Entity {
+  connectToShopify: String!
+
   """Action button text to create a new account"""
   createNewAccount: String!
 
@@ -10531,6 +10533,9 @@ type ShopifyAuth implements Entity {
 }
 
 input ShopifyAuthCreateInput {
+  """connectToShopify input for default locale (en)"""
+  connectToShopify: String!
+
   """createNewAccount input for default locale (en)"""
   createNewAccount: String!
 
@@ -10556,6 +10561,7 @@ input ShopifyAuthCreateInput {
 }
 
 input ShopifyAuthCreateLocalizationDataInput {
+  connectToShopify: String!
   createNewAccount: String!
   noMatchingAccountRecoverMyAccount: String!
   noMatchingAccountUseExistingAccount: String!
@@ -10581,6 +10587,9 @@ input ShopifyAuthCreateOneInlineInput {
 }
 
 input ShopifyAuthUpdateInput {
+  """connectToShopify input for default locale (en)"""
+  connectToShopify: String
+
   """createNewAccount input for default locale (en)"""
   createNewAccount: String
 
@@ -10604,6 +10613,7 @@ input ShopifyAuthUpdateInput {
 }
 
 input ShopifyAuthUpdateLocalizationDataInput {
+  connectToShopify: String
   createNewAccount: String
   noMatchingAccountRecoverMyAccount: String
   noMatchingAccountUseExistingAccount: String
@@ -10686,6 +10696,34 @@ input ShopifyAuthWhereInput {
 
   """Contains search across all appropriate fields."""
   _search: String
+  connectToShopify: String
+
+  """All values containing the given string."""
+  connectToShopify_contains: String
+
+  """All values ending with the given string."""
+  connectToShopify_ends_with: String
+
+  """All values that are contained in given list."""
+  connectToShopify_in: [String]
+
+  """Any other value that exists and is not equal to the given value."""
+  connectToShopify_not: String
+
+  """All values not containing the given string."""
+  connectToShopify_not_contains: String
+
+  """All values not ending with the given string"""
+  connectToShopify_not_ends_with: String
+
+  """All values that are not contained in given list."""
+  connectToShopify_not_in: [String]
+
+  """All values not starting with the given string."""
+  connectToShopify_not_starts_with: String
+
+  """All values starting with the given string."""
+  connectToShopify_starts_with: String
   createNewAccount: String
 
   """All values containing the given string."""
