@@ -7,7 +7,9 @@ import {
 export default function Page() {
   return (
     <OffKeyLayout className="h-full" header={<OffKeyHeaderConnectedSkeleton />}>
-      <OffKeyGateSkeleton className="h-full" />
+      <div className="flex h-full flex-1 flex-col">
+        <OffKeyGateSkeleton className="h-full" />
+      </div>
     </OffKeyLayout>
   );
 }

@@ -11,7 +11,7 @@ const textVariants = {
   h4: 'scroll-m-20 text-xl font-semibold tracking-tight text-balance text-pretty',
   h5: 'scroll-m-20 text-lg font-medium text-balance text-pretty',
   h6: 'scroll-m-20 text-base font-medium text-balance text-pretty',
-  p: 'text-base leading-7 whitespace-pre',
+  p: 'text-base whitespace-pre-wrap',
   span: 'text-base',
   small: 'text-sm font-medium leading-none',
 };
