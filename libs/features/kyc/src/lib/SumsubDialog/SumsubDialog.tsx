@@ -1,51 +1,48 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
   type DialogProps,
 } from '@ui/components';
 
-import { useTranslations } from 'next-intl';
+import type { Locale } from '@gql/shared/types';
+import { useLocale } from 'next-intl';
 import { SumsubDialogClient, SumsubWebSdkProps } from './SumsubDialogClient';
-export interface SumsubDialogProps extends DialogProps, SumsubWebSdkProps {
+export interface SumsubDialogProps
+  extends DialogProps,
+    Pick<
+      SumsubWebSdkProps,
+      'confirmedIcon' | 'confirmedLink' | 'confirmedText'
+    > {
   children?: React.ReactNode;
+  title: string;
 }
 
-export const SumsubDialog: React.FC<SumsubDialogProps> = ({
+export default function SumsubDialog({
   children,
-  accessToken,
-  expirationHandler,
-  config,
-  options,
+  title,
   confirmedIcon,
-  confirmedLink,
   confirmedText,
+  confirmedLink,
   ...dialogProps
-}) => {
-  const t = useTranslations('KYC.Dialog');
+}: SumsubDialogProps) {
+  const locale = useLocale() as Locale;
   return (
     <Dialog {...dialogProps}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
-          <DialogDescription>
-            {t.rich('description', { br: () => <br /> })}
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         <SumsubDialogClient
-          accessToken={accessToken}
-          expirationHandler={expirationHandler}
-          config={config}
-          options={options}
           confirmedIcon={confirmedIcon}
           confirmedLink={confirmedLink}
           confirmedText={confirmedText}
+          locale={locale}
         />
       </DialogContent>
     </Dialog>
   );
-};
+}

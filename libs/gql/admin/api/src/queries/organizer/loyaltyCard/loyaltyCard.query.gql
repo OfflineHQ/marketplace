@@ -1,0 +1,114 @@
+query GetLoyaltyCardOrganizer($organizerId: ID!, $stage: Stage!) @cached {
+  organizer(where: { id: $organizerId }, locales: [en], stage: $stage) {
+    loyaltyCard {
+      id
+      nftName
+      nftImage {
+        url
+      }
+      loyaltyCardParameters {
+        status
+      }
+      loyaltyCardNftContract {
+        contractAddress
+        chainId
+      }
+    }
+  }
+}
+
+query GetLoyaltyCardNftContractByLoyaltyCardId($loyaltyCardId: String!) {
+  loyaltyCardNftContract(
+    where: { loyaltyCardId: { _eq: $loyaltyCardId } }
+    limit: 1
+  ) {
+    contractAddress
+    chainId
+  }
+}
+
+query GetAlchemyInfosFromLoyaltyCardId($loyaltyCardId: String!) {
+  loyaltyCardParameters(
+    where: { loyaltyCardId: { _eq: $loyaltyCardId } }
+    limit: 1
+  ) {
+    id
+    activityWebhookId
+    activityWebhookSigningKey
+    metadataUpdateWebhookId
+    metadataUpdateWebhookSigningKey
+  }
+}
+
+query GetLoyaltyCardOwnedByAddress(
+  $contractAddress: String!
+  $chainId: String!
+  $ownerAddress: String!
+  $organizerId: String!
+) {
+  loyaltyCardNft(
+    where: {
+      contractAddress: { _eq: $contractAddress }
+      chainId: { _eq: $chainId }
+      ownerAddress: { _eq: $ownerAddress }
+      organizerId: { _eq: $organizerId }
+    }
+    limit: 1
+  ) {
+    id
+    status
+    burnedTransferId
+    organizerId
+  }
+}
+
+query GetLoyaltyCardAlchemyEvent(
+  $contractAddress: String!
+  $chainId: String!
+  $tokenId: bigint!
+) {
+  loyaltyCardNft(
+    where: {
+      contractAddress: { _eq: $contractAddress }
+      chainId: { _eq: $chainId }
+      tokenId: { _eq: $tokenId }
+    }
+    limit: 1
+  ) {
+    id
+    status
+  }
+}
+
+query GetLoyaltyCardNftContractByContractAddress(
+  $contractAddress: String!
+  $chainId: String!
+  $organizerId: String!
+) @cached {
+  loyaltyCardNftContract(
+    where: {
+      contractAddress: { _eq: $contractAddress }
+      chainId: { _eq: $chainId }
+      organizerId: { _eq: $organizerId }
+    }
+    limit: 1
+  ) {
+    loyaltyCardId
+  }
+}
+
+query GetLoyaltyCardByContractAddressForProcess {
+  loyaltyCardNft(
+    where: { status: { _in: [CONFIRMED, ERROR] } }
+    order_by: { updated_at: desc }
+  ) {
+    id
+    status
+    updated_at
+    contractAddress
+    ownerAddress
+    loyaltyCardId
+    metadata
+    tokenId
+  }
+}

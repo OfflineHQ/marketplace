@@ -1,0 +1,11 @@
+mutation CreatePackNftContractEventPasses(
+  $objects: [packNftContractEventPass_insert_input!]!
+) {
+  insert_packNftContractEventPass(objects: $objects) {
+    returning {
+      packNftContractId
+      eventPassId
+      amount
+    }
+  }
+}

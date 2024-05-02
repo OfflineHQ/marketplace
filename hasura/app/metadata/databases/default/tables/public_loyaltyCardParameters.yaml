@@ -1,0 +1,13 @@
+table:
+  name: loyaltyCardParameters
+  schema: public
+object_relationships:
+  - name: loyaltyCardNftContract
+    using:
+      manual_configuration:
+        column_mapping:
+          loyaltyCardId: loyaltyCardId
+        insertion_order: null
+        remote_table:
+          name: loyaltyCardNftContract
+          schema: public

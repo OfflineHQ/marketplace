@@ -4,9 +4,6 @@ declare module '@env/client' {
     NEXT_PUBLIC_THIRDWEB_CLIENT_ID: string;
     NEXT_PUBLIC_HYGRAPH_STAGE: string;
     NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT: string;
-    NEXT_PUBLIC_WEB3AUTH_CLIENT_ID: string;
-    NEXT_PUBLIC_WEB3AUTH_NETWORK: string;
-    NEXT_PUBLIC_WEB3AUTH_SESSION_TIME: string;
     NEXT_PUBLIC_CHAIN: string;
     NEXT_PUBLIC_ALCHEMY_API_KEY: string;
     NEXT_PUBLIC_UPLOAD_ACCOUNT_ID: string;
@@ -15,8 +12,13 @@ declare module '@env/client' {
     NEXT_PUBLIC_SENTRY_DSN?: string;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
     NEXT_PUBLIC_OPENZEPPELIN_URL: string;
-    NEXT_PUBLIC_THIRDWEB_MASTER_ADDRESS: string;
     NEXT_PUBLIC_POSTHOG_KEY: string;
+    NEXT_PUBLIC_COMETH_MARKETPLACE_API_URL: string;
+    NEXT_PUBLIC_MARKETPLACE_API_KEY: string;
+    NEXT_PUBLIC_COMETH_CONNECT_API_KEY: string;
+    NEXT_PUBLIC_WC_PROJECT_ID: string;
+    NEXT_PUBLIC_WC_RELAY_URL: string;
+    NEXT_PUBLIC_WEB_APP_URL: string;
   };
   export default env;
 }
@@ -59,6 +61,9 @@ declare module '@env/server' {
     OPENZEPPELIN_URL: string;
     POSTHOG_KEY: string;
     POSTHOG_PERSONAL_API_KEY: string;
+    COMETH_CONNECT_API_KEY: string;
+    API_SECRET_ENCRYPTION_KEY: string;
+    SHOPIFY_SHARED_SECRET: string;
   };
   export default env;
 }

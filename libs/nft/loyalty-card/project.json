@@ -1,0 +1,30 @@
+{
+  "name": "nft-loyalty-card",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nft/loyalty-card/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/nft/loyalty-card",
+        "main": "libs/nft/loyalty-card/src/index.ts",
+        "tsConfig": "libs/nft/loyalty-card/tsconfig.lib.json",
+        "assets": ["libs/nft/loyalty-card/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nft/loyalty-card/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

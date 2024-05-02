@@ -1,8 +1,8 @@
 /* eslint-disable-next-line */
-import { VariantProps, cva } from 'class-variance-authority';
+import { IconProps, iconCVA } from '@ui/icons';
 import { cn } from '@ui/shared';
-import { iconCVA, IconProps } from '@ui/icons';
-import { HTMLAttributes, FC } from 'react';
+import { VariantProps, cva } from 'class-variance-authority';
+import { FC, HTMLAttributes } from 'react';
 
 const variants = {
   default: 'text-primary-foreground fill-muted-foreground',
@@ -13,7 +13,7 @@ const variants = {
   link: 'text-secondary-foreground fill-background-foreground',
 };
 
-const spinnerVariantsCva = cva('h-10 w-10 animate-spin', {
+const spinnerVariantsCva = cva('size-10 animate-spin', {
   variants: {
     variant: variants,
   },

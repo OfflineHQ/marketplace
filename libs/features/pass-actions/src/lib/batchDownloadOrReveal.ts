@@ -11,7 +11,7 @@ async function downloadPass(slug: string, id: string, tokenId: string) {
   try {
     await Bytescale.AuthManager.beginAuthSession({
       accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
-      authUrl: `${getNextAppURL()}/api/bytescale/jwt`,
+      authUrl: `${getNextAppURL()}api/bytescale/jwt`,
       authHeaders: async () => Promise.resolve({}),
     });
 

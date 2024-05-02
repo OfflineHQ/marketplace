@@ -39,7 +39,7 @@ const SheetPortal = ({ position, children, ...props }: SheetPortalProps) => (
 SheetPortal.displayName = SheetPrimitive.Portal.displayName;
 
 const sheetVariants = cva(
-  'fixed z-50 scale-100 gap-4 border bg-background opacity-100 shadow-lg',
+  'fixed z-50 scale-100 border bg-background opacity-100 shadow-lg',
   {
     variants: {
       position: {
@@ -50,7 +50,7 @@ const sheetVariants = cva(
       },
       variant: {
         default: '',
-        stickyFooter: 'relative flex flex-col pb-0',
+        stickyFooter: 'flex flex-col pb-0',
       },
       size: {
         content: '',
@@ -221,7 +221,7 @@ const SheetHeader = React.forwardRef<HTMLDivElement, SheetHeaderProps>(
     return (
       <div
         className={cn(
-          `flex flex-col space-y-2 text-center sm:text-left px-6 pt-6 pb-3 ${
+          `flex flex-col space-y-2 px-6 pb-3 pt-6 text-center sm:text-left ${
             isFullWidth(position, size) && 'pt-16'
           }`,
           className,
@@ -252,7 +252,11 @@ const SheetOverflow = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('overflow-y-auto px-6', className)} {...props} />
+  <div
+    ref={ref}
+    className={cn('h-full overflow-y-auto px-6', className)}
+    {...props}
+  />
 ));
 SheetOverflow.displayName = 'SheetOverflow';
 

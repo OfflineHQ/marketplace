@@ -75,7 +75,7 @@ const AlertDialogHeader: React.FC<AlertDialogHeaderProps> = ({
   return (
     <div
       className={cn(
-        'flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 text-center sm:text-left',
+        'flex flex-col space-y-2 text-center sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0 sm:text-left',
         className,
       )}
       {...props}

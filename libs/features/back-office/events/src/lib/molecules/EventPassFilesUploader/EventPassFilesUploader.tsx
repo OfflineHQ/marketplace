@@ -1,3 +1,5 @@
+'use server';
+
 import { UploaderProvider } from '@next/uploader-provider';
 import {
   Button,
@@ -18,16 +20,16 @@ import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 import {
+  EventPassFilesClientProps,
   EventPassFilesUploaderClient,
-  GetEventPassFilesClientProps,
 } from './EventPassFilesUploaderClient';
 
 export interface EventPassFilesTableProps
-  extends Omit<GetEventPassFilesClientProps, 'currentFiles' | 'maxFileCount'> {
+  extends Omit<EventPassFilesClientProps, 'currentFiles' | 'maxFileCount'> {
   buttonClassName?: string;
 }
 
-export function EventPassFilesUploader(props: EventPassFilesTableProps) {
+export async function EventPassFilesUploader(props: EventPassFilesTableProps) {
   return (
     <Suspense fallback={<ButtonSkeleton className="inline-flex" />}>
       <EventPassFilesUploaderContent {...props} />

@@ -10,8 +10,7 @@
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/back-office",
-        "postcssConfig": "apps/back-office/postcss.config.js",
-        "debug": true
+        "postcssConfig": "apps/back-office/postcss.config.js"
       },
       "assets": [
         {
@@ -22,7 +21,7 @@
         {
           "input": "libs/currency/api/src/rates",
           "glob": "**/*",
-          "output": "dist/apps/web/rates"
+          "output": "dist/apps/back-office/rates"
         }
       ],
       "configurations": {
@@ -45,11 +44,6 @@
             "input": "libs/ui/shared/src/assets",
             "glob": "**/*",
             "output": "assets"
-          },
-          {
-            "input": "libs/currency/api/src/rates",
-            "glob": "**/*",
-            "output": "dist/apps/web/rates"
           }
         ]
       },
@@ -64,23 +58,6 @@
         }
       }
     },
-    "is-services-launched": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["node tools/test/isServicesLaunched.js"],
-        "readyWhen": "Services ready"
-      }
-    },
-    "serve-e2e": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "nx is-services-launched back-office",
-          "nx serve back-office"
-        ],
-        "readyWhen": "Services ready"
-      }
-    },
     "export": {
       "executor": "@nx/next:export",
       "options": {
@@ -91,28 +68,12 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/back-office"],
       "options": {
-        "jestConfig": "apps/back-office/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/back-office/jest.config.ts"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "apps/back-office/**/*.{ts,tsx,js,jsx,gql,graphql}"
-        ]
-      }
-    },
-    "gql": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          {
-            "command": "npx graphql-codegen --config codegen.yml -r dotenv/config -e .env.local "
-          }
-        ]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "storybook": {
       "executor": "@nx/storybook:storybook",

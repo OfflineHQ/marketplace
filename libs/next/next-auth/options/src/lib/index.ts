@@ -8,13 +8,17 @@ import type { JWT, JWTOptions } from 'next-auth/jwt';
 import env from '@env/server';
 import { getAccount } from '@features/account/api';
 import { isUserKycValidated } from '@kyc/common';
-import { nextAuthCookieName } from '@next/next-auth/common';
+import {
+  getSumSubApplicantPersonalData,
+  nextAuthCookieName,
+} from '@next/next-auth/common';
 import { SiweProvider } from '@next/siwe/provider';
 import { AppUser } from '@next/types';
 import { getNextAppURL, isBackOffice, isProd } from '@shared/server';
+// @ts-ignore
 import { Provider } from 'next-auth/providers';
 
-import { KycLevelName_Enum } from '@gql/shared/types';
+import { KycLevelName_Enum, KycStatus_Enum } from '@gql/shared/types';
 import { Posthog } from '@insight/server';
 import { FeatureFlagsEnum } from '@insight/types';
 import { RoleAuthorization } from '@roles/admin';
@@ -179,6 +183,20 @@ export const createOptions = () =>
         // user is connected but has been updated on hasura, need to get the updated jwt with user
         if (trigger === 'update' && token) {
           const userAccount = (await getAccount(token.user.address)) as AppUser;
+          if (!userAccount) throw new Error('User not found');
+          // if token user has no email and kyc validated, mean we need to fetch it from SumSub to update the user jwt cookie with personal data
+          if (
+            userAccount?.kyc?.applicantId &&
+            !userAccount.kyc.applicantId.includes('fake-') && // here mean it's a test account so no need to get the data from sumsub
+            userAccount.kyc.reviewStatus === KycStatus_Enum.Completed &&
+            !token.user.email
+          ) {
+            const personalData = await getSumSubApplicantPersonalData(
+              userAccount.kyc.applicantId,
+            );
+            userAccount.email = personalData.email;
+            userAccount.phone = personalData.phone;
+          }
           // is session get a role mean that user is connected from back-office and asked to switch to his new role
           const sessionRole = session?.role;
           if (sessionRole) {
@@ -214,6 +232,8 @@ export const createOptions = () =>
               ...token,
               user: {
                 ...token.user,
+                email: userAccount.email,
+                phone: userAccount.phone,
                 kyc: userAccount.kyc,
                 role: userAccount.role,
                 roles: userAccount.roles,
@@ -226,6 +246,8 @@ export const createOptions = () =>
             ...token,
             user: {
               ...token.user,
+              email: userAccount.email,
+              phone: userAccount.phone,
               kyc: userAccount.kyc,
             },
             access,

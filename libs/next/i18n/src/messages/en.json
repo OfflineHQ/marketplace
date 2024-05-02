@@ -1,10 +1,10 @@
 {
   "Auth": {
     "user-closed-popup": {
-      "title": "Sign in error",
+      "title": "Sign In error",
       "description": "The connection to the login provider was closed. Please try again."
     },
-    "siwe-statement": "Sign in to the Offline app with your wallet",
+    "siwe-statement": "Sign In to the Offline app with your wallet",
     "error-signing-in-with-siwe": {
       "title": "Error signing in with your wallet",
       "description": "Something went wrong with the signature. Please try again or contact the support if its still failing.",
@@ -39,16 +39,16 @@
   },
   "AppNav": {
     "Profile": {
-      "sign-in": "Sign in",
+      "sign-in": "Sign In",
       "sections-text": {
         "my-account": "My Account",
         "support": "Support",
         "support-title": "Coming soon",
         "support-description": "This feature is not available yet",
-        "sign-out": "Sign out",
+        "sign-out": "Sign Out",
         "sign-out-title": "You have been signed out",
         "sign-out-description": "See you soon 👋 !",
-        "sign-in": "Sign in",
+        "sign-in": "Sign In",
         "settings": "Settings",
         "copied-address": "Address copied!",
         "switch-to-my-account": "Switch to my account",
@@ -56,10 +56,17 @@
         "switch-to-role": "Switch to role",
         "switch-to-role-toast-title": "Switched to role:",
         "switch-to-role-toast-error-title": "Error while trying to switch to role",
-        "switch-to-my-account-toast-title": "User account",
+        "switch-to-my-account-toast-title": "Switched to my account",
         "switch-to-my-account-toast-description": "You are now connected with your own account",
-        "switch-to-my-account-toast-error-title": "Error while trying to switch to your account"
-      }
+        "switch-to-my-account-toast-error-title": "Error while trying to switch to your account",
+        "dont-have-an-account": "Don't have an account ?",
+        "create-account": "Sign Up",
+        "create-account-title": "Account created successfully 🎉!",
+        "create-account-description": "You can now register and verify your email to have full access to the platform.",
+        "verify-email": "Verify my email",
+        "verify-email-continue": "Continue"
+      },
+      "account-placeholder": "My Account"
     },
     "Pass": {
       "text": "Pass",
@@ -74,20 +81,25 @@
       "go-to-text": "Go to ...",
       "my-roles-text": "My Roles",
       "manage-roles-text": "Manage Roles",
-      "events-management-text": "Events Management"
+      "events-management-text": "Events Management",
+      "content-spaces-text": "Content Spaces",
+      "loyalty-card-text": "Loyalty Card",
+      "shopify-text": "Shopify Campaigns"
     }
   },
   "Cart": {
     "NoUserCart": {
       "title": "Cart",
       "description": "You will be able to validate your cart once you are signed in",
-      "sign-in-text": "Sign in"
+      "sign-in-text": "Sign In"
     },
     "UserCart": {
       "title": "Cart",
       "description": "Validate your cart to proceed to the payment",
       "finalize-button": "Proceed to payment",
-      "continue-button": "Continue"
+      "continue-button": "Continue",
+      "no-mail-description": "It seems like your account doesn't possess the necessary email to create a payment session. If you have not yet completed the KYC, please do. If you need help, contact the support.",
+      "no-mail-title": "No email"
     },
     "List": {
       "no-cart": "You don't have anything in your cart yet",
@@ -97,18 +109,22 @@
         "remove": "Remove",
         "TimeBeforeDeletion": {
           "time-before-deletion": "expires: {relativeTime}"
-        }
+        },
+        "delete-error-title": "Deletion error",
+        "delete-error-description": "The deletion of this order has failed, please try again later."
       }
     },
     "Successful": {
       "title": "Purchase Successful! 🎉",
-      "description": "Thank you for your purchase. Your passes should be available in a few minutes.",
-      "continue-shopping-button": "Go to Homepage"
+      "description": "Your passes should be available in a few minutes.",
+      "continue-shopping-button": "Go to Homepage",
+      "success-title": "Thank you for your purchase."
     },
     "Cancelled": {
       "title": "Purchase Cancelled",
-      "description": "Your purchase has been successfully cancelled. We're sorry to see you go. If you have any questions or concerns, please don't hesitate to contact us. Feel free to continue shopping if you change your mind.",
-      "continue-shopping-button": "Go to Homepage"
+      "description": "We're sorry to see you go. If you have any questions or concerns, please don't hesitate to contact us. Feel free to continue shopping if you change your mind.",
+      "continue-shopping-button": "Go to Homepage",
+      "cancelled-title": "Your purchase has been successfully cancelled."
     }
   },
   "Pass": {
@@ -162,12 +178,18 @@
         "action-download-toast-error-description": "Something went wrong while downloading the pass. Please try again.",
         "action-download-toast-success-title": "Pass downloaded",
         "action-download-toast-success-description": "The pass has been downloaded successfully"
+      },
+      "EventPassContractDelayedRevealBadge": {
+        "not-revealed-title": "Pass Not Unveiled",
+        "revealed-title": "Pass Unveiled",
+        "revealed-description": "The details of your event pass are now revealed! Explore the complete range of benefits and features available to you. Get ready for an enhanced event experience tailored just for you.",
+        "not-revealed-description": "Your event pass details are currently hidden, adding an element of anticipation to your experience. The full features and benefits of your pass will be revealed soon. Stay tuned for the exciting details!"
       }
     },
     "NoUserPass": {
       "title": "Pass",
       "description": "You will be able to see your passes once you are signed in",
-      "sign-in-text": "Sign in"
+      "sign-in-text": "Sign In"
     },
     "SinglePass": {
       "title": "{title} #{number, number}",
@@ -194,10 +216,6 @@
       "purchase-button-activator": "Select passes",
       "PassPurchase": {
         "title": "Pass selection",
-        "description": "Select the passes you want to purchase and validate your order",
-        "Pass": {
-          "sold-out": "Sold Out"
-        },
         "see-event-button": "See the event",
         "go-back-button": "Come back to the event",
         "Footer": {
@@ -207,7 +225,49 @@
             "price": "Total Price: {convertedAmount}"
           },
           "finalize-payment": "Finalize my purchase"
-        }
+        },
+        "EventPassContractDelayedRevealBadge": {
+          "not-revealed-title": "Mystery Pass",
+          "revealed-title": "Mystery Pass Unveiled",
+          "not-revealed-description": "Details to be revealed! This pass holds hidden features and exclusive benefits, set to be unveiled soon. Secure your pass now and be part of the exciting reveal!",
+          "revealed-description": "Discover what's in store! This pass offers a range of exclusive benefits and features, now fully disclosed. Don’t miss out, get your pass and enjoy the complete experience."
+        },
+        "PassCardStatusBadge": {
+          "sold-out": "Sold Out",
+          "sale-ended": "Sale ended",
+          "already-have-purchase": "You have a purchase ongoing",
+          "sale-starting-in": "Sale not started"
+        },
+        "title-with-event": "Pass selection for \"{eventTitle}\"",
+        "error-title": "Purchase error",
+        "error-description": "The addition of this pass to your order has failed, please try again later."
+      },
+      "EventSaleDates": {
+        "sale-not-started": "The sale hasn't started yet",
+        "sale-ongoing": "The sale is ongoing !",
+        "sale-ended": "The sale has ended",
+        "sale-starts-in": "Starts: {time}",
+        "sale-ends-in": "Ending: {time}"
+      },
+      "PassPurchaseHeader": {
+        "description": "Select the passes you want to purchase and validate your order",
+        "has-purchase-in-progress-title": "Purchase in progress",
+        "has-purchase-in-progress-description": "You currently have a purchase in progress. Please confirm or cancel this purchase before selecting a new pass.",
+        "go-to-purchase": "Proceed with my purchase",
+        "ended-title": "The sale has ended",
+        "ended-description": "You cannot purchase thoses pass anymore",
+        "not-started-title": "The sale hasn't started",
+        "cancel-purchase": "Cancel my purchase",
+        "cancel-purchase-success-title": "Purchase cancelled",
+        "cancel-purchase-success-description": "Your purchase order has been successfully cancelled.",
+        "cancel-purchase-error-title": "Error while cancelling",
+        "cancel-purchase-error-description": "An error occured during the cancellation of your order. Please try again later or contact the support."
+      },
+      "SaleStartsInClient": {
+        "sale-starts-in": "Starts: {time}"
+      },
+      "SaleEndsInClient": {
+        "sale-ends-in": "Ending: {time}"
       }
     },
     "EventDates": {
@@ -224,18 +284,17 @@
       "helperTextUnfollow": "Click to unfollow \"{name}\""
     },
     "OrganizerEventsSection": {
-      "title": "Lastest Events",
+      "title": "Latest Events",
       "noEvents": "There is currently no events to display"
     }
   },
   "KYC": {
-    "Dialog": {
-      "title": "Verify Your Identity",
-      "description": "To access exclusive experiences and perks, we need a few details from you.<br></br>Don't worry, it's quick and secure."
-    },
+    "Dialog": {},
     "Button": {
-      "text": "Verify your identity"
-    }
+      "text": "Verify your email",
+      "title": "Verify your email"
+    },
+    "VerifyEmail": {}
   },
   "Error": {
     "description": "There's been an error"
@@ -267,7 +326,8 @@
       "header-date-start": "Start Date",
       "header-edit": "Edit",
       "title": "Events Management",
-      "search-placeholder": "Filter events..."
+      "search-placeholder": "Filter events...",
+      "header-status": "Status"
     },
     "Sheet": {
       "EventPassCard": {
@@ -302,7 +362,7 @@
           "EventPassDeployButtonClient": {
             "success-title": "Contract successfully deployed 🎉!",
             "success-description": "The {eventPassName} contract is now live on the blockchain. Your event pass is ready for use.",
-            "error-title": "There's been an error during the deployement of your contract"
+            "error-title": "There's been an error during the deployment of your contract"
           },
           "EventPassContractRevealButtonClient": {
             "reveal-contract": "Reveal your event pass",
@@ -339,6 +399,11 @@
       "type-delayed-reveal-badge": "Surprise Reveal",
       "type-normal-description": "Present all details of the event pass immediately. Ensure buyers see the full benefits and features of the pass right from the outset",
       "type-delayed-reveal-description": " Initially display placeholder information for the event pass. The final details will be revealed later, creating a sense of mystery and anticipation. This approach can engage attendees with the element of surprise, unveiling final pass benefits and features at a predetermined time or event milestone."
+    },
+    "EventStatusBadge": {
+      "status-draft": "Draft",
+      "status-published": "Published",
+      "status-undefined": "Undefined"
     }
   },
   "UI": {
@@ -362,6 +427,156 @@
       "filters-clear-filters": "clear filters",
       "toggle-columns-view": "View",
       "toggle-columns-toggle-columns": "Toggle columns"
+    }
+  },
+  "OrganizerContentSpaces": {
+    "Table": {
+      "title": "Content Spaces",
+      "header-title": "Title",
+      "header-slug": "Slug",
+      "header-status": "Status",
+      "header-edit": "Edit",
+      "search-placeholder": "Filter content spaces..."
+    },
+    "ContentSpaceStatusBadge": {
+      "status-draft": "Draft",
+      "status-published": "Published",
+      "status-undefined": "Undefined"
+    },
+    "Sheet": {
+      "go-back-to-content-spaces": "Go back to content spaces",
+      "associated-event-passes": "Associated Event Passes",
+      "files": "Files",
+      "ContentSpaceEventPassesTable": {
+        "event-pass-for-event": "Event Pass ({slug})"
+      },
+      "ContentSpaceFilesUploader": {
+        "trigger-button": "Upload your files",
+        "title": "Upload your files",
+        "close-button": "Close"
+      },
+      "ContentSpaceFilesTable": {
+        "header-file-path": "File",
+        "header-show": "Show the file",
+        "header-delete": "Delete the file",
+        "search-placeholder": "Search for file...",
+        "menu-actions-label": "{numFilesSelected, plural, =1 {# file selected} other {# files selected}}",
+        "menu-actions-delete": "{numFilesSelected, plural, =1 {delete the file} other {delete # files}}",
+        "menu-actions-download": "{numFilesSelected, plural, =1 {download the file} other {download # files}}",
+        "menu-actions-helper-text": "Apply an action on the selected files",
+        "header-download": "Download the file"
+      }
+    }
+  },
+  "Shopify": {
+    "CardHeader": {
+      "unlock-with-your-offkey-title": "Unlock with your ",
+      "unlock-with-your-offkey-description": "To unlock this product you need the key"
+    },
+    "Profile": {
+      "my-account": "My Account",
+      "view-account": "View Account",
+      "verify-email": "Verify my email",
+      "support": "Get support",
+      "sign-out": "Sign Out",
+      "sign-out-title": "You have been signed out",
+      "sign-out-description": "See you soon 👋 !",
+      "support-toast-title": "Coming soon",
+      "support-toast-description": "This feature is not available yet",
+      "verify-email-continue": "Continue"
+    },
+    "Auth": {
+      "sign-in": "Sign In",
+      "login-different-account": "Sign In with a different Account",
+      "login-with-my-account": "Sign In with my Account",
+      "create-account": "Create an Account",
+      "cancel": "Cancel",
+      "account-created": "Account created successfully 🎉!",
+      "dialog-connect-wallet": "Connect your existing account or create a new one"
+    },
+    "OffKeyInfo": {
+      "unlocked": "unlocked",
+      "unlocking": "unlocking",
+      "used": "used",
+      "locked": "locked"
+    },
+    "OffKeyHowToGet": {
+      "locked-how-to-get-key": "Locked ! How to get keys ?"
+    },
+    "OffKeyAuth": {
+      "create-new-account": "Create new account",
+      "use-existing-account": "Use existing account",
+      "sign-in": "Sign in",
+      "gate-sign-in-text": "This item is locked. Please sign in or create an account to unlock it."
+    },
+    "OffKeyGate": {
+      "locked-subtitle": "🙁 Sorry you don't have access",
+      "unlocking-subtitle": "Creating your key",
+      "used-subtitle": "Key already used",
+      "unlocked-subtitle": "🎉 Congratulations",
+      "unlocking-text": "Your key is being created and will be ready in a few seconds.",
+      "unlocked-text": "You have unlocked this item and can now add it to your cart.",
+      "used-text": "Unfortunately your key has already been used so you can't proceed with the purchase of this item",
+      "locked-text": "Unfortunately has of now you do not have access to the key to unlock this product. Check out how to get the key and proceed with the purchase.",
+      "off-key-name": "OffKey"
+    },
+    "OffKeyHeaderConnected": {
+      "connected": "Welcome {customer}",
+      "connected-how-to-get-key": "How to get the key"
+    },
+    "OffKeyProfile": {
+      "my-account": "My account",
+      "sign-out": "Sign out"
+    },
+    "OffKeyHeaderNotConnected": {
+      "default": "Hello {customer}"
+    }
+  },
+  "OrganizerLoyaltyCard": {
+    "Card": {
+      "title": "Loyalty Card",
+      "LoyaltyCardNftsInfos": {
+        "image": "Image",
+        "name": "Name",
+        "title": "NFTs Informations"
+      },
+      "LoyaltyCardNftsPasswords": {
+        "title": "'One time codes' associated to your NFTs"
+      },
+      "LoyaltyCardNftsPasswordsTable": {
+        "header-password": "'One time code'",
+        "header-minter-address": "Minter Address",
+        "header-show": "Show Details",
+        "header-copy": "Copy the password",
+        "header-delete": "Delete the password",
+        "menu-actions-label": "Actions",
+        "search-placeholder": "Search for a password...",
+        "menu-actions-helper-text": "Select an action to apply to the selected 'One Time Codes'",
+        "menu-actions-download": "Download the 'One Time Codes' in CSV",
+        "no-results-add-more-passwords": "No 'One Time Codes' added yet. Use the button below to create them.",
+        "add-passwords": "Create 'One Time Codes'",
+        "add-more-passwords": "Add more codes"
+      },
+      "LoyaltyCardFooter": {
+        "copied-contract-address": "Copied contract address",
+        "no-amount-set": "No amount set",
+        "deploy-contract": "Deploy the NFTs contract"
+      },
+      "LoyaltyCardDeployButtonClient": {
+        "success-title": "Contract successfully deployed 🎉!",
+        "success-description": "The Loyalty Card contract is now live on the blockchain.",
+        "error-title": "There's been an error during the deployment of your contract"
+      },
+      "AddMoreNftsPasswordsDrawer": {
+        "add-passwords-title": "Add 'One Time Codes' to your Loyalty Cards",
+        "add-passwords-description": "Those will be necessary for your clients in order to access their personalized Loyalty Cards",
+        "number": "Number of 'One Time Codes'",
+        "add-passwords-submit": "Create",
+        "add-passwords-cancel": "Cancel",
+        "success-title": "'One Time Codes' created",
+        "error-title": "Error while creating your 'One Time Codes'",
+        "success-description": "{numberOfPasswords, number} 'One Time Codes' has been added to your Loyalty Cards."
+      }
     }
   }
 }

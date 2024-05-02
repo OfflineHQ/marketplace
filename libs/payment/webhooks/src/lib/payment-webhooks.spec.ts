@@ -29,9 +29,8 @@ jest.mock('next/headers', () => ({
   headers: () => mockHeaders,
 }));
 
-const mockRequest: Request = {
-  text: jest.fn().mockReturnValue('body'),
-} as unknown as Request;
+const mockPayload = 'body';
+const mockSignature = 'Stripe-Signature';
 
 describe('stripeCheckoutStatus', () => {
   beforeEach(() => {
@@ -51,7 +50,11 @@ describe('stripeCheckoutStatus', () => {
   });
 
   it('should handle complete event successfully', async () => {
-    const result = await stripeCheckoutStatus(mockRequest, mockPayment);
+    const result = await stripeCheckoutStatus(
+      mockPayment,
+      mockSignature,
+      mockPayload,
+    );
 
     expect(mockPayment.webhookStripeConstructEvent).toHaveBeenCalledWith({
       body: 'body',
@@ -74,7 +77,11 @@ describe('stripeCheckoutStatus', () => {
       },
     });
 
-    const result = await stripeCheckoutStatus(mockRequest, mockPayment);
+    const result = await stripeCheckoutStatus(
+      mockPayment,
+      mockSignature,
+      mockPayload,
+    );
 
     expect(mockPayment.canceledStripeCheckoutSession).toHaveBeenCalledWith({
       stripeCheckoutSessionId: 'checkoutSessionId',
@@ -89,7 +96,12 @@ describe('stripeCheckoutStatus', () => {
         throw new Error('Error constructing event');
       });
 
-    const result = await stripeCheckoutStatus(mockRequest, mockPayment);
+    const result = await stripeCheckoutStatus(
+      mockPayment,
+      mockSignature,
+      mockPayload,
+    );
+
     expect(result.status).toEqual(400);
   });
 
@@ -100,28 +112,36 @@ describe('stripeCheckoutStatus', () => {
         throw new Error('Error confirming checkout session');
       });
     mockPayment.refundPayment = jest.fn();
-    const result = await stripeCheckoutStatus(mockRequest, mockPayment);
+    const result = await stripeCheckoutStatus(
+      mockPayment,
+      mockSignature,
+      mockPayload,
+    );
 
     expect(mockPayment.refundPayment).not.toHaveBeenCalled();
     expect(result.status).toEqual(500);
   });
 
-  it('Should handle error confirming checkout session failed because `Error claiming NFTs` and no payment_intent is on checkout session for refund', async () => {
+  it('Should handle error confirming checkout session failed because `Error processing orders` and no payment_intent is on checkout session for refund', async () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs: test');
+        throw new Error('Error processing orders: test');
       });
 
     mockPayment.refundPayment = jest.fn();
 
-    const result = await stripeCheckoutStatus(mockRequest, mockPayment);
+    const result = await stripeCheckoutStatus(
+      mockPayment,
+      mockSignature,
+      mockPayload,
+    );
 
     expect(mockPayment.refundPayment).not.toHaveBeenCalled();
     expect(result.status).toEqual(500);
   });
 
-  it('Should handle error and refund when confirming checkout session because `Error claiming NFTs`', async () => {
+  it('Should handle error and refund when confirming checkout session because `Error processing orders`', async () => {
     mockPayment.webhookStripeConstructEvent = jest.fn().mockReturnValue({
       type: StripeCheckoutSessionEnum.completed,
       data: {
@@ -138,11 +158,15 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs : Fail');
+        throw new Error('Error processing orders : Fail');
       });
     mockPayment.refundPayment = jest.fn();
 
-    const result = await stripeCheckoutStatus(mockRequest, mockPayment);
+    const result = await stripeCheckoutStatus(
+      mockPayment,
+      mockSignature,
+      mockPayload,
+    );
 
     expect(mockPayment.refundPayment).toHaveBeenCalledWith({
       paymentIntentId: 'paymentIntentId',
@@ -168,14 +192,18 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs : Fail');
+        throw new Error('Error processing orders : Fail');
       });
 
     mockPayment.refundPayment = jest.fn().mockImplementationOnce(() => {
       throw new Error('Error refunding payment');
     });
 
-    const result = await stripeCheckoutStatus(mockRequest, mockPayment);
+    const result = await stripeCheckoutStatus(
+      mockPayment,
+      mockSignature,
+      mockPayload,
+    );
 
     expect(mockPayment.refundPayment).toHaveBeenCalledWith({
       paymentIntentId: 'paymentIntentId',
@@ -200,7 +228,12 @@ describe('stripeCheckoutStatus', () => {
         throw new Error('Error canceling checkout session');
       });
 
-    const result = await stripeCheckoutStatus(mockRequest, mockPayment);
+    const result = await stripeCheckoutStatus(
+      mockPayment,
+      mockSignature,
+      mockPayload,
+    );
+
     expect(result.status).toEqual(400);
   });
 
@@ -221,11 +254,11 @@ describe('stripeCheckoutStatus', () => {
     mockPayment.confirmedStripeCheckoutSession = jest
       .fn()
       .mockImplementation(() => {
-        throw new Error('Error claiming NFTs: test');
+        throw new Error('Error processing orders: test');
       });
     mockPayment.refundPayment = jest.fn();
 
-    await stripeCheckoutStatus(mockRequest, mockPayment);
+    await stripeCheckoutStatus(mockPayment, mockSignature, mockPayload);
 
     expect(mockPayment.refundPayment).toHaveBeenCalledWith({
       paymentIntentId: 'paymentIntentId',
@@ -254,7 +287,7 @@ describe('stripeCheckoutStatus', () => {
       });
     mockPayment.refundPayment = jest.fn();
 
-    await stripeCheckoutStatus(mockRequest, mockPayment);
+    await stripeCheckoutStatus(mockPayment, mockSignature, mockPayload);
 
     expect(mockPayment.refundPayment).not.toHaveBeenCalledWith();
   });

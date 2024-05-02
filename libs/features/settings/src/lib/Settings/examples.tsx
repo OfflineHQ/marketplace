@@ -1,10 +1,10 @@
 import { Settings } from './Settings';
-import { WithNoUser, WithNormalUser } from '@features/app-nav/stories';
+import { WithNoUser, WithUserEmail } from '@features/app-nav/stories';
 import { AppNavLayout } from '@features/app-nav';
 
 export const SettingsExample = () => {
   return (
-    <AppNavLayout {...WithNormalUser.args}>
+    <AppNavLayout {...WithUserEmail.args}>
       <Settings />
     </AppNavLayout>
   );

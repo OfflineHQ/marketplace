@@ -6,6 +6,7 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
+  AlertTitle,
 } from '@ui/components';
 import { FillInfo as InfoIcon } from '@ui/icons'; // Import Info icon
 import { useFormatter } from 'next-intl';
@@ -46,7 +47,9 @@ export const UserTimezoneInfoHover: FC<UserTimezoneInfoHoverProps> = ({
       </HoverCardTrigger>
       <HoverCardContent className="w-80">
         <Alert variant="info" className="mb-2 text-base">
-          {inYourTimezoneText}: {userTimezone}
+          <AlertTitle>
+            {inYourTimezoneText}: {userTimezone}
+          </AlertTitle>
         </Alert>
         <DateRangeContent
           format={format}

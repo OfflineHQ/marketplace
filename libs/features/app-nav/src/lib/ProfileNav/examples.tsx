@@ -1,12 +1,19 @@
-import { ProfileNavProps, ProfileNav } from './ProfileNav';
-import { ProfileNavClient } from './ProfileNavClient';
+import { AuthProvider, NextAuthProvider } from '@next/auth';
+import { LifeBuoy, LogIn, LogOut, Settings, User } from '@ui/icons';
+import { useTranslations } from 'next-intl';
 import {
   cryptoUserSession,
   normalUserSession,
 } from '../profile-avatar/examples';
-import { AuthProvider, NextAuthProvider } from '@next/auth';
-import { useTranslations } from 'next-intl';
-import { LifeBuoy, LogOut, LogIn, Settings, User } from '@ui/icons';
+import { ProfileNav, ProfileNavProps } from './ProfileNav';
+import { ProfileNavClient } from './ProfileNavClient';
+import { AppUser } from '@next/types';
+
+export const user = {
+  id: '1',
+  address: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
+  email: 'johndoe@example.com',
+} satisfies AppUser;
 
 export const cryptoUserMenuItems = [
   { type: 'label', text: 'My Account', className: 'pt-2 pb-0' },
@@ -78,7 +85,7 @@ export const notConnectedMenuItems = [
     type: 'item',
     icon: <LogIn />,
     className: 'cursor-pointer font-semibold',
-    text: 'Sign in',
+    text: 'Sign In',
   },
   { type: 'separator' },
   {
@@ -97,7 +104,10 @@ export const notConnectedMenuItems = [
   },
 ] satisfies ProfileNavProps['items'];
 
-export function ProfileNavClientExample({ isNextAuthConnected = false }) {
+export function ProfileNavClientExample({
+  account,
+  isNextAuthConnected = false,
+}) {
   const t = useTranslations('AppNav.Profile');
   return (
     <div className="flex">
@@ -105,6 +115,7 @@ export function ProfileNavClientExample({ isNextAuthConnected = false }) {
         <AuthProvider session={null} isConnected={() => true}>
           <ProfileNavClient
             signInText={t('sign-in')}
+            accountPlaceholder={t('account-placeholder')}
             profileSectionsText={{
               myAccount: t('sections-text.my-account'),
               support: t('sections-text.support'),
@@ -114,9 +125,18 @@ export function ProfileNavClientExample({ isNextAuthConnected = false }) {
               signOutTitle: t('sections-text.sign-out-title'),
               signOutDescription: t('sections-text.sign-out-description'),
               signIn: t('sections-text.sign-in'),
+              createAccount: t('sections-text.create-account'),
+              createAccountTitle: t('sections-text.create-account-title'),
+              createAccountDescription: t(
+                'sections-text.create-account-description',
+              ),
+              dontHaveAnAccount: t('sections-text.dont-have-an-account'),
               settings: t('sections-text.settings'),
+              verifyEmail: t('sections-text.verify-email'),
+              verifyEmailContinue: t('sections-text.verify-email-continue'),
             }}
             isNextAuthConnected={isNextAuthConnected}
+            account={account}
           />{' '}
         </AuthProvider>
       </NextAuthProvider>

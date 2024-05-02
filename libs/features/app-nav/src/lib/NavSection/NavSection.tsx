@@ -44,5 +44,5 @@ export function NavSection({
 }
 
 export function NavSectionSkeleton() {
-  return <ButtonSkeleton className="relative inline-block h-12 w-12 md:w-24" />;
+  return <ButtonSkeleton className="relative inline-block size-12 md:w-24" />;
 }

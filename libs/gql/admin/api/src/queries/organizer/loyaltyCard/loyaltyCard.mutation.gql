@@ -1,0 +1,42 @@
+mutation InsertLoyaltyCardNftContract(
+  $object: loyaltyCardNftContract_insert_input!
+) {
+  insert_loyaltyCardNftContract_one(object: $object) {
+    id
+  }
+}
+
+mutation CreateLoyaltyCardParameters(
+  $object: loyaltyCardParameters_insert_input!
+) {
+  insert_loyaltyCardParameters_one(object: $object) {
+    id
+  }
+}
+
+mutation UpdateLoyaltyCardParameters(
+  $id: uuid!
+  $object: loyaltyCardParameters_set_input!
+) {
+  update_loyaltyCardParameters_by_pk(pk_columns: { id: $id }, _set: $object) {
+    id
+  }
+}
+
+mutation InsertLoyaltyCardNft($object: loyaltyCardNft_insert_input!) {
+  insert_loyaltyCardNft_one(object: $object) {
+    id
+  }
+}
+
+mutation UpdateLoyaltyCardNft($id: uuid!, $object: loyaltyCardNft_set_input!) {
+  update_loyaltyCardNft_by_pk(pk_columns: { id: $id }, _set: $object) {
+    id
+  }
+}
+
+mutation UpdateLoyaltyCardNfts($updates: [loyaltyCardNft_updates!]!) {
+  update_loyaltyCardNft_many(updates: $updates) {
+    affected_rows
+  }
+}

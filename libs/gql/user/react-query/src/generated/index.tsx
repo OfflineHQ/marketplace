@@ -2,10 +2,11 @@ import * as Types from '@gql/user/types';
 
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
 import { fetchDataReactQuery } from '@next/hasura/react-query';
+
 export const AccountFieldsFragmentDoc = `
     fragment AccountFields on account {
   id
-  email
+  address
 }
     `;
 export const OrganizerFieldsFragmentDoc = `
@@ -106,42 +107,28 @@ export const RoleAssignmentFieldsFragmentDoc = `
     `;
 export const GetAccountDocument = `
     query GetAccount($address: String!) {
-  account(where: {address: {_eq: $address}}) {
+  account(where: {address: {_eq: $address}}, limit: 1) {
     ...AccountFields
   }
 }
     ${AccountFieldsFragmentDoc}`;
+
 export const useGetAccountQuery = <
       TData = Types.GetAccountQuery,
       TError = Error
     >(
       variables: Types.GetAccountQueryVariables,
-      options?: UseQueryOptions<Types.GetAccountQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetAccountQuery, TError, TData>(
-      ['GetAccount', variables],
-      fetchDataReactQuery<Types.GetAccountQuery, Types.GetAccountQueryVariables>(GetAccountDocument, variables),
-      options
-    );
-export const GetAccountByEmailDocument = `
-    query GetAccountByEmail($email: String!) {
-  account(where: {email: {_eq: $email}}) {
-    ...AccountFields
+      options?: Omit<UseQueryOptions<Types.GetAccountQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetAccountQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetAccountQuery, TError, TData>(
+      {
+    queryKey: ['GetAccount', variables],
+    queryFn: fetchDataReactQuery<Types.GetAccountQuery, Types.GetAccountQueryVariables>(GetAccountDocument, variables),
+    ...options
   }
-}
-    ${AccountFieldsFragmentDoc}`;
-export const useGetAccountByEmailQuery = <
-      TData = Types.GetAccountByEmailQuery,
-      TError = Error
-    >(
-      variables: Types.GetAccountByEmailQueryVariables,
-      options?: UseQueryOptions<Types.GetAccountByEmailQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetAccountByEmailQuery, TError, TData>(
-      ['GetAccountByEmail', variables],
-      fetchDataReactQuery<Types.GetAccountByEmailQuery, Types.GetAccountByEmailQueryVariables>(GetAccountByEmailDocument, variables),
-      options
-    );
+    )};
+
 export const GetEventWithPassesDocument = `
     query GetEventWithPasses($slug: String!, $locale: Locale!, $stage: Stage!) @cached {
   event(where: {slug: $slug}, locales: [$locale, en], stage: $stage) {
@@ -176,18 +163,23 @@ export const GetEventWithPassesDocument = `
 }
     ${PassPricingFieldsFragmentDoc}
 ${PassAmountFieldsFragmentDoc}`;
+
 export const useGetEventWithPassesQuery = <
       TData = Types.GetEventWithPassesQuery,
       TError = Error
     >(
       variables: Types.GetEventWithPassesQueryVariables,
-      options?: UseQueryOptions<Types.GetEventWithPassesQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetEventWithPassesQuery, TError, TData>(
-      ['GetEventWithPasses', variables],
-      fetchDataReactQuery<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetEventWithPassesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetEventWithPassesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetEventWithPassesQuery, TError, TData>(
+      {
+    queryKey: ['GetEventWithPasses', variables],
+    queryFn: fetchDataReactQuery<Types.GetEventWithPassesQuery, Types.GetEventWithPassesQueryVariables>(GetEventWithPassesDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetOrdersConfirmedDocument = `
     query GetOrdersConfirmed {
   order(where: {status: {_eq: CONFIRMED}}) {
@@ -196,18 +188,23 @@ export const GetOrdersConfirmedDocument = `
   }
 }
     `;
+
 export const useGetOrdersConfirmedQuery = <
       TData = Types.GetOrdersConfirmedQuery,
       TError = Error
     >(
       variables?: Types.GetOrdersConfirmedQueryVariables,
-      options?: UseQueryOptions<Types.GetOrdersConfirmedQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetOrdersConfirmedQuery, TError, TData>(
-      variables === undefined ? ['GetOrdersConfirmed'] : ['GetOrdersConfirmed', variables],
-      fetchDataReactQuery<Types.GetOrdersConfirmedQuery, Types.GetOrdersConfirmedQueryVariables>(GetOrdersConfirmedDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetOrdersConfirmedQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrdersConfirmedQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetOrdersConfirmedQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['GetOrdersConfirmed'] : ['GetOrdersConfirmed', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrdersConfirmedQuery, Types.GetOrdersConfirmedQueryVariables>(GetOrdersConfirmedDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetOrdersIsMintingDocument = `
     query GetOrdersIsMinting {
   order(where: {status: {_eq: IS_MINTING}}) {
@@ -216,18 +213,23 @@ export const GetOrdersIsMintingDocument = `
   }
 }
     `;
+
 export const useGetOrdersIsMintingQuery = <
       TData = Types.GetOrdersIsMintingQuery,
       TError = Error
     >(
       variables?: Types.GetOrdersIsMintingQueryVariables,
-      options?: UseQueryOptions<Types.GetOrdersIsMintingQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetOrdersIsMintingQuery, TError, TData>(
-      variables === undefined ? ['GetOrdersIsMinting'] : ['GetOrdersIsMinting', variables],
-      fetchDataReactQuery<Types.GetOrdersIsMintingQuery, Types.GetOrdersIsMintingQueryVariables>(GetOrdersIsMintingDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetOrdersIsMintingQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrdersIsMintingQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetOrdersIsMintingQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['GetOrdersIsMinting'] : ['GetOrdersIsMinting', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrdersIsMintingQuery, Types.GetOrdersIsMintingQueryVariables>(GetOrdersIsMintingDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetOrdersFromIdsDocument = `
     query GetOrdersFromIds($orderIds: [uuid!]!, $stage: Stage!) {
   order(where: {id: {_in: $orderIds}}) {
@@ -244,18 +246,23 @@ export const GetOrdersFromIdsDocument = `
   }
 }
     `;
+
 export const useGetOrdersFromIdsQuery = <
       TData = Types.GetOrdersFromIdsQuery,
       TError = Error
     >(
       variables: Types.GetOrdersFromIdsQueryVariables,
-      options?: UseQueryOptions<Types.GetOrdersFromIdsQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetOrdersFromIdsQuery, TError, TData>(
-      ['GetOrdersFromIds', variables],
-      fetchDataReactQuery<Types.GetOrdersFromIdsQuery, Types.GetOrdersFromIdsQueryVariables>(GetOrdersFromIdsDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetOrdersFromIdsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrdersFromIdsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetOrdersFromIdsQuery, TError, TData>(
+      {
+    queryKey: ['GetOrdersFromIds', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrdersFromIdsQuery, Types.GetOrdersFromIdsQueryVariables>(GetOrdersFromIdsDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetOrderPurchasedForEventPassesIdDocument = `
     query GetOrderPurchasedForEventPassesId($eventPassId: String!) {
   order(
@@ -266,18 +273,23 @@ export const GetOrderPurchasedForEventPassesIdDocument = `
   }
 }
     `;
+
 export const useGetOrderPurchasedForEventPassesIdQuery = <
       TData = Types.GetOrderPurchasedForEventPassesIdQuery,
       TError = Error
     >(
       variables: Types.GetOrderPurchasedForEventPassesIdQueryVariables,
-      options?: UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetOrderPurchasedForEventPassesIdQuery, TError, TData>(
-      ['GetOrderPurchasedForEventPassesId', variables],
-      fetchDataReactQuery<Types.GetOrderPurchasedForEventPassesIdQuery, Types.GetOrderPurchasedForEventPassesIdQueryVariables>(GetOrderPurchasedForEventPassesIdDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetOrderPurchasedForEventPassesIdQuery, TError, TData>(
+      {
+    queryKey: ['GetOrderPurchasedForEventPassesId', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrderPurchasedForEventPassesIdQuery, Types.GetOrderPurchasedForEventPassesIdQueryVariables>(GetOrderPurchasedForEventPassesIdDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetOrderPurchasedForEventPassesIdsDocument = `
     query GetOrderPurchasedForEventPassesIds($eventPassIds: [String!]!) {
   order(
@@ -288,18 +300,23 @@ export const GetOrderPurchasedForEventPassesIdsDocument = `
   }
 }
     `;
+
 export const useGetOrderPurchasedForEventPassesIdsQuery = <
       TData = Types.GetOrderPurchasedForEventPassesIdsQuery,
       TError = Error
     >(
       variables: Types.GetOrderPurchasedForEventPassesIdsQueryVariables,
-      options?: UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdsQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetOrderPurchasedForEventPassesIdsQuery, TError, TData>(
-      ['GetOrderPurchasedForEventPassesIds', variables],
-      fetchDataReactQuery<Types.GetOrderPurchasedForEventPassesIdsQuery, Types.GetOrderPurchasedForEventPassesIdsQueryVariables>(GetOrderPurchasedForEventPassesIdsDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetOrderPurchasedForEventPassesIdsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetOrderPurchasedForEventPassesIdsQuery, TError, TData>(
+      {
+    queryKey: ['GetOrderPurchasedForEventPassesIds', variables],
+    queryFn: fetchDataReactQuery<Types.GetOrderPurchasedForEventPassesIdsQuery, Types.GetOrderPurchasedForEventPassesIdsQueryVariables>(GetOrderPurchasedForEventPassesIdsDocument, variables),
+    ...options
+  }
+    )};
+
 export const UpsertEventPassPendingOrderDocument = `
     mutation UpsertEventPassPendingOrder($object: pendingOrder_insert_input!) {
   insert_pendingOrder_one(
@@ -313,15 +330,20 @@ export const UpsertEventPassPendingOrderDocument = `
   }
 }
     `;
+
 export const useUpsertEventPassPendingOrderMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.UpsertEventPassPendingOrderMutation, TError, Types.UpsertEventPassPendingOrderMutationVariables, TContext>) =>
-    useMutation<Types.UpsertEventPassPendingOrderMutation, TError, Types.UpsertEventPassPendingOrderMutationVariables, TContext>(
-      ['UpsertEventPassPendingOrder'],
-      (variables?: Types.UpsertEventPassPendingOrderMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables)(),
-      options
-    );
+    >(options?: UseMutationOptions<Types.UpsertEventPassPendingOrderMutation, TError, Types.UpsertEventPassPendingOrderMutationVariables, TContext>) => {
+    
+    return useMutation<Types.UpsertEventPassPendingOrderMutation, TError, Types.UpsertEventPassPendingOrderMutationVariables, TContext>(
+      {
+    mutationKey: ['UpsertEventPassPendingOrder'],
+    mutationFn: (variables?: Types.UpsertEventPassPendingOrderMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassPendingOrderMutation, Types.UpsertEventPassPendingOrderMutationVariables>(UpsertEventPassPendingOrderDocument, variables)(),
+    ...options
+  }
+    )};
+
 export const UpsertEventPassPendingOrdersDocument = `
     mutation UpsertEventPassPendingOrders($objects: [pendingOrder_insert_input!]!, $stage: Stage!) {
   insert_pendingOrder(
@@ -348,15 +370,20 @@ export const UpsertEventPassPendingOrdersDocument = `
   }
 }
     `;
+
 export const useUpsertEventPassPendingOrdersMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.UpsertEventPassPendingOrdersMutation, TError, Types.UpsertEventPassPendingOrdersMutationVariables, TContext>) =>
-    useMutation<Types.UpsertEventPassPendingOrdersMutation, TError, Types.UpsertEventPassPendingOrdersMutationVariables, TContext>(
-      ['UpsertEventPassPendingOrders'],
-      (variables?: Types.UpsertEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassPendingOrdersMutation, Types.UpsertEventPassPendingOrdersMutationVariables>(UpsertEventPassPendingOrdersDocument, variables)(),
-      options
-    );
+    >(options?: UseMutationOptions<Types.UpsertEventPassPendingOrdersMutation, TError, Types.UpsertEventPassPendingOrdersMutationVariables, TContext>) => {
+    
+    return useMutation<Types.UpsertEventPassPendingOrdersMutation, TError, Types.UpsertEventPassPendingOrdersMutationVariables, TContext>(
+      {
+    mutationKey: ['UpsertEventPassPendingOrders'],
+    mutationFn: (variables?: Types.UpsertEventPassPendingOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertEventPassPendingOrdersMutation, Types.UpsertEventPassPendingOrdersMutationVariables>(UpsertEventPassPendingOrdersDocument, variables)(),
+    ...options
+  }
+    )};
+
 export const UpsertPackPendingOrderDocument = `
     mutation UpsertPackPendingOrder($object: pendingOrder_insert_input!) {
   insert_pendingOrder_one(
@@ -370,15 +397,20 @@ export const UpsertPackPendingOrderDocument = `
   }
 }
     `;
+
 export const useUpsertPackPendingOrderMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.UpsertPackPendingOrderMutation, TError, Types.UpsertPackPendingOrderMutationVariables, TContext>) =>
-    useMutation<Types.UpsertPackPendingOrderMutation, TError, Types.UpsertPackPendingOrderMutationVariables, TContext>(
-      ['UpsertPackPendingOrder'],
-      (variables?: Types.UpsertPackPendingOrderMutationVariables) => fetchDataReactQuery<Types.UpsertPackPendingOrderMutation, Types.UpsertPackPendingOrderMutationVariables>(UpsertPackPendingOrderDocument, variables)(),
-      options
-    );
+    >(options?: UseMutationOptions<Types.UpsertPackPendingOrderMutation, TError, Types.UpsertPackPendingOrderMutationVariables, TContext>) => {
+    
+    return useMutation<Types.UpsertPackPendingOrderMutation, TError, Types.UpsertPackPendingOrderMutationVariables, TContext>(
+      {
+    mutationKey: ['UpsertPackPendingOrder'],
+    mutationFn: (variables?: Types.UpsertPackPendingOrderMutationVariables) => fetchDataReactQuery<Types.UpsertPackPendingOrderMutation, Types.UpsertPackPendingOrderMutationVariables>(UpsertPackPendingOrderDocument, variables)(),
+    ...options
+  }
+    )};
+
 export const UpsertPackPendingOrdersDocument = `
     mutation UpsertPackPendingOrders($objects: [pendingOrder_insert_input!]!, $stage: Stage!) {
   insert_pendingOrder(
@@ -405,15 +437,20 @@ export const UpsertPackPendingOrdersDocument = `
   }
 }
     `;
+
 export const useUpsertPackPendingOrdersMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.UpsertPackPendingOrdersMutation, TError, Types.UpsertPackPendingOrdersMutationVariables, TContext>) =>
-    useMutation<Types.UpsertPackPendingOrdersMutation, TError, Types.UpsertPackPendingOrdersMutationVariables, TContext>(
-      ['UpsertPackPendingOrders'],
-      (variables?: Types.UpsertPackPendingOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertPackPendingOrdersMutation, Types.UpsertPackPendingOrdersMutationVariables>(UpsertPackPendingOrdersDocument, variables)(),
-      options
-    );
+    >(options?: UseMutationOptions<Types.UpsertPackPendingOrdersMutation, TError, Types.UpsertPackPendingOrdersMutationVariables, TContext>) => {
+    
+    return useMutation<Types.UpsertPackPendingOrdersMutation, TError, Types.UpsertPackPendingOrdersMutationVariables, TContext>(
+      {
+    mutationKey: ['UpsertPackPendingOrders'],
+    mutationFn: (variables?: Types.UpsertPackPendingOrdersMutationVariables) => fetchDataReactQuery<Types.UpsertPackPendingOrdersMutation, Types.UpsertPackPendingOrdersMutationVariables>(UpsertPackPendingOrdersDocument, variables)(),
+    ...options
+  }
+    )};
+
 export const DeletePendingOrderDocument = `
     mutation DeletePendingOrder($pendingOrderId: uuid!) {
   delete_pendingOrder_by_pk(id: $pendingOrderId) {
@@ -421,15 +458,20 @@ export const DeletePendingOrderDocument = `
   }
 }
     `;
+
 export const useDeletePendingOrderMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.DeletePendingOrderMutation, TError, Types.DeletePendingOrderMutationVariables, TContext>) =>
-    useMutation<Types.DeletePendingOrderMutation, TError, Types.DeletePendingOrderMutationVariables, TContext>(
-      ['DeletePendingOrder'],
-      (variables?: Types.DeletePendingOrderMutationVariables) => fetchDataReactQuery<Types.DeletePendingOrderMutation, Types.DeletePendingOrderMutationVariables>(DeletePendingOrderDocument, variables)(),
-      options
-    );
+    >(options?: UseMutationOptions<Types.DeletePendingOrderMutation, TError, Types.DeletePendingOrderMutationVariables, TContext>) => {
+    
+    return useMutation<Types.DeletePendingOrderMutation, TError, Types.DeletePendingOrderMutationVariables, TContext>(
+      {
+    mutationKey: ['DeletePendingOrder'],
+    mutationFn: (variables?: Types.DeletePendingOrderMutationVariables) => fetchDataReactQuery<Types.DeletePendingOrderMutation, Types.DeletePendingOrderMutationVariables>(DeletePendingOrderDocument, variables)(),
+    ...options
+  }
+    )};
+
 export const DeletePendingOrdersDocument = `
     mutation DeletePendingOrders($eventPassIds: [String!]!) {
   delete_pendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
@@ -437,15 +479,20 @@ export const DeletePendingOrdersDocument = `
   }
 }
     `;
+
 export const useDeletePendingOrdersMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.DeletePendingOrdersMutation, TError, Types.DeletePendingOrdersMutationVariables, TContext>) =>
-    useMutation<Types.DeletePendingOrdersMutation, TError, Types.DeletePendingOrdersMutationVariables, TContext>(
-      ['DeletePendingOrders'],
-      (variables?: Types.DeletePendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeletePendingOrdersMutation, Types.DeletePendingOrdersMutationVariables>(DeletePendingOrdersDocument, variables)(),
-      options
-    );
+    >(options?: UseMutationOptions<Types.DeletePendingOrdersMutation, TError, Types.DeletePendingOrdersMutationVariables, TContext>) => {
+    
+    return useMutation<Types.DeletePendingOrdersMutation, TError, Types.DeletePendingOrdersMutationVariables, TContext>(
+      {
+    mutationKey: ['DeletePendingOrders'],
+    mutationFn: (variables?: Types.DeletePendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeletePendingOrdersMutation, Types.DeletePendingOrdersMutationVariables>(DeletePendingOrdersDocument, variables)(),
+    ...options
+  }
+    )};
+
 export const DeleteAllPendingOrdersDocument = `
     mutation DeleteAllPendingOrders {
   delete_pendingOrder(where: {}) {
@@ -453,15 +500,20 @@ export const DeleteAllPendingOrdersDocument = `
   }
 }
     `;
+
 export const useDeleteAllPendingOrdersMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.DeleteAllPendingOrdersMutation, TError, Types.DeleteAllPendingOrdersMutationVariables, TContext>) =>
-    useMutation<Types.DeleteAllPendingOrdersMutation, TError, Types.DeleteAllPendingOrdersMutationVariables, TContext>(
-      ['DeleteAllPendingOrders'],
-      (variables?: Types.DeleteAllPendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeleteAllPendingOrdersMutation, Types.DeleteAllPendingOrdersMutationVariables>(DeleteAllPendingOrdersDocument, variables)(),
-      options
-    );
+    >(options?: UseMutationOptions<Types.DeleteAllPendingOrdersMutation, TError, Types.DeleteAllPendingOrdersMutationVariables, TContext>) => {
+    
+    return useMutation<Types.DeleteAllPendingOrdersMutation, TError, Types.DeleteAllPendingOrdersMutationVariables, TContext>(
+      {
+    mutationKey: ['DeleteAllPendingOrders'],
+    mutationFn: (variables?: Types.DeleteAllPendingOrdersMutationVariables) => fetchDataReactQuery<Types.DeleteAllPendingOrdersMutation, Types.DeleteAllPendingOrdersMutationVariables>(DeleteAllPendingOrdersDocument, variables)(),
+    ...options
+  }
+    )};
+
 export const GetPendingOrderForEventPassDocument = `
     query GetPendingOrderForEventPass($eventPassId: String!) {
   pendingOrder(where: {eventPassId: {_eq: $eventPassId}}) {
@@ -472,18 +524,23 @@ export const GetPendingOrderForEventPassDocument = `
   }
 }
     `;
+
 export const useGetPendingOrderForEventPassQuery = <
       TData = Types.GetPendingOrderForEventPassQuery,
       TError = Error
     >(
       variables: Types.GetPendingOrderForEventPassQueryVariables,
-      options?: UseQueryOptions<Types.GetPendingOrderForEventPassQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetPendingOrderForEventPassQuery, TError, TData>(
-      ['GetPendingOrderForEventPass', variables],
-      fetchDataReactQuery<Types.GetPendingOrderForEventPassQuery, Types.GetPendingOrderForEventPassQueryVariables>(GetPendingOrderForEventPassDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetPendingOrderForEventPassQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPendingOrderForEventPassQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetPendingOrderForEventPassQuery, TError, TData>(
+      {
+    queryKey: ['GetPendingOrderForEventPass', variables],
+    queryFn: fetchDataReactQuery<Types.GetPendingOrderForEventPassQuery, Types.GetPendingOrderForEventPassQueryVariables>(GetPendingOrderForEventPassDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetPendingOrderForEventPassesDocument = `
     query GetPendingOrderForEventPasses($eventPassIds: [String!]) {
   pendingOrder(where: {eventPassId: {_in: $eventPassIds}}) {
@@ -494,18 +551,23 @@ export const GetPendingOrderForEventPassesDocument = `
   }
 }
     `;
+
 export const useGetPendingOrderForEventPassesQuery = <
       TData = Types.GetPendingOrderForEventPassesQuery,
       TError = Error
     >(
       variables?: Types.GetPendingOrderForEventPassesQueryVariables,
-      options?: UseQueryOptions<Types.GetPendingOrderForEventPassesQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetPendingOrderForEventPassesQuery, TError, TData>(
-      variables === undefined ? ['GetPendingOrderForEventPasses'] : ['GetPendingOrderForEventPasses', variables],
-      fetchDataReactQuery<Types.GetPendingOrderForEventPassesQuery, Types.GetPendingOrderForEventPassesQueryVariables>(GetPendingOrderForEventPassesDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetPendingOrderForEventPassesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPendingOrderForEventPassesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetPendingOrderForEventPassesQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['GetPendingOrderForEventPasses'] : ['GetPendingOrderForEventPasses', variables],
+    queryFn: fetchDataReactQuery<Types.GetPendingOrderForEventPassesQuery, Types.GetPendingOrderForEventPassesQueryVariables>(GetPendingOrderForEventPassesDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetPendingOrdersDocument = `
     query GetPendingOrders($stage: Stage!) {
   pendingOrder {
@@ -539,18 +601,23 @@ export const GetPendingOrdersDocument = `
   }
 }
     `;
+
 export const useGetPendingOrdersQuery = <
       TData = Types.GetPendingOrdersQuery,
       TError = Error
     >(
       variables: Types.GetPendingOrdersQueryVariables,
-      options?: UseQueryOptions<Types.GetPendingOrdersQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetPendingOrdersQuery, TError, TData>(
-      ['GetPendingOrders', variables],
-      fetchDataReactQuery<Types.GetPendingOrdersQuery, Types.GetPendingOrdersQueryVariables>(GetPendingOrdersDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetPendingOrdersQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPendingOrdersQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetPendingOrdersQuery, TError, TData>(
+      {
+    queryKey: ['GetPendingOrders', variables],
+    queryFn: fetchDataReactQuery<Types.GetPendingOrdersQuery, Types.GetPendingOrdersQueryVariables>(GetPendingOrdersDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetPendingOrdersMinimalDocument = `
     query GetPendingOrdersMinimal {
   pendingOrder {
@@ -560,18 +627,23 @@ export const GetPendingOrdersMinimalDocument = `
   }
 }
     `;
+
 export const useGetPendingOrdersMinimalQuery = <
       TData = Types.GetPendingOrdersMinimalQuery,
       TError = Error
     >(
       variables?: Types.GetPendingOrdersMinimalQueryVariables,
-      options?: UseQueryOptions<Types.GetPendingOrdersMinimalQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetPendingOrdersMinimalQuery, TError, TData>(
-      variables === undefined ? ['GetPendingOrdersMinimal'] : ['GetPendingOrdersMinimal', variables],
-      fetchDataReactQuery<Types.GetPendingOrdersMinimalQuery, Types.GetPendingOrdersMinimalQueryVariables>(GetPendingOrdersMinimalDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetPendingOrdersMinimalQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPendingOrdersMinimalQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetPendingOrdersMinimalQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['GetPendingOrdersMinimal'] : ['GetPendingOrdersMinimal', variables],
+    queryFn: fetchDataReactQuery<Types.GetPendingOrdersMinimalQuery, Types.GetPendingOrdersMinimalQueryVariables>(GetPendingOrdersMinimalDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetKycDocument = `
     query GetKyc {
   kyc {
@@ -581,18 +653,23 @@ export const GetKycDocument = `
   }
 }
     `;
+
 export const useGetKycQuery = <
       TData = Types.GetKycQuery,
       TError = Error
     >(
       variables?: Types.GetKycQueryVariables,
-      options?: UseQueryOptions<Types.GetKycQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetKycQuery, TError, TData>(
-      variables === undefined ? ['GetKyc'] : ['GetKyc', variables],
-      fetchDataReactQuery<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetKycQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetKycQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetKycQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['GetKyc'] : ['GetKyc', variables],
+    queryFn: fetchDataReactQuery<Types.GetKycQuery, Types.GetKycQueryVariables>(GetKycDocument, variables),
+    ...options
+  }
+    )};
+
 export const InsertFollowOrganizerDocument = `
     mutation InsertFollowOrganizer($organizerSlug: String!) {
   insert_follow_one(object: {organizerSlug: $organizerSlug}) {
@@ -600,26 +677,31 @@ export const InsertFollowOrganizerDocument = `
   }
 }
     `;
+
 export const useInsertFollowOrganizerMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>) =>
-    useMutation<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>(
-      ['InsertFollowOrganizer'],
-      (variables?: Types.InsertFollowOrganizerMutationVariables) => fetchDataReactQuery<Types.InsertFollowOrganizerMutation, Types.InsertFollowOrganizerMutationVariables>(InsertFollowOrganizerDocument, variables)(),
-      options
-    );
+    >(options?: UseMutationOptions<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>) => {
+    
+    return useMutation<Types.InsertFollowOrganizerMutation, TError, Types.InsertFollowOrganizerMutationVariables, TContext>(
+      {
+    mutationKey: ['InsertFollowOrganizer'],
+    mutationFn: (variables?: Types.InsertFollowOrganizerMutationVariables) => fetchDataReactQuery<Types.InsertFollowOrganizerMutation, Types.InsertFollowOrganizerMutationVariables>(InsertFollowOrganizerDocument, variables)(),
+    ...options
+  }
+    )};
+
 export const GetPassedEventsWithEventPassNftsDocument = `
     query GetPassedEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
-    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_lt: $currentDate}}
+    where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}, dateEnd: {_lt: $currentDate}, status: {_eq: PUBLISHED}}
     order_by: {dateEnd: desc}
   ) {
     dateStart
     dateEnd
     timezone
     eventPassNftContracts(
-      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+      where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}}
     ) {
       type
       isDelayedRevealed
@@ -633,7 +715,7 @@ export const GetPassedEventsWithEventPassNftsDocument = `
           url
         }
       }
-      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+      eventPassNfts(where: {currentOwnerAddress: {_ilike: $address}}) {
         id
         isRevealed
         tokenId
@@ -660,29 +742,34 @@ export const GetPassedEventsWithEventPassNftsDocument = `
   }
 }
     `;
+
 export const useGetPassedEventsWithEventPassNftsQuery = <
       TData = Types.GetPassedEventsWithEventPassNftsQuery,
       TError = Error
     >(
       variables: Types.GetPassedEventsWithEventPassNftsQueryVariables,
-      options?: UseQueryOptions<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>(
-      ['GetPassedEventsWithEventPassNfts', variables],
-      fetchDataReactQuery<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetPassedEventsWithEventPassNftsQuery, TError, TData>(
+      {
+    queryKey: ['GetPassedEventsWithEventPassNfts', variables],
+    queryFn: fetchDataReactQuery<Types.GetPassedEventsWithEventPassNftsQuery, Types.GetPassedEventsWithEventPassNftsQueryVariables>(GetPassedEventsWithEventPassNftsDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetUpcomingEventsWithEventPassNftsDocument = `
     query GetUpcomingEventsWithEventPassNfts($address: String!, $currentDate: timestamp!, $locale: Locale!, $stage: Stage!) {
   eventParameters(
-    where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}, dateEnd: {_gte: $currentDate}}
+    where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}, dateEnd: {_gte: $currentDate}, status: {_eq: PUBLISHED}}
     order_by: {dateStart: asc}
   ) {
     dateStart
     dateEnd
     timezone
     eventPassNftContracts(
-      where: {eventPassNfts: {currentOwnerAddress: {_eq: $address}}}
+      where: {eventPassNfts: {currentOwnerAddress: {_ilike: $address}}}
     ) {
       type
       isDelayedRevealed
@@ -696,7 +783,7 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
           url
         }
       }
-      eventPassNfts(where: {currentOwnerAddress: {_eq: $address}}) {
+      eventPassNfts(where: {currentOwnerAddress: {_ilike: $address}}) {
         id
         isRevealed
         tokenId
@@ -723,18 +810,23 @@ export const GetUpcomingEventsWithEventPassNftsDocument = `
   }
 }
     `;
+
 export const useGetUpcomingEventsWithEventPassNftsQuery = <
       TData = Types.GetUpcomingEventsWithEventPassNftsQuery,
       TError = Error
     >(
       variables: Types.GetUpcomingEventsWithEventPassNftsQueryVariables,
-      options?: UseQueryOptions<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>(
-      ['GetUpcomingEventsWithEventPassNfts', variables],
-      fetchDataReactQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, Types.GetUpcomingEventsWithEventPassNftsQueryVariables>(GetUpcomingEventsWithEventPassNftsDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, TError, TData>(
+      {
+    queryKey: ['GetUpcomingEventsWithEventPassNfts', variables],
+    queryFn: fetchDataReactQuery<Types.GetUpcomingEventsWithEventPassNftsQuery, Types.GetUpcomingEventsWithEventPassNftsQueryVariables>(GetUpcomingEventsWithEventPassNftsDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetEventPassNftByTokenReferenceDocument = `
     query GetEventPassNftByTokenReference($organizerId: String!, $eventId: String!, $eventPassId: String!, $tokenId: bigint!, $chainId: String!, $locale: Locale!, $stage: Stage!) @cached {
   eventPassNft(
@@ -748,18 +840,23 @@ export const GetEventPassNftByTokenReferenceDocument = `
 }
     ${EventPassNftFieldsFragmentDoc}
 ${EventPassFieldsFragmentDoc}`;
+
 export const useGetEventPassNftByTokenReferenceQuery = <
       TData = Types.GetEventPassNftByTokenReferenceQuery,
       TError = Error
     >(
       variables: Types.GetEventPassNftByTokenReferenceQueryVariables,
-      options?: UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>(
-      ['GetEventPassNftByTokenReference', variables],
-      fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetEventPassNftByTokenReferenceQuery, TError, TData>(
+      {
+    queryKey: ['GetEventPassNftByTokenReference', variables],
+    queryFn: fetchDataReactQuery<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetMyRolesDocument = `
     query GetMyRoles {
   roleAssignment {
@@ -767,18 +864,23 @@ export const GetMyRolesDocument = `
   }
 }
     ${RoleAssignmentFieldsFragmentDoc}`;
+
 export const useGetMyRolesQuery = <
       TData = Types.GetMyRolesQuery,
       TError = Error
     >(
       variables?: Types.GetMyRolesQueryVariables,
-      options?: UseQueryOptions<Types.GetMyRolesQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetMyRolesQuery, TError, TData>(
-      variables === undefined ? ['GetMyRoles'] : ['GetMyRoles', variables],
-      fetchDataReactQuery<Types.GetMyRolesQuery, Types.GetMyRolesQueryVariables>(GetMyRolesDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetMyRolesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetMyRolesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetMyRolesQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['GetMyRoles'] : ['GetMyRoles', variables],
+    queryFn: fetchDataReactQuery<Types.GetMyRolesQuery, Types.GetMyRolesQueryVariables>(GetMyRolesDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetMyRolesWithOrganizerInfosDocument = `
     query GetMyRolesWithOrganizerInfos($stage: Stage!) {
   roleAssignment {
@@ -790,18 +892,23 @@ export const GetMyRolesWithOrganizerInfosDocument = `
 }
     ${RoleAssignmentFieldsFragmentDoc}
 ${OrganizerFieldsFragmentDoc}`;
+
 export const useGetMyRolesWithOrganizerInfosQuery = <
       TData = Types.GetMyRolesWithOrganizerInfosQuery,
       TError = Error
     >(
       variables: Types.GetMyRolesWithOrganizerInfosQueryVariables,
-      options?: UseQueryOptions<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>(
-      ['GetMyRolesWithOrganizerInfos', variables],
-      fetchDataReactQuery<Types.GetMyRolesWithOrganizerInfosQuery, Types.GetMyRolesWithOrganizerInfosQueryVariables>(GetMyRolesWithOrganizerInfosDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetMyRolesWithOrganizerInfosQuery, TError, TData>(
+      {
+    queryKey: ['GetMyRolesWithOrganizerInfos', variables],
+    queryFn: fetchDataReactQuery<Types.GetMyRolesWithOrganizerInfosQuery, Types.GetMyRolesWithOrganizerInfosQueryVariables>(GetMyRolesWithOrganizerInfosDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetMyRolesWithOrganizerAndInviterInfosDocument = `
     query GetMyRolesWithOrganizerAndInviterInfos($stage: Stage!) {
   roleAssignment {
@@ -811,24 +918,28 @@ export const GetMyRolesWithOrganizerAndInviterInfosDocument = `
     }
     inviter {
       address
-      email
     }
   }
 }
     ${RoleAssignmentFieldsFragmentDoc}
 ${OrganizerFieldsFragmentDoc}`;
+
 export const useGetMyRolesWithOrganizerAndInviterInfosQuery = <
       TData = Types.GetMyRolesWithOrganizerAndInviterInfosQuery,
       TError = Error
     >(
       variables: Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables,
-      options?: UseQueryOptions<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>(
-      ['GetMyRolesWithOrganizerAndInviterInfos', variables],
-      fetchDataReactQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables>(GetMyRolesWithOrganizerAndInviterInfosDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, TError, TData>(
+      {
+    queryKey: ['GetMyRolesWithOrganizerAndInviterInfos', variables],
+    queryFn: fetchDataReactQuery<Types.GetMyRolesWithOrganizerAndInviterInfosQuery, Types.GetMyRolesWithOrganizerAndInviterInfosQueryVariables>(GetMyRolesWithOrganizerAndInviterInfosDocument, variables),
+    ...options
+  }
+    )};
+
 export const GetStripeCustomerDocument = `
     query GetStripeCustomer {
   stripeCustomer {
@@ -837,15 +948,19 @@ export const GetStripeCustomerDocument = `
   }
 }
     `;
+
 export const useGetStripeCustomerQuery = <
       TData = Types.GetStripeCustomerQuery,
       TError = Error
     >(
       variables?: Types.GetStripeCustomerQueryVariables,
-      options?: UseQueryOptions<Types.GetStripeCustomerQuery, TError, TData>
-    ) =>
-    useQuery<Types.GetStripeCustomerQuery, TError, TData>(
-      variables === undefined ? ['GetStripeCustomer'] : ['GetStripeCustomer', variables],
-      fetchDataReactQuery<Types.GetStripeCustomerQuery, Types.GetStripeCustomerQueryVariables>(GetStripeCustomerDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<Types.GetStripeCustomerQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<Types.GetStripeCustomerQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<Types.GetStripeCustomerQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['GetStripeCustomer'] : ['GetStripeCustomer', variables],
+    queryFn: fetchDataReactQuery<Types.GetStripeCustomerQuery, Types.GetStripeCustomerQueryVariables>(GetStripeCustomerDocument, variables),
+    ...options
+  }
+    )};

@@ -12,6 +12,7 @@ import {
   itemsUserWithRoles,
   user,
 } from './examples';
+import { mobileMode } from '@test-utils/storybook-modes';
 
 const meta = {
   component: ProfileNav,
@@ -25,12 +26,12 @@ type Story = StoryObj<typeof meta>;
 export const NotConnected: Story = {
   args: {
     isLoading: false,
-    signInText: 'Sign in',
+    signInText: 'Sign In',
     items: itemsNotConnected,
   },
   play: async ({ canvasElement }) => {
     await sleep(100);
-    await userEvent.click(await screen.findByText('Sign in'));
+    await userEvent.click(await screen.findByText('Sign In'));
     await screen.findByText('Settings');
     await screen.findByText('Support');
   },
@@ -55,9 +56,7 @@ export const WithUserNoRoles: Story = {
 export const WithUserNoRolesMobile: Story = {
   ...WithUserNoRoles,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 };
 
@@ -103,9 +102,7 @@ export const WithAdminRole: Story = {
 export const WithAdminRoleMobile: Story = {
   ...WithAdminRole,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
   play: async ({ canvasElement }) => {
     await sleep(100);
@@ -130,9 +127,7 @@ export const WithAdminRoleLoading: Story = {
 
 export const WithAdminRoleLoadingMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
   args: {
     ...WithAdminRole.args,

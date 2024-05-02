@@ -21,7 +21,7 @@ export function DialogExample(args: any) {
         <DialogHeader>
           <DialogTitle>Edit profile Dialog</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -59,7 +59,7 @@ export function DialogScrollable() {
         <DialogHeader>
           <DialogTitle>Long scrollable text dialog</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 overflow-y-auto">
@@ -72,8 +72,8 @@ export function DialogScrollable() {
               users going in the right direction. Be bold and offer just enough
               help to get the work started, and then get out of the way. Give
               accurate information so users can make educated decisions. Know
-              your user's struggles and desired outcomes and give just enough
-              information to let them get where they need to go.
+              your user&apos;s struggles and desired outcomes and give just
+              enough information to let them get where they need to go.
             </p>
           </div>
 

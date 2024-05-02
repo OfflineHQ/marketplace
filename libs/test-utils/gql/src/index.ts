@@ -49,11 +49,6 @@ const fetchDataForTest = (opts: Opts = { jwt: '', anonymous: false }) => {
 };
 
 export const accounts = {
-  google_user: {
-    id: 'ac542c34-1907-451c-94be-5df69a959080',
-    address: '0x1bBEdB07706728A19c9dB82d3c420670D8040592',
-    email: 'googl_user@gmail.com',
-  } satisfies AppUser,
   alpha_user: {
     id: '679f92d6-a01e-4ab7-93f8-10840d22b0a5',
     address: '0xB98bD7C7f656290071E52D1aA617D9cB4467Fd6D',
@@ -66,7 +61,12 @@ export const accounts = {
   } satisfies AppUser,
   beta_user: {
     id: '76189546-6368-4325-8aad-220e03837b7e',
-    address: '0x1B8bD7C7f656290071E52D1aA617D9cB4469BB9F',
+    address: '0x1b8Bd7c7f656290071E52d1AA617d9Cb4469bB9F',
+  } satisfies AppUser,
+  delta_user: {
+    id: '9660cf3b-65ec-4ac5-a671-7eac4d93a842',
+    address: '0x2CDE8fb599b7c656e7594959960DbeA1bC2e15F2',
+    email: '',
   } satisfies AppUser,
 };
 
@@ -79,9 +79,9 @@ const generateJwt = (user: AppUser, secret: string, role?: string): string =>
   jwt.sign(JSON.stringify({ user, role }), secret);
 
 export const usersJwt = {
-  google_user: generateJwt(accounts.google_user, H256SecretMarketplace, 'user'),
   alpha_user: generateJwt(accounts.alpha_user, H256SecretMarketplace, 'user'),
   beta_user: generateJwt(accounts.beta_user, H256SecretMarketplace, 'user'),
+  delta_user: generateJwt(accounts.delta_user, H256SecretMarketplace, 'user'),
 };
 
 // Define back-office users
@@ -110,11 +110,7 @@ export const backOfficeAccounts = {
       eventId: '',
     },
   } satisfies AppUser,
-  delta_user: {
-    id: '9660cf3b-65ec-4ac5-a671-7eac4d93a842',
-    address: '0x2CDE8fb599b7c656e7594959960DbeA1bC2e15F2',
-    email: '',
-  } satisfies AppUser,
+  ...accounts,
   // Add more users as needed...
 };
 
@@ -175,13 +171,6 @@ export const betaUserClient = ({
       }),
     ),
     me: accounts.beta_user,
-  };
-};
-
-export const googleUserClient = (): UserSdk & { me: AppUser } => {
-  return {
-    ...userSdk(fetchDataForTest({ jwt: usersJwt.google_user })),
-    me: accounts.google_user,
   };
 };
 

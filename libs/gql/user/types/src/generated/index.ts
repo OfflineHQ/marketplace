@@ -1,23 +1,16 @@
 import * as Types from '@gql/shared/types';
 
-export type AccountFieldsFragment = { __typename?: 'account', id: any, email?: string | null };
+export type AccountFieldsFragment = { __typename?: 'account', id: any, address: string };
 
 export type GetAccountQueryVariables = Types.Exact<{
-  address: Types.Scalars['String'];
+  address: Types.Scalars['String']['input'];
 }>;
 
 
-export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, email?: string | null }> };
-
-export type GetAccountByEmailQueryVariables = Types.Exact<{
-  email: Types.Scalars['String'];
-}>;
-
-
-export type GetAccountByEmailQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, email?: string | null }> };
+export type GetAccountQuery = { __typename?: 'query_root', account: Array<{ __typename?: 'account', id: any, address: string }> };
 
 export type GetEventWithPassesQueryVariables = Types.Exact<{
-  slug: Types.Scalars['String'];
+  slug: Types.Scalars['String']['input'];
   locale: Types.Locale;
   stage: Types.Stage;
 }>;
@@ -36,7 +29,7 @@ export type GetOrdersIsMintingQueryVariables = Types.Exact<{ [key: string]: neve
 export type GetOrdersIsMintingQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', eventPassId?: string | null, quantity: number }> };
 
 export type GetOrdersFromIdsQueryVariables = Types.Exact<{
-  orderIds: Array<Types.Scalars['uuid']> | Types.Scalars['uuid'];
+  orderIds: Array<Types.Scalars['uuid']['input']> | Types.Scalars['uuid']['input'];
   stage: Types.Stage;
 }>;
 
@@ -44,14 +37,14 @@ export type GetOrdersFromIdsQueryVariables = Types.Exact<{
 export type GetOrdersFromIdsQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', eventPassId?: string | null, quantity: number, eventPass?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> };
 
 export type GetOrderPurchasedForEventPassesIdQueryVariables = Types.Exact<{
-  eventPassId: Types.Scalars['String'];
+  eventPassId: Types.Scalars['String']['input'];
 }>;
 
 
 export type GetOrderPurchasedForEventPassesIdQuery = { __typename?: 'query_root', order: Array<{ __typename?: 'order', eventPassId?: string | null, quantity: number }> };
 
 export type GetOrderPurchasedForEventPassesIdsQueryVariables = Types.Exact<{
-  eventPassIds: Array<Types.Scalars['String']> | Types.Scalars['String'];
+  eventPassIds: Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input'];
 }>;
 
 
@@ -88,14 +81,14 @@ export type UpsertPackPendingOrdersMutationVariables = Types.Exact<{
 export type UpsertPackPendingOrdersMutation = { __typename?: 'mutation_root', insert_pendingOrder?: { __typename?: 'pendingOrder_mutation_response', returning: Array<{ __typename?: 'pendingOrder', id: any, packId?: string | null, quantity: number, created_at: any, packAmount?: { __typename?: 'passAmount', timeBeforeDelete: number } | null, pack?: { __typename?: 'EventPass', event?: { __typename?: 'Event', slug: string, organizer?: { __typename?: 'Organizer', slug: string } | null } | null } | null }> } | null };
 
 export type DeletePendingOrderMutationVariables = Types.Exact<{
-  pendingOrderId: Types.Scalars['uuid'];
+  pendingOrderId: Types.Scalars['uuid']['input'];
 }>;
 
 
 export type DeletePendingOrderMutation = { __typename?: 'mutation_root', delete_pendingOrder_by_pk?: { __typename?: 'pendingOrder', id: any } | null };
 
 export type DeletePendingOrdersMutationVariables = Types.Exact<{
-  eventPassIds: Array<Types.Scalars['String']> | Types.Scalars['String'];
+  eventPassIds: Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input'];
 }>;
 
 
@@ -107,14 +100,14 @@ export type DeleteAllPendingOrdersMutationVariables = Types.Exact<{ [key: string
 export type DeleteAllPendingOrdersMutation = { __typename?: 'mutation_root', delete_pendingOrder?: { __typename?: 'pendingOrder_mutation_response', affected_rows: number } | null };
 
 export type GetPendingOrderForEventPassQueryVariables = Types.Exact<{
-  eventPassId: Types.Scalars['String'];
+  eventPassId: Types.Scalars['String']['input'];
 }>;
 
 
 export type GetPendingOrderForEventPassQuery = { __typename?: 'query_root', pendingOrder: Array<{ __typename?: 'pendingOrder', id: any, eventPassId?: string | null, quantity: number, created_at: any }> };
 
 export type GetPendingOrderForEventPassesQueryVariables = Types.Exact<{
-  eventPassIds?: Types.InputMaybe<Array<Types.Scalars['String']> | Types.Scalars['String']>;
+  eventPassIds?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
 }>;
 
 
@@ -146,7 +139,7 @@ export type PassAmountFieldsFragment = { __typename?: 'passAmount', maxAmount: n
 export type PassPricingFieldsFragment = { __typename?: 'passPricing', amount: number, currency: Types.Currency_Enum };
 
 export type InsertFollowOrganizerMutationVariables = Types.Exact<{
-  organizerSlug: Types.Scalars['String'];
+  organizerSlug: Types.Scalars['String']['input'];
 }>;
 
 
@@ -154,40 +147,40 @@ export type InsertFollowOrganizerMutation = { __typename?: 'mutation_root', inse
 
 export type EventPassFieldsFragment = { __typename?: 'EventPass', name: string, description: string, nftImage: { __typename?: 'Asset', url: string }, passOptions: Array<{ __typename?: 'PassOption', name: string, description?: string | null, eventDateLocation?: { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } } | null }>, passPricing?: { __typename?: 'passPricing', amount: number, currency: Types.Currency_Enum } | null, event?: { __typename?: 'Event', slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null } | null };
 
-export type EventPassNftFieldsFragment = { __typename?: 'eventPassNft', tokenId: any, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null };
+export type EventPassNftFieldsFragment = { __typename?: 'eventPassNft', tokenId?: any | null, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null };
 
 export type GetPassedEventsWithEventPassNftsQueryVariables = Types.Exact<{
-  address: Types.Scalars['String'];
-  currentDate: Types.Scalars['timestamp'];
+  address: Types.Scalars['String']['input'];
+  currentDate: Types.Scalars['timestamp']['input'];
   locale: Types.Locale;
   stage: Types.Stage;
 }>;
 
 
-export type GetPassedEventsWithEventPassNftsQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, timezone?: string | null, eventPassNftContracts: Array<{ __typename?: 'eventPassNftContract', type: Types.EventPassNftContractType_Enum, isDelayedRevealed: boolean, eventPass?: { __typename?: 'EventPass', id: string, name: string, event?: { __typename?: 'Event', slug: string } | null, nftImage: { __typename?: 'Asset', url: string } } | null, eventPassNfts: Array<{ __typename?: 'eventPassNft', id: any, isRevealed: boolean, tokenId: any }> }>, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null, event?: { __typename?: 'Event', id: string, slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string } } | null }> };
+export type GetPassedEventsWithEventPassNftsQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, timezone: string, eventPassNftContracts: Array<{ __typename?: 'eventPassNftContract', type: Types.EventPassNftContractType_Enum, isDelayedRevealed: boolean, eventPass?: { __typename?: 'EventPass', id: string, name: string, event?: { __typename?: 'Event', slug: string } | null, nftImage: { __typename?: 'Asset', url: string } } | null, eventPassNfts: Array<{ __typename?: 'eventPassNft', id: any, isRevealed: boolean, tokenId?: any | null }> }>, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null, event?: { __typename?: 'Event', id: string, slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string } } | null }> };
 
 export type GetUpcomingEventsWithEventPassNftsQueryVariables = Types.Exact<{
-  address: Types.Scalars['String'];
-  currentDate: Types.Scalars['timestamp'];
+  address: Types.Scalars['String']['input'];
+  currentDate: Types.Scalars['timestamp']['input'];
   locale: Types.Locale;
   stage: Types.Stage;
 }>;
 
 
-export type GetUpcomingEventsWithEventPassNftsQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, timezone?: string | null, eventPassNftContracts: Array<{ __typename?: 'eventPassNftContract', type: Types.EventPassNftContractType_Enum, isDelayedRevealed: boolean, eventPass?: { __typename?: 'EventPass', id: string, name: string, event?: { __typename?: 'Event', slug: string } | null, nftImage: { __typename?: 'Asset', url: string } } | null, eventPassNfts: Array<{ __typename?: 'eventPassNft', id: any, isRevealed: boolean, tokenId: any }> }>, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null, event?: { __typename?: 'Event', id: string, slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string } } | null }> };
+export type GetUpcomingEventsWithEventPassNftsQuery = { __typename?: 'query_root', eventParameters: Array<{ __typename?: 'eventParameters', dateStart?: any | null, dateEnd?: any | null, timezone: string, eventPassNftContracts: Array<{ __typename?: 'eventPassNftContract', type: Types.EventPassNftContractType_Enum, isDelayedRevealed: boolean, eventPass?: { __typename?: 'EventPass', id: string, name: string, event?: { __typename?: 'Event', slug: string } | null, nftImage: { __typename?: 'Asset', url: string } } | null, eventPassNfts: Array<{ __typename?: 'eventPassNft', id: any, isRevealed: boolean, tokenId?: any | null }> }>, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null, event?: { __typename?: 'Event', id: string, slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string } } | null }> };
 
 export type GetEventPassNftByTokenReferenceQueryVariables = Types.Exact<{
-  organizerId: Types.Scalars['String'];
-  eventId: Types.Scalars['String'];
-  eventPassId: Types.Scalars['String'];
-  tokenId: Types.Scalars['bigint'];
-  chainId: Types.Scalars['String'];
+  organizerId: Types.Scalars['String']['input'];
+  eventId: Types.Scalars['String']['input'];
+  eventPassId: Types.Scalars['String']['input'];
+  tokenId: Types.Scalars['bigint']['input'];
+  chainId: Types.Scalars['String']['input'];
   locale: Types.Locale;
   stage: Types.Stage;
 }>;
 
 
-export type GetEventPassNftByTokenReferenceQuery = { __typename?: 'query_root', eventPassNft: Array<{ __typename?: 'eventPassNft', tokenId: any, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null, eventPass?: { __typename?: 'EventPass', name: string, description: string, nftImage: { __typename?: 'Asset', url: string }, passOptions: Array<{ __typename?: 'PassOption', name: string, description?: string | null, eventDateLocation?: { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } } | null }>, passPricing?: { __typename?: 'passPricing', amount: number, currency: Types.Currency_Enum } | null, event?: { __typename?: 'Event', slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null } | null } | null }> };
+export type GetEventPassNftByTokenReferenceQuery = { __typename?: 'query_root', eventPassNft: Array<{ __typename?: 'eventPassNft', tokenId?: any | null, eventId: string, eventPassId: string, organizerId: string, isRevealed: boolean, currentOwnerAddress?: string | null, eventPass?: { __typename?: 'EventPass', name: string, description: string, nftImage: { __typename?: 'Asset', url: string }, passOptions: Array<{ __typename?: 'PassOption', name: string, description?: string | null, eventDateLocation?: { __typename?: 'EventDateLocation', dateStart: any, dateEnd: any, locationAddress: { __typename?: 'LocationAddress', city: string, country: string, placeId?: string | null, postalCode: string, state?: string | null, street?: string | null, venue?: string | null, coordinates: { __typename?: 'Location', latitude: number, longitude: number } } } | null }>, passPricing?: { __typename?: 'passPricing', amount: number, currency: Types.Currency_Enum } | null, event?: { __typename?: 'Event', slug: string, title: string, heroImageClasses?: string | null, heroImage: { __typename?: 'Asset', url: string }, organizer?: { __typename?: 'Organizer', id: string, slug: string, name: string, imageClasses?: string | null, image: { __typename?: 'Asset', url: string } } | null } | null } | null }> };
 
 export type RoleAssignmentFieldsFragment = { __typename?: 'roleAssignment', role: Types.Roles_Enum, organizerId: string, eventId: string };
 
@@ -208,7 +201,7 @@ export type GetMyRolesWithOrganizerAndInviterInfosQueryVariables = Types.Exact<{
 }>;
 
 
-export type GetMyRolesWithOrganizerAndInviterInfosQuery = { __typename?: 'query_root', roleAssignment: Array<{ __typename?: 'roleAssignment', role: Types.Roles_Enum, organizerId: string, eventId: string, organizer?: { __typename?: 'Organizer', imageClasses?: string | null, name: string, slug: string, image: { __typename?: 'Asset', url: string } } | null, inviter: { __typename?: 'account', address: string, email?: string | null } }> };
+export type GetMyRolesWithOrganizerAndInviterInfosQuery = { __typename?: 'query_root', roleAssignment: Array<{ __typename?: 'roleAssignment', role: Types.Roles_Enum, organizerId: string, eventId: string, organizer?: { __typename?: 'Organizer', imageClasses?: string | null, name: string, slug: string, image: { __typename?: 'Asset', url: string } } | null, inviter: { __typename?: 'account', address: string } }> };
 
 export type GetStripeCustomerQueryVariables = Types.Exact<{ [key: string]: never; }>;
 

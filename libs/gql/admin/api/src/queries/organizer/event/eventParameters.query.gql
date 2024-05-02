@@ -1,0 +1,38 @@
+query GetAlchemyInfosFromEventId($eventId: String) {
+  eventParameters(where: { eventId: { _eq: $eventId } }) {
+    activityWebhookId
+    activityWebhookSigningKey
+    metadataUpdateWebhookId
+    metadataUpdateWebhookSigningKey
+  }
+}
+
+query GetEventParameters($eventId: String) {
+  eventParameters(
+    where: {
+      _and: [{ eventId: { _eq: $eventId } }, { status: { _eq: PUBLISHED } }]
+    }
+    limit: 1
+  ) {
+    dateStart
+    dateEnd
+    dateSaleStart
+    dateSaleEnd
+    timezone
+    status
+    isSaleOngoing
+    isOngoing
+  }
+}
+
+# Is stage: DRAFT causing an issue on production ?
+query GetEventParametersFromEventPassIds($eventPassIds: [ID!]!) {
+  eventPasses(where: { id_in: $eventPassIds }, stage: DRAFT, locales: [en]) {
+    id
+    event {
+      eventParameters {
+        isSaleOngoing
+      }
+    }
+  }
+}

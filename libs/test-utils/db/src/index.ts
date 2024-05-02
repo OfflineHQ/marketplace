@@ -1,10 +1,36 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { PendingOrder } from '@gql/shared/types';
+import type {
+  Account_Insert_Input,
+  EventParameters_Insert_Input,
+  EventPassNftContract_Insert_Input,
+  EventPassNft_Insert_Input,
+  Follow_Insert_Input,
+  Kyc_Insert_Input,
+  MinterTemporaryWallet_Insert_Input,
+  NftTransfer_Insert_Input,
+  Order_Insert_Input,
+  PackNftContract_Insert_Input,
+  PassAmount_Insert_Input,
+  PassPricing_Insert_Input,
+  PendingOrder,
+  PendingOrder_Insert_Input,
+  RoleAssignment_Insert_Input,
+  StripeCheckoutSession_Insert_Input,
+  StripeCustomer_Insert_Input,
+  LoyaltyCardParameters_Insert_Input,
+  LoyaltyCardNftContract_Insert_Input,
+  LoyaltyCardNft_Insert_Input,
+  NftMintPassword_Insert_Input,
+  ShopifyCampaignParameters_Insert_Input,
+  StampNftContract_Insert_Input,
+  StampNft_Insert_Input,
+  StampNftSupply_Insert_Input,
+} from '@gql/shared/types';
 import { isJestRunning } from '@utils';
+import * as path from 'path';
 import { Client } from 'pg';
 
 const fs = require('fs');
-
 let dbName = '';
 
 export const SeedTable = {
@@ -23,6 +49,42 @@ export const SeedTable = {
   roleAssignment: 12,
   follow: 13,
   packNftContract: 14,
+  minterTemporaryWallet: 15,
+  loyaltyCardParameters: 16,
+  loyaltyCardNftContract: 17,
+  loyaltyCardNft: 18,
+  nftMintPassword: 19,
+  shopifyCampaignParameters: 20,
+  stampNftContract: 21,
+  stampNft: 22,
+  stampNftSupply: 23,
+};
+
+export type SeedTypeMap = {
+  account: Account_Insert_Input;
+  kyc: Kyc_Insert_Input;
+  passAmount: PassAmount_Insert_Input;
+  passPricing: PassPricing_Insert_Input;
+  pendingOrder: PendingOrder_Insert_Input;
+  eventPassNftContract: EventPassNftContract_Insert_Input;
+  eventParameters: EventParameters_Insert_Input;
+  stripeCustomer: StripeCustomer_Insert_Input;
+  stripeCheckoutSession: StripeCheckoutSession_Insert_Input;
+  order: Order_Insert_Input;
+  nftTransfer: NftTransfer_Insert_Input;
+  eventPassNft: EventPassNft_Insert_Input;
+  roleAssignment: RoleAssignment_Insert_Input;
+  follow: Follow_Insert_Input;
+  packNftContract: PackNftContract_Insert_Input;
+  minterTemporaryWallet: MinterTemporaryWallet_Insert_Input;
+  loyaltyCardParameters: LoyaltyCardParameters_Insert_Input;
+  loyaltyCardNftContract: LoyaltyCardNftContract_Insert_Input;
+  loyaltyCardNft: LoyaltyCardNft_Insert_Input;
+  nftMintPassword: NftMintPassword_Insert_Input;
+  shopifyCampaignParameters: ShopifyCampaignParameters_Insert_Input;
+  stampNftContract: StampNftContract_Insert_Input;
+  stampNft: StampNft_Insert_Input;
+  stampNftSupply: StampNftSupply_Insert_Input;
 };
 
 export type SeedTableName = keyof typeof SeedTable;
@@ -78,7 +140,10 @@ export const deleteAccount = async (client: Client, email: string) => {
 
 export const seedDb = async (client: Client, table: SeedTableName) => {
   const order = SeedTable[table];
-  const filePath = `./hasura/app/seeds/default/${order}_${table}.sql`;
+  const filePath = path.join(
+    __dirname,
+    `../../../../hasura/app/seeds/default/${order}_${table}.sql`,
+  );
   const dataSql = fs.readFileSync(filePath).toString();
   await client.query(dataSql);
 };
@@ -95,6 +160,52 @@ export const applySeeds = async (client: Client, tables: SeedTableName[]) => {
 
 export const queryDb = async (client: Client, sql: string) => {
   await client.query(sql);
+};
+
+export const insertObjects = async <T extends SeedTableName>(
+  client: Client,
+  table: T,
+  objects: SeedTypeMap[T][],
+): Promise<void> => {
+  for (const obj of objects) {
+    const columns = Object.keys(obj)
+      .map((key) => `"${key}"`)
+      .join(', ');
+    const values = Object.values(obj)
+      .map((value) => {
+        if (value instanceof Date) {
+          return `'${value.toISOString()}'`;
+        }
+        return typeof value === 'string' ? `'${value}'` : value;
+      })
+      .join(', ');
+
+    const sql = `INSERT INTO "${table}" (${columns}) VALUES (${values});`;
+    await queryDb(client, sql);
+  }
+};
+
+export const updateObjects = async <T extends SeedTableName>(
+  client: Client,
+  table: T,
+  updateObject: Partial<SeedTypeMap[T]>,
+  whereObject: Partial<SeedTypeMap[T]>,
+): Promise<void> => {
+  const setClause = Object.entries(updateObject)
+    .map(([key, value]) => {
+      if (value instanceof Date) {
+        return `"${key}" = '${value.toISOString()}'`;
+      }
+      return `"${key}" = '${value}'`;
+    })
+    .join(', ');
+
+  const whereClause = Object.entries(whereObject)
+    .map(([key, value]) => `"${key}" = '${value}'`)
+    .join(' AND ');
+
+  const sql = `UPDATE "${table}" SET ${setClause} WHERE ${whereClause};`;
+  await queryDb(client, sql);
 };
 
 export const pendingOrders = {

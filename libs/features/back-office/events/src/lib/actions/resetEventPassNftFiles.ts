@@ -18,5 +18,5 @@ export const resetEventPassNftFiles = async ({
   revalidateTag(
     `${organizerId}-${eventId}-${eventPassId}-getEventPassNftFiles`,
   );
-  await revalidatePath(`/${locale}/events/${eventSlug}`);
+  await revalidatePath(`/${locale}/campaigns/events/${eventSlug}`);
 };

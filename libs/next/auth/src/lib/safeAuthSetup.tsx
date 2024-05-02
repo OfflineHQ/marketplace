@@ -1,73 +1,17 @@
 'use client';
-// safeAuthSetup.ts
 
-import { AuthKitSignInData, Web3AuthModalPack } from '@next/safe/auth';
-import { getNextAppURL, isDev } from '@shared/client';
 import { ToastAction, useToast } from '@ui/components';
-import { MetamaskAdapter } from '@web3auth/metamask-adapter';
 import { usePostHog } from 'posthog-js/react';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useRouter } from '@next/navigation';
-import {
-  ADAPTER_EVENTS,
-  CHAIN_NAMESPACES,
-  UserInfo,
-  WALLET_ADAPTERS,
-} from '@web3auth/base';
-import { Web3AuthOptions } from '@web3auth/modal';
-import { LANGUAGE_TYPE, OpenloginAdapter } from '@web3auth/openlogin-adapter';
-import { ethers as ethers5 } from 'ethers';
-import { Eip1193Provider, ethers } from 'ethers6';
-import { getCsrfToken, signIn, signOut } from 'next-auth/react';
-import { SiweMessage } from 'siwe';
+import { signIn, signOut } from 'next-auth/react';
 
-import env from '@env/client';
+import { ComethWallet } from '@cometh/connect-sdk';
 import { handleUnauthenticatedUser } from '@next/next-auth/user';
+import { useWalletAuth } from '@next/wallet';
 import { Session } from 'next-auth';
-import { useLocale } from 'next-intl';
-import { useTheme } from 'next-themes';
-
-type ChainConfig = Web3AuthOptions['chainConfig'] & {
-  safeTxServiceUrl?: string;
-};
-
-// safeTxServiceUrl: https://forum.safe.global/t/announcement-to-all-builders-using-safe-services/3225
-
-const chainConfigs: Record<string, ChainConfig> = {
-  '5': {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    rpcTarget:
-      'https://eth-goerli.g.alchemy.com/v2/suWCSUU8QCZyA8U4VHEXzGYJZobJPSfc',
-    chainId: '0x5',
-    displayName: 'Ethereum Goerli',
-    blockExplorer: 'https://goerli.etherscan.io/',
-    ticker: 'ETH',
-    tickerName: 'GETH',
-    safeTxServiceUrl: 'https://safe-transaction-goerli.safe.global',
-    decimals: 18,
-  },
-  '11155111': {
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    rpcTarget:
-      'https://eth-sepolia.g.alchemy.com/v2/aTwl7l6SRRC22e-7joQbT7oMG6yTjUm0',
-    chainId: '0xaa36a7',
-    displayName: 'Ethereum Sepolia',
-    blockExplorer: 'https://sepolia.etherscan.io/',
-    ticker: 'ETH',
-    tickerName: 'SepoliaETH',
-    safeTxServiceUrl: 'https://safe-transaction-sepolia.safe.global',
-    decimals: 18,
-  },
-  // Add other chains here
-};
-
-const { safeTxServiceUrl, chainId, ...chainConfig } = (chainConfigs[
-  env.NEXT_PUBLIC_CHAIN
-] || chainConfigs['11155111']) as ChainConfig; // Default to sepolia if no matching config
-
-export interface SafeUser extends Partial<UserInfo>, AuthKitSignInData {}
 
 export interface UseSafeAuthProps {
   messages?: {
@@ -88,152 +32,34 @@ export interface UseSafeAuthProps {
     };
   };
   session?: Session | null;
-  isConnected?: () => boolean;
-  chainConfig?: ChainConfig;
-  chainId?: string;
+  isConnected?: () => Promise<boolean>;
+  createAccount?: () => void;
 }
 
-export function useSafeAuth(props: UseSafeAuthProps = {}) {
-  const [safeAuth, setSafeAuth] = useState<Web3AuthModalPack>();
-  const [safeUser, setSafeUser] = useState<SafeUser>();
-  const [provider, setProvider] = useState<Eip1193Provider | null>(null);
+export function useSafeAuth({
+  messages,
+  session,
+  isConnected,
+  ...props
+}: UseSafeAuthProps = {}) {
   const [connecting, setConnecting] = useState(false);
-  const { resolvedTheme } = useTheme();
+  const {
+    connectWithSiwe,
+    disconnect,
+    isReady,
+    isConnecting: isWalletConnecting,
+    provider,
+    wallet,
+    connectionError,
+  } = useWalletAuth();
   const { toast } = useToast();
   const router = useRouter();
-  const locale = useLocale();
-  const messages = props.messages;
   const isSigningInRef = useRef(false);
   const posthog = usePostHog();
 
-  const web3AuthErrorHandler = useCallback(
-    (error: any) => {
-      // eslint-disable-next-line sonarjs/no-small-switch
-      if (error?.message?.includes('login popup has been closed by the user')) {
-        if (messages?.userClosedPopup)
-          toast({
-            title: messages.userClosedPopup.title,
-            description: messages.userClosedPopup.description,
-            variant: 'destructive',
-          });
-        setConnecting(false);
-      } else {
-        console.error({ error });
-      }
-    },
-    [messages?.userClosedPopup, toast],
-  );
-
-  const logoutSiwe = useCallback(
-    async ({ refresh }: { refresh?: boolean }) => {
-      console.log('Signing out with SIWE...');
-      await signOut({ redirect: false });
-      if (refresh) router.refresh();
-    },
-    [router],
-  );
-
-  const logout = useCallback(
-    async ({ refresh }: { refresh?: boolean }) => {
-      if (!safeAuth) return;
-
-      await safeAuth.signOut();
-      await logoutSiwe({ refresh });
-      logoutUserPostHog();
-      setSafeUser(undefined);
-    },
-    [safeAuth, logoutSiwe],
-  );
-
-  const setupUserSession = useCallback(async () => {
-    console.log({ safeAuth });
-    if (!safeAuth) return;
-
-    let userInfo: Partial<UserInfo> = {};
-    userInfo = await safeAuth.getUserInfo();
-    let eoa: AuthKitSignInData['eoa'] = safeUser?.eoa || '';
-    let safes: AuthKitSignInData['safes'] = safeUser?.safes || [];
-    // here mean the page have been refreshed, so we need to get the AuthKitSignInData again
-    if (!eoa) {
-      eoa = await safeAuth.getAddress();
-      // TODO, use a docker image for the safe transaction service in local
-      safes = await safeAuth.getSafes(!isDev() ? safeTxServiceUrl || '' : '');
-    }
-    const _safeUser = {
-      eoa,
-      safes,
-      ...userInfo,
-    } satisfies SafeUser;
-    console.log('Safe User: ', _safeUser, userInfo);
-    setSafeUser(_safeUser);
-    setConnecting(false);
-  }, [safeAuth]);
-
-  const login = useCallback(async () => {
-    if (!safeAuth) return;
-
-    try {
-      let modalVisibleResolve: any,
-        modalClosedResolved: any,
-        connectedResolved: any;
-      // used to detect when the modal is closed during the login process
-      const modalVisibilityChanged = new Promise((resolve, _) => {
-        modalVisibleResolve = resolve;
-      }).then(() => {
-        return new Promise((resolve, _) => (modalClosedResolved = resolve));
-      });
-
-      const isConnected = new Promise((resolve, _) => {
-        connectedResolved = resolve;
-      });
-
-      const web3AuthModalVisibilityHandler = (isVisible: boolean) => {
-        if (isVisible) {
-          modalVisibleResolve();
-        } else {
-          modalClosedResolved();
-          setConnecting(false);
-        }
-      };
-
-      const web3AuthConnectedHandler = () => {
-        connectedResolved('connected');
-      };
-
-      safeAuth.subscribe('MODAL_VISIBILITY', web3AuthModalVisibilityHandler);
-
-      safeAuth.subscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
-
-      // launch in background the modal with web3auth
-      safeAuth.signIn().catch((_error) => null);
-
-      // here will determine if the user close the modal or not
-      // if the user close the modal, web3AuthModalVisibilityHandler will be resolved before
-      // if the user sign in, web3AuthConnectedHandler will be resolved before
-      const raceResult = await Promise.race([
-        isConnected,
-        modalVisibilityChanged,
-      ]);
-
-      console.log({ raceResult });
-
-      // if the user sign in, we want to login with siwe
-      if (raceResult === 'connected') {
-        // used to force signIn in case the user denied the connection
-        // await safeAuth.signIn();
-        await finishLogin();
-      }
-      safeAuth.unsubscribe('MODAL_VISIBILITY', web3AuthModalVisibilityHandler);
-
-      safeAuth.unsubscribe(ADAPTER_EVENTS.CONNECTED, web3AuthConnectedHandler);
-    } catch (error) {
-      console.warn({ error });
-    }
-  }, [safeAuth]);
-
   // signin with siwe to provide a JWT through next-auth
   const loginSiwe = useCallback(
-    async (signer: ethers.Signer) => {
+    async (signer: ComethWallet) => {
       try {
         if (isSigningInRef.current) {
           console.log('Already signed in with SIWE, ignoring extra call...');
@@ -241,24 +67,14 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
         }
         isSigningInRef.current = true;
         console.log('Signing in with SIWE...');
-        const address = await signer.getAddress();
-        const message = new SiweMessage({
-          domain: window.location.host,
-          address,
-          statement: messages?.siweStatement,
-          uri: window.location.origin,
-          version: '1',
-          chainId: parseInt(chainId as string),
-          nonce: await getCsrfToken(),
-        });
-        const signature = await signer?.signMessage(message.prepareMessage());
-        const userInfo = await safeAuth?.getUserInfo();
+        const address = signer.getAddress();
+        const message = 'Offline'; // EIP1271: secure because signature verified by smart contract against the hash of this message and send back the magic bytes. So really it can be any message.
+        const signature = await signer.signMessage(message);
         const signInRes = await signIn('credentials', {
-          message: JSON.stringify(message),
+          message,
           redirect: false,
           signature,
           address,
-          email: userInfo?.email,
         });
         if (signInRes?.error) {
           console.error('Error signing in with SIWE:', signInRes?.error);
@@ -276,8 +92,7 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
                 </ToastAction>
               ),
             });
-          }
-          throw new Error('Error signing in with SIWE');
+          } else throw new Error('Error signing in with SIWE');
         } else {
           identifyUserPostHog(address);
           router.refresh();
@@ -308,225 +123,117 @@ export function useSafeAuth(props: UseSafeAuthProps = {}) {
       messages?.siweDeclined,
       router,
       toast,
-      login,
     ],
   );
 
-  function identifyUserPostHog(address: string) {
-    console.log('identify posthog', posthog, address);
-    posthog?.identify(address, {
-      address,
-    });
-  }
+  const identifyUserPostHog = useCallback(
+    (address: string) => {
+      console.log('identify posthog', posthog, address);
+      posthog?.identify(address, {
+        address,
+      });
+    },
+    [posthog],
+  );
 
-  function logoutUserPostHog() {
+  const login = useCallback(async () => {
+    await connectWithSiwe(loginSiwe);
+  }, [connectWithSiwe, loginSiwe]);
+
+  const logoutSiwe = useCallback(
+    async ({ refresh }: { refresh?: boolean }) => {
+      console.log('Signing out with SIWE...');
+      await signOut({ redirect: false });
+      if (refresh) router.refresh();
+    },
+    [router],
+  );
+
+  const loginAuto = useCallback(
+    async (address: string) => {
+      if (!!session?.user && session?.user?.address !== address) {
+        await logoutSiwe({ refresh: false });
+      }
+      console.log('Auto login with SIWE...', address);
+      const instance = await connectWithSiwe(loginSiwe, address, true);
+      if (!instance) throw new Error('Error connecting with SIWE');
+      else await loginSiwe(instance);
+    },
+    [connectWithSiwe, loginSiwe, logoutSiwe, session],
+  );
+
+  const logoutUserPostHog = useCallback(() => {
     console.log('reset posthog');
     posthog?.reset();
-  }
+  }, [posthog]);
 
-  async function getSigner() {
-    if (!safeAuth || !safeAuth?.getProvider()) return;
-    // TODO once thirdweb support ethers6 set back
-    // const web3Provider = new ethers.BrowserProvider(
-    //   safeAuth.getProvider() as Eip1193Provider,
-    //   {
-    //     chainId: parseInt(chainId as string),
-    //     name: chainConfig.displayName,
-    //   },
-    // );
-    // return web3Provider.getSigner();
-    const ether5Provider = new ethers5.providers.Web3Provider(
-      safeAuth.getProvider() as Eip1193Provider,
-    );
-    return ether5Provider.getSigner();
-  }
+  const logout = useCallback(
+    async ({ refresh }: { refresh?: boolean }) => {
+      await disconnect();
+      await logoutSiwe({ refresh });
+      logoutUserPostHog();
+    },
+    [disconnect, logoutSiwe, logoutUserPostHog],
+  );
 
-  async function finishLogin() {
-    const isNextAuthConnected = await props?.isConnected?.();
-    if (!isNextAuthConnected) {
-      // TODO once thirdweb support ethers6 set back
-      // const signer = await getSigner();
-      const web3Provider = new ethers.BrowserProvider(
-        safeAuth?.getProvider() as Eip1193Provider,
-        {
-          chainId: parseInt(chainId as string),
-          name: chainConfig.displayName,
-        },
-      );
+  const createAccount = useCallback(async () => {
+    await connectWithSiwe(loginSiwe, undefined, true);
+  }, [connectWithSiwe, loginSiwe]);
 
-      const signer = await web3Provider.getSigner();
-      if (!signer) throw new Error('No signer found');
-      await loginSiwe(signer);
-    }
-    await setupUserSession();
-    setConnecting(false);
-  }
-
-  // when the provider (wallet) is connected, login to siwe or bypass if cookie is present
   useEffect(() => {
     (async () => {
-      try {
-        console.log('web3AuthConnected Effect: ', {
-          web3AuthConnected: safeAuth?.web3Auth?.connected,
-        });
-        if (safeAuth?.web3Auth?.connected) {
-          await finishLogin();
-        }
-      } catch (error) {
-        console.log('web3auth connected but logout because of error in siwe');
-        console.error({ error });
-        await logout({ refresh: false });
-      } finally {
-        setConnecting(false);
+      // useWalletAuth is not ready yet
+      if (!isReady) {
+        return;
       }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [safeAuth?.web3Auth?.connected]);
-
-  useEffect(() => {
-    (async () => {
-      const logos = {
-        dark: `/logo-light.svg`,
-        light: `/logo-dark.svg`,
-      };
-      console.log('setting safeAuthKit', { resolvedTheme, locale });
-      const clientId = env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID || '';
-      const web3AuthNetwork =
-        env.NEXT_PUBLIC_WEB3AUTH_NETWORK as Web3AuthOptions['web3AuthNetwork'];
-      const sessionTime =
-        parseInt(env.NEXT_PUBLIC_WEB3AUTH_SESSION_TIME as string) ||
-        30 * 24 * 60 * 60;
-      const options: Web3AuthOptions = {
-        clientId,
-        web3AuthNetwork,
-        chainConfig: {
-          ...chainConfig,
-          chainId,
-        },
-        uiConfig: {
-          defaultLanguage: locale as LANGUAGE_TYPE,
-          logoLight: logos.light,
-          logoDark: logos.dark,
-          mode: resolvedTheme,
-          loginMethodsOrder: [
-            'google',
-            'twitter',
-            'apple',
-            'facebook',
-            'discord',
-            'reddit',
-            'twitch',
-            'line',
-            'github',
-            'kakao',
-            'linkedin',
-            'weibo',
-            'wechat',
-            'email_passwordless',
-          ],
-        },
-      };
-
-      const modalConfig = {
-        // used to not show the torus option
-        [WALLET_ADAPTERS.TORUS_EVM]: {
-          label: 'torus',
-          showOnModal: false,
-        },
-        [WALLET_ADAPTERS.METAMASK]: {
-          label: 'metamask',
-          showOnDesktop: true,
-          showOnMobile: false,
-        },
-      };
-
-      const metamaskAdapter = new MetamaskAdapter({
-        clientId,
-        sessionTime,
-        web3AuthNetwork,
-        chainConfig: {
-          chainId,
-          ...chainConfig,
-        },
+      const isFirefox = /firefox/i.test(navigator.userAgent);
+      const isNextAuthConnected = isConnected ? await isConnected() : false;
+      if (isFirefox) {
+        // TODO: handle alert because firefox doesn't support passkeys yet
+      }
+      console.log({
+        isNextAuthConnected,
+        useE2EAuthContext: window?.useE2EAuthContext,
+        NEXT_PUBLIC_E2E_TEST: process.env.NEXT_PUBLIC_E2E_TEST,
       });
 
-      const whiteLabel = {
-        // TODO adapt here with Offline branding, https://web3auth.io/docs/sdk/web/openlogin#whitelabel
-        appName: 'Offline',
-        appUrl: getNextAppURL(),
-        logoLight: logos.light,
-        logoDark: logos.dark,
-        mode: resolvedTheme,
-        defaultLanguage: locale as LANGUAGE_TYPE,
-      };
-
-      const openloginAdapter = new OpenloginAdapter({
-        loginSettings: {
-          mfaLevel: 'default',
-        },
-        adapterSettings: {
-          uxMode: 'popup',
-          whiteLabel,
-        },
-        sessionTime,
-      });
-
-      const web3AuthModalPack = new Web3AuthModalPack({
-        txServiceUrl: safeTxServiceUrl,
-      });
-
-      await web3AuthModalPack.init({
-        options,
-        adapters: [openloginAdapter, metamaskAdapter],
-        modalConfig,
-      });
-
-      setSafeAuth(web3AuthModalPack);
-
-      const safeProvider: Eip1193Provider | null =
-        web3AuthModalPack.getProvider();
-      setProvider(safeProvider);
-      web3AuthModalPack.subscribe(ADAPTER_EVENTS.ERRORED, web3AuthErrorHandler);
-      web3AuthModalPack.subscribe(ADAPTER_EVENTS.CONNECTING, () =>
-        setConnecting(true),
-      );
-      // here evaluate if user is logged in with web3auth. If it's not the case we logout the user from next auth.
-      // useE2EAuthContext is provided by the e2e test to bypass real login
+      setConnecting(true);
+      // if user is connected to next auth, proceed with auto login to wallet
       if (
-        web3AuthModalPack?.web3Auth?.connected ||
+        isNextAuthConnected ||
         (window?.useE2EAuthContext && process.env.NEXT_PUBLIC_E2E_TEST)
       ) {
+        // bypass real login for e2e tests
         if (window.useE2EAuthContext && process.env.NEXT_PUBLIC_E2E_TEST) {
           console.log('Using E2E Auth Context');
-        } else setConnecting(true);
-      } else {
-        console.log('User not connected to web3auth');
-        handleUnauthenticatedUser();
-        logoutSiwe({ refresh: false });
+        } else if (!wallet && !isWalletConnecting && isReady) {
+          await connectWithSiwe(loginSiwe, session?.user?.address, true);
+        } else {
+          console.log('User connected');
+        }
+      }
+      // if user is connected to wallet but not to next auth, proceed with SIWE to create cookie
+      else if (wallet) {
+        await loginSiwe(wallet);
+      }
+      // user is neither connected to next auth nor wallet, proceed with unauthenticated user
+      else {
+        console.log('User not connected');
+        await handleUnauthenticatedUser();
+        // await logoutSiwe({ refresh: false });
         logoutUserPostHog();
       }
-      return () => {
-        web3AuthModalPack.unsubscribe(
-          ADAPTER_EVENTS.ERRORED,
-          web3AuthErrorHandler,
-        );
-        web3AuthModalPack.unsubscribe(ADAPTER_EVENTS.CONNECTING, () => null);
-      };
+      setConnecting(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resolvedTheme, locale]);
+  }, [isReady]);
 
   return {
-    safeAuth,
-    safeUser,
-    provider,
     login,
+    loginAuto,
     logout,
-    loginSiwe,
-    logoutSiwe,
-    connecting,
-    chainConfig,
-    chainId,
-    getSigner,
+    createAccount,
+    isReady,
+    connecting: connecting || isWalletConnecting,
   };
 }

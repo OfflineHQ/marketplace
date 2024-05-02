@@ -1,0 +1,15 @@
+table:
+  name: contentSpaceParameters
+  schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - contentSpaceId
+        remote_field:
+          contentSpace:
+            arguments:
+              where:
+                id: $contentSpaceId
+        remote_schema: Hygraph CMS Remote Schema
+    name: contentSpace

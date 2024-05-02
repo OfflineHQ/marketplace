@@ -19,7 +19,7 @@ export function RoleAvatar({
   const fallBack = organizer?.name ? getInitials(organizer.name) : '';
   const profileImage = organizer?.image?.url || '';
   return profileImage || fallBack ? (
-    <Avatar {...props} className={`${className} h-12 w-12`}>
+    <Avatar {...props} className={`${className} size-12`}>
       <AvatarImage
         src={profileImage || ''}
         className={`flex items-center justify-center bg-muted ${organizer?.imageClasses}`}

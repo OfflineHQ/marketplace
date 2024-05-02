@@ -59,7 +59,7 @@ const PopoverHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'flex flex-col space-y-2 text-center sm:text-left pb-3',
+      'flex flex-col space-y-2 pb-3 text-center sm:text-left',
       className,
     )}
     {...props}

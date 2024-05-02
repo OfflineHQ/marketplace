@@ -39,6 +39,7 @@ export interface DataTableToolbarProps<TData, TValue> {
   >['controlText'] & {
     reset: string;
   };
+  toolbarChildren?: React.ReactNode;
   menuActions?: Omit<DropdownMenuActionsProps, 'isLoading'>;
   toggleColumnsText?: DataTableViewOptionsProps<TData>['controlText'];
 }
@@ -50,6 +51,7 @@ export function DataTableToolbar<TData, TValue>({
   filtersConfigText,
   toggleColumnsText,
   menuActions,
+  toolbarChildren,
 }: DataTableToolbarProps<TData, TValue>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const numSelectedItems = table.getFilteredSelectedRowModel().rows.length;
@@ -74,6 +76,7 @@ export function DataTableToolbar<TData, TValue>({
             className="h-8 w-[150px] lg:w-[250px]"
           />
         )}
+        {toolbarChildren}
         {filtersConfig.map(({ id, title, options }) => {
           const column = table.getColumn(id) as Column<TData, any>; // Cast to the correct type
           return (
@@ -98,7 +101,7 @@ export function DataTableToolbar<TData, TValue>({
               className="h-8 px-2 lg:px-3"
             >
               {filtersConfigText.reset}
-              <Cross2Icon className="ml-2 h-4 w-4" />
+              <Cross2Icon className="ml-2 size-4" />
             </Button>
           )}
         </AutoAnimate>
@@ -114,7 +117,7 @@ export function DataTableToolbar<TData, TValue>({
               isActive: true,
               number: numSelectedItems,
             }}
-            className="mx-2 h-auto w-auto lg:mx-3"
+            className="mx-2 size-auto lg:mx-3"
             buttonClassName="w-8 h-8"
           />
         )}

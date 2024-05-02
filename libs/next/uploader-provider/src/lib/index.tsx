@@ -2,8 +2,8 @@
 
 import * as Bytescale from '@bytescale/sdk';
 import env from '@env/client';
-import { useAuthContext } from '@next/auth';
 import { getNextAppURL } from '@shared/client';
+import { useSession } from 'next-auth/react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface BytescaleProviderProps {
@@ -29,23 +29,23 @@ export const useUploader = () => {
 export const UploaderProvider: React.FC<BytescaleProviderProps> = ({
   children,
 }) => {
-  const { safeUser } = useAuthContext();
+  const { data } = useSession();
   const [sessionReady, setSessionReady] = useState(false);
 
   useEffect(() => {
-    if (safeUser && !sessionReady) {
+    if (data && !sessionReady) {
       Bytescale.AuthManager.endAuthSession();
       Bytescale.AuthManager.beginAuthSession({
         accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
-        authUrl: `${getNextAppURL()}/api/bytescale/jwt`,
+        authUrl: `${getNextAppURL()}api/bytescale/jwt`,
         authHeaders: async () => Promise.resolve({}),
       });
       setSessionReady(true);
-    } else if (!safeUser && sessionReady) {
+    } else if (!data && sessionReady) {
       Bytescale.AuthManager.endAuthSession();
       setSessionReady(false);
     }
-  }, [safeUser, sessionReady]);
+  }, [data, sessionReady]);
 
   return (
     <UploaderContext.Provider value={{ sessionReady }}>

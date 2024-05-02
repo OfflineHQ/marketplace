@@ -116,3 +116,33 @@ export const slugify = (str: string) =>
     .replace(/[^\w\s-]/g, '')
     .replace(/[\s_-]+/g, '-')
     .replace(/^-+|-+$/g, '');
+
+/**
+ * Checks if the given origin is allowed based on the allowlist.
+ * @param allowlist A string containing allowed origins which can be a single URL, comma-separated URLs, or wildcards.
+ * @param origin The origin to check against the allowlist.
+ * @returns boolean indicating if the origin is allowed.
+ */
+export function isOriginAllowed(allowlist: string, origin: string): boolean {
+  // Split the allowlist into an array of allowed origins
+  const allowedOrigins = allowlist.split(',').map((item) => item.trim());
+
+  // Check each allowed origin against the provided origin
+  for (const allowedOrigin of allowedOrigins) {
+    // Handle wildcard domains
+    if (allowedOrigin.includes('*')) {
+      // Convert wildcard domain to a regex pattern
+      const pattern = '^' + allowedOrigin.replace(/\*/g, '.*') + '$';
+      const regex = new RegExp(pattern);
+      if (regex.test(origin)) {
+        return true;
+      }
+    } else if (allowedOrigin === origin) {
+      // Direct match
+      return true;
+    }
+  }
+
+  // Origin not allowed
+  return false;
+}

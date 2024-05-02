@@ -15,9 +15,7 @@
     "loose": true
   },
   "module": {
-    "type": "commonjs",
-    "strict": true,
-    "noInterop": true
+    "type": "nodenext",
   },
   "sourceMaps": true,
   "exclude": [

@@ -1,0 +1,11 @@
+table:
+  name: packNftSupply
+  schema: public
+array_relationships:
+  - name: packEventPassNfts
+    using:
+      foreign_key_constraint_on:
+        column: packNftSupplyId
+        table:
+          name: packEventPassNft
+          schema: public

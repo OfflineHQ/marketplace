@@ -39,6 +39,17 @@ export function isBackOffice(): boolean {
   return env.NEXT_PUBLIC_APP === 'BACKOFFICE';
 }
 
+export function isUnlock(): boolean {
+  return process.env.NEXT_PUBLIC_APP === 'UNLOCK';
+}
+
 export function getHasuraEndpoint(): string {
   return env.NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT;
+}
+
+export function isLocalhost(): boolean {
+  return (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+  );
 }

@@ -1,0 +1,28 @@
+mutation CreatePublishableApiKey($object: publishableApiKey_insert_input!) {
+  insert_publishableApiKey_one(object: $object) {
+    id
+    name
+    apiKey
+    allowlist
+    organizerId
+    expiresAt
+    type
+  }
+}
+
+mutation UpdatePublishableApiKey(
+  $id: uuid!
+  $allowlist: String
+  $expiresAt: timestamptz
+  $status: apiKeyStatus_enum
+) {
+  update_publishableApiKey_by_pk(
+    pk_columns: { id: $id }
+    _set: { allowlist: $allowlist, expiresAt: $expiresAt, status: $status }
+  ) {
+    name
+    allowlist
+    organizerId
+    expiresAt
+  }
+}

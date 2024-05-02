@@ -85,6 +85,7 @@ generates:
             func: '@next/hasura/react-query#fetchDataReactQuery'
             isReactHook: false
           errorType: Error
+          typesPrefix: 'Types.'
   libs/gql/user/api/src/generated/index.ts:
     preset: import-types
     presetConfig:
@@ -158,15 +159,17 @@ generates:
             func: '@next/hasura/react-query#fetchDataReactQuery'
             isReactHook: false
           errorType: Error
+          typesPrefix: 'Types.'
 
   # ## hasura
   # #  doesn't support yet separated fragments so it fail
   # #  TODO: follow up on this issue https://github.com/dotansimha/graphql-code-generator/issues/7700
   # #  ref: https://www.graphql-code-generator.com/plugins/other/hasura-allow-list
-  # hasura/app/metadata/query_collections.yaml:
-  #   documents: './libs/next/gql/*/src/queries/**/*.{graphql,gql}'
+  # hasura/app/metadata/allow_list.yaml:
+  #   documents: './libs/gql/*/api/src/queries/**/*.{graphql,gql}'
   #   plugins:
-  #     - 'hasura-allow-list'
+  #     - 'hasura-allow-list':
+  #       globalFragments: false
   #   hooks:
   #     afterOneFileWrite:
   #       - make restart-hasura

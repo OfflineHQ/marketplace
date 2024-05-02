@@ -1,4 +1,3 @@
-import * as kycApi from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
 import {
   KycStatus_Enum,
@@ -7,6 +6,7 @@ import {
   Stage,
 } from '@gql/shared/types';
 import { Posthog } from '@insight/server';
+import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
 import { StripeCustomer } from '@payment/types';
 import {
   applySeeds,
@@ -22,6 +22,7 @@ import { Payment } from './payment-admin';
 jest.mock('@insight/server');
 jest.mock('@features/kyc-api');
 jest.mock('@nft/thirdweb-admin');
+jest.mock('@next/next-auth/common');
 jest.mock('stripe');
 
 const payment = new Payment();
@@ -93,7 +94,7 @@ describe('Payment integration', () => {
     it('should create a new stripe customer if it does not exist in db', async () => {
       await deleteTables(client, ['stripeCustomer']);
       // Mock the getSumSubApplicantPersonalData function
-      (kycApi.getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue({
+      (getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue({
         review: {
           reviewStatus: KycStatus_Enum.Completed,
         },
@@ -288,6 +289,72 @@ describe('Payment integration', () => {
       expect(res).toEqual(createdStripeCustomer.insert_stripeCustomer_one);
       expect(payment.stripe.customers.create).toHaveBeenCalled();
       expect(adminSdk.CreateStripeCustomer).toHaveBeenCalled();
+    });
+  });
+
+  describe('confirmedStripeCheckoutSession', () => {
+    beforeEach(async () => {
+      jest.clearAllMocks();
+      await deleteAllTables(client);
+      await applySeeds(client, [
+        'account',
+        'eventPassNftContract',
+        'eventParameters',
+        'passAmount',
+        'passPricing',
+        'pendingOrder',
+        'order',
+        'nftTransfer',
+        'eventPassNft',
+        'stripeCustomer',
+        'stripeCheckoutSession',
+      ]);
+      payment.eventPassNftOrder.checkOrder = jest.fn().mockResolvedValue({});
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    it('should confirm orders and delete the stripe checkout session', async () => {
+      const stripeCheckoutSessionId =
+        'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN';
+
+      await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
+
+      expect(payment.eventPassNftOrder.checkOrder).toHaveBeenCalled();
+
+      const session = await adminSdk.GetStripeCheckoutSessionForUser({
+        stripeCustomerId: 'cus_OnE9GqPxIIPYtB',
+      });
+      console.log({ session });
+      expect(session.stripeCheckoutSession).not.toContainEqual({
+        stripeSessionId: stripeCheckoutSessionId,
+      });
+    });
+
+    it('should throw an error if there is a problem claiming NFTs', async () => {
+      payment.eventPassNftOrder.checkOrder = jest
+        .fn()
+        .mockRejectedValue(new Error('Failed to claim NFT'));
+
+      const stripeCheckoutSessionId =
+        'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN';
+
+      await expect(
+        payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId }),
+      ).rejects.toThrow('Error processing orders : Failed to claim NFT');
+
+      const session = await adminSdk.GetStripeCheckoutSessionForUser({
+        stripeCustomerId: 'cus_OnE9GqPxIIPYtB',
+      });
+      console.log({ session });
+      expect(session.stripeCheckoutSession).toContainEqual({
+        stripeCustomerId: 'cus_OnE9GqPxIIPYtB',
+        stripeSessionId:
+          'cs_test_a17kYy8IpmWsLecscKe5pRQNP5hir8ysWC9sturzdXMfh7Y94gYJIAyePN',
+        type: 'event_pass_order',
+      });
     });
   });
 });

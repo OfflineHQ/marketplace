@@ -1,5 +1,9 @@
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { defineConfig } from '@playwright/test';
+import dotenv from 'dotenv';
+import * as path from 'path';
+
+dotenv.config({ path: path.resolve(__dirname, '../../', '.env.local') });
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 // For CI, you may want to set BASE_URL to the deployed application.

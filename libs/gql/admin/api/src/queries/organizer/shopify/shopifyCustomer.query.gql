@@ -1,0 +1,11 @@
+query GetShopifyCustomer($organizerId: String!, $customerId: String!) {
+  shopifyCustomer(
+    where: {
+      organizerId: { _eq: $organizerId }
+      customerId: { _eq: $customerId }
+    }
+    limit: 1
+  ) {
+    address
+  }
+}

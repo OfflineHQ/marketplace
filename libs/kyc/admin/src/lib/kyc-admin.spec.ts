@@ -3,6 +3,27 @@ import { adminSdk } from '@gql/admin/api';
 import { KycLevelName_Enum, KycStatus_Enum, Locale } from '@gql/shared/types';
 import { Kyc } from './kyc-admin';
 
+// Helper function to create a mock fetch Response
+function createMockFetchResponse(data: any, ok = true, status = 200): Response {
+  return {
+    ok,
+    status,
+    statusText: ok ? 'OK' : 'Error',
+    json: () => Promise.resolve(data),
+    headers: new Headers({ 'Content-Type': 'application/json' }),
+    redirected: false,
+    type: 'default',
+    url: '',
+    clone: jest.fn(),
+    body: null,
+    bodyUsed: false,
+    arrayBuffer: jest.fn(),
+    blob: jest.fn(),
+    formData: jest.fn(),
+    text: jest.fn(),
+  } as unknown as Response;
+}
+
 jest.mock('@gql/admin/api', () => ({
   adminSdk: {
     CreateKyc: jest.fn(),
@@ -49,9 +70,7 @@ describe('Kyc', () => {
     const userId = 'test_user_id';
     const levelName = KycLevelName_Enum.BasicKycLevel;
     const mockResponse = { token: 'test_token' };
-    fetchMock.mockResolvedValueOnce({
-      json: () => Promise.resolve(mockResponse),
-    });
+    fetchMock.mockResolvedValueOnce(createMockFetchResponse(mockResponse));
 
     const token = await kyc.getAccessToken({ userId, levelName });
 
@@ -92,10 +111,7 @@ describe('Kyc', () => {
       reviewStatus: mockResponse.review.reviewStatus,
       applicantId: mockResponse.id,
     };
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
-    });
+    fetchMock.mockResolvedValueOnce(createMockFetchResponse(mockResponse));
 
     // Add a check to ensure getApplicantPersonalDataByExternalUserId was called and threw an error
     const getApplicantPersonalDataByExternalUserIdSpy = jest
@@ -218,10 +234,7 @@ describe('Kyc', () => {
         reviewStatus: 'test_status',
       },
     };
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
-    });
+    fetchMock.mockResolvedValueOnce(createMockFetchResponse(mockResponse));
 
     const applicant = await kyc.moveApplicantToLevel({
       applicantId,
@@ -258,10 +271,7 @@ describe('Kyc', () => {
   it('should get an applicant status correctly', async () => {
     const applicantId = 'test_applicant_id';
     const mockResponse = { reviewStatus: 'completed' };
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
-    });
+    fetchMock.mockResolvedValueOnce(createMockFetchResponse(mockResponse));
 
     const status = await kyc.getApplicantStatus(applicantId);
 
@@ -287,10 +297,7 @@ describe('Kyc', () => {
   it('should get an applicant personal data correctly', async () => {
     const applicantId = 'test_applicant_id';
     const mockResponse = { firstName: 'John', lastName: 'Doe' };
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
-    });
+    fetchMock.mockResolvedValueOnce(createMockFetchResponse(mockResponse));
 
     const personalData = await kyc.getApplicantPersonalData(applicantId);
 
@@ -314,10 +321,7 @@ describe('Kyc', () => {
   it('should get an applicant personal data by external user id correctly', async () => {
     const externalUserId = 'test_external_user_id';
     const mockResponse = { firstName: 'John', lastName: 'Doe' };
-    fetchMock.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
-    });
+    fetchMock.mockResolvedValueOnce(createMockFetchResponse(mockResponse));
 
     const personalData =
       await kyc.getApplicantPersonalDataByExternalUserId(externalUserId);

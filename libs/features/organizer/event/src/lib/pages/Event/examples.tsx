@@ -1,5 +1,5 @@
 import { AppNavLayout } from '@features/app-nav';
-import { WithNormalUser } from '@features/app-nav/stories';
+import { WithUserEmail } from '@features/app-nav/stories';
 import {
   eventDetails2Props,
   eventDetailsProps,
@@ -33,10 +33,10 @@ export const event2Props: EventProps = {
 
 export function EventExample(props: EventProps) {
   return (
-    <AppNavLayout {...WithNormalUser.args} children={<Event {...props} />} />
+    <AppNavLayout {...WithUserEmail.args} children={<Event {...props} />} />
   );
 }
 
 export function EventLoadingExample() {
-  return <AppNavLayout {...WithNormalUser.args} children={<EventSkeleton />} />;
+  return <AppNavLayout {...WithUserEmail.args} children={<EventSkeleton />} />;
 }

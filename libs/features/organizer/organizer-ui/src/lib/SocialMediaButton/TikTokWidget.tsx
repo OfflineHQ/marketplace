@@ -20,7 +20,7 @@ const TikTokWidgetContent = async ({ handle }: { handle: string }) => {
   ) : null;
 };
 
-const TikTokWidget = ({ handle }: { handle: string }) => (
+const TikTokWidget = async ({ handle }: { handle: string }) => (
   <HoverCardContent className="h-96 w-80 md:h-[30rem] md:w-96">
     <Suspense fallback={<TextSkeleton variant="p" />}>
       <TikTokWidgetContent handle={handle} />

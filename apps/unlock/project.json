@@ -1,0 +1,115 @@
+{
+  "name": "unlock",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/unlock",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/unlock",
+        "postcssConfig": "apps/unlock/postcss.config.js"
+      },
+      "assets": [
+        {
+          "input": "libs/ui/shared/src/assets",
+          "glob": "**/*",
+          "output": "assets"
+        }
+      ],
+      "configurations": {
+        "development": {
+          "outputPath": "apps/unlock"
+        },
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "unlock:build",
+        "hmr": true,
+        "port": 8889,
+        "dev": true,
+        "assets": [
+          {
+            "input": "libs/ui/shared/src/assets",
+            "glob": "**/*",
+            "output": "assets"
+          }
+        ]
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "unlock:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "unlock:build:production",
+          "dev": false
+        }
+      }
+    },
+    "export": {
+      "executor": "@nx/next:export",
+      "options": {
+        "buildTarget": "unlock:build:production"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/unlock/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4404,
+        "quiet": true,
+        "configDir": "apps/unlock/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "configDir": "apps/unlock/.storybook",
+        "outputDir": "dist/storybook/unlock",
+        "webpackStatsJson": true
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c apps/unlock/.storybook --url=http://localhost:4403"
+      }
+    },
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/unlock"],
+      "options": {
+        "config": "apps/unlock/playwright.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

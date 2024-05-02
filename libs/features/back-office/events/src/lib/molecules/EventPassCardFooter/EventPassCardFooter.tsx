@@ -1,5 +1,4 @@
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
-import { Locale, messages } from '@next/i18n';
 import {
   BlockchainAddress,
   Button,
@@ -18,8 +17,12 @@ import {
   EventPassDeployButtonClientProps,
 } from './EventPassDeployButtonClient';
 
-export interface EventPassCardFooterProps
-  extends Omit<EventPassDeployButtonClientProps, 'children'> {}
+import { defaultLocale, messages, type Locale } from '@next/i18n';
+
+export type EventPassCardFooterProps = Omit<
+  EventPassDeployButtonClientProps,
+  'children'
+>;
 
 function EventPassContractDeployButton({
   eventPass,
@@ -126,6 +129,10 @@ function EventPassContractDeployed({
   const t = useTranslations(
     'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter',
   );
+  const locale = useLocale() as Locale;
+  const localeMessages = deepPick(messages[locale], [
+    'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter.EventPassContractRevealButtonClient',
+  ]);
   return (
     <div className="w-full flex-col space-y-4">
       <BlockchainAddress
@@ -134,10 +141,12 @@ function EventPassContractDeployed({
       />
       {eventPassType === EventPassNftContractType_Enum.DelayedReveal &&
         !eventPass?.eventPassNftContract?.isDelayedRevealed && (
-          <EventPassContractRevealButtonClient
-            eventPass={eventPass}
-            {...props}
-          />
+          <NextIntlClientProvider locale={locale} messages={localeMessages}>
+            <EventPassContractRevealButtonClient
+              eventPass={eventPass}
+              {...props}
+            />
+          </NextIntlClientProvider>
         )}
     </div>
   );

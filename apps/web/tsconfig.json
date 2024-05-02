@@ -35,10 +35,13 @@
   ],
   "exclude": [
     "./e2e/**/*",
+    "**/{unlock,back-office}/**",
     "../../dist/apps/web/.next/types/**/*.ts",
     "**/**/examples.tsx",
     "node_modules",
     "jest.config.ts",
+    "**/**/*.spec.ts",
+    "**/**/*.test.ts",
     "**/**/*.stories.ts",
     "**/**/*.stories.js",
     "**/**/*.stories.jsx",

@@ -320,7 +320,7 @@ describe('RoleInvitationService', () => {
       );
       // Act
       const result = await roleInvitationService.fetchInvitation(
-        backOfficeAccounts.alpha_organizer_super_admin_user.address,
+        backOfficeAccounts.alpha_organizer_super_admin_user.address.toLowerCase(),
         'nonce',
       );
 
@@ -328,7 +328,7 @@ describe('RoleInvitationService', () => {
       expect(result).toBeNull();
       expect(deleteInvitationSpy).toHaveBeenCalledWith({
         senderAddress:
-          backOfficeAccounts.alpha_organizer_super_admin_user.address,
+          backOfficeAccounts.alpha_organizer_super_admin_user.address.toLowerCase(),
         nonce: 'nonce',
       });
     });
@@ -344,7 +344,7 @@ describe('RoleInvitationService', () => {
       organizerId: 'organizerId',
       eventId: 'eventId',
       address: 'address',
-      senderAddress: 'senderAddress',
+      senderAddress: '0xC5F65dFc9E95894216201d77A912529c67114Ea7',
       expiration: Date.now() + 60 * 60 * 24 * 1000, // Set expiration to 24 hours from now
     };
 
@@ -355,15 +355,16 @@ describe('RoleInvitationService', () => {
     // Assert
     expect(result).toBeDefined();
     expect(cacheMock.kv.set).toHaveBeenCalledWith(
-      `invitation:senderAddress:${result}`,
+      `invitation:${invitationProps.senderAddress.toLowerCase()}:${result}`,
       {
         ...invitationProps,
+        senderAddress: invitationProps.senderAddress.toLowerCase(),
         expiration: expect.any(Number),
         nonce: result,
       },
     );
     expect(cacheMock.kv.sadd).toHaveBeenCalledWith(
-      `inviter_invitations:senderAddress`,
+      `inviter_invitations:${invitationProps.senderAddress.toLowerCase()}`,
       result,
     );
   });
@@ -387,7 +388,7 @@ describe('RoleInvitationService', () => {
     expect(result.invitation).toBeDefined();
     expect(result.inviter).toBeDefined();
     expect(cacheMock.kv.get).toHaveBeenCalledWith(
-      `invitation:${result.inviter.address}:nonce`,
+      `invitation:${result.inviter.address.toLowerCase()}:${result.invitation.nonce}`,
     );
   });
 
@@ -402,7 +403,7 @@ describe('RoleInvitationService', () => {
 
     // Assert
     expect(cacheMock.kv.get).toHaveBeenCalledWith(
-      `invitation:${backOfficeAccounts.alpha_organizer_super_admin_user.address}:nonce`,
+      `invitation:${backOfficeAccounts.alpha_organizer_super_admin_user.address.toLowerCase()}:nonce`,
     );
     expect(adminSdk.CreateRoleAssignment as jest.Mock).toHaveBeenCalledWith({
       input: {
@@ -415,10 +416,10 @@ describe('RoleInvitationService', () => {
       },
     });
     expect(cacheMock.kv.del).toHaveBeenCalledWith(
-      `invitation:${backOfficeAccounts.alpha_organizer_super_admin_user.address}:nonce`,
+      `invitation:${backOfficeAccounts.alpha_organizer_super_admin_user.address.toLowerCase()}:nonce`,
     );
     expect(cacheMock.kv.srem).toHaveBeenCalledWith(
-      `inviter_invitations:${backOfficeAccounts.alpha_organizer_super_admin_user.address}`,
+      `inviter_invitations:${backOfficeAccounts.alpha_organizer_super_admin_user.address.toLowerCase()}`,
       'nonce',
     );
   });
@@ -439,13 +440,13 @@ describe('RoleInvitationService', () => {
 
     // Assert
     expect(cacheMock.kv.get).toHaveBeenCalledWith(
-      `invitation:${backOfficeAccounts.alpha_organizer_super_admin_user.address}:nonce`,
+      `invitation:${backOfficeAccounts.alpha_organizer_super_admin_user.address.toLowerCase()}:nonce`,
     );
     expect(cacheMock.kv.del).toHaveBeenCalledWith(
-      `invitation:${backOfficeAccounts.alpha_organizer_super_admin_user.address}:nonce`,
+      `invitation:${backOfficeAccounts.alpha_organizer_super_admin_user.address.toLowerCase()}:nonce`,
     );
     expect(cacheMock.kv.srem).toHaveBeenCalledWith(
-      `inviter_invitations:${backOfficeAccounts.alpha_organizer_super_admin_user.address}`,
+      `inviter_invitations:${backOfficeAccounts.alpha_organizer_super_admin_user.address.toLowerCase()}`,
       'nonce',
     );
   });

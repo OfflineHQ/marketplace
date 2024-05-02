@@ -20,7 +20,8 @@ export const getEventPassNftFiles = cacheWithDynamicKeys(
     });
     return list.items.filter((item): item is FileSummary => 'filePath' in item);
   },
-  (props: [GetEventPassNftFilesProps]) => [
-    `${props[0].organizerId}-${props[0].eventId}-${props[0].eventPassId}-getEventPassNftFiles`,
-  ],
+  async (props: [GetEventPassNftFilesProps]) =>
+    Promise.resolve([
+      `${props[0].organizerId}-${props[0].eventId}-${props[0].eventPassId}-getEventPassNftFiles`,
+    ]),
 );
