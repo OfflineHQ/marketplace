@@ -12,4 +12,5 @@ export default {
   coverageDirectory:
     '../../../../coverage/libs/features/organizer-ui-integration',
   testMatch: ['**/*.integration.test.ts'],
+  maxWorkers: 1,
 };

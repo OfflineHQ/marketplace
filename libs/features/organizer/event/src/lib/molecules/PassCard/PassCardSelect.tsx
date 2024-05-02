@@ -1,4 +1,4 @@
-import { Badge, ButtonSkeleton } from '@ui/components';
+import { ButtonSkeleton } from '@ui/components';
 
 import {
   getEventPassCart,
@@ -6,9 +6,11 @@ import {
   getOrderPurchasedForEventPass,
 } from '@features/organizer/event-api';
 import type { EventPass, EventSlugs } from '@features/organizer/event-types';
-import { useLocale } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { deepPick } from '@utils';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { Suspense } from 'react';
+import { PassCardStatusBadge } from '../../atoms/PassCardStatusBadge/PassCardStatusBadge';
 import { PassCardSelectClient } from './PassCardSelectClient';
 
 export interface PassCardSelectProps
@@ -16,28 +18,32 @@ export interface PassCardSelectProps
       EventPass,
       'description' | 'name' | 'passOptions' | 'nftImage' | 'passPricing'
     >,
-    EventSlugs {}
+    EventSlugs {
+  hasConfirmedPasses?: boolean;
+}
 
 export const PassCardSelect: React.FC<PassCardSelectProps> = (props) => {
+  const locale = useLocale();
   return (
     <Suspense fallback={<PassCardSelectSkeleton />}>
-      <PassCardSelectContent {...props} />
+      <PassCardSelectContent {...props} locale={locale} />
     </Suspense>
   );
 };
 
-export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
+export const PassCardSelectContent: React.FC<
+  PassCardSelectProps & {
+    locale: string;
+  }
+> = async ({
   passAmount,
   organizerSlug,
   eventSlug,
   id,
+  hasConfirmedPasses,
+  locale,
   ...props
 }) => {
-  const locale = useLocale();
-  const t = await getTranslations({
-    locale,
-    namespace: 'Organizer.Event.PassPurchase.Pass',
-  });
   const eventPassOrderSums = await getEventPassOrderSums({ eventPassId: id });
   const eventPassCart = await getEventPassCart({
     organizerSlug,
@@ -47,6 +53,9 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   const existingEventPasses = await getOrderPurchasedForEventPass({
     eventPassId: id,
   });
+  const messages = await getMessages({ locale });
+  const localeMessages = deepPick(messages, ['Organizer.Event.PassPurchase']);
+
   // here compute the max amount of tickets that can be bought
   const totalReserved = eventPassOrderSums?.totalReserved ?? 0;
   const maxAvailableTickets = (passAmount?.maxAmount || 0) - totalReserved;
@@ -72,16 +81,21 @@ export const PassCardSelectContent: React.FC<PassCardSelectProps> = async ({
   }
   return (
     <div className="flex gap-1">
-      {maxVal <= 0 ? (
-        <Badge variant="secondary">{t('sold-out')}</Badge>
-      ) : (
-        <PassCardSelectClient
-          initialValue={eventPassCart?.quantity || 0}
-          maxVal={maxVal}
-          organizerSlug={organizerSlug}
-          eventSlug={eventSlug}
-          eventPassId={id}
+      {maxVal <= 0 || hasConfirmedPasses ? (
+        <PassCardStatusBadge
+          isSoldOut={maxVal <= 0}
+          hasConfirmedPasses={hasConfirmedPasses}
         />
+      ) : (
+        <NextIntlClientProvider locale={locale} messages={localeMessages}>
+          <PassCardSelectClient
+            initialValue={eventPassCart?.quantity || 0}
+            maxVal={maxVal}
+            organizerSlug={organizerSlug}
+            eventSlug={eventSlug}
+            eventPassId={id}
+          />
+        </NextIntlClientProvider>
       )}
     </div>
   );

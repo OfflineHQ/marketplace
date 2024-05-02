@@ -6,13 +6,13 @@ export const getCurrentUser = async () => {
     ...user,
   });
 };
-export const handleUnauthenticatedUser = () => {
-  return 'mockHandleUnauthenticatedUser';
+export const handleUnauthenticatedUser = async () => {
+  return Promise.resolve('mockHandleUnauthenticatedUser');
 };
-export const getUnauthenticatedUserCookie = () => {
-  return 'mockHandleUnauthenticatedUser';
+export const getUnauthenticatedUserCookie = async () => {
+  return Promise.resolve('mockHandleUnauthenticatedUser');
 };
 
-export const isConnected = () => {
-  return true;
+export const isConnected = async () => {
+  return Promise.resolve(true);
 };

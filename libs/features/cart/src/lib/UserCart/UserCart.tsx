@@ -4,6 +4,9 @@ import {
   AppContainerOverflow,
 } from '@features/app-nav';
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   CardContent,
   CardDescription,
   CardHeader,
@@ -18,15 +21,16 @@ import {
 
 export interface UserCartProps extends EventPassesCartProps {
   children: React.ReactNode;
+  reason?: string;
 }
 
 export const UserCart: React.FC<UserCartProps> = ({
-  userPassPendingOrders,
-  noCartImage,
-  getAllPassesCart,
   children,
+  ...eventPassesCartProps
 }) => {
   const t = useTranslations('Cart.UserCart');
+  const reason = eventPassesCartProps.reason;
+
   return (
     <AppContainer>
       <AppContainerOverflow variant="stickyFooter">
@@ -34,12 +38,18 @@ export const UserCart: React.FC<UserCartProps> = ({
           <CardTitle>{t('title')}</CardTitle>
           <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
-        <CardContent className="px-1">
-          <EventPassesCart
-            userPassPendingOrders={userPassPendingOrders}
-            noCartImage={noCartImage}
-            getAllPassesCart={getAllPassesCart}
-          />
+        {reason ? (
+          <div className="mx-2 mb-5 flex w-full max-w-[600px] flex-col items-center px-2 pr-7 sm:px-5 md:mx-5">
+            <Alert variant="warning">
+              <AlertTitle>{t('no-mail-title')}</AlertTitle>
+              <AlertDescription>{t('no-mail-description')}</AlertDescription>
+            </Alert>
+          </div>
+        ) : (
+          <></>
+        )}
+        <CardContent className="mx-5 px-1">
+          <EventPassesCart {...eventPassesCartProps} />
         </CardContent>
       </AppContainerOverflow>
       <AppContainerFooter>{children}</AppContainerFooter>

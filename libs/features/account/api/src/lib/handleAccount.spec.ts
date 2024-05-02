@@ -8,7 +8,7 @@ jest.mock('./createAccount');
 describe('handleAccount test', () => {
   const account = {
     id: 'some-unique-id',
-    address: '0x123',
+    address: '0x1bBedb07706728a19c9DB82d3c420670D8040592',
     email: 'test@safsaf.safsaf',
     roles: null,
   };

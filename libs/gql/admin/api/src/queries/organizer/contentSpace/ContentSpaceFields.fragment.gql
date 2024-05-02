@@ -1,0 +1,18 @@
+fragment ContentSpaceFields on ContentSpace {
+  title
+  slug
+  heroImage {
+    url
+  }
+  description {
+    json
+    references {
+      ... on Asset {
+        __typename
+        id
+        url
+        mimeType
+      }
+    }
+  }
+}

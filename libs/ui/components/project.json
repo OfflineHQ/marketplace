@@ -7,10 +7,7 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/ui/components/**/*.{ts,tsx,js,jsx}"]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "build": {
       "executor": "@nx/rollup:rollup",
@@ -20,9 +17,9 @@
         "tsConfig": "libs/ui/components/tsconfig.lib.json",
         "project": "libs/ui/components/package.json",
         "entryFile": "libs/ui/components/src/index.ts",
-        "external": ["react/jsx-runtime"],
+        "external": ["react", "react-dom", "react/jsx-runtime"],
         "rollupConfig": "@nx/react/plugins/bundle-rollup",
-        "compiler": "babel",
+        "compiler": "swc",
         "assets": [
           {
             "glob": "libs/ui/components/README.md",
@@ -36,8 +33,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ui/components"],
       "options": {
-        "jestConfig": "libs/ui/components/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/ui/components/jest.config.ts"
       }
     },
     "storybook": {

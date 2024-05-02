@@ -79,6 +79,7 @@ export class Currency {
     baseCurrency: string,
     rates: { [key: string]: number },
   ) {
+    // @ts-ignore
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
     const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);
@@ -109,6 +110,7 @@ export class Currency {
         return JSON.parse(data);
       } else {
         // Existing logic for non-preview or non-production environments
+        // @ts-ignore
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
         const filePath = path.join(__dirname, `rates/${baseCurrency}.json`);

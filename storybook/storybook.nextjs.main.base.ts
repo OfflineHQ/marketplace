@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import path from 'path';
+import * as path from 'path';
 import webpack from 'webpack';
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const tsconfig = require('../tsconfig.base.json');
@@ -32,7 +32,7 @@ export const mainConfig = {
   },
   staticDirs: ['../../../msw', '../public'], // add msw worker to storybook and public folder from next app for images
   docs: {
-    autodocs: true,
+    autodocs: false,
   },
   webpackFinal: async (config, { configType }) => {
     // Used to fix the issue with next-intl url module
@@ -42,8 +42,8 @@ export const mainConfig = {
     };
     // This modifies the existing image rule to exclude `.svg` files
     // since we handle those with `@svgr/webpack`.
-    const imageRule = config.module.rules.find(
-      (rule) => rule.test?.test('.svg'),
+    const imageRule = config.module.rules.find((rule) =>
+      rule.test?.test('.svg'),
     );
     imageRule.exclude = /\.svg$/;
     config.module.rules.push({
@@ -112,6 +112,7 @@ export const mainConfig = {
       jsonwebtoken: './mocks/jsonwebtoken.mock.js',
       '@opentelemetry/api': './mocks/opentelemetryApi.mock.js',
       'next/cache': './mocks/nextCache.mock.js',
+      '@cometh/connect-sdk': './mocks/comethConnectSdk.mock.js',
     };
     // set mocks to avoid webpack issues
     for (const externalModule in mockExternalModules) {

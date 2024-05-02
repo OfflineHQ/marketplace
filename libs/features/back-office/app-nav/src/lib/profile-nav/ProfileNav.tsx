@@ -17,7 +17,7 @@ import { truncateEmailString, truncateString } from '@utils';
 import { RoleAvatar } from '../role-avatar/RoleAvatar';
 
 export interface ProfileNavProps
-  extends Omit<ProfileNavUserProps, 'user'>,
+  extends Omit<ProfileNavUserProps, 'user' | 'size'>,
     Omit<ProfileNavRoleProps, 'role'>,
     ProfileNavNotConnectedProps,
     DropdownMenuItemsProps {
@@ -64,7 +64,6 @@ interface ProfileNavUserProps
 
 function ProfileNavUser({ user, isLoading }: ProfileNavUserProps) {
   const email = user?.email || '';
-  const eoa = user?.eoa || '';
   return (
     <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 px-4">
       <AutoAnimate>
@@ -75,7 +74,9 @@ function ProfileNavUser({ user, isLoading }: ProfileNavUserProps) {
         )}
       </AutoAnimate>
       <div className="hidden pb-0 font-semibold md:flex">
-        {email ? truncateEmailString(email, 12) : truncateString(eoa, 16)}
+        {email
+          ? truncateEmailString(email, 12)
+          : truncateString(user.address, 16)}
       </div>
     </div>
   );
@@ -132,7 +133,7 @@ function ProfileNavRole({ role, isLoading }: ProfileNavRoleProps) {
 export function ProfileNavSkeleton() {
   return (
     <div className="relative inline-block items-center justify-center opacity-100 md:flex">
-      <AvatarSkeleton className="h-12 w-12 md:mx-5" />
+      <AvatarSkeleton className="size-12 md:mx-5" />
       <TextSkeleton className="mr-5 hidden md:flex" />
     </div>
   );

@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2022",
-    "module": "esnext",
+    "module": "ESNext",
     "lib": ["es2022", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -24,9 +24,6 @@
       "@feature/organizer/organizer-ui": [
         "libs/features/organizer/organizer-ui/src/index.ts"
       ],
-      "@feature/organizer/organizer-ui/server": [
-        "libs/features/organizer/organizer-ui/src/server.ts"
-      ],
       "@features/account/api": ["libs/features/account/api/src/index.ts"],
       "@features/app-nav": ["libs/features/app-nav/src/index.ts"],
       "@features/app-nav/stories": ["libs/features/app-nav/src/stories.tsx"],
@@ -36,6 +33,15 @@
       "@features/back-office/app-nav/stories": [
         "libs/features/back-office/app-nav/src/stories.tsx"
       ],
+      "@features/back-office/content-spaces": [
+        "libs/features/back-office/content-spaces/src/index.ts"
+      ],
+      "@features/back-office/content-spaces-api": [
+        "libs/features/back-office/content-spaces-api/src/index.ts"
+      ],
+      "@features/back-office/content-spaces-types": [
+        "libs/features/back-office/content-spaces-types/src/index.ts"
+      ],
       "@features/back-office/events": [
         "libs/features/back-office/events/src/index.ts"
       ],
@@ -44,6 +50,15 @@
       ],
       "@features/back-office/events-types": [
         "libs/features/back-office/events-types/src/index.ts"
+      ],
+      "@features/back-office/loyalty-card": [
+        "libs/features/back-office/loyalty-card/src/index.ts"
+      ],
+      "@features/back-office/loyalty-card-api": [
+        "libs/features/back-office/loyalty-card-api/src/index.ts"
+      ],
+      "@features/back-office/loyalty-card-types": [
+        "libs/features/back-office/loyalty-card-types/src/index.ts"
       ],
       "@features/back-office/roles": [
         "libs/features/back-office/roles/src/index.ts"
@@ -60,11 +75,21 @@
       "@features/cart-cron": ["libs/features/cart-cron/src/index.ts"],
       "@features/cart-types": ["libs/features/cart-types/src/index.ts"],
       "@features/cart/server": ["libs/features/cart/src/server.ts"],
+      "@features/content-space-common": [
+        "libs/features/content-space-common/src/index.ts"
+      ],
       "@features/kyc": ["libs/features/kyc/src/index.ts"],
       "@features/kyc-actions": ["libs/features/kyc-actions/src/index.ts"],
       "@features/kyc-api": ["libs/features/kyc-api/src/index.ts"],
       "@features/kyc/server": ["libs/features/kyc/src/server.ts"],
+      "@features/loyalty-card-api": [
+        "libs/features/loyalty-card-api/src/index.ts"
+      ],
+      "@features/loyalty-card-cron": [
+        "libs/features/loyalty-card-cron/src/index.ts"
+      ],
       "@features/navigation": ["libs/features/navigation/src/index.ts"],
+      "@features/orders-cron": ["libs/features/orders-cron/src/index.ts"],
       "@features/organizer/event": [
         "libs/features/organizer/event/src/index.ts"
       ],
@@ -99,6 +124,11 @@
       "@features/payment-api": ["libs/features/payment-api/src/index.ts"],
       "@features/settings": ["libs/features/settings/src/index.ts"],
       "@features/settings/server": ["libs/features/settings/src/server.ts"],
+      "@features/unlock/app-nav": ["libs/features/unlock/app-nav/src/index.ts"],
+      "@features/unlock/shopify": ["libs/features/unlock/shopify/src/index.ts"],
+      "@features/unlock/shopify-api": [
+        "libs/features/unlock/shopify-api/src/index.ts"
+      ],
       "@file-upload/admin": ["libs/file-upload/admin/src/index.ts"],
       "@file-upload/user": ["libs/file-upload/user/src/index.ts"],
       "@gql/admin/api": ["libs/gql/admin/api/src/index.ts"],
@@ -120,13 +150,19 @@
       "@insight/client": ["libs/insight/client/src/index.ts"],
       "@insight/server": ["libs/insight/server/src/index.ts"],
       "@insight/types": ["libs/insight/types/src/index.ts"],
+      "@integrations/api-keys": ["libs/integrations/api-keys/src/index.ts"],
+      "@integrations/external-api-handlers": [
+        "libs/integrations/external-api-handlers/src/index.ts"
+      ],
       "@kyc/admin": ["libs/kyc/admin/src/index.ts"],
       "@kyc/common": ["libs/features/kyc-common/src/index.ts"],
       "@kyc/types": ["libs/kyc/types/src/index.ts"],
       "@kyc/webhooks": ["libs/kyc/webhooks/src/index.ts"],
       "@logger": ["libs/logger/src/index.ts"],
+      "@next/api-handler": ["libs/next/api-handler/src/index.ts"],
       "@next/auth": ["libs/next/auth/src/index.ts"],
       "@next/cache": ["libs/next/cache/src/index.ts"],
+      "@next/chains": ["libs/next/chains/src/index.ts"],
       "@next/currency": ["libs/next/currency/src/index.ts"],
       "@next/currency-cache": ["libs/next/currency-cache/src/index.ts"],
       "@next/currency-common": ["libs/next/currency-common/src/index.ts"],
@@ -138,21 +174,38 @@
       "@next/hygraph/examples": ["libs/next/hygraph/src/examples.tsx"],
       "@next/i18n": ["libs/next/i18n/src/index.ts"],
       "@next/i18n-ui": ["libs/next/i18n-ui/src/index.ts"],
+      "@next/iframe": ["libs/next/iframe/src/index.ts"],
       "@next/navigation": ["libs/next/navigation/src/index.ts"],
       "@next/next-auth/common": ["libs/next/next-auth/common/src/index.ts"],
       "@next/next-auth/options": ["libs/next/next-auth/options/src/index.ts"],
       "@next/next-auth/user": ["libs/next/next-auth/user/src/index.ts"],
       "@next/react-query": ["libs/next/react-query/src/index.ts"],
       "@next/redis": ["libs/next/redis/src/index.ts"],
-      "@next/safe/auth": ["libs/next/safe/auth/src/index.ts"],
       "@next/siwe/provider": ["libs/next/siwe/provider/src/index.ts"],
       "@next/store": ["libs/next/store/src/index.ts"],
       "@next/types": ["libs/next/types/src/index.ts"],
       "@next/uploader-provider": ["libs/next/uploader-provider/src/index.ts"],
+      "@next/wallet": ["libs/next/wallet/src/index.ts"],
       "@next/zustand": ["libs/next/zustand/src/index.ts"],
       "@nft/event-pass": ["libs/nft/event-pass/src/index.ts"],
+      "@nft/loyalty-card": ["libs/nft/loyalty-card/src/index.ts"],
+      "@nft/mint-password": ["libs/nft/mint-password/src/index.ts"],
       "@nft/thirdweb-admin": ["libs/nft/thirdweb-admin/src/index.ts"],
-      "@nft/thirdweb-organizer": ["libs/nft/thirdweb-organizer/src/index.ts"],
+      "@nft/thirdweb-organizer-common": [
+        "libs/nft/thirdweb-organizer-common/src/index.ts"
+      ],
+      "@nft/thirdweb-organizer-event-pass": [
+        "libs/nft/thirdweb-organizer-event-pass/src/index.ts"
+      ],
+      "@nft/thirdweb-organizer-loyalty-card": [
+        "libs/nft/thirdweb-organizer-loyalty-card/src/index.ts"
+      ],
+      "@nft/thirdweb-organizer-pack": [
+        "libs/nft/thirdweb-organizer-pack/src/index.ts"
+      ],
+      "@nft/thirdweb-organizer-stamps": [
+        "libs/nft/thirdweb-organizer-stamps/src/index.ts"
+      ],
       "@nft/types": ["libs/nft/types/src/index.ts"],
       "@payment/admin": ["libs/payment/admin/src/index.ts"],
       "@payment/types": ["libs/payment/types/src/index.ts"],
@@ -163,19 +216,27 @@
       "@server/task": ["libs/server/task/src/index.ts"],
       "@shared/client": ["libs/shared/client/src/index.ts"],
       "@shared/server": ["libs/shared/server/src/index.ts"],
+      "@smart-wallet/admin": ["libs/smart-wallet/admin/src/index.ts"],
       "@test-utils/cache": ["libs/test-utils/cache/src/index.ts"],
       "@test-utils/db": ["libs/test-utils/db/src/index.ts"],
-      "@test-utils/functions": ["libs/test-utils/functions/src/index.ts"],
       "@test-utils/gql": ["libs/test-utils/gql/src/index.ts"],
       "@test-utils/hasura": ["libs/test-utils/hasura/src/index.ts"],
       "@test-utils/next-intl": ["libs/test-utils/next-intl/src/index.tsx"],
       "@test-utils/react-query": ["libs/test-utils/react-query/src/index.tsx"],
+      "@test-utils/storybook-decorators": [
+        "libs/test-utils/storybook-decorators/src/index.ts"
+      ],
+      "@test-utils/storybook-modes": [
+        "libs/test-utils/storybook-modes/src/index.ts"
+      ],
       "@test-utils/ui-mocks": ["libs/test-utils/ui-mocks/src/index.ts"],
+      "@time": ["libs/time/src/index.ts"],
       "@ui/components": ["libs/ui/components/src/index.ts"],
       "@ui/hooks": ["libs/ui/hooks/src/index.ts"],
       "@ui/icons": ["libs/ui/icons/src/index.ts"],
       "@ui/shared": ["libs/ui/shared/src/index.ts"],
       "@ui/theme": ["libs/ui/theme/src/index.ts"],
+      "@unlock/*": ["apps/unlock/*"],
       "@utils": ["libs/utils/src/index.ts"],
       "@web/*": ["apps/web/*"]
     }

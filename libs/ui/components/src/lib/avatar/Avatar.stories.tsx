@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Avatar, avatarSizes } from './Avatar';
+import { avatars } from '@ui/shared';
+import { Avatar, AvatarFallback, avatarSizes } from './Avatar';
 import {
   AvatarExample,
   AvatarFallbackExample,
@@ -78,4 +79,18 @@ export const AllSizesSkeleton: Story = {
       control: false,
     },
   },
+};
+
+export const EmojiAvatars: Story = {
+  render: (props) => (
+    <div className="flex flex-wrap space-x-2 space-y-2">
+      {avatars.map((avatar, index) => (
+        <Avatar key={index} {...props} className="text-2xl">
+          <AvatarFallback style={{ backgroundColor: avatar.color }}>
+            {avatar.emoji}
+          </AvatarFallback>
+        </Avatar>
+      ))}
+    </div>
+  ),
 };

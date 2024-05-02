@@ -6,22 +6,27 @@ on:
       - libs/ui/**
       - libs/features/**
       - '!libs/features/back-office/**'
+      - '!libs/features/unlock/**'
   push:
     branches: ['staging']
     paths:
       - libs/ui/**
       - libs/features/**
       - '!libs/features/back-office/**'
+      - '!libs/features/unlock/**'
   workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_OPTIONS: '--max_old_space_size=4096'
+
 jobs:
   chromatic-deployment:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v3
         name: Checkout [Pull Request]

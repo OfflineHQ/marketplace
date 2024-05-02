@@ -1,5 +1,7 @@
+import * as authProvider from '@next/auth';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { createMock } from 'storybook-addon-module-mock';
 import { NoUserPass } from './NoUserPass';
 import { NoUserPassExample } from './examples';
 
@@ -9,6 +11,19 @@ const meta: Meta<typeof NoUserPass> = {
   component: NoUserPass,
   parameters: {
     layout: 'fullscreen',
+    moduleMock: {
+      mock: () => {
+        const mockAuth = createMock(authProvider, 'useAuthContext');
+        mockAuth.mockImplementation(() => ({
+          login: () => Promise.resolve(),
+          logout: () => Promise.resolve(),
+          createAccount: () => Promise.resolve(),
+          isReady: true,
+          connecting: false,
+        }));
+        return [mockAuth];
+      },
+    },
   },
 };
 
@@ -22,6 +37,6 @@ export const SectionWithNoUser: Story = {
 
 // export const SectionWithNormalUser: Story = {
 //   args: {
-//     children: <AppNavLayout {...WithNormalUser.args} />,
+//     children: <AppNavLayout {...WithUserEmail.args} />,
 //   },
 // };

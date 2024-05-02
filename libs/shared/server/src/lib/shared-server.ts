@@ -1,5 +1,3 @@
-import env from '@env/server';
-
 export function isDev() {
   return process.env.VERCEL_ENV !== 'production';
 }
@@ -15,11 +13,11 @@ export function isProd() {
 
 export function getNextAppURL(): string {
   if (isPreviewOrProduction()) {
-    return env.NEXTAUTH_URL;
+    return process.env.NEXTAUTH_URL as string;
   } else {
     let vercelURL = '';
     if (process.env.VERCEL_URL) vercelURL = `https://${process.env.VERCEL_URL}`;
-    return vercelURL || env.NEXTAUTH_URL;
+    return vercelURL || (process.env.NEXTAUTH_URL as string);
   }
 }
 
@@ -38,8 +36,12 @@ export function isBackOffice(): boolean {
   return process.env.APP === 'BACKOFFICE';
 }
 
+export function isUnlock(): boolean {
+  return process.env.APP === 'UNLOCK';
+}
+
 export function getHasuraEndpoint(): string {
-  return env.HASURA_PROJECT_ENDPOINT;
+  return process.env.HASURA_PROJECT_ENDPOINT as string;
 }
 
 export function isLocal(): boolean {

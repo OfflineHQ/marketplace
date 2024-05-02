@@ -1,0 +1,51 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "composite": false,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "../../types/**/*.d.ts",
+    "../../libs/next/types/**/*.ts",
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "../../apps/unlock/.next/types/**/*.ts",
+    "../../dist/apps/unlock/.next/types/**/*.ts"
+  ],
+  "exclude": [
+    "**/{web,back-office}/**",
+    "node_modules",
+    "**/**/examples.tsx",
+    "jest.config.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "**/**/*.stories.ts",
+    "**/**/*.stories.js",
+    "**/**/*.stories.jsx",
+    "**/**/*.stories.tsx"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.storybook.json"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import {
   organizer,
   organizer2,
 } from './examples';
+import { darkMode, mobileMode } from '@test-utils/storybook-modes';
 
 const meta = {
   component: OrganizerSection,
@@ -45,9 +46,7 @@ export const WithLongNameSocialLinksAndEvents: Story = {
 export const Dark: Story = {
   ...WithLongNameSocialLinksAndEvents,
   parameters: {
-    darkMode: {
-      isDark: true,
-    },
+    ...darkMode,
     layout: 'fullscreen',
   },
 };
@@ -55,9 +54,7 @@ export const Dark: Story = {
 export const Mobile: Story = {
   ...WithLongNameSocialLinksAndEvents,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 };
 
@@ -68,8 +65,6 @@ export const Skeleton: Story = {
 export const SkeletonMobile: Story = {
   ...Skeleton,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 };

@@ -16,9 +16,13 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/next/i18n"],
       "options": {
-        "lintFilePatterns": ["libs/next/i18n/**/*.ts"]
+        "jestConfig": "libs/next/i18n/jest.config.ts"
       }
     }
   },

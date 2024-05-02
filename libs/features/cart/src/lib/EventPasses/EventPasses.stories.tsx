@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 
+import { mobileMode } from '@test-utils/storybook-modes';
 import { EventPasses, EventPassesSkeleton } from './EventPasses';
 import { EventPassesExample, eventPassesProps } from './examples';
 
@@ -95,22 +96,22 @@ export const OpenedWithNoActions: Story = {
 
 export const OpenedMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
   ...OpenedWithTimeRemainingDeletion,
 };
 
 export const Skeleton: Story = {
-  render: () => <EventPassesSkeleton />,
+  render: () => (
+    <div className="mx-5">
+      <EventPassesSkeleton />
+    </div>
+  ),
 };
 
 export const SkeletonMobile: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
   ...Skeleton,
 };

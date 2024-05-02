@@ -2,17 +2,17 @@
 
 import { EventPass } from '@features/back-office/events-types';
 import { EventPassNftContractType_Enum } from '@gql/shared/types';
-import { useAuthContext } from '@next/auth';
 import { EventSmallData } from '@nft/types';
 import { Button, ButtonSkeleton, useToast } from '@ui/components';
 import { getErrorMessage } from '@utils';
 import { useLocale, useTranslations } from 'next-intl';
 import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
-import { deployCollectionWrapper } from '../../actions/deployCollectionWrapper';
+import { deployEventPassCollectionWrapper } from '../../actions/deployEventPassCollectionWrapper';
 import { getEventPassNftFiles } from '../../actions/getEventPassNftFiles';
 import { renameEventPassNftFiles } from '../../actions/renameEventPassNftFiles';
 import { resetEventPassNftFiles } from '../../actions/resetEventPassNftFiles';
 import { resetEventPasses } from '../../actions/resetEventPasses';
+import { useWalletContext } from '@next/wallet';
 
 export interface EventPassDeployButtonClientProps extends EventSmallData {
   eventPassId: string;
@@ -30,7 +30,7 @@ export function EventPassDeployButtonClient({
   eventPassType,
 }: EventPassDeployButtonClientProps) {
   const { toast } = useToast();
-  const { provider, getSigner } = useAuthContext();
+  const { provider } = useWalletContext();
   const t = useTranslations(
     'OrganizerEvents.Sheet.EventPassCard.EventPassCardFooter.EventPassDeployButtonClient',
   );
@@ -61,9 +61,9 @@ export function EventPassDeployButtonClient({
         organizerId,
       });
 
-      const signer = await getSigner();
+      const signer = await provider?.getSigner();
       if (!signer) throw new Error('noSigner');
-      await deployCollectionWrapper({
+      await deployEventPassCollectionWrapper({
         signer,
         eventPassId: eventPass.id,
         organizerId,
@@ -98,7 +98,6 @@ export function EventPassDeployButtonClient({
       });
     }
   }
-  //TODO add deploy button + await for sdk with signer
   return provider ? (
     <Button block onClick={deployContract}>
       {children}

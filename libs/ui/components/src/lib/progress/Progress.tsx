@@ -1,7 +1,7 @@
 'use client';
 
-import * as React from 'react';
 import * as ProgressPrimitive from '@radix-ui/react-progress';
+import * as React from 'react';
 
 import { cn } from '@ui/shared';
 import { cva, VariantProps } from 'class-variance-authority';
@@ -40,7 +40,7 @@ export type ProgressIndicatorProps = React.ComponentPropsWithoutRef<
   VariantProps<typeof progressIndicatorVariants>;
 
 const progressIndicatorVariants = cva(
-  'h-full w-full flex-1 bg-primary transition-all',
+  'size-full flex-1 bg-primary transition-all',
   {
     variants: {
       variant: progressVariants,

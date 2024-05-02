@@ -27,6 +27,8 @@ jest.mock('@features/account/api', () => ({
   getAccount: jest.fn(),
 }));
 
+// TODO, add test cases for getSumSubApplicantPersonalData
+
 describe('createOptions callbacks', () => {
   beforeAll(() => {
     (Posthog.getInstance as jest.Mock).mockImplementation(() => ({
@@ -72,7 +74,7 @@ describe('createOptions callbacks', () => {
           pathPermissions: [
             {
               match: {
-                path: `/local/users/${mockUser.address}`,
+                path: `/${process.env.UPLOAD_PATH_PREFIX}/users/${mockUser.address}`,
                 scope: 'Grandchildren+',
               },
               permissions: {

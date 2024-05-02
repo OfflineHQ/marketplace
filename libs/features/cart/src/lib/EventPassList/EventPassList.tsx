@@ -53,9 +53,23 @@ export const EventPassList: React.FC<EventPassListProps> = ({
   noActions,
   timeRemainingDeletion,
 }) => {
+  const organizersCart = Object.entries(allPasses || {}).map(
+    ([organizerSlug, events]) => {
+      return {
+        organizerSlug,
+        events,
+      };
+    },
+  );
+  const allEventsSlug = organizersCart.reduce((acc, { events }) => {
+    Object.entries(events).forEach(([eventSlug, passes]) => {
+      acc.push(eventSlug);
+    });
+    return acc;
+  }, [] as string[]);
   return (
-    <Accordion type="multiple">
-      {Object.entries(allPasses || {}).map(([organizerSlug, events], index) => (
+    <Accordion type="multiple" defaultValue={allEventsSlug}>
+      {organizersCart.map(({ organizerSlug, events }, index) => (
         <div key={organizerSlug + index}>
           {Object.entries(events).map(([eventSlug, eventPasses], index) => (
             <div key={organizerSlug + eventSlug + index}>

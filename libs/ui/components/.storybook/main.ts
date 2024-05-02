@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import path from 'path';
+import * as path from 'path';
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const tsconfig = require('../../../../tsconfig.base.json');
@@ -29,8 +29,19 @@ module.exports = {
   },
   framework: {
     name: '@storybook/react-webpack5',
-    options: {},
+    options: {
+      builder: { useSWC: true },
+    },
   },
+  swc: (config, options) => ({
+    jsc: {
+      transform: {
+        react: {
+          runtime: 'automatic',
+        },
+      },
+    },
+  }),
   docs: {
     autodocs: true,
   },

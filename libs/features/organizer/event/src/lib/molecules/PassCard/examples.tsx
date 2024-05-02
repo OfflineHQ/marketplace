@@ -2,14 +2,16 @@
 
 import { EventPassCart } from '@features/cart-types';
 import { EventPass } from '@features/organizer/event-types';
-import { Currency_Enum } from '@gql/shared/types';
+import {
+  Currency_Enum,
+  EventPassNftContractType_Enum,
+} from '@gql/shared/types';
 import {
   passOptionsFestival,
   passOptionsFootball,
   passOptionsFormula1,
   passOptionsHolidays,
 } from '../PassOptions/examples';
-import { PassCard, type PassCardProps } from './PassCard';
 
 export const passWithMaxAmount: EventPass = {
   id: '1',
@@ -27,9 +29,10 @@ export const passWithMaxAmount: EventPass = {
     currency: Currency_Enum.Usd,
     amount: 130000,
   },
-  // eventPassOrderSums: {
-  //   totalReserved: 1,
-  // },
+  eventPassNftContract: {
+    type: EventPassNftContractType_Enum.Normal,
+    isDelayedRevealed: false,
+  },
 };
 
 export const passWithMaxAmountCart: EventPassCart = {
@@ -54,9 +57,10 @@ export const passWithMaxAmountPerUser: EventPass = {
     currency: Currency_Enum.Usd,
     amount: 250000,
   },
-  // eventPassOrderSums: {
-  //   totalReserved: 10,
-  // },
+  eventPassNftContract: {
+    type: EventPassNftContractType_Enum.Normal,
+    isDelayedRevealed: false,
+  },
 };
 
 export const passWithMaxAmountPerUserCart: EventPassCart = {
@@ -80,9 +84,10 @@ export const passWithSoldOut: EventPass = {
     currency: Currency_Enum.Usd,
     amount: 80000,
   },
-  // eventPassOrderSums: {
-  //   totalReserved: 10,
-  // },
+  eventPassNftContract: {
+    type: EventPassNftContractType_Enum.Normal,
+    isDelayedRevealed: false,
+  },
 };
 
 export const passWithSkeleton: EventPass = {
@@ -101,9 +106,10 @@ export const passWithSkeleton: EventPass = {
     url: 'https://picsum.photos/id/623/350/350',
   },
   passOptions: [],
-  // eventPassOrderSums: {
-  //   totalReserved: 0,
-  // },
+  eventPassNftContract: {
+    type: EventPassNftContractType_Enum.Normal,
+    isDelayedRevealed: false,
+  },
 };
 
 export const passFamily: EventPass = {
@@ -122,9 +128,10 @@ export const passFamily: EventPass = {
     url: 'https://picsum.photos/id/702/350/350',
   },
   passOptions: [],
-  // eventPassOrderSums: {
-  //   totalReserved: 2,
-  // },
+  eventPassNftContract: {
+    type: EventPassNftContractType_Enum.Normal,
+    isDelayedRevealed: false,
+  },
 };
 
 export const passFamilyCart: EventPassCart = {
@@ -148,9 +155,10 @@ export const passEarlyBird: EventPass = {
     url: 'https://picsum.photos/id/625/350/350',
   },
   passOptions: [],
-  // eventPassOrderSums: {
-  //   totalReserved: 4,
-  // },
+  eventPassNftContract: {
+    type: EventPassNftContractType_Enum.Normal,
+    isDelayedRevealed: false,
+  },
 };
 
 export const passWeekend: EventPass = {
@@ -169,9 +177,10 @@ export const passWeekend: EventPass = {
     url: 'https://picsum.photos/id/626/350/350',
   },
   passOptions: [],
-  // eventPassOrderSums: {
-  //   totalReserved: 6,
-  // },
+  eventPassNftContract: {
+    type: EventPassNftContractType_Enum.Normal,
+    isDelayedRevealed: false,
+  },
 };
 
 export const passPremium: EventPass = {
@@ -190,37 +199,8 @@ export const passPremium: EventPass = {
     url: 'https://picsum.photos/id/627/350/350',
   },
   passOptions: passOptionsFootball,
-  // eventPassOrderSums: {
-  //   totalReserved: 20,
-  // },
-};
-
-export const PassCardBoundaryMaxExample = ({
-  organizerSlug,
-  eventSlug,
-  ...props
-}: PassCardProps) => {
-  // updatePassCart({
-  //   organizerSlug,
-  //   eventSlug,
-  //   pass: { ...passWithMaxAmountCart, id: props.id },
-  // });
-  return (
-    <PassCard organizerSlug={organizerSlug} eventSlug={eventSlug} {...props} />
-  );
-};
-
-export const PassCardBoundaryMaxPerUserExample = ({
-  organizerSlug,
-  eventSlug,
-  ...props
-}: PassCardProps) => {
-  // updatePassCart({
-  //   organizerSlug,
-  //   eventSlug,
-  //   pass: { ...passWithMaxAmountPerUserCart, id: props.id },
-  // });
-  return (
-    <PassCard organizerSlug={organizerSlug} eventSlug={eventSlug} {...props} />
-  );
+  eventPassNftContract: {
+    type: EventPassNftContractType_Enum.Normal,
+    isDelayedRevealed: false,
+  },
 };

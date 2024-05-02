@@ -1,9 +1,10 @@
+import env from '@env/server';
+import { FileWrapper } from '@file-upload/admin';
+import { revalidateTag } from 'next/cache';
 import {
   deleteEventPassFiles,
   DeleteEventPassFilesProps,
 } from './deleteEventPassFiles';
-import { FileWrapper } from '@file-upload/admin';
-import { revalidateTag } from 'next/cache';
 
 jest.mock('@file-upload/admin');
 jest.mock('next/cache');
@@ -35,7 +36,7 @@ describe('deleteEventPassFiles', () => {
     expect(mockDeleteFilesBatchWithRetry).toHaveBeenCalledWith(
       expect.any(String), // UPLOAD_ACCOUNT_ID
       [
-        '/local/organizers/testOrganizerId/events/testEventId/testEventPassId/file1',
+        `/${env.UPLOAD_PATH_PREFIX}/organizers/testOrganizerId/events/testEventId/testEventPassId/file1`,
       ], // filesToDelete
     );
 
@@ -56,8 +57,8 @@ describe('deleteEventPassFiles', () => {
     expect(mockDeleteFilesBatchWithRetry).toHaveBeenCalledWith(
       expect.any(String),
       [
-        '/local/organizers/testOrganizerId/events/testEventId/testEventPassId/file1',
-        '/local/organizers/testOrganizerId/events/testEventId/testEventPassId/file2',
+        `/${env.UPLOAD_PATH_PREFIX}/organizers/testOrganizerId/events/testEventId/testEventPassId/file1`,
+        `/${env.UPLOAD_PATH_PREFIX}/organizers/testOrganizerId/events/testEventId/testEventPassId/file2`,
       ],
     );
   });

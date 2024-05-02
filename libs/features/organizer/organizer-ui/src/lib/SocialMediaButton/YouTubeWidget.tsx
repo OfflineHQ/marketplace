@@ -25,7 +25,7 @@ const YouTubeWidgetContent = async ({ handle }: { handle: string }) => {
   }
   //TODO adapt with right layout and Next Image
   return profileInfo ? (
-    <div className="flex items-center justify-between space-x-4">
+    <div className="flex items-center space-x-4">
       <Avatar>
         <AvatarImage src={profileInfo.thumbnails?.default?.url} />
         <AvatarFallback>{profileInfo.title?.charAt(0)}</AvatarFallback>
@@ -41,7 +41,7 @@ const YouTubeWidgetContent = async ({ handle }: { handle: string }) => {
 };
 
 const YouTubeWidget = ({ handle }: { handle: string }) => (
-  <HoverCardContent className="h-fit w-fit">
+  <HoverCardContent className="size-fit">
     <Suspense fallback={<TextSkeleton variant="p" />}>
       <YouTubeWidgetContent handle={handle} />
     </Suspense>

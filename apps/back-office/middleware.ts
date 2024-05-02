@@ -7,8 +7,12 @@ import { NextRequest, NextResponse } from 'next/server';
 // TODO adapt this list to roles with restricted access to some routes + update tests
 const authPages = [
   'user',
-  'events',
-  'events/*',
+  'loyalty-card',
+  'loyalty-card/*',
+  'campaigns',
+  'campaigns/*',
+  'perks',
+  'perks/*',
   'my-roles',
   // Add more restricted pages if needed
 ];

@@ -34,14 +34,16 @@
     "../../dist/apps/back-office/.next/types/**/*.ts"
   ],
   "exclude": [
-    "../../dist/apps/back-office/.next/types/**/*.ts",
+    "**/{web,unlock}/**",
     "**/**/examples.tsx",
     "node_modules",
     "jest.config.ts",
-    "**/*.stories.ts",
-    "**/*.stories.js",
-    "**/*.stories.jsx",
-    "**/*.stories.tsx"
+    "**/**/*.spec.ts",
+    "**/**/*.test.ts",
+    "**/**/*.stories.ts",
+    "**/**/*.stories.js",
+    "**/**/*.stories.jsx",
+    "**/**/*.stories.tsx"
   ],
   "references": [
     {

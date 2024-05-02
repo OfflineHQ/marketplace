@@ -19,6 +19,7 @@ import {
   BsQrCodeScan,
   BsTags,
   BsThreeDotsVertical,
+  BsPersonVcard,
 } from 'react-icons/bs';
 import {
   HiCheck,
@@ -56,9 +57,12 @@ import {
   IoChevronBack,
   IoCloudUploadOutline,
   IoLocationOutline,
+  IoPersonAddOutline,
   IoWarning,
   IoWarningOutline,
 } from 'react-icons/io5';
+
+import { FaShopify } from 'react-icons/fa';
 
 import {
   FiAward,
@@ -75,6 +79,8 @@ import {
 import {
   MdOutlineClose,
   MdOutlineError,
+  MdOutlineFeed,
+  MdOutlineMarkEmailRead,
   MdOutlineNotificationsActive,
   MdOutlineNotificationsNone,
 } from 'react-icons/md';
@@ -82,6 +88,7 @@ import {
   RiDiscordLine,
   RiFacebookCircleLine,
   RiInstagramLine,
+  RiKey2Line,
   RiMoonFill,
   RiStarFill,
   RiStarLine,
@@ -95,13 +102,22 @@ import {
 
 import { TbSunMoon } from 'react-icons/tb';
 
-import { PiIdentificationCardLight, PiSealQuestionBold } from 'react-icons/pi';
+import {
+  PiIdentificationCardLight,
+  PiLockKeyFill,
+  PiLockKeyOpenFill,
+  PiSealQuestionBold,
+} from 'react-icons/pi';
 
 // import and export IconType
 
 import type { IconType as ReactIcon } from 'react-icons';
 
 export type IconType = ReactIcon;
+
+export const Shopify: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={FaShopify} label={'Shopify'} {...props} />
+);
 
 export const Copy: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={LuCopy} label={'Copy'} {...props} />
@@ -111,6 +127,18 @@ export const InfoAvailable: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={LuBookOpenCheck}
     label={'Info Available'}
+    {...props}
+  />
+);
+
+export const LockKey: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={PiLockKeyFill} label={'Lock Key'} {...props} />
+);
+
+export const LockKeyOpen: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={PiLockKeyOpenFill}
+    label={'Lock Key Open'}
     {...props}
   />
 );
@@ -151,6 +179,14 @@ export const ChevronBack: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={IoChevronBack} label={'Go Back'} {...props} />
 );
 
+export const SignUp: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={IoPersonAddOutline}
+    label={'Sign Up'}
+    {...props}
+  />
+);
+
 export const SeeDetails: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={HiMagnifyingGlassPlus}
@@ -185,6 +221,14 @@ export const MenuActions: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={BsThreeDotsVertical}
     label={'Menu Actions'}
+    {...props}
+  />
+);
+
+export const LoyaltyCard: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={BsPersonVcard}
+    label={'Loyalty Card'}
     {...props}
   />
 );
@@ -341,6 +385,14 @@ export const FillInfo: FC<IconProps> = (props) => (
   />
 );
 
+export const VerifyEmail: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={MdOutlineMarkEmailRead}
+    label={'Verify Email'}
+    {...props}
+  />
+);
+
 export const OutlineError: FC<IconProps> = (props) => (
   <AccessibleIcon
     IconComponent={MdOutlineError}
@@ -363,6 +415,10 @@ export const Bell: FC<IconProps> = (props) => (
     label={'Bell'}
     {...props}
   />
+);
+
+export const Key: FC<IconProps> = (props) => (
+  <AccessibleIcon IconComponent={RiKey2Line} label={'Key'} {...props} />
 );
 
 export const FillMoon: FC<IconProps> = (props) => (
@@ -503,6 +559,14 @@ export const Users: FC<IconProps> = (props) => (
 
 export const UserRoles: FC<IconProps> = (props) => (
   <AccessibleIcon IconComponent={HiOutlineUsers} label={'Users'} {...props} />
+);
+
+export const ContentSpaces: FC<IconProps> = (props) => (
+  <AccessibleIcon
+    IconComponent={MdOutlineFeed}
+    label={'Content Spaces'}
+    {...props}
+  />
 );
 
 export const Close: FC<IconProps> = (props) => (

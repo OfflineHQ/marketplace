@@ -1,28 +1,23 @@
-import type { SafeUser } from '@next/auth';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  type AvatarProps,
-} from '@ui/components';
-import { emojiAvatarForAddress, getInitials } from '@ui/shared';
+import { AppUser } from '@next/types';
+import { Avatar, AvatarFallback, type AvatarProps } from '@ui/components';
+import { emojiAvatarForAddress } from '@ui/shared';
 import { useMemo } from 'react';
 
-export interface ProfileAvatarProps extends Omit<AvatarProps, 'size'> {
-  user: SafeUser;
+export interface ProfileAvatarProps extends AvatarProps {
+  user: AppUser;
 }
 
-export interface EmojiAvatarProps extends Omit<AvatarProps, 'size'> {
+export interface EmojiAvatarProps extends AvatarProps {
   address: string;
 }
 
-function EmojiAvatar({ address, ...props }: EmojiAvatarProps) {
+function EmojiAvatar({ address, className, ...props }: EmojiAvatarProps) {
   const { color, emoji } = useMemo(
     () => emojiAvatarForAddress(address),
     [address],
   );
   return (
-    <Avatar {...props}>
+    <Avatar {...props} className={`text-2xl ${className}`}>
       <AvatarFallback style={{ backgroundColor: color }}>
         {emoji}
       </AvatarFallback>
@@ -32,19 +27,21 @@ function EmojiAvatar({ address, ...props }: EmojiAvatarProps) {
 
 export function ProfileAvatar(props: ProfileAvatarProps) {
   const {
-    user: { name, profileImage, eoa },
+    user: { email, address },
     className,
   } = props;
-  const fallBack = name ? getInitials(name) : '';
-  return profileImage || fallBack ? (
-    <Avatar {...props} className={`${className} h-12 w-12`}>
-      <AvatarImage
-        src={profileImage || ''}
-        className="flex items-center justify-center bg-muted"
-      />
-      <AvatarFallback>{fallBack}</AvatarFallback>
-    </Avatar>
-  ) : (
-    EmojiAvatar({ ...props, className, address: eoa })
-  );
+  return EmojiAvatar({ ...props, className, address });
+  // TODO: find way to get profile image
+  // const fallBack = name ? getInitials(name) : '';
+  // return profileImage || fallBack ? (
+  //   <Avatar {...props} className={`${className} size-12`}>
+  //     <AvatarImage
+  //       src={profileImage || ''}
+  //       className="flex items-center justify-center bg-muted"
+  //     />
+  //     <AvatarFallback>{fallBack}</AvatarFallback>
+  //   </Avatar>
+  // ) : (
+  //   EmojiAvatar({ ...props, className, address: eoa })
+  // );
 }

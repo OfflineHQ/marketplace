@@ -8,9 +8,12 @@ import { GetEventPassOrganizerFolderPath } from '@features/pass-common';
 import { ColumnDef, RowSelectionState } from '@tanstack/react-table';
 import {
   Alert,
+  AlertDescription,
+  AlertTitle,
   Checkbox,
   DataTable,
   DataTableColumnHeader,
+  DataTableColumnHeaderProps,
   DataTableProps,
   DataTableRowActions,
   DataTableRowActionsProps,
@@ -21,20 +24,16 @@ import { Delete, Download, SeeDetails } from '@ui/icons';
 import { cn } from '@ui/shared';
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  DuplicatesType,
-  checkEventPassNftFilesHash,
-} from '../../actions/checkEventPassFilesHash';
+import { checkEventPassNftFilesHash } from '../../actions/checkEventPassFilesHash';
 import { deleteEventPassFile } from '../../actions/deleteEventPassFile';
 import { deleteEventPassFiles } from '../../actions/deleteEventPassFiles';
-import { resetEventPassNftFiles } from '../../actions/resetEventPassNftFiles';
-import { ColumnsProps } from '../../organisms/EventsTable/EventsTable';
+import { DuplicatesType } from '../../actions/types';
 import { EventPassFilesUploader } from '../EventPassFilesUploader/EventPassFilesUploader';
 
 export interface EventPassNftFilesTableClientProps
-  extends Pick<ColumnsProps, 'headerControlText'>,
-    Omit<DataTableProps<EventPassFileWithName, unknown>, 'columns'>,
+  extends Omit<DataTableProps<EventPassFileWithName, unknown>, 'columns'>,
     GetEventPassOrganizerFolderPath {
+  headerControlText: DataTableColumnHeaderProps<any, any>['controlText'];
   eventPass: EventFromOrganizerWithPasses['eventPasses'][0];
   eventSlug: string;
 }
@@ -59,6 +58,7 @@ export function EventPassNftFilesTableClient({
     'OrganizerEvents.Sheet.EventPassCard.EventPassNftFilesTable',
   );
   const locale = useLocale();
+
   const formatDuplicates = (duplicates: DuplicatesType) => {
     return duplicates.map((group, index) => (
       <ul key={index}>
@@ -142,21 +142,13 @@ export function EventPassNftFilesTableClient({
             text: t('header-delete'),
             icon: <Delete />,
             // Add your delete function here
-            action: async () => {
-              await deleteEventPassFile({
+            action: () =>
+              deleteEventPassFile({
                 filePath: row.original.filePath,
                 organizerId,
                 eventId,
                 eventPassId,
-              });
-              resetEventPassNftFiles({
-                locale,
-                organizerId,
-                eventId,
-                eventPassId,
-                eventSlug,
-              });
-            },
+              }),
             className: 'cursor-pointer',
           });
         }
@@ -192,21 +184,13 @@ export function EventPassNftFilesTableClient({
         type: 'item',
         className: 'cursor-pointer',
         icon: <Delete />,
-        action: async () => {
-          await deleteEventPassFiles({
+        action: () =>
+          deleteEventPassFiles({
             organizerId,
             eventId,
             eventPassId,
             filesSelected: rowSelection,
-          });
-          resetEventPassNftFiles({
-            locale,
-            organizerId,
-            eventId,
-            eventPassId,
-            eventSlug,
-          });
-        },
+          }),
         text: t('menu-actions-delete', { numFilesSelected }),
       });
     }
@@ -218,18 +202,17 @@ export function EventPassNftFilesTableClient({
     rowSelection,
     t,
     eventPass.eventPassNftContract,
-    eventSlug,
-    locale,
   ]);
 
   useEffect(() => {
-    if (data) {
-      checkEventPassNftFilesHash({
-        filesPath: data.map((file) => file.filePath),
-        organizerId,
-        eventId,
-        eventPassId,
-      }).then((duplicates) => {
+    async function fetchDuplicates() {
+      if (data) {
+        const duplicates = await checkEventPassNftFilesHash({
+          filesPath: data.map((file) => file.filePath),
+          organizerId,
+          eventId,
+          eventPassId,
+        });
         if (duplicates.length > 0) {
           setDuplicates(duplicates);
           const newSelection: RowSelectionState = {};
@@ -242,27 +225,35 @@ export function EventPassNftFilesTableClient({
             });
           });
           setInitialRowSelection(newSelection);
-        } else setDuplicates([]);
-      });
+        } else {
+          setDuplicates([]);
+        }
+      }
     }
+
+    fetchDuplicates();
   }, [data, organizerId, eventId, eventPassId]);
+
+  if (data.length === 0) return null;
 
   return (
     <div className="space-y-4">
       {duplicates.length > 0 && (
         <Alert variant="destructive">
-          {t.rich('duplicates-alert', {
-            count: duplicates.length,
-            br: () => <br />,
-          })}
-          <div className="flex-col space-y-2">
+          <AlertTitle>
+            {t.rich('duplicates-alert', {
+              count: duplicates.length,
+              br: () => <br />,
+            })}
+          </AlertTitle>
+          <AlertDescription className="flex-col space-y-2">
             {formatDuplicates(duplicates).map((group) => group)}
-          </div>
+          </AlertDescription>
         </Alert>
       )}
       <DataTable<EventPassFileWithName, unknown>
         data={data}
-        className={cn('h-full w-full', className)}
+        className={cn('size-full', className)}
         columns={columns}
         selectKey="fileName"
         onRowSelectionChange={setRowSelection}

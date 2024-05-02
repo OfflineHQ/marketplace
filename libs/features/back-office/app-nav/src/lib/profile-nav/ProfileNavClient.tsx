@@ -1,16 +1,25 @@
 'use client';
 
 import { RoleBadge } from '@features/back-office/roles';
-import { SafeUser, useAuthContext } from '@next/auth';
+import { useAuthContext } from '@next/auth';
 import { Link, useRouter } from '@next/navigation';
 import { AppUser } from '@next/types';
 import { isSameRole } from '@roles/common';
 import { RoleWithOrganizer } from '@roles/types';
 import { BlockchainAddress, DropdownMenuItem, useToast } from '@ui/components';
-import { LifeBuoy, LogIn, LogOut, Settings, User } from '@ui/icons';
+import {
+  LifeBuoy,
+  LogIn,
+  LogOut,
+  Settings,
+  SignUp,
+  User,
+  VerifyEmail,
+} from '@ui/icons';
 import { getErrorMessage } from '@utils';
 import { useSession } from 'next-auth/react';
-import { useCallback, useMemo } from 'react';
+import dynamic from 'next/dynamic';
+import { useCallback, useMemo, useState } from 'react';
 import { RoleAvatar } from '../role-avatar/RoleAvatar';
 import {
   ProfileNav,
@@ -18,10 +27,15 @@ import {
   type ProfileNavProps,
 } from './ProfileNav';
 
+const VerifyEmailDynamic = dynamic(
+  () => import('@features/kyc').then((mod) => mod.SumsubDialog),
+  { ssr: false },
+);
+
 interface ConstructItemsParams {
   roles?: RoleWithOrganizer[];
   matchingRole?: RoleWithOrganizer;
-  safeUser: SafeUser | undefined;
+  user: AppUser | undefined;
   profileSectionsText: {
     myAccount: string;
     support: string;
@@ -30,6 +44,10 @@ interface ConstructItemsParams {
     signOut: string;
     signOutTitle: string;
     signOutDescription: string;
+    createAccount: string;
+    createAccountTitle: string;
+    createAccountDescription: string;
+    dontHaveAnAccount: string;
     signIn: string;
     settings: string;
     copiedAddress: string;
@@ -41,19 +59,20 @@ interface ConstructItemsParams {
     switchToMyAccountToastTitle: string;
     switchToMyAccountToastTDescription: string;
     switchToMyAccountToastErrorTitle: string;
+    verifyEmail: string;
+    verifyEmailContinue: string;
   };
   login: () => void;
   signOutUserAction: () => void;
+  createAccountAction: () => void;
   switchToRole: (role: RoleWithOrganizer) => void;
   switchToMyAccount: () => void;
+  verifyEmail: () => void;
   toast: ReturnType<typeof useToast>['toast'];
 }
 
 export interface ProfileNavClientProps
-  extends Pick<
-    ConstructItemsParams,
-    'roles' | 'matchingRole' | 'profileSectionsText'
-  > {
+  extends Pick<ConstructItemsParams, 'roles' | 'profileSectionsText'> {
   signInText: string;
   isNextAuthConnected?: boolean;
   account?: AppUser;
@@ -74,7 +93,7 @@ const RoleItem = ({ role, switchToRole }: RoleItemProps) => {
       <div className="mr-2 flex w-fit flex-row items-center justify-center space-x-2 space-y-0">
         <RoleAvatar role={role} />
         <div className="flex flex-col">
-          <div className="pb-1 font-semibold">{name}</div>
+          <div className="pb-1 font-medium">{name}</div>
           <RoleBadge role={role} size="sm" />
         </div>
       </div>
@@ -86,7 +105,7 @@ const RoleItemDisplay = ({ role }: { role: RoleWithOrganizer }) => (
   <div className="flex w-fit flex-row items-center justify-center space-x-2 space-y-0 pl-2">
     <RoleAvatar role={role} />
     <div className="flex flex-col">
-      <div className="pb-1 text-sm">{role.organizer?.name}</div>
+      <div className="pb-1 text-sm font-medium">{role.organizer?.name}</div>
       <RoleBadge role={role} size="sm" />
     </div>
   </div>
@@ -95,12 +114,14 @@ const RoleItemDisplay = ({ role }: { role: RoleWithOrganizer }) => (
 export const constructItems = ({
   roles,
   matchingRole,
-  safeUser,
+  user,
   profileSectionsText,
   login,
   signOutUserAction,
+  createAccountAction,
   switchToRole,
   switchToMyAccount,
+  verifyEmail,
   toast,
 }: ConstructItemsParams): ProfileNavProps['items'] => {
   const commonSections: ProfileNavProps['items'] = [
@@ -143,7 +164,7 @@ export const constructItems = ({
       ]
     : [];
 
-  const userInfoSections: ProfileNavProps['items'] = safeUser
+  const userInfoSections: ProfileNavProps['items'] = user
     ? [
         {
           type: 'label',
@@ -156,22 +177,30 @@ export const constructItems = ({
             <div className="py-1 pl-2">
               <BlockchainAddress
                 variant="outline"
-                address={safeUser.eoa}
+                address={user.address}
                 copiedText={profileSectionsText.copiedAddress}
               />
             </div>
           ),
         },
+        user.email
+          ? {
+              type: 'children',
+              children: (
+                <div className="overflow-hidden text-ellipsis px-2 pb-2 text-sm">
+                  {user.email}
+                </div>
+              ),
+            }
+          : {
+              type: 'item',
+              icon: <VerifyEmail />,
+              className: 'cursor-pointer font-semibold',
+              action: verifyEmail,
+              text: profileSectionsText.verifyEmail,
+            },
       ]
     : [];
-  if (safeUser?.name) {
-    userInfoSections.splice(1, 0, {
-      type: 'children',
-      children: (
-        <div className="overflow-hidden py-1 pl-2 text-sm">{safeUser.name}</div>
-      ),
-    });
-  }
   if (matchingRole) {
     userInfoSections.push({
       type: 'item',
@@ -209,7 +238,7 @@ export const constructItems = ({
       ]
     : [];
 
-  return !safeUser
+  return !user
     ? [
         {
           type: 'item',
@@ -217,6 +246,19 @@ export const constructItems = ({
           className: 'cursor-pointer font-semibold',
           action: login,
           text: profileSectionsText.signIn,
+        },
+        { type: 'separator' },
+        {
+          type: 'label',
+          className: 'font-normal text-xs',
+          text: profileSectionsText.dontHaveAnAccount,
+        },
+        {
+          type: 'item',
+          icon: <SignUp />,
+          className: 'cursor-pointer',
+          action: createAccountAction,
+          text: profileSectionsText.createAccount,
         },
         { type: 'separator' },
         ...commonSections,
@@ -244,7 +286,8 @@ export const ProfileNavClient = ({
   roles,
   account,
 }: ProfileNavClientProps) => {
-  const { safeUser, login, logout, safeAuth, connecting } = useAuthContext();
+  const { login, logout, createAccount, connecting } = useAuthContext();
+  const [isVerifyEmail, setIsVerifyEmail] = useState(false);
   const { update } = useSession();
   const { toast } = useToast();
   const router = useRouter();
@@ -257,6 +300,7 @@ export const ProfileNavClient = ({
     : undefined;
 
   const signOutUserAction = useCallback(async () => {
+    router.push('/');
     await logout({ refresh: true });
     toast({
       title: profileSectionsText.signOutTitle,
@@ -264,11 +308,18 @@ export const ProfileNavClient = ({
     });
   }, [logout, toast, profileSectionsText]);
 
+  const createAccountAction = useCallback(async () => {
+    await createAccount();
+    toast({
+      title: profileSectionsText.createAccountTitle,
+      description: profileSectionsText.createAccountDescription,
+    });
+  }, [createAccount, toast, profileSectionsText]);
+
   const switchToRole = useCallback(
     async (role: RoleWithOrganizer) => {
       try {
         const session = await update({ role });
-        console.log({ session });
         toast({
           title: profileSectionsText.switchToRoleToastTitle,
           description: <RoleItemDisplay role={role} />,
@@ -312,35 +363,48 @@ export const ProfileNavClient = ({
       constructItems({
         roles,
         matchingRole,
-        safeUser,
         profileSectionsText,
         login,
+        user: account,
         signOutUserAction,
+        createAccountAction,
         switchToRole,
         switchToMyAccount,
         toast,
+        verifyEmail: () => setIsVerifyEmail(true),
       }),
     [
       roles,
       matchingRole,
-      safeUser,
       profileSectionsText,
       login,
       signOutUserAction,
       switchToRole,
       switchToMyAccount,
       toast,
+      account,
+      createAccountAction,
     ],
   );
-  return !safeAuth ? (
+  return connecting ? (
     <ProfileNavSkeleton />
   ) : (
-    <ProfileNav
-      items={items}
-      isLoading={connecting && !isNextAuthConnected}
-      user={safeUser}
-      role={matchingRole}
-      signInText={signInText}
-    />
+    <>
+      <ProfileNav
+        items={items}
+        isLoading={connecting && !isNextAuthConnected}
+        user={account}
+        role={matchingRole}
+        signInText={signInText}
+      />
+      {isVerifyEmail && (
+        <VerifyEmailDynamic
+          open={isVerifyEmail}
+          confirmedText={profileSectionsText.verifyEmailContinue}
+          onOpenChange={setIsVerifyEmail}
+          title={profileSectionsText.verifyEmail}
+        />
+      )}
+    </>
   );
 };

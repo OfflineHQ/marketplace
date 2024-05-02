@@ -10,19 +10,16 @@ export function NoUserPassExample() {
   return (
     <NextAuthProvider>
       <AuthProvider>
-        <AppNavLayout
-          {...WithNoUser.args}
-          children={
-            <NoUserPass
-              title={t('title')}
-              description={t('description')}
-              signInText={t('sign-in-text')}
-              noPassImage="/empty-pass.svg"
-            >
-              {''}
-            </NoUserPass>
-          }
-        />
+        <AppNavLayout {...WithNoUser.args}>
+          <NoUserPass
+            title={t('title')}
+            description={t('description')}
+            signInText={t('sign-in-text')}
+            noPassImage="/empty-pass.svg"
+          >
+            {''}
+          </NoUserPass>
+        </AppNavLayout>
       </AuthProvider>
     </NextAuthProvider>
   );

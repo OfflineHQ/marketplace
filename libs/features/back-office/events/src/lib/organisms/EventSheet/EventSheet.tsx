@@ -8,6 +8,7 @@ import {
 } from '@ui/components';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { EventStatusBadge } from '../../molecules/EventStatusBadge/EventStatusBadge';
 import {
   EventPassCard,
   EventPassCardSkeleton,
@@ -21,7 +22,10 @@ export const EventSheet = ({ event, organizerId }: EventSheetProps) => {
   return (
     <>
       <SheetHeader size="full">
-        <SheetTitle>{event.title}</SheetTitle>
+        <SheetTitle className="flex items-baseline space-x-2">
+          <span>{event.title}</span>
+          <EventStatusBadge status={event.eventParameters?.status} />
+        </SheetTitle>
       </SheetHeader>
       <SheetOverflow className="grid h-full gap-8 py-3 pb-28 md:grid-cols-2">
         {event.eventPasses?.map((eventPass, index) => (
@@ -34,7 +38,7 @@ export const EventSheet = ({ event, organizerId }: EventSheetProps) => {
         ))}
       </SheetOverflow>
       <SheetNavigation
-        wrapper={<Link href={`/${locale}/events`} />}
+        wrapper={<Link href={`/${locale}/campaigns/events`} />}
         size="full"
         backButtonText={t('go-back-to-events')}
       />

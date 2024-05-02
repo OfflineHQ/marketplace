@@ -3,6 +3,7 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/gql/user/types/src",
   "projectType": "library",
+  "tags": ["types"],
   "targets": {
     "build": {
       "executor": "@nx/js:swc",
@@ -16,11 +17,9 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/gql/anonymous/types/**/*.ts"]
       }
     }
-  },
-  "tags": ["types"]
+  }
 }

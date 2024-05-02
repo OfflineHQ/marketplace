@@ -10,7 +10,11 @@ const customConfig = {
   displayName: 'web',
   preset: '../../jest.preset.js',
   coverageDirectory: '../../coverage/apps/web',
-  testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/e2e/',
+    '.*\\.integration\\.test\\.ts$',
+  ],
 };
 
 module.exports = createJestConfig(customConfig);

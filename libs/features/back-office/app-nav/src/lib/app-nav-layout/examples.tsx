@@ -18,7 +18,7 @@ export const ProfileNavWithNoUser = () => (
     user={undefined}
     isLoading={false}
     items={itemsNotConnected}
-    signInText="Sign in"
+    signInText="Sign In"
   />
 );
 
@@ -29,7 +29,7 @@ export const ProfileNavWithNoUserLoading = () => (
     user={undefined}
     items={itemsNotConnected}
     isLoading={true}
-    signInText="Sign in"
+    signInText="Sign In"
   />
 );
 

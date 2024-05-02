@@ -1,0 +1,4 @@
+table:
+  name: eventPassType
+  schema: public
+is_enum: true

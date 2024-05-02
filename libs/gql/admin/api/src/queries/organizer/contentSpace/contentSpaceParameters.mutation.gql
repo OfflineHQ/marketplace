@@ -1,0 +1,7 @@
+mutation CreateContentSpaceParameters(
+  $object: contentSpaceParameters_insert_input!
+) {
+  insert_contentSpaceParameters_one(object: $object) {
+    id
+  }
+}

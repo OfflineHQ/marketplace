@@ -1,4 +1,5 @@
 import { Alchemy, Network, NftFilter } from 'alchemy-sdk';
+import { getErrorMessage } from '@utils';
 
 import env from '@env/server';
 import type {
@@ -30,6 +31,38 @@ interface GetTransfersForContractOptions
   fromBlock: _GetTransfersForContractOptions['fromBlock'];
   toBlock: _GetTransfersForContractOptions['toBlock'];
 }
+
+// Change made because the sdk Network enum is not accurate with what the NFT Activity value of network is https://docs.alchemy.com/reference/webhook-types
+const networkToChainIdMap: { [key in Network | string]?: string } = {
+  [Network.ETH_MAINNET]: '1',
+  ETH_MAINNET: '1',
+  [Network.ETH_GOERLI]: '5',
+  ETH_GOERLI: '5',
+  [Network.ETH_SEPOLIA]: '11155111',
+  ETH_SEPOLIA: '11155111',
+  [Network.OPT_MAINNET]: '69',
+  OPT_MAINNET: '69',
+  [Network.OPT_GOERLI]: '420',
+  OPT_GOERLI: '420',
+  [Network.ARB_MAINNET]: '42161',
+  ARB_MAINNET: '42161',
+  [Network.ARB_GOERLI]: '421613',
+  ARB_GOERLI: '421613',
+  [Network.MATIC_MAINNET]: '137',
+  MATIC_MAINNET: '137',
+  [Network.MATIC_MUMBAI]: '80001',
+  MATIC_MUMBAI: '80001',
+  [Network.ASTAR_MAINNET]: '592',
+  ASTAR_MAINNET: '592',
+  [Network.POLYGONZKEVM_MAINNET]: '1101',
+  POLYGONZKEVM_MAINNET: '1101',
+  [Network.POLYGONZKEVM_TESTNET]: '1442',
+  POLYGONZKEVM_TESTNET: '1442',
+  [Network.BASE_SEPOLIA]: '84532',
+  BASE_SEPOLIA: '84532',
+  [Network.MATIC_AMOY]: '80002',
+  MATIC_AMOY: '80002',
+};
 
 // Helper function to fetch all pages concurrently
 export async function fetchAllPages<T>(
@@ -99,6 +132,13 @@ export class AlchemyWrapper {
       case '80001':
         network = Network.MATIC_MUMBAI;
         break;
+      case '80002':
+        network = Network.MATIC_AMOY;
+        break;
+      case '84532':
+        network = Network.BASE_SEPOLIA;
+        break;
+
       default:
         throw new Error(`Unsupported network: ${env.CHAIN}`);
     }
@@ -111,35 +151,12 @@ export class AlchemyWrapper {
     });
   }
 
-  convertNetworkToChainId(network: Network): string {
-    switch (network) {
-      case Network.ETH_MAINNET:
-        return '1';
-      case Network.ETH_GOERLI:
-        return '5';
-      case Network.ETH_SEPOLIA:
-        return '11155111';
-      case Network.OPT_MAINNET:
-        return '69';
-      case Network.OPT_GOERLI:
-        return '420';
-      case Network.ARB_MAINNET:
-        return '42161';
-      case Network.ARB_GOERLI:
-        return '421613';
-      case Network.MATIC_MAINNET:
-        return '137';
-      case Network.MATIC_MUMBAI:
-        return '80001';
-      case Network.ASTAR_MAINNET:
-        return '592';
-      case Network.POLYGONZKEVM_MAINNET:
-        return '1101';
-      case Network.POLYGONZKEVM_TESTNET:
-        return '1442';
-      default:
-        throw new Error(`Unsupported network: ${network}`);
+  convertNetworkToChainId(network: Network | string): string {
+    const chainId = networkToChainIdMap[network];
+    if (!chainId) {
+      throw new Error(`Unsupported network: ${network}`);
     }
+    return chainId;
   }
   // NFT API
 
@@ -150,7 +167,10 @@ export class AlchemyWrapper {
     try {
       return await this.alchemy.nft.verifyNftOwnership(owner, contractAddress);
     } catch (error) {
-      console.error(`Verifying NFT ownership failed: ${error.message}`, error);
+      console.error(
+        `Verifying NFT ownership failed: ${getErrorMessage(error)}`,
+        error,
+      );
       throw error;
     }
   }
@@ -167,7 +187,10 @@ export class AlchemyWrapper {
         contractAddresses,
       );
     } catch (error) {
-      console.error(`Verifying NFT ownership failed: ${error.message}`, error);
+      console.error(
+        `Verifying NFT ownership failed: ${getErrorMessage(error)}`,
+        error,
+      );
       throw error;
     }
   }
@@ -276,17 +299,38 @@ export class AlchemyWrapper {
       );
     } catch (error) {
       console.error(
-        `Creating NFT activity webhook failed: ${error.message}`,
+        `Creating NFT activity webhook failed: ${getErrorMessage(error)}`,
         error,
       );
       throw error;
     }
   }
 
-  async addAddressNftActivityWebhook(
-    webhookId: string,
-    addresses: NftFilter[],
+  // https://docs.alchemy.com/reference/nft-metadata-updates-webhook
+  async createNftMetadataUpdateWebhook(
+    webhookUrl: string,
+    filters: NftWebhookParams['filters'],
   ) {
+    const params = {
+      network: this.network,
+      filters,
+    } satisfies NftWebhookParams;
+    try {
+      return await this.alchemy.notify.createWebhook(
+        webhookUrl,
+        WebhookType.NFT_METADATA_UPDATE,
+        params,
+      );
+    } catch (error) {
+      console.error(
+        `Creating NFT metadata update webhook failed: ${getErrorMessage(error)}`,
+        error,
+      );
+      throw error;
+    }
+  }
+
+  async addContractAddressToWebhook(webhookId: string, addresses: NftFilter[]) {
     try {
       return await this.alchemy.notify.updateWebhook(webhookId, {
         addFilters: addresses,
@@ -294,19 +338,19 @@ export class AlchemyWrapper {
       });
     } catch (error) {
       console.error(
-        `Updating NFT activity webhook failed: ${error.message}`,
+        `Updating NFT activity webhook failed: ${getErrorMessage(error)}`,
         error,
       );
       throw error;
     }
   }
 
-  async deleteNftActivityWebhook(webhookId: string): Promise<void> {
+  async deleteWebhook(webhookId: string): Promise<void> {
     try {
       await this.alchemy.notify.deleteWebhook(webhookId);
     } catch (error) {
       console.error(
-        `Deleting NFT activity webhook failed: ${error.message}`,
+        `Deleting NFT activity webhook failed: ${getErrorMessage(error)}`,
         error,
       );
       throw error;
@@ -317,7 +361,10 @@ export class AlchemyWrapper {
     try {
       return await this.alchemy.notify.getAllWebhooks();
     } catch (error) {
-      console.error(`Fetching all webhooks failed: ${error.message}`, error);
+      console.error(
+        `Fetching all webhooks failed: ${getErrorMessage(error)}`,
+        error,
+      );
       throw error;
     }
   }

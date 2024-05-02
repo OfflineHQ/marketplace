@@ -41,7 +41,7 @@ export const PassFooterSheetContent: React.FC<PassFooterSheetProps> = async ({
     eventPassIds: passesData.map(({ id }) => id),
   });
   return (
-    <AutoAnimate className="mt-auto">
+    <AutoAnimate>
       {passesCart?.length ? (
         <SheetFooter
           variant="sticky"

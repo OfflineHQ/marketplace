@@ -2,6 +2,18 @@ import {
   Currency_Enum,
   EventPassNftContractType_Enum,
 } from '@gql/shared/types';
+import * as uploaderProvider from '@next/uploader-provider';
+import * as walletProvider from '@next/wallet';
+import { i18nUiTablesServerMocks } from '@test-utils/ui-mocks';
+import { sleep } from '@utils';
+import * as nextIntl from 'next-intl';
+import { createMock } from 'storybook-addon-module-mock';
+import * as checkPass from '../../actions/checkEventPassFilesHash';
+import * as deleteFile from '../../actions/deleteEventPassFile';
+import * as deploy from '../../actions/deployEventPassCollectionWrapper';
+import * as getPass from '../../actions/getEventPassNftFiles';
+import * as renameFiles from '../../actions/renameEventPassNftFiles';
+import * as reveal from '../../actions/revealEventPassDelayedContract';
 import { EventPassNftFilesTableProps } from './EventPassNftFilesTable';
 
 export const eventPassNftFiles = [
@@ -114,3 +126,44 @@ export const eventPassNftVipNoContractDelayedReveal: EventPassNftFilesTableProps
       passOptions: [],
     },
   };
+
+export function eventPassNftFilesTableMocks() {
+  const mock = createMock(getPass, 'getEventPassNftFiles');
+  mock.mockReturnValue(Promise.resolve(eventPassNftFiles));
+  const mockIntl = createMock(nextIntl, 'useLocale');
+  mockIntl.mockReturnValue('en');
+  const mockUploader = createMock(uploaderProvider, 'useUploader');
+  mockUploader.mockReturnValue({ sessionReady: true });
+  const mockWallet = createMock(walletProvider, 'useWalletContext');
+  mockWallet.mockReturnValue({
+    provider: {
+      getSigner: () => Promise.resolve({}),
+    },
+  });
+  const mockDeleteFile = createMock(deleteFile, 'deleteEventPassFile');
+  mockDeleteFile.mockImplementation(async () => {
+    await sleep(300);
+    return Promise.resolve();
+  });
+  const mockCheckPass = createMock(checkPass, 'checkEventPassNftFilesHash');
+  mockCheckPass.mockReturnValue(Promise.resolve([]));
+  const mockRename = createMock(renameFiles, 'renameEventPassNftFiles');
+  mockRename.mockReturnValue(Promise.resolve());
+  const mockDeploy = createMock(deploy, 'deployEventPassCollectionWrapper');
+  mockDeploy.mockReturnValue(Promise.resolve());
+  const mockReveal = createMock(reveal, 'revealEventPassDelayedContract');
+  mockReveal.mockReturnValue(Promise.resolve());
+
+  return [
+    mock,
+    mockIntl,
+    mockUploader,
+    mockWallet,
+    mockDeleteFile,
+    mockCheckPass,
+    mockRename,
+    mockDeploy,
+    mockReveal,
+    ...i18nUiTablesServerMocks(),
+  ];
+}

@@ -13,3 +13,13 @@ query GetEventPassNftByIdMinimal($id: uuid!) {
     ...EventPassNftFields
   }
 }
+
+query GetEventPassNftByIdWithEventPassNftContract($id: uuid!) {
+  eventPassNft_by_pk(id: $id) {
+    ...EventPassNftFields
+    eventPassNftContract {
+      type
+      isDelayedRevealed
+    }
+  }
+}

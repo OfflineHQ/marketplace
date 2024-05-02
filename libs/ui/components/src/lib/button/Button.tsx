@@ -13,29 +13,33 @@ import * as React from 'react';
 import { cn } from '@ui/shared';
 
 const sizes = {
-  sm: 'h-9 px-3 text-sm',
-  default: 'h-10 py-2 px-4 text-sm',
-  lg: 'h-11 px-6 md:px-8 text-base',
+  default: 'h-10 px-4 py-2',
+  xs: 'h-8 rounded-md px-3',
+  sm: 'h-9 rounded-md px-3',
+  lg: 'h-11 rounded-md px-8',
 };
 
 const variants = {
-  default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+  default:
+    'off-btn-default bg-primary text-primary-foreground hover:bg-primary/90',
   destructive:
-    'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-  outline: 'border border-input hover:bg-accent hover:text-accent-foreground',
-  secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-  ghost: 'hover:bg-accent hover:text-accent-foreground',
-  link: 'underline-offset-4 hover:underline text-primary',
+    'off-btn-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90',
+  outline:
+    'off-btn-outline border border-input hover:bg-accent hover:text-accent-foreground',
+  secondary:
+    'off-btn-secondary bg-secondary text-secondary-foreground hover:bg-secondary/80',
+  ghost: 'off-btn-ghost hover:bg-accent hover:text-accent-foreground',
+  link: 'off-btn-link underline-offset-4 hover:underline text-primary',
 };
 
 const buttonVariantsCva = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'off-btn inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: variants,
       size: sizes,
       isIconOnly: {
-        true: 'rounded-full p-0',
+        true: 'off-btn-icon-only h-auto rounded-full p-0',
       },
       block: {
         true: 'w-full',
@@ -56,13 +60,14 @@ const buttonVariantsCva = cva(
 );
 
 const SkeletonSizes = {
-  sm: 'h-9 w-24',
-  default: 'h-10 w-28',
-  lg: 'h-11 w-32',
+  xs: 'size-8',
+  sm: 'size-9',
+  default: 'size-10',
+  lg: 'size-11',
 };
 
 const buttonSkeletonVariantsCva = cva(
-  'max-w-full shrink-0 animate-pulse rounded-md bg-skeleton',
+  'off-btn-skeleton max-w-full shrink-0 animate-pulse rounded-md bg-skeleton',
   {
     variants: {
       size: SkeletonSizes,
@@ -75,18 +80,26 @@ const buttonSkeletonVariantsCva = cva(
       isIconOnly: false,
     },
     compoundVariants: [
-      ...Object.keys(SkeletonSizes).map((key) => ({
-        size: key as keyof typeof SkeletonSizes,
-        isIconOnly: true,
-        class: `${SkeletonSizes[key as keyof typeof SkeletonSizes].replace(
-          /w-\d+/,
-          `w-${
-            SkeletonSizes[key as keyof typeof SkeletonSizes].match(
-              /h-(\d+)/,
-            )?.[1] || 'default'
-          }`,
-        )} rounded-full`,
-      })),
+      {
+        size: 'xs',
+        isIconOnly: false,
+        class: 'h-8 w-20',
+      },
+      {
+        size: 'sm',
+        isIconOnly: false,
+        class: 'h-9 w-24',
+      },
+      {
+        size: 'default',
+        isIconOnly: false,
+        class: 'h-10 w-28',
+      },
+      {
+        size: 'lg',
+        isIconOnly: false,
+        class: 'h-11 w-32',
+      },
     ],
   },
 );
@@ -119,7 +132,6 @@ export interface ButtonProps
 
 interface ButtonContentProps extends ButtonProps {
   loading: boolean;
-  isIconOnly: boolean;
   LeftIcon?: React.ReactElement<IconProps>;
   RightIcon?: React.ReactElement<IconProps>;
 }
@@ -185,6 +197,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       icon,
       iconRight,
       helperText,
+      isIconOnly,
       ...props
     },
     ref,
@@ -192,7 +205,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const [loading, setLoading] = useState(false);
     const _loading = isLoading || loading;
     const hasChildren = typeof children !== 'undefined';
-    const isIconOnly = !hasChildren && !!(icon || iconRight);
+    const detectIconOnly = !hasChildren && !!(icon || iconRight);
 
     const handleClick = async (
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -211,7 +224,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const buttonClasses = buttonVariantsCva({
       variant,
       size,
-      isIconOnly,
+      isIconOnly: detectIconOnly || isIconOnly,
       block: !!block,
       className,
     });
@@ -228,7 +241,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             loading={_loading}
             size={size}
             variant={variant}
-            isIconOnly={isIconOnly}
+            isIconOnly={detectIconOnly || isIconOnly}
             LeftIcon={icon}
             RightIcon={iconRight}
           >

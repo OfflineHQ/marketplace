@@ -54,3 +54,39 @@
                 schema: public
           name: eventParameters
       type_name: Event
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                id: contentSpaceId
+              relationship_type: object
+              source: default
+              table:
+                name: contentSpaceParameters
+                schema: public
+          name: contentSpaceParameters
+      type_name: ContentSpace
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                id: loyaltyCardId
+              relationship_type: object
+              source: default
+              table:
+                name: loyaltyCardNftContract
+                schema: public
+          name: loyaltyCardNftContract
+        - definition:
+            to_source:
+              field_mapping:
+                id: loyaltyCardId
+              relationship_type: object
+              source: default
+              table:
+                name: loyaltyCardParameters
+                schema: public
+          name: loyaltyCardParameters
+      type_name: LoyaltyCard
+    - relationships: []
+      type_name: ShopifyCampaignTemplate

@@ -1,0 +1,75 @@
+query GetShopifyCampaignParametersForNotConnected(
+  $gateId: String!
+  $locale: Locale!
+  $stage: Stage!
+) @cached {
+  shopifyCampaignParameters_by_pk(gateId: $gateId) {
+    organizerId
+    status
+    shopifyCampaignTemplate(locales: [$locale, en], stage: $stage) {
+      authTexts {
+        connectToShopify
+        createNewAccount
+        noMatchingAccountRecoverMyAccount
+        noMatchingAccountUseExistingAccount
+        signIn
+        useAnotherAccount
+        useExistingAccount
+      }
+      gateNotConnectedTexts {
+        paragraphCustomerNotConnected
+        paragraphExistingAccountNewCustomer
+        paragraphMatchingAccount
+        paragraphNewAccount
+        paragraphNoMatchingAccount
+        subtitleCustomerNotConnected
+        subtitleExistingAccountNewCustomer
+        subtitleMatchingAccount
+        subtitleNewAccount
+        subtitleNoMatchingAccount
+      }
+      headerNotConnectedTexts {
+        titleCustomerConnected
+        titleCustomerNotConnected
+      }
+    }
+  }
+}
+
+query GetShopifyCampaignParametersForConnected(
+  $gateId: String!
+  $locale: Locale!
+  $stage: Stage!
+) @cached {
+  shopifyCampaignParameters_by_pk(gateId: $gateId) {
+    organizerId
+    status
+    shopifyCampaignTemplate(locales: [$locale, en], stage: $stage) {
+      gateConnectedTexts {
+        paragraphLocked
+        paragraphUnlocked
+        paragraphUnlocking
+        paragraphUsed
+        subtitleLocked
+        subtitleUnlocked
+        subtitleUnlocking
+        subtitleUsed
+        gateStatus {
+          locked
+          name
+          unlocked
+          unlocking
+          used
+        }
+      }
+      headerConnectedTexts {
+        titleDefault
+        titleHowToGet
+      }
+      profileTexts {
+        menuActionSignOut
+        menuSectionMyAccount
+      }
+    }
+  }
+}

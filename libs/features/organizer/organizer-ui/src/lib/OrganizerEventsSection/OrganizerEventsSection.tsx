@@ -5,6 +5,7 @@ import {
   CardHeader,
   Text,
   TextSkeleton,
+  AlertTitle,
 } from '@ui/components';
 import { useTranslations } from 'next-intl';
 import { StaticImageData } from 'next/image';
@@ -31,7 +32,7 @@ const NoEventsPlaceholder: React.FC<NoEventsPlaceholderProps> = ({
   return (
     <div className="flex flex-col">
       <Alert variant="info" className="max-w-fit">
-        {t('noEvents')}
+        <AlertTitle>{t('noEvents')}</AlertTitle>
       </Alert>
       {/* <div className="relative h-80 w-80 grow">
         <Image fill src={noEventsImage} alt={t('noEvents')} />

@@ -10,8 +10,6 @@ import '@next/types';
 
 interface AuthProviderProps extends UseSafeAuthProps {
   children?: React.ReactNode;
-  session: Session | null;
-  isConnected?: () => boolean;
 }
 
 interface INextAuthProps {
@@ -28,17 +26,12 @@ export const NextAuthProvider = ({ children, session }: INextAuthProps) => {
 };
 
 interface AuthContextValue {
-  safeAuth: ReturnType<typeof useSafeAuth>['safeAuth'];
-  safeUser: ReturnType<typeof useSafeAuth>['safeUser'];
-  provider: ReturnType<typeof useSafeAuth>['provider'];
   login: ReturnType<typeof useSafeAuth>['login'];
   logout: ReturnType<typeof useSafeAuth>['logout'];
-  loginSiwe: ReturnType<typeof useSafeAuth>['loginSiwe'];
-  logoutSiwe: ReturnType<typeof useSafeAuth>['logoutSiwe'];
+  createAccount: ReturnType<typeof useSafeAuth>['createAccount'];
+  loginAuto: ReturnType<typeof useSafeAuth>['loginAuto'];
   connecting: ReturnType<typeof useSafeAuth>['connecting'];
-  chainId: ReturnType<typeof useSafeAuth>['chainId'];
-  chainConfig: ReturnType<typeof useSafeAuth>['chainConfig'];
-  getSigner: ReturnType<typeof useSafeAuth>['getSigner'];
+  isReady: ReturnType<typeof useSafeAuth>['isReady'];
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -49,8 +42,8 @@ export const useAuthContext = () => {
     undefined,
   );
   React.useEffect(() => {
-    const fetchAuthContext = async () => {
-      // here mean we are in e2e test so bypass the web3auth part
+    const testAuthContext = async () => {
+      // here mean we are in e2e test so bypass the auth part
       if (window?.useE2EAuthContext && process.env.NEXT_PUBLIC_E2E_TEST) {
         const e2eAuthContextString = await window.useE2EAuthContext();
         const e2eAuthContext = JSON.parse(e2eAuthContextString);
@@ -58,7 +51,7 @@ export const useAuthContext = () => {
       }
     };
 
-    fetchAuthContext();
+    testAuthContext();
   }, []);
 
   if (!authContext) {
@@ -74,20 +67,11 @@ export const AuthProvider = ({
   session,
   isConnected,
 }: AuthProviderProps) => {
-  const { safeAuth, ...props } = useSafeAuth({
+  const props = useSafeAuth({
     messages,
     session,
     isConnected,
   });
 
-  return (
-    <AuthContext.Provider
-      value={{
-        safeAuth,
-        ...props,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={props}>{children}</AuthContext.Provider>;
 };

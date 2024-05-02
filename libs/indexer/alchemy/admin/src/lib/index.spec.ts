@@ -1,5 +1,5 @@
+import { Network, WebhookType } from 'alchemy-sdk';
 import { AlchemyWrapper, fetchAllPages } from './index';
-import { WebhookType, Network } from 'alchemy-sdk';
 
 describe('fetchAllPages', () => {
   it('should retrieve all items across multiple pages', async () => {
@@ -127,6 +127,12 @@ describe('AlchemyWrapper', () => {
       expect(
         alchemyWrapper.convertNetworkToChainId(Network.POLYGONZKEVM_TESTNET),
       ).toBe('1442');
+      expect(alchemyWrapper.convertNetworkToChainId(Network.BASE_SEPOLIA)).toBe(
+        '84532',
+      );
+      expect(alchemyWrapper.convertNetworkToChainId(Network.MATIC_AMOY)).toBe(
+        '80002',
+      );
     });
 
     it('should throw an error for an unsupported network', () => {
@@ -474,11 +480,64 @@ describe('AlchemyWrapper', () => {
     });
   });
 
-  describe('deleteNftActivityWebhook', () => {
+  describe('createNftMetadataUpdateWebhook', () => {
+    it('should call the SDK method with correct arguments and return the result', async () => {
+      const mockWebhookUrl = 'http://example.com/webhook';
+      const mockFilters = [
+        {
+          contractAddress: '0x123',
+        },
+      ];
+      const mockResponse = {
+        type: WebhookType.NFT_METADATA_UPDATE,
+      };
+
+      (
+        alchemyWrapper as any
+      ).alchemy.notify.createWebhook.mockResolvedValueOnce(mockResponse);
+
+      const result = await alchemyWrapper.createNftMetadataUpdateWebhook(
+        mockWebhookUrl,
+        mockFilters,
+      );
+
+      expect(
+        (alchemyWrapper as any).alchemy.notify.createWebhook,
+      ).toHaveBeenCalledWith(mockWebhookUrl, WebhookType.NFT_METADATA_UPDATE, {
+        network: alchemyWrapper.network,
+        filters: mockFilters,
+      });
+      expect(result).toEqual(mockResponse);
+    });
+
+    it('should throw an error if SDK method fails', async () => {
+      const mockWebhookUrl = 'http://example.com/webhook';
+      const mockFilters = [
+        {
+          contractAddress: '0x123',
+        },
+      ];
+
+      (
+        alchemyWrapper as any
+      ).alchemy.notify.createWebhook.mockRejectedValueOnce(
+        new Error('Creation Error'),
+      );
+
+      await expect(
+        alchemyWrapper.createNftMetadataUpdateWebhook(
+          mockWebhookUrl,
+          mockFilters,
+        ),
+      ).rejects.toThrow('Creation Error');
+    });
+  });
+
+  describe('deleteWebhook', () => {
     it('should call the SDK method with correct argument', async () => {
       const mockWebhookId = 'webhook123';
 
-      await alchemyWrapper.deleteNftActivityWebhook(mockWebhookId);
+      await alchemyWrapper.deleteWebhook(mockWebhookId);
 
       expect(
         (alchemyWrapper as any).alchemy.notify.deleteWebhook,
@@ -494,9 +553,9 @@ describe('AlchemyWrapper', () => {
         new Error('Deletion Error'),
       );
 
-      await expect(
-        alchemyWrapper.deleteNftActivityWebhook(mockWebhookId),
-      ).rejects.toThrow('Deletion Error');
+      await expect(alchemyWrapper.deleteWebhook(mockWebhookId)).rejects.toThrow(
+        'Deletion Error',
+      );
     });
   });
 

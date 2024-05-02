@@ -1,5 +1,9 @@
 export const dynamic = 'force-dynamic';
-import { getOrdersConfirmed, getPendingOrders } from '@features/cart-api';
+import {
+  getAllPassesCart,
+  getOrdersConfirmed,
+  getPendingOrders,
+} from '@features/cart-api';
 import {
   NoUserCart,
   UserCart,
@@ -7,10 +11,8 @@ import {
 } from '@features/cart/server';
 import { SumsubButton } from '@features/kyc/server';
 import { PassCache } from '@features/pass-cache';
-import { Locale } from '@gql/shared/types';
-import { Posthog } from '@insight/server';
-import { FeatureFlagsEnum } from '@insight/types';
 import { isUserKycValidated } from '@kyc/common';
+import { type Locale } from '@next/i18n';
 import { Link, redirect } from '@next/navigation';
 import { getCurrentUser } from '@next/next-auth/user';
 import { AppUser } from '@next/types';
@@ -25,30 +27,34 @@ interface CartSectionProps {
   params: {
     locale: Locale;
   };
+  searchParams?: {
+    reason?: string;
+  };
 }
 
 interface CartSectionContentProps
-  extends Pick<UserCartProps, 'userPassPendingOrders'> {
+  extends Pick<UserCartProps, 'userPassPendingOrders' | 'allPassesCart'> {
   user: AppUser | undefined;
-  locale: Locale;
-  kycFlag?: boolean;
+  reason?: string;
 }
 
 const CartSectionContent: FC<CartSectionContentProps> = ({
   user,
-  locale,
   userPassPendingOrders,
-  kycFlag,
+  allPassesCart,
+  reason,
 }) => {
   const t = useTranslations('Cart.UserCart');
   const isEmptyCart = !userPassPendingOrders?.length;
+
   return user ? (
     <UserCart
       userPassPendingOrders={userPassPendingOrders}
-      getAllPassesCart={passCache.getAllPassesCart}
+      allPassesCart={allPassesCart}
       noCartImage="/empty-cart.svg"
+      reason={reason}
     >
-      {!kycFlag || isUserKycValidated(user) ? (
+      {isUserKycValidated(user) ? (
         <Link href={isEmptyCart ? '/cart' : '/cart/purchase'} legacyBehavior>
           <Button
             disabled={isEmptyCart}
@@ -61,7 +67,6 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
         </Link>
       ) : (
         <SumsubButton
-          locale={locale}
           confirmedText={
             isEmptyCart ? t('continue-button') : t('finalize-button')
           }
@@ -71,30 +76,29 @@ const CartSectionContent: FC<CartSectionContentProps> = ({
       )}
     </UserCart>
   ) : (
-    <NoUserCart
-      noCartImage="/empty-cart.svg"
-      getAllPassesCart={passCache.getAllPassesCart}
-    />
+    <NoUserCart noCartImage="/empty-cart.svg" allPassesCart={allPassesCart} />
   );
 };
 
 export default async function CartSection({
   params: { locale },
+  searchParams: { reason } = { reason: undefined },
 }: CartSectionProps) {
   const user = await getCurrentUser();
-  if (!user) return <CartSectionContent user={user} locale={locale} />;
-  const kycFlag = await Posthog.getInstance().getFeatureFlag(
-    FeatureFlagsEnum.KYC,
-    user.address,
-  );
+  if (!user) {
+    const allPassesCart = await getAllPassesCart(passCache);
+    return (
+      <CartSectionContent
+        user={user}
+        allPassesCart={allPassesCart}
+        reason={reason}
+      />
+    );
+  }
   let userPassPendingOrders = await getPendingOrders();
   const userPassConfirmedOrders = await getOrdersConfirmed();
   // if user has confirmed orders and kyc validated, redirect to purchase page
-  // if kycflag is false, redirect to purchase page because doesn't have kyc
-  if (
-    userPassConfirmedOrders?.length &&
-    (!kycFlag || isUserKycValidated(user))
-  ) {
+  if (userPassConfirmedOrders?.length && isUserKycValidated(user)) {
     redirect('/cart/purchase');
   }
   // check if user has pending orders, if he have none check for the cache
@@ -104,12 +108,17 @@ export default async function CartSection({
     if (res) userPassPendingOrders = res;
   }
 
+  const allPassesCart = await getAllPassesCart(
+    passCache,
+    userPassPendingOrders,
+  );
+
   return (
     <CartSectionContent
-      kycFlag={kycFlag}
       user={user}
-      locale={locale}
       userPassPendingOrders={userPassPendingOrders}
+      allPassesCart={allPassesCart}
+      reason={reason}
     />
   );
 }

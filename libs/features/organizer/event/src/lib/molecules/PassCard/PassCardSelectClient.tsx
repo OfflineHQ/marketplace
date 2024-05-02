@@ -3,20 +3,21 @@
 import {
   BoundedNumericStepper,
   BoundedNumericStepperProps,
+  useToast,
 } from '@ui/components';
-import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 
 import { updateEventPassCart } from '@features/organizer/event-actions';
 import { EventSlugs } from '@features/organizer/event-types';
+import { useRouter } from '@next/navigation';
+import { useTranslations } from 'next-intl';
 
 export interface PassCardSelectClientProps
-  extends Omit<BoundedNumericStepperProps, 'onChange' | 'disabled'>,
+  extends Omit<BoundedNumericStepperProps, 'onChange' | 'disabled' | 'value'>,
     EventSlugs {
   eventPassId: string;
 }
 
-//TODO: here handle error cases from updateEventPassCart (display with toast)
 export const PassCardSelectClient: React.FC<PassCardSelectClientProps> = ({
   organizerSlug,
   eventSlug,
@@ -25,8 +26,16 @@ export const PassCardSelectClient: React.FC<PassCardSelectClientProps> = ({
 }) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const [value, setValue] = useState(
+    boundedNumericStepperProps.initialValue || 0,
+  );
+  const { toast } = useToast();
+  const t = useTranslations('Organizer.Event.PassPurchase');
+
   return (
     <BoundedNumericStepper
+      isPending={isPending}
+      value={value}
       onChange={(quantity) =>
         startTransition(async () => {
           try {
@@ -36,11 +45,14 @@ export const PassCardSelectClient: React.FC<PassCardSelectClientProps> = ({
               eventPassId,
               quantity,
             });
-            // pb with revalidatePath or revalidateTag, (error 404 in updateEventPassCart) so refresh for now
+            setValue(quantity);
             router.refresh();
           } catch (e) {
             console.error(e);
-            // TODO handle error with toast
+            toast({
+              title: t('error-title'),
+              description: t('error-description'),
+            });
           }
         })
       }

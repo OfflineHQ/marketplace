@@ -28,7 +28,7 @@ export const NoUserCart: React.FC<NoUserCartProps> = (props) => {
           <CardTitle>{t('title')}</CardTitle>
           <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
-        <CardContent className="px-1">
+        <CardContent className="mx-5 px-1">
           <EventPassesCart {...props} />
         </CardContent>
       </AppContainerOverflow>

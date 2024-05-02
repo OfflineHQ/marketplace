@@ -10,6 +10,7 @@ import {
   eventPassNft2,
   owner,
 } from './examples';
+import { darkMode, mobileMode } from '@test-utils/storybook-modes';
 
 // Import the stories you want to reuse
 
@@ -45,30 +46,22 @@ export const Loading: Story = {
 export const LoadingMobile: Story = {
   ...Loading,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 };
 
 export const NotRevealedPassWithMobile: Story = {
   ...NotRevealedPass,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 };
 
 export const NotRevealedPassWithMobileDarkMode: Story = {
   ...NotRevealedPass,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-    darkMode: {
-      isDark: true,
-    },
+    ...mobileMode,
+    ...darkMode,
   },
 };
 
@@ -87,9 +80,7 @@ export const RevealedPass: Story = {
 export const RevealedPassWithMobile: Story = {
   ...RevealedPass,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 };
 
@@ -109,21 +100,15 @@ export const OwnerNotRevealedPass: Story = {
 export const OwnerNotRevealedPassWithMobile: Story = {
   ...OwnerNotRevealedPass,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 };
 
 export const OwnerNotRevealedPassWithMobileDarkMode: Story = {
   ...OwnerNotRevealedPass,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-    darkMode: {
-      isDark: true,
-    },
+    ...mobileMode,
+    ...darkMode,
   },
 };
 
@@ -143,21 +128,15 @@ export const OwnerRevealedPass: Story = {
 export const OwnerRevealedPassWithMobile: Story = {
   ...OwnerRevealedPass,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 };
 
 export const OwnerRevealedPassWithMobileDarkMode: Story = {
   ...OwnerRevealedPass,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
-    darkMode: {
-      isDark: true,
-    },
+    ...mobileMode,
+    ...darkMode,
   },
 };
 
@@ -168,6 +147,6 @@ export const OwnerRevealedPassWithMobileDarkMode: Story = {
 
 // export const SectionWithNormalUser: Story = {
 //   args: {
-//     children: <AppNavLayout {...WithNormalUser.args} />,
+//     children: <AppNavLayout {...WithUserEmail.args} />,
 //   },
 // };

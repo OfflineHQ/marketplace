@@ -1,6 +1,7 @@
 // libs/features/organizer/src/lib/SocialMediaButtons/SocialMediaButtons.stories.tsx
 import { Meta, StoryObj } from '@storybook/react';
 import { SocialMediaButtons } from './SocialMediaButtons';
+import { mobileMode } from '@test-utils/storybook-modes';
 
 const meta = {
   component: SocialMediaButtons,
@@ -67,8 +68,6 @@ export const AllSocialMedia = {
 export const AllSocialMediaWithMobile = {
   ...AllSocialMedia,
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 } satisfies Story;

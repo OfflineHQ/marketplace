@@ -10,8 +10,7 @@
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/web",
-        "postcssConfig": "apps/web/postcss.config.js",
-        "debug": true
+        "postcssConfig": "apps/web/postcss.config.js"
       },
       "assets": [
         {
@@ -45,11 +44,6 @@
             "input": "libs/ui/shared/src/assets",
             "glob": "**/*",
             "output": "assets"
-          },
-          {
-            "input": "libs/currency/api/src/rates",
-            "glob": "**/*",
-            "output": "dist/apps/web/rates"
           }
         ]
       },
@@ -64,20 +58,6 @@
         }
       }
     },
-    "is-services-launched": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["node tools/test/isServicesLaunched.js"],
-        "readyWhen": "Services ready"
-      }
-    },
-    "serve-e2e": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": ["nx is-services-launched web", "nx serve web"],
-        "readyWhen": "Services ready"
-      }
-    },
     "export": {
       "executor": "@nx/next:export",
       "options": {
@@ -88,26 +68,12 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/web"],
       "options": {
-        "jestConfig": "apps/web/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "apps/web/jest.config.ts"
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/web/**/*.{ts,tsx,js,jsx,gql,graphql}"]
-      }
-    },
-    "gql": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          {
-            "command": "npx graphql-codegen --config codegen.yml -r dotenv/config -e .env.local "
-          }
-        ]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "storybook": {
       "executor": "@nx/storybook:storybook",
@@ -149,11 +115,17 @@
         "config": "apps/web/playwright.config.ts"
       }
     },
-
     "sitemap": {
       "executor": "nx:run-commands",
       "options": {
         "commands": ["node ./scripts/generate-sitemap.mjs"]
+      }
+    },
+    "test-integration": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/web/integration"],
+      "options": {
+        "jestConfig": "apps/web/jest.integration.config.ts"
       }
     }
   },

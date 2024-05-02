@@ -5,7 +5,9 @@ import {
   applySeeds,
   createDbClient,
   deleteAllTables,
+  updateObjects,
 } from '@test-utils/db';
+import { toZonedTime } from 'date-fns-tz';
 import { loadAccount } from './utils/loadAccount';
 
 let client: PgClient;
@@ -25,7 +27,24 @@ test.afterEach(async () => {
 });
 
 test.beforeEach(async () => {
-  await applySeeds(client, ['account', 'kyc', 'passAmount', 'passPricing']);
+  await applySeeds(client, [
+    'account',
+    'kyc',
+    'passAmount',
+    'passPricing',
+    'eventParameters',
+  ]);
+  const currentDate = toZonedTime(new Date(), 'Europe/London');
+  // set the event to be isSaleOnGoing = true
+  await updateObjects(
+    client,
+    'eventParameters',
+    {
+      dateSaleStart: new Date(currentDate.getTime() - 2000 * 60 * 60), // 2 hours before
+      dateSaleEnd: new Date(currentDate.getTime() + 2000 * 60 * 60), // 2 hours after
+    },
+    { eventId: 'clizzpvidao620buvxit1ynko' },
+  );
 });
 
 test('user should be able to buy a pass', async () => {
@@ -33,25 +52,22 @@ test('user should be able to buy a pass', async () => {
     user: 'alpha_user',
     goTo: '/en/organizer/test/event/test-an-event',
   });
-  await expect(page.getByRole('img', { name: 'An event' })).toBeVisible();
-  await expect(page.getByText('Wed, Jun 28, 2023, 2:08 PM')).toBeVisible();
-  await expect(page.getByText('Thu, Jun 22, 2023, 8:40 PM')).toBeVisible();
+  await expect(page.getByRole('img', { name: /an event/i })).toBeVisible();
+  await expect(page.getByText(/wed, jun 28, 2023, 2:08 pm/i)).toBeVisible();
+  await expect(page.getByText(/thu, jun 22, 2023, 8:40 pm/i)).toBeVisible();
   await page
-    .getByRole('button', { name: 'Qr Code Select passes' })
+    .getByRole('button', { name: /qr code select passes/i })
     .first()
     .click();
-  await page
-    .locator('div')
-    .filter({ hasText: /^€82\.500$/ })
-    .getByLabel('increment value')
-    .click();
-  await expect(page.getByText('1 pass selected')).toBeVisible();
+  await page.getByLabel('increment value').first().click();
+
+  await expect(page.getByText(/1 pass selected/i)).toBeVisible();
   await expect(
-    page.getByRole('heading', { name: 'Total Price: €82.50' }),
+    page.getByRole('heading', { name: /total price: €82.50/i }),
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Go to payment' }).click();
-  await page.getByRole('button', { name: 'Proceed to payment' }).click();
-  await page.waitForURL(/checkout.stripe.com\/c\/pay/);
-  await page.getByLabel('Back').click();
-  await expect(page.getByText('Purchase Cancelled')).toBeVisible();
+  await page.getByRole('button', { name: /go to payment/i }).click();
+  await page.getByRole('button', { name: /proceed to payment/i }).click();
+  await page.waitForURL(/checkout.stripe.com\/c\/pay/i);
+  await page.getByLabel(/back/i).click();
+  await expect(page.getByText(/purchase cancelled/i)).toBeVisible();
 });

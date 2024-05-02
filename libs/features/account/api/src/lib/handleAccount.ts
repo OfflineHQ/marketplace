@@ -1,11 +1,13 @@
-import type { Account_Insert_Input } from '@gql/shared/types';
-import { getAccount, type Account } from './getAccount';
-import { createAccount } from './createAccount';
+import { CreateAccountInput, createAccount } from './createAccount';
+import { Account, getAccount } from './getAccount';
 
 export const handleAccount = async (
-  account: Account_Insert_Input,
+  account: CreateAccountInput,
 ): Promise<Account> => {
-  const _account = await getAccount(account.address as string);
+  if (!account.address) {
+    throw new Error('Address is required');
+  }
+  const _account = await getAccount(account.address);
   if (!_account) {
     return createAccount(account) as Promise<Account>;
   }

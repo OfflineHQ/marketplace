@@ -2,11 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "commonjs",
+    "module": "nodenext",
     "types": ["jest", "node", "@testing-library/jest-dom", "@next/types"],
     "jsx": "react"
   },
   "include": [
+    "./e2e/**/*",
     "*.spec.ts",
     "jest.config.ts",
     "**/*.test.ts",

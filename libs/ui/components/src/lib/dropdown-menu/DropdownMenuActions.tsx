@@ -33,7 +33,7 @@ export const DropdownMenuActions: React.FC<DropdownMenuActionsProps> = ({
     <DropdownMenu>
       {/* This is the height of the button, forced to do that because of unreachable classes from Trigger with `relative inline block`, causing issue with the spinner */}
       <Ping {...ping}>
-        <div className={cn('h-10 w-10', className)}>
+        <div className={cn('size-10', className)}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"

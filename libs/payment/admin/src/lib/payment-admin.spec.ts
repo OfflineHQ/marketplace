@@ -1,6 +1,5 @@
 import { CurrencyRates } from '@currency/types';
 import env from '@env/server';
-import * as kycApi from '@features/kyc-api';
 import { adminSdk } from '@gql/admin/api';
 import {
   Currency_Enum,
@@ -11,12 +10,14 @@ import {
 } from '@gql/shared/types';
 import { Posthog } from '@insight/server';
 import { calculateUnitAmount } from '@next/currency-common';
-import { NftClaimable } from '@nft/thirdweb-admin';
+import { getSumSubApplicantPersonalData } from '@next/next-auth/common';
+import { EventPassNftOrder } from '@nft/thirdweb-admin';
 import { StripeCustomer } from '@payment/types';
 import { accounts } from '@test-utils/gql';
 import { Payment } from './payment-admin';
 
 jest.mock('stripe');
+jest.mock('@next/next-auth/common');
 jest.mock('@insight/server');
 jest.mock('@nft/thirdweb-admin');
 jest.mock('@features/kyc-api');
@@ -34,6 +35,18 @@ jest.mock('@next/currency-cache', () => {
   };
 });
 
+jest.mock('@next/redis', () => {
+  return {
+    NextRedis: jest.fn().mockImplementation(() => {
+      return {
+        kv: {
+          hset: jest.fn().mockResolvedValue({}),
+        },
+      };
+    }),
+  };
+});
+
 describe('Payment', () => {
   const stripeCustomerId = 'stripeCustomerId';
   const stripeSessionId = 'sessionId';
@@ -44,7 +57,7 @@ describe('Payment', () => {
     },
   };
   let payment: Payment;
-  let nftClaimableMock: jest.Mocked<NftClaimable>;
+  let eventPassNftOrderMock: jest.Mocked<EventPassNftOrder>;
 
   beforeAll(() => {
     (Posthog.getInstance as jest.Mock).mockImplementation(() => ({
@@ -53,7 +66,8 @@ describe('Payment', () => {
   });
 
   beforeEach(() => {
-    nftClaimableMock = new NftClaimable() as jest.Mocked<NftClaimable>;
+    eventPassNftOrderMock =
+      new EventPassNftOrder() as jest.Mocked<EventPassNftOrder>;
     payment = new Payment();
     payment.stripe.checkout = {
       sessions: {
@@ -70,9 +84,9 @@ describe('Payment', () => {
     jest.restoreAllMocks();
   });
 
-  it('should initialize Stripe and NftClaimable in constructor', () => {
+  it('should initialize Stripe and EventPassNftOrder in constructor', () => {
     expect(payment.stripe).toBeDefined();
-    expect(NftClaimable).toHaveBeenCalled();
+    expect(EventPassNftOrder).toHaveBeenCalled();
   });
 
   describe('webhookStripeConstructEvent', () => {
@@ -137,7 +151,7 @@ describe('Payment', () => {
         .mockResolvedValue(createdStripeCustomer);
 
       const res = await payment.getOrCreateStripeCustomer({
-        user: accounts.google_user,
+        user: accounts.delta_user,
       });
       expect(res).toBe(createdStripeCustomer.insert_stripeCustomer_one);
     });
@@ -158,8 +172,8 @@ describe('Payment', () => {
         getFeatureFlag: jest.fn().mockReturnValue(true),
       }));
       await expect(
-        payment.getOrCreateStripeCustomer({ user: accounts.google_user }),
-      ).rejects.toThrow(`Missing kyc for user: ${accounts.google_user.id}`);
+        payment.getOrCreateStripeCustomer({ user: accounts.delta_user }),
+      ).rejects.toThrow(`Missing kyc for user: ${accounts.delta_user.id}`);
     });
 
     it('should create a new stripe customer and store it if it does not exist if kycFlag not activated', async () => {
@@ -214,7 +228,7 @@ describe('Payment', () => {
       const stripeCustomer = { id: 'stripeCustomerId' };
 
       adminSdk.GetStripeCustomerByAccount = jest.fn().mockResolvedValue(null);
-      (kycApi.getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
+      (getSumSubApplicantPersonalData as jest.Mock).mockResolvedValue(
         userPersonalData,
       );
       payment.stripe.customers = {
@@ -228,7 +242,7 @@ describe('Payment', () => {
         user: accounts.alpha_user,
       });
 
-      expect(kycApi.getSumSubApplicantPersonalData).toHaveBeenCalledWith(
+      expect(getSumSubApplicantPersonalData).toHaveBeenCalledWith(
         accounts.alpha_user.kyc.applicantId,
       );
       expect(payment.stripe.customers.create).toHaveBeenCalledWith({
@@ -704,7 +718,7 @@ describe('Payment', () => {
     });
   });
   describe('confirmedStripeCheckoutSession', () => {
-    it('should call getOrdersFromStripeCheckoutSession, nftClaimable.checkOrder, markOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
+    it('should call getOrdersFromStripeCheckoutSession, eventPassNftOrder.checkOrder, markOrderAsCompleted, and adminSdk.DeleteStripeCheckoutSession with correct parameters', async () => {
       const stripeCheckoutSessionId = 'sessionId';
       const orders = [
         {
@@ -725,7 +739,7 @@ describe('Payment', () => {
       payment.getOrdersFromStripeCheckoutSession = jest
         .fn()
         .mockResolvedValue(orders);
-      payment.nftClaimable.checkOrder = jest.fn().mockResolvedValue({});
+      payment.eventPassNftOrder.checkOrder = jest.fn().mockResolvedValue({});
       adminSdk.DeleteStripeCheckoutSession = jest.fn().mockResolvedValue({});
 
       await payment.confirmedStripeCheckoutSession({ stripeCheckoutSessionId });
@@ -733,11 +747,11 @@ describe('Payment', () => {
       expect(payment.getOrdersFromStripeCheckoutSession).toHaveBeenCalledWith({
         stripeCheckoutSessionId,
       });
-      expect(payment.nftClaimable.checkOrder).toHaveBeenCalledTimes(
+      expect(payment.eventPassNftOrder.checkOrder).toHaveBeenCalledTimes(
         orders.length,
       );
       orders.forEach((order, index) => {
-        expect(payment.nftClaimable.checkOrder).toHaveBeenNthCalledWith(
+        expect(payment.eventPassNftOrder.checkOrder).toHaveBeenNthCalledWith(
           index + 1,
           order,
         );
@@ -760,7 +774,7 @@ describe('Payment', () => {
     });
 
     it('should throw an error when checkOrder fails', async () => {
-      payment.nftClaimable.checkOrder = jest
+      payment.eventPassNftOrder.checkOrder = jest
         .fn()
         .mockRejectedValue(new Error('Failed to claim NFTs'));
       payment.getOrdersFromStripeCheckoutSession = jest
@@ -772,7 +786,7 @@ describe('Payment', () => {
         payment.confirmedStripeCheckoutSession({
           stripeCheckoutSessionId: 'test',
         }),
-      ).rejects.toThrow('Error claiming NFTs : Failed to claim NFTs');
+      ).rejects.toThrow('Error processing orders : Failed to claim NFTs');
       expect(adminSdk.DeleteStripeCheckoutSession).not.toHaveBeenCalled();
     });
   });

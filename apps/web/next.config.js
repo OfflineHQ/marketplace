@@ -104,15 +104,11 @@ const nextConfig = {
       '@gql/anonymous/types',
       '@gql/shared/types',
     ],
-    // https://vercel.com/docs/concepts/deployments/skew-protection#enabling-skew-protection
-    useDeploymentId: true,
-    useDeploymentIdServerActions: true,
     typedRoutes: false, // no solution found to get it working with nx monorepo (not accessible from external libs like feature)
   },
   sentry: {
     hideSourceMaps: true,
-    // // TODO set back when issue fixed, meanwhile issue in api route will not be reported if not wrapped with withSentry.
-    // autoInstrumentServerFunctions: false, // avoid error: error ./middleware.ts Module not found: Can't resolve 'sentry.edge.config.ts'
+    autoInstrumentServerFunctions: true,
   },
 };
 

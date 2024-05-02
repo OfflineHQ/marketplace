@@ -1,0 +1,4 @@
+table:
+  name: lotteryStatus
+  schema: public
+is_enum: true

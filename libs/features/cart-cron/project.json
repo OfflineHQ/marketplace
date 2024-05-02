@@ -1,5 +1,5 @@
 {
-  "name": "features--cart-cron",
+  "name": "features-cart-cron",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/features/cart-cron/src",
   "projectType": "library",
@@ -7,23 +7,20 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "lintFilePatterns": ["libs/features/cart-cron/**/*.{ts,tsx,js,jsx}"]
+        "jestConfig": "libs/features/cart-cron/jest.config.ts"
       }
     },
     "test-integration": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/features/cart-cron/jest.config.ts",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "jestConfig": "libs/features/cart-cron/jest.integration.config.ts"
       }
     }
   }

@@ -1,10 +1,9 @@
-import * as authProvider from '@next/auth';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent } from '@storybook/test';
 import * as checkPass from '../../actions/checkEventPassFilesHash';
-import * as deploy from '../../actions/deployCollectionWrapper';
+import * as deploy from '../../actions/deployEventPassCollectionWrapper';
 import * as renameFiles from '../../actions/renameEventPassNftFiles';
-import * as reveal from '../../actions/revealDelayedContract';
+import * as reveal from '../../actions/revealEventPassDelayedContract';
 
 import {
   EventSheetExample,
@@ -13,30 +12,23 @@ import {
   eventWithNormalPasses,
 } from './examples';
 
-import { createMock, getMock, render } from 'storybook-addon-module-mock';
-import { eventPassNftFilesTableMocks } from '../../molecules/EventPassNftFilesTable/EventPassNftFilesTable.stories';
-import { eventPassNftFiles } from '../../molecules/EventPassNftFilesTable/examples';
+import { EventStatus_Enum } from '@gql/shared/types';
+import { SessionDecorator } from '@test-utils/storybook-decorators';
+import { mobileMode } from '@test-utils/storybook-modes';
+import { getMock, render } from 'storybook-addon-module-mock';
+import {
+  eventPassNftFiles,
+  eventPassNftFilesTableMocks,
+} from '../../molecules/EventPassNftFilesTable/examples';
 import { EventSheet } from './EventSheet';
 
 const meta: Meta<typeof EventSheet> = {
   component: EventSheet,
+  decorators: [SessionDecorator],
   parameters: {
     layout: 'fullscreen',
     moduleMock: {
-      mock: () => {
-        const mockRename = createMock(renameFiles, 'renameEventPassNftFiles');
-        mockRename.mockReturnValue(Promise.resolve());
-        const mockDeploy = createMock(deploy, 'deployCollectionWrapper');
-        mockDeploy.mockReturnValue(Promise.resolve());
-        const mockReveal = createMock(reveal, 'revealDelayedContract');
-        mockReveal.mockReturnValue(Promise.resolve());
-        return [
-          mockRename,
-          mockDeploy,
-          mockReveal,
-          ...eventPassNftFilesTableMocks(),
-        ];
-      },
+      mock: eventPassNftFilesTableMocks,
     },
   },
   render: EventSheetExample,
@@ -170,20 +162,12 @@ export const WithClickOnDeploy: Story = {
     chromatic: { disableSnapshot: true },
   },
   play: async ({ container, parameters }) => {
-    const mockAuth = getMock(parameters, authProvider, 'useAuthContext');
     const mockRename = getMock(
       parameters,
       renameFiles,
       'renameEventPassNftFiles',
     );
     mockRename.mockReturnValue(Promise.resolve());
-    mockAuth.mockReturnValue({
-      user: {
-        id: '0x1234',
-      },
-      getSigner: () => Promise.resolve({}),
-      provider: {},
-    });
     const buttonElement = await screen.findByText(
       /Deploy the NFTs contract/i,
       {},
@@ -191,7 +175,11 @@ export const WithClickOnDeploy: Story = {
         timeout: 5000,
       },
     );
-    const mockDeploy = getMock(parameters, deploy, 'deployCollectionWrapper');
+    const mockDeploy = getMock(
+      parameters,
+      deploy,
+      'deployEventPassCollectionWrapper',
+    );
     await expect(buttonElement).toBeEnabled();
     await userEvent.click(buttonElement);
     expect(mockDeploy).toBeCalledTimes(1);
@@ -229,20 +217,30 @@ const eventPassWithPassToReveal = {
 
 export const WithEventPassDelayedRevealToReveal: Story = {
   args: {
-    event: eventPassWithPassToReveal,
+    event: {
+      ...eventPassWithPassToReveal,
+      eventParameters: {
+        status: EventStatus_Enum.Published,
+      },
+    },
   },
   play: async ({ container, parameters }) => {
     const textElement = await screen.findByText(/0xabcd/i);
     expect(textElement).toBeInTheDocument();
+    expect(screen.getByText(/published/i)).toBeInTheDocument();
     const buttonElement = await screen.findByText(/reveal your event pass/i);
     await expect(buttonElement).toBeEnabled();
-    const revealMock = getMock(parameters, reveal, 'revealDelayedContract');
+    const revealMock = getMock(
+      parameters,
+      reveal,
+      'revealEventPassDelayedContract',
+    );
     await userEvent.click(buttonElement);
-    const args = revealMock.mock.calls[0][0];
+    const args = revealMock.mock.calls[0];
     expect(revealMock).toBeCalledTimes(1);
-    expect(args).toMatch(
+    expect(args[1]).toMatch(
       eventPassWithPassToReveal.eventPasses[0].eventPassNftContract
-        ?.contractAddress,
+        ?.contractAddress as string,
     );
     expect(await screen.findByText(/has been revealed/i)).toBeInTheDocument();
     revealMock.mockRejectedValueOnce(new Error('error'));
@@ -256,9 +254,7 @@ export const WithEventPassDelayedRevealToReveal: Story = {
 export const WithMobile: Story = {
   parameters: {
     layout: 'fullscreen',
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
+    ...mobileMode,
   },
 };
 

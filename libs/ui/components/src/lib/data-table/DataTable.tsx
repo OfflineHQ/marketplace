@@ -142,14 +142,12 @@ export function DataTable<TData, TValue>({
   }, [data, table]);
 
   return (
-    <div className={cn('space-y-4 w-full', className)}>
+    <div className={cn('w-full space-y-4', className)}>
       {toolbarProps && data.length ? (
         <DataTableToolbar table={table} {...toolbarProps} />
       ) : null}
       <div
-        className={cn(
-          'flex-grow h-full w-full overflow-auto rounded-md border',
-        )}
+        className={cn('size-full flex-grow overflow-auto rounded-md border')}
       >
         <Table>
           {showHeader ? (

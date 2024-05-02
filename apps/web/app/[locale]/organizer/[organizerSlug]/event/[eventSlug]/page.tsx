@@ -103,9 +103,11 @@ function EventSectionContent({
   organizerSlug,
 }: EventSectionContentProps) {
   const t = useTranslations('Organizer.Event');
-  return (
+  const { eventParameters, ...eventProps } = event;
+  return eventParameters ? (
     <Event
-      {...event}
+      {...eventProps}
+      eventParameters={eventParameters}
       purchaseLink={{
         href: {
           pathname: `/organizer/${organizerSlug}/event/${eventSlug}/purchase`,
@@ -113,5 +115,7 @@ function EventSectionContent({
       }}
       purchaseText={t('purchase-button-activator')}
     />
+  ) : (
+    <NotFound />
   );
 }

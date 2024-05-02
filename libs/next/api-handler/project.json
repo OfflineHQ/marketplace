@@ -1,0 +1,30 @@
+{
+  "name": "next-api-handler",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/next/api-handler/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/next/api-handler",
+        "main": "libs/next/api-handler/src/index.ts",
+        "tsConfig": "libs/next/api-handler/tsconfig.lib.json",
+        "assets": ["libs/next/api-handler/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/next/api-handler/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,5 +1,5 @@
 'use client';
-import { useNow } from '@next/i18n-ui';
+import { useNow } from '@time';
 import { Badge } from '@ui/components';
 import { Timer } from '@ui/icons';
 import { useFormatter, useTranslations } from 'next-intl';
@@ -24,7 +24,7 @@ export const EventPassTimeBeforeDeletionClient: React.FC<
     new Date(created_at).getTime() + timeBeforeDelete * 1000,
   );
   return (
-    <Badge variant="orange" icon={<Timer />}>
+    <Badge variant="warning" icon={<Timer />}>
       {t('time-before-deletion', {
         relativeTime: format.relativeTime(deletionTime, now),
       })}

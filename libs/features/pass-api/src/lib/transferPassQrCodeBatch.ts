@@ -2,6 +2,7 @@ import env from '@env/server';
 import { getPassUser } from '@features/pass-common';
 import type { BatchTransferInput } from '@features/pass-types';
 import { FileWrapper } from '@file-upload/admin';
+import { getErrorMessage } from '@utils';
 
 const fileWrapper = new FileWrapper();
 
@@ -51,11 +52,11 @@ export const transferPassQrCodeBatch = async (
       env.UPLOAD_ACCOUNT_ID,
       copyFileRequests,
     );
-  } catch (error: any) {
+  } catch (error) {
     throw new Error(
-      `Error while copying files in transferPassQrCodeBatch: ${
-        error.message
-      }. Failed batch: ${JSON.stringify(copyFileRequests)}`,
+      `Error while copying files in transferPassQrCodeBatch: ${getErrorMessage(
+        error,
+      )}. Failed batch: ${JSON.stringify(copyFileRequests)}`,
     );
   }
 
@@ -65,11 +66,11 @@ export const transferPassQrCodeBatch = async (
       env.UPLOAD_ACCOUNT_ID,
       filesToDelete,
     );
-  } catch (error: any) {
+  } catch (error) {
     throw new Error(
-      `Error while deleting files in transferPassQrCodeBatch: ${
-        error.message
-      }. Failed batch: ${JSON.stringify(filesToDelete)}`,
+      `Error while deleting files in transferPassQrCodeBatch: ${getErrorMessage(
+        error,
+      )}. Failed batch: ${JSON.stringify(filesToDelete)}`,
     );
   }
 };

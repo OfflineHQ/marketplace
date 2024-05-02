@@ -1,4 +1,4 @@
 export {
   WithNoUser,
-  WithNormalUser,
+  WithUserEmail,
 } from './lib/AppNavLayout/AppNavLayout.stories';

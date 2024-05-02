@@ -28,7 +28,6 @@ describe('tests for pendingOrder admin', () => {
     const res = await adminSdk.GetPendingOrders();
     const orders = res.pendingOrder;
     expect(orders?.length).toBe(5);
-    console.log(orders);
     expect(orders?.[0].eventPassId).toBe('clj8raobj7g8l0aw3bfw6dny4');
     expect(orders?.[0].created_at).toBeDefined();
     expect(orders?.[0].id).toBeDefined();

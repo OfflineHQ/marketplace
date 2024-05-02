@@ -7,12 +7,13 @@ import { cn } from '@ui/shared';
 import { VariantProps, cva } from 'class-variance-authority';
 
 const avatarSizes = {
-  xs: 'w-7 h-7 sm:w-8 sm:h-8 text-xs',
-  sm: 'w-8 h-8 sm:w-10 sm:h-10 text-sm',
-  default: 'w-10 h-10 sm:w-12 sm:h-12 text-base',
-  lg: 'w-12 h-12 sm:w-16 sm:h-16 text-lg',
-  xl: 'w-16 h-16 sm:w-20 sm:h-20 text-xl',
-  '2xl': 'w-20 h-20 sm:w-24 sm:h-24 text-2xl',
+  xs: 'size-7 sm:size-8 text-xs',
+  sm: 'size-8 sm:size-10 text-sm',
+  default: 'size-10 sm:size-12 text-base',
+  lg: 'size-12 sm:size-16 text-lg',
+  xl: 'size-16 sm:size-20 text-xl',
+  '2xl': 'size-20 sm:size-24 text-2xl',
+  auto: 'w-full h-full aspect-square',
 };
 
 const avatarVariants = cva(
@@ -37,17 +38,36 @@ export interface AvatarProps
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   AvatarProps
->(({ className, size, ...props }, ref) => (
-  <AvatarPrimitive.Root
-    ref={ref}
-    className={cn(
-      avatarVariants({ size }),
-      'relative flex-shrink-0',
-      className,
-    )}
-    {...props}
-  />
-));
+>(({ className, size, ...props }, ref) => {
+  if (size === 'auto') {
+    return (
+      <div
+        className={cn(
+          'flex aspect-square h-full items-center justify-center',
+          className,
+        )}
+      >
+        <AvatarPrimitive.Root
+          ref={ref}
+          className={cn('h-full w-full rounded-full')}
+          {...props}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <AvatarPrimitive.Root
+      ref={ref}
+      className={cn(
+        avatarVariants({ size }),
+        'relative flex-shrink-0',
+        className,
+      )}
+      {...props}
+    />
+  );
+});
 Avatar.displayName = AvatarPrimitive.Root.displayName;
 
 const AvatarImage = React.forwardRef<
@@ -56,7 +76,7 @@ const AvatarImage = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
-    className={cn('aspect-square h-full w-full', className)}
+    className={cn('aspect-square size-full', className)}
     {...props}
   />
 ));
@@ -71,7 +91,7 @@ const AvatarFallback = React.forwardRef<
   <AvatarPrimitive.Fallback
     ref={ref}
     className={cn(
-      'flex h-full w-full items-center justify-center rounded-full bg-muted',
+      'flex size-full items-center justify-center rounded-full bg-muted',
       className,
     )}
     {...props}
@@ -80,7 +100,7 @@ const AvatarFallback = React.forwardRef<
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
 const avatarSkeletonVariants = cva(
-  'relative shrink-0 animate-pulse rounded-full bg-skeleton',
+  'relative shrink-0 animate-pulse rounded-full bg-image',
   {
     variants: {
       size: avatarSizes,

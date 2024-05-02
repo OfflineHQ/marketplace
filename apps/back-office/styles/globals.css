@@ -4,6 +4,11 @@
 
 @layer base {
   :root {
+    --default-font-stack: -apple-system, system-ui, BlinkMacSystemFont,
+      'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif,
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+      'Noto Color Emoji';
+
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -218,7 +223,7 @@
   }
 
   .step:before {
-    @apply absolute w-8 h-8 bg-muted rounded-full font-medium text-center text-base inline-flex items-center justify-center -indent-px;
+    @apply absolute inline-flex h-8 w-8 items-center justify-center rounded-full bg-muted text-center -indent-px text-base font-medium;
     @apply ml-[-41px];
     content: counter(step);
   }
@@ -236,31 +241,8 @@
 }
 
 body {
-  @apply h-full font-sans antialiased;
+  font-family: var(--font-sans, var(--default-font-stack));
 }
-
-.font-sans {
-  font-family: 'Inter', sans-serif;
-}
-
-/* Web3AuthUIModal */
-
-.w3a-parent-container #w3a-modal .w3a-header__logo img {
-  height: auto !important;
-  width: 6rem !important;
-}
-
-.w3a-parent-container #w3a-modal .w3a-modal__loader-app-logo {
-  width: 10rem !important;
-  height: 8rem;
-}
-.w3a-parent-container #w3a-modal .w3a-modal__loader-app-logo img {
-  width: 100% !important;
-  height: 100% !important;
-  max-height: 100% !important;
-  max-width: 100% !important;
-}
-/*  */
 
 body,
 html,
@@ -275,4 +257,9 @@ html,
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+/* TEMPORARY FIX: Enable pointer events for #cometh-gas-modal-wrapper. Remove or revise this once the underlying issue is resolved. */
+#cometh-gas-modal-wrapper {
+  pointer-events: auto !important;
 }

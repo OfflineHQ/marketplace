@@ -1,5 +1,8 @@
-query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!)
-@cached {
+query GetEventParametersAndEventPasses(
+  $eventSlug: String!
+  $locale: Locale!
+  $stage: Stage!
+) {
   eventPasses(
     where: { event: { slug: $eventSlug } }
     locales: [$locale, en]
@@ -23,6 +26,19 @@ query GetEventPasses($eventSlug: String!, $locale: Locale!, $stage: Stage!)
       eventDateLocation {
         ...EventDateLocationsFields
       }
+    }
+    eventPassNftContract {
+      type
+      isDelayedRevealed
+    }
+  }
+  event(where: { slug: $eventSlug }, locales: [$locale, en], stage: $stage) {
+    title
+    organizer {
+      slug
+    }
+    eventParameters {
+      ...EventParametersFields
     }
   }
 }

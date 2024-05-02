@@ -20,11 +20,11 @@ export const OpenDialogWithFocus: Story = {
     const dialogTrigger = screen.getByRole('button', { name: 'Edit Profile' });
     await userEvent.click(dialogTrigger);
 
-    const dialogTitle = await screen.findByText('Edit profile Dialog');
+    const dialogTitle = await screen.findByText(/Edit profile Dialog/i);
     await expect(dialogTitle).toBeVisible();
 
     const dialogDescription = await screen.findByText(
-      "Make changes to your profile here. Click save when you're done.",
+      /Make changes to your profile here. Click save when you're done./i,
     );
     await expect(dialogDescription).toBeVisible();
     // Check if the first TextInput is focused
@@ -42,7 +42,7 @@ export const CloseDialog: Story = {
     const closeButton = screen.getByTestId('dialog-close');
     await fireEvent.click(closeButton);
 
-    const dialogTitle = screen.queryByText('Edit profile Dialog');
+    const dialogTitle = screen.queryByText(/Edit profile Dialog/i);
     expect(dialogTitle).not.toBeInTheDocument();
   },
   parameters: {

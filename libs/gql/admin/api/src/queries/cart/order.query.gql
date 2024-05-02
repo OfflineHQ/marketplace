@@ -59,3 +59,22 @@ query GetOrdersFromStripeCheckoutSession($stripeCheckoutSessionId: String!) {
     }
   }
 }
+
+query GetOrdersWithClaimInfo($ids: [uuid!]!) {
+  order(where: { id: { _in: $ids } }) {
+    id
+    eventPassId
+    packId
+    quantity
+    status
+    eventPassNftContract {
+      contractAddress
+    }
+    packNftContract {
+      contractAddress
+    }
+    account {
+      address
+    }
+  }
+}

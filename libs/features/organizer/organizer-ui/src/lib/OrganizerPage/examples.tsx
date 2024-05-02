@@ -3,7 +3,7 @@ import {
   AppContainerOverflow,
   AppNavLayout,
 } from '@features/app-nav';
-import { WithNormalUser } from '@features/app-nav/stories';
+import { WithUserEmail } from '@features/app-nav/stories';
 import {
   Organizer,
   OrganizerLatestEvents,
@@ -88,7 +88,7 @@ export const latestEvents = [
 
 export function OrganizerPageDemo(organizerPageProps: OrganizerSectionProps) {
   return (
-    <AppNavLayout {...WithNormalUser.args}>
+    <AppNavLayout {...WithUserEmail.args}>
       <AppContainer>
         <AppContainerOverflow>
           <OrganizerSection {...organizerPageProps} />
@@ -106,7 +106,7 @@ export function OrganizerPageWithEventsDemo(
   organizerPageProps: OrganizerSectionProps,
 ) {
   return (
-    <AppNavLayout {...WithNormalUser.args}>
+    <AppNavLayout {...WithUserEmail.args}>
       <AppContainer>
         <AppContainerOverflow>
           <OrganizerSection {...organizerPageProps} />
@@ -120,7 +120,7 @@ export function OrganizerPageWithEventsDemo(
   );
 }
 export const OrganizerPageSkeleton = () => (
-  <AppNavLayout {...WithNormalUser.args}>
+  <AppNavLayout {...WithUserEmail.args}>
     <AppContainer>
       <AppContainerOverflow>
         <OrganizerSectionSkeleton />

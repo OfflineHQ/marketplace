@@ -1,7 +1,14 @@
 import { Roles_Enum } from '@gql/shared/types';
 import { AppUser } from '@next/types';
 import { TextSkeleton } from '@ui/components';
-import { EventManagement, UserRoles, Users } from '@ui/icons';
+import {
+  ContentSpaces,
+  EventManagement,
+  LoyaltyCard,
+  UserRoles,
+  Users,
+  Shopify,
+} from '@ui/icons';
 import { useTranslations } from 'next-intl';
 import { MenuNavDesktop } from './MenuNavDesktop';
 import { MenuNavMobile, MenuNavMobileProps } from './MenuNavMobile';
@@ -16,9 +23,27 @@ export const MenuNav: React.FC<MenuNavProps> = ({ user }) => {
 
   const adminItems: MenuNavMobileProps['items'] = [
     {
+      icon: <LoyaltyCard />,
+      value: '/loyalty-card',
+      text: t('loyalty-card-text'),
+      type: 'item',
+    },
+    {
+      icon: <Shopify />,
+      value: '/campaigns/shopify',
+      text: t('shopify-text'),
+      type: 'item',
+    },
+    {
       icon: <EventManagement />,
-      value: '/events',
+      value: '/campaigns/events',
       text: t('events-management-text'),
+      type: 'item',
+    },
+    {
+      icon: <ContentSpaces />,
+      value: '/perks/content-spaces',
+      text: t('content-spaces-text'),
       type: 'item',
     },
   ];
