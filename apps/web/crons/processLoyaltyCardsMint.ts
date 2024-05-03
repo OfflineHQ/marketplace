@@ -1,4 +1,5 @@
 import { handler as processLoyaltyCardsMintHandler } from '@features/loyalty-card-cron';
+import { NextResponse } from 'next/server';
 
 export default async function handler() {
   try {
@@ -7,9 +8,13 @@ export default async function handler() {
       'Minting process completed successfully for loyaltyCard:',
       result,
     );
-    return result;
+    return new NextResponse(JSON.stringify(result), {
+      status: 200,
+    });
   } catch (error) {
     console.error('Error during the minting process for loyaltyCard:', error);
-    throw error; // Re-throw the error if you want to propagate it further or handle it differently.
+    return new NextResponse(JSON.stringify({ error: error.message }), {
+      status: 500,
+    });
   }
 }
