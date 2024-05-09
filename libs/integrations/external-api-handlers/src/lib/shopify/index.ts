@@ -170,7 +170,7 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
     }
     return this.verifySignature({
       body: queryParams,
-      integritySecret: env.SHOPIFY_SHARED_SECRET,
+      integritySecret: env.SHOPIFY_API_SECRET,
       signature,
     });
   }

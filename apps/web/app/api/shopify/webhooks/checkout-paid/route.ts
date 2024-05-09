@@ -1,3 +1,4 @@
+import env from '@env/server';
 import { ShopifyWebhookAndApiHandler } from '@integrations/external-api-handlers';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -14,7 +15,7 @@ export async function POST(req: NextRequest) {
   }
 
   const isValid = shopifyHandler.verifySignature({
-    integritySecret: 'c886ebdff67650455049c4cc52517c0d',
+    integritySecret: env.SHOPIFY_API_SECRET,
     body,
     signature: shopifyHmacHeader,
   });

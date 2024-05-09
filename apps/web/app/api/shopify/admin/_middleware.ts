@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
     await new Promise((resolve, reject) => {
       jwt.verify(
         sessionToken,
-        env.SHOPIFY_SHARED_SECRET,
+        env.SHOPIFY_API_SECRET,
         { algorithms: ['HS256'] },
         (err, decoded) => {
           if (err) {
