@@ -2,7 +2,11 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit",
     "source.addMissingImports": "explicit",
-    "source.fixAll": "explicit"
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "always"
+  },
+  "search.exclude": {
+    "package-lock.json": true
   },
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
@@ -38,6 +42,17 @@
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    // useRouter should be imported from `next/navigation` instead of `next/router`
+    "next/router.d.ts",
+    "next/dist/client/router.d.ts"
+  ],
+  "typescript.preferences.preferTypeOnlyAutoImports": true, // Prefer type-only imports
+  "jest.runMode": {
+    "type": "on-save",
+    "testFileOnly": true,
+    "coverage": true
+  }, // Configure Jest extension
   "i18n-ally.localesPaths": "libs/next/i18n/src/messages",
   "i18n-ally.keystyle": "nested",
   "i18n-ally.namespace": true,

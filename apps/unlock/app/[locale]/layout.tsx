@@ -85,7 +85,8 @@ export default async function RootLayout({
       >
         <ReactQueryProviders>
           <IFrameProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {/* TODO: Handle dark and light mode from parent iframe if available, for now use light theme */}
+            <ThemeProvider forcedTheme="light">
               <WalletProvider>
                 {children}
                 <Toaster />
