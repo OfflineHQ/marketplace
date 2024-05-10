@@ -4,6 +4,8 @@ import { Locale } from '@gql/shared/types';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 120;
+
 const OffKeyGateNotConnected = dynamic(
   () =>
     import('@features/unlock/shopify').then(
