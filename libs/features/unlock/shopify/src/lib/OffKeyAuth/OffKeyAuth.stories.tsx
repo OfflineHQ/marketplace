@@ -185,4 +185,8 @@ export const NoMatchingAccount: Story = {
         }),
     },
   },
+  play: async ({ container }) => {
+    userEvent.click(await screen.findByText(/connect my account/i));
+    userEvent.click(await screen.findByText(/🌿/i));
+  },
 };
