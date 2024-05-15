@@ -96,14 +96,24 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
             setOffKeyState(offKeyState.status);
           }
           if (cssVariablesAndClasses) {
-            setCssVariables(cssVariablesAndClasses.cssVariables);
-            setClasses(
-              `${cssVariablesAndClasses.classes} font-${cssVariablesAndClasses.fontFamily}`,
-            );
+            // eslint-disable-next-line no-case-declarations
+            const { cssVariables, classes, fontFamily } =
+              cssVariablesAndClasses;
+            cssVariables['--font-family'] =
+              `${getFont(fontFamily, () => setUiReady(true))}, -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`;
+            setCssVariables(cssVariables);
+            setClasses(`${classes} font-${fontFamily}`);
+            break;
           }
-          setCustomer(customer);
-          setLinkedCustomer(linkedCustomer);
-          setProduct(product);
+          if (customer) {
+            setCustomer(customer);
+          }
+          if (linkedCustomer) {
+            setLinkedCustomer(linkedCustomer);
+          }
+          if (product) {
+            setProduct(product);
+          }
           break;
         case ReceiveMessageType.CONNECT_STATUS:
           setConnectStatus(
