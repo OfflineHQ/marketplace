@@ -77,7 +77,6 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   // https://github.com/davidjbradshaw/iframe-resizer/blob/master/docs/iframed_page/events.md
   const handleIFrameMessage = useCallback(
     <T extends ReceiveMessageType>({ type, value }: IFrameParentMessage<T>) => {
-      console.log(`Received message from iframe parent for ${type}`, value);
       switch (type) {
         case ReceiveMessageType.ALL:
           // eslint-disable-next-line no-case-declarations
@@ -89,10 +88,10 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
             linkedCustomer,
             product,
           } = value as ReceiveMessageValues[ReceiveMessageType.ALL];
-          if (connectStatus.status) {
+          if (connectStatus) {
             setConnectStatus(connectStatus.status);
           }
-          if (offKeyState.status) {
+          if (offKeyState) {
             setOffKeyState(offKeyState.status);
           }
           if (cssVariablesAndClasses) {
@@ -103,7 +102,6 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
               `${getFont(fontFamily, () => setUiReady(true))}, -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`;
             setCssVariables(cssVariables);
             setClasses(`${classes} font-${fontFamily}`);
-            break;
           }
           if (customer) {
             setCustomer(customer);
@@ -173,7 +171,6 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
       },
     };
   };
-
   return (
     <>
       {!iframeParent && <IFrameResizer onLoaded={handleIFrameLoaded} />}
