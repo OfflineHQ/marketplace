@@ -1,4 +1,5 @@
 export enum ReceiveMessageType {
+  ALL = 'ALL', // RECEIVE ALL MESSAGES AT ONCE (For fast initialization)
   CONNECT_STATUS = 'CONNECT_STATUS',
   UPDATE_CSS_VARIABLES_AND_CLASSES = 'UPDATE_CSS_VARIABLES_AND_CLASSES',
   OFF_KEY_STATE = 'OFF_KEY_STATE',
@@ -56,6 +57,14 @@ export interface ReceiveMessageValues {
     id: string;
     title: string;
     available: boolean;
+  };
+  [ReceiveMessageType.ALL]: {
+    offKeyState: ReceiveMessageValues[ReceiveMessageType.OFF_KEY_STATE];
+    connectStatus: ReceiveMessageValues[ReceiveMessageType.CONNECT_STATUS];
+    cssVariablesAndClasses: ReceiveMessageValues[ReceiveMessageType.UPDATE_CSS_VARIABLES_AND_CLASSES];
+    customer: ReceiveMessageValues[ReceiveMessageType.CUSTOMER];
+    linkedCustomer: ReceiveMessageValues[ReceiveMessageType.LINKED_CUSTOMER];
+    product: ReceiveMessageValues[ReceiveMessageType.PRODUCT];
   };
   // Additional value shapes can be defined here corresponding to the ReceiveMessageType
 }

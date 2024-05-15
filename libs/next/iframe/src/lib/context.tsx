@@ -79,6 +79,32 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
     <T extends ReceiveMessageType>({ type, value }: IFrameParentMessage<T>) => {
       console.log(`Received message from iframe parent for ${type}`, value);
       switch (type) {
+        case ReceiveMessageType.ALL:
+          // eslint-disable-next-line no-case-declarations
+          const {
+            offKeyState,
+            connectStatus,
+            cssVariablesAndClasses,
+            customer,
+            linkedCustomer,
+            product,
+          } = value as ReceiveMessageValues[ReceiveMessageType.ALL];
+          if (connectStatus.status) {
+            setConnectStatus(connectStatus.status);
+          }
+          if (offKeyState.status) {
+            setOffKeyState(offKeyState.status);
+          }
+          if (cssVariablesAndClasses) {
+            setCssVariables(cssVariablesAndClasses.cssVariables);
+            setClasses(
+              `${cssVariablesAndClasses.classes} font-${cssVariablesAndClasses.fontFamily}`,
+            );
+          }
+          setCustomer(customer);
+          setLinkedCustomer(linkedCustomer);
+          setProduct(product);
+          break;
         case ReceiveMessageType.CONNECT_STATUS:
           setConnectStatus(
             (value as ReceiveMessageValues[ReceiveMessageType.CONNECT_STATUS])
