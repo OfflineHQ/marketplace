@@ -102,6 +102,14 @@ export const useIframeOffKey = () => {
     useIFrame();
   const isIframeReady = useIframeReady();
 
+  console.log('useIframeOffKey', {
+    offKeyState,
+    customer,
+    product,
+    isIframeReady,
+    linkedCustomer,
+  });
+
   return {
     offKeyState,
     customer,
