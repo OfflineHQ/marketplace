@@ -79,6 +79,7 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
     <T extends ReceiveMessageType>({ type, value }: IFrameParentMessage<T>) => {
       switch (type) {
         case ReceiveMessageType.ALL:
+          console.log('Received ALL message', value);
           // eslint-disable-next-line no-case-declarations
           const {
             offKeyState,
@@ -154,6 +155,12 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
 
   const onMessageRef = useRef(handleIFrameMessage);
 
+  const handleIFrameReady = () => {
+    console.log('IFrame parent ready');
+    setIFrameParent((window as any).parentIFrame);
+  };
+  const onReadyRef = useRef(handleIFrameReady);
+
   useEffect(() => {
     onMessageRef.current = handleIFrameMessage;
   }, [handleIFrameMessage]);
@@ -161,19 +168,23 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   const handleIFrameLoaded = () => {
     if (!window || iframeParent) return;
     console.log('IFrame ready');
-    (window as any).iFrameResizer = {
-      onMessage: (message: IFrameParentMessage<ReceiveMessageType>) => {
-        onMessageRef.current(message);
-      },
-      onReady: () => {
-        console.log('IFrame parent ready');
-        setIFrameParent((window as any).parentIFrame);
-      },
-    };
+    // (window as any).iFrameResizer = {
+    //   onMessage: onMessageRef.current,
+    //   onReady: () => {
+    //     console.log('IFrame parent ready');
+    //     setIFrameParent((window as any).parentIFrame);
+    //   },
+    // };
   };
   return (
     <>
-      {!iframeParent && <IFrameResizer onLoaded={handleIFrameLoaded} />}
+      {!iframeParent && (
+        <IFrameResizer
+          onLoaded={handleIFrameLoaded}
+          onMessage={onMessageRef.current}
+          onReady={onReadyRef.current}
+        />
+      )}
       <IFrameContext.Provider
         value={{
           iframeParent,
