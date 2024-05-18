@@ -70,6 +70,7 @@ export interface ReceiveMessageValues {
 }
 
 export enum SendMessageType {
+  READY = 'READY',
   DISCONNECT = 'DISCONNECT',
   SIGNATURE = 'SIGNATURE',
   OFF_KEY_MINT = 'OFF_KEY_MINT',
@@ -78,6 +79,7 @@ export enum SendMessageType {
 }
 
 export interface SendMessageValues {
+  [SendMessageType.READY]: null;
   [SendMessageType.DISCONNECT]: {
     address: string;
   };
