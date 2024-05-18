@@ -20,6 +20,7 @@ import {
   OffKeyState,
   ReceiveMessageType,
   ReceiveMessageValues,
+  SendMessageType,
 } from './types';
 
 interface IFrameContextType {
@@ -166,15 +167,9 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   }, [handleIFrameMessage]);
 
   const handleIFrameLoaded = () => {
-    if (!window || iframeParent) return;
+    if (!window) return;
     console.log('IFrame ready');
-    // (window as any).iFrameResizer = {
-    //   onMessage: onMessageRef.current,
-    //   onReady: () => {
-    //     console.log('IFrame parent ready');
-    //     setIFrameParent((window as any).parentIFrame);
-    //   },
-    // };
+    iframeParent?.sendMessage({ type: SendMessageType.READY });
   };
   return (
     <>
