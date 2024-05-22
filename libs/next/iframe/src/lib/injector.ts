@@ -18,6 +18,7 @@ const IFrameResizer: React.FC<IFrameResizerProps> = ({
       onMessage,
       onReady,
     };
+    console.log('IFrameResizer injected');
   }, []);
   return null;
 };
