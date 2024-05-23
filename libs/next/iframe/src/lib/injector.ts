@@ -29,7 +29,7 @@ const IFrameResizer: React.FC<IFrameResizerProps> = ({
         onReady,
       };
       console.log('IFrameResizer injected');
-      // onReady();
+      onReady();
     };
 
     if (!(window as any).iFrameResizer) {
