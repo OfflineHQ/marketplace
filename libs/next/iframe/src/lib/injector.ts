@@ -1,10 +1,11 @@
 'use client';
 
+import { IFramePage } from 'iframe-resizer';
 import { useEffect, useRef } from 'react';
 
 interface IFrameResizerProps {
   onMessage: (message: any) => void;
-  onReady: () => void;
+  onReady: (iframeParent: IFramePage) => void;
 }
 
 const IFrameResizer: React.FC<IFrameResizerProps> = ({
@@ -26,10 +27,16 @@ const IFrameResizer: React.FC<IFrameResizerProps> = ({
           console.log('IFrameResizer message', message);
           onMessage(message);
         },
-        onReady,
+        onReady: () => {
+          onReady((window as any).parentIFrame);
+        },
       };
-      console.log('IFrameResizer injected');
-      onReady();
+      console.log(
+        'IFrameResizer injected',
+        (window as any).iFrameResizer,
+        (window as any).parentIFrame,
+      );
+      onReady((window as any).parentIFrame);
     };
 
     if (!window) {
