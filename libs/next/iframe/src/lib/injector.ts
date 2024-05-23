@@ -32,12 +32,17 @@ const IFrameResizer: React.FC<IFrameResizerProps> = ({
       onReady();
     };
 
+    if (!window) {
+      console.log('Window not found');
+      return;
+    }
+
     if (!(window as any).iFrameResizer) {
       loadIFrameResizer();
     } else {
       setIFrameResizer();
     }
-  }, [onMessage, onReady]);
+  }, []);
 
   return null;
 };
