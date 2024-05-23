@@ -7,7 +7,7 @@ const SvgComponent = (props: React.SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     stroke="transparent"
     // @ts-ignore
-    class={props.className}
+    className={props.className}
     {...props}
   >
     <defs>

@@ -157,9 +157,11 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   const onMessageRef = useRef(handleIFrameMessage);
 
   const handleIFrameReady = () => {
-    console.log('IFrame parent ready');
-    setIFrameParent((window as any).parentIFrame);
-    (window as any).parentIFrame.sendMessage({ type: SendMessageType.READY });
+    console.log('IFrame parent ready, ', (window as any).parentIFrame);
+    if ((window as any).parentIFrame) {
+      setIFrameParent((window as any).parentIFrame);
+      (window as any).parentIFrame.sendMessage({ type: SendMessageType.READY });
+    }
   };
   const onReadyRef = useRef(handleIFrameReady);
 
@@ -169,12 +171,10 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
 
   return (
     <>
-      {!iframeParent && (
-        <IFrameResizer
-          onMessage={onMessageRef.current}
-          onReady={onReadyRef.current}
-        />
-      )}
+      <IFrameResizer
+        onMessage={onMessageRef.current}
+        onReady={onReadyRef.current}
+      />
       <IFrameContext.Provider
         value={{
           iframeParent,
