@@ -1,7 +1,6 @@
 'use client';
 
-import '@iframe-resizer/child';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface IFrameResizerProps {
   onMessage: (message: any) => void;
@@ -12,14 +11,34 @@ const IFrameResizer: React.FC<IFrameResizerProps> = ({
   onMessage,
   onReady,
 }) => {
+  const iFrameResizerRef = useRef(false);
   useEffect(() => {
-    (window as any).iFrameResizer = {
-      targetOrigin: '*', // Default value, don't restrict to allow any shopify domain
-      onMessage,
-      onReady,
+    const loadIFrameResizer = async () => {
+      console.log('Loading IFrameResizer');
+      await import('@iframe-resizer/child');
+      setIFrameResizer();
+      iFrameResizerRef.current = true;
     };
-    console.log('IFrameResizer injected');
-  }, []);
+    const setIFrameResizer = () => {
+      (window as any).iFrameResizer = {
+        targetOrigin: '*',
+        onMessage: (message: any) => {
+          console.log('IFrameResizer message', message);
+          onMessage(message);
+        },
+        onReady,
+      };
+      console.log('IFrameResizer injected');
+      // onReady();
+    };
+
+    if (!(window as any).iFrameResizer) {
+      loadIFrameResizer();
+    } else {
+      setIFrameResizer();
+    }
+  }, [onMessage, onReady]);
+
   return null;
 };
 
