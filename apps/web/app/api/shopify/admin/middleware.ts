@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    jwt.verify(sessionToken, env.SHOPIFY_SHARED_SECRET, {
+    jwt.verify(sessionToken, env.SHOPIFY_API_SECRET, {
       algorithms: ['HS256'],
     });
 
