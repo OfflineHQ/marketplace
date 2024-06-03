@@ -66,13 +66,11 @@ export default function OffKeyAuth({
     }: ConnectProps) =>
       connect(walletAddress, isCreatingAccount, walletToConnect),
     onSuccess: (
-      data,
+      address,
       { walletAddress, isCreatingAccount, walletToConnect },
       context,
     ) => {
-      console.log({ data, walletAddress, isCreatingAccount, context });
-      console.log({ pathname, walletAddress });
-      let url = `${pathname}/${walletAddress}`;
+      let url = `${pathname}/${address}`;
       if (searchParams?.toString()) {
         const params = new URLSearchParams(searchParams.toString());
         url += `?${params.toString()}`;

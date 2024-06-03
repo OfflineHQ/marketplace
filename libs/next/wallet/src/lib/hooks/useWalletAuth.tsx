@@ -86,6 +86,7 @@ export function useWalletAuth() {
     } finally {
       setIsConnecting(false);
     }
+    return instance?.getAddress();
   }
 
   async function connectWithSiwe(
@@ -136,6 +137,7 @@ export function useWalletAuth() {
   }
 
   async function disconnect() {
+    console.log('disconnect wallet:', { wallet });
     if (wallet) {
       try {
         await wallet!.logout();
