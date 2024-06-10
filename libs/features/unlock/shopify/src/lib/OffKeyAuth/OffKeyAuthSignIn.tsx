@@ -10,7 +10,7 @@ export interface ConnectProps {
 }
 
 type ConnectWalletMutationType = UseMutationResult<
-  void,
+  string | undefined,
   Error,
   ConnectProps,
   unknown
