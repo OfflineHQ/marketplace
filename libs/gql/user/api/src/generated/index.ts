@@ -528,8 +528,8 @@ ${OrganizerFieldsFragmentDoc}`;
   }
 }
     `;
-export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
-export function getSdk<C, E>(requester: Requester<C, E>) {
+export type Requester<C = {}> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
+export function getSdk<C>(requester: Requester<C>) {
   return {
     GetAccount(variables: Types.GetAccountQueryVariables, options?: C): Promise<Types.GetAccountQuery> {
       return requester<Types.GetAccountQuery, Types.GetAccountQueryVariables>(GetAccountDocument, variables, options) as Promise<Types.GetAccountQuery>;

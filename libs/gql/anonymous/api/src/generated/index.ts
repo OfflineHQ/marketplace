@@ -92,8 +92,8 @@ export const EventPassNftFieldsFragmentDoc = `
 }
     ${EventPassNftFieldsFragmentDoc}
 ${EventPassFieldsFragmentDoc}`;
-export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
-export function getSdk<C, E>(requester: Requester<C, E>) {
+export type Requester<C = {}> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
+export function getSdk<C>(requester: Requester<C>) {
   return {
     GetEventPassNftByTokenReference(variables: Types.GetEventPassNftByTokenReferenceQueryVariables, options?: C): Promise<Types.GetEventPassNftByTokenReferenceQuery> {
       return requester<Types.GetEventPassNftByTokenReferenceQuery, Types.GetEventPassNftByTokenReferenceQueryVariables>(GetEventPassNftByTokenReferenceDocument, variables, options) as Promise<Types.GetEventPassNftByTokenReferenceQuery>;
