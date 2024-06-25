@@ -17,6 +17,7 @@ jest.mock('@nft/loyalty-card', () => ({
   LoyaltyCardNftWrapper: jest.fn().mockImplementation(() => ({
     mintWithPassword: jest.fn(),
     mint: jest.fn(),
+    getLoyaltyCardNftContractAddressForOrganizer: jest.fn(),
     setAsMinted: jest.fn(),
     getLoyaltyCardOwnedByAddress: jest.fn(),
   })),
@@ -543,11 +544,13 @@ describe('ShopifyWebhookAndApiHandler', () => {
     });
   });
   describe('ShopifyWebhookAndApiHandler - createShopifyCustomer', () => {
+    let mockLoyaltyCardSdk: LoyaltyCardNftWrapper;
     let handler: ShopifyWebhookAndApiHandler;
     let mockRequest: NextRequest;
 
     beforeEach(() => {
       handler = new ShopifyWebhookAndApiHandler();
+      mockLoyaltyCardSdk = new LoyaltyCardNftWrapper();
       mockRequest = createMockRequest(
         new URLSearchParams({
           address: 'test-address',
@@ -567,6 +570,14 @@ describe('ShopifyWebhookAndApiHandler', () => {
       (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
         shopifyCustomer: [],
       });
+
+      (
+        mockLoyaltyCardSdk.getLoyaltyCardNftContractAddressForOrganizer as jest.Mock
+      ).mockResolvedValue('test-contract');
+
+      (mockLoyaltyCardSdk.mint as jest.Mock).mockResolvedValue({
+        success: true,
+      });
     });
 
     it('should create a new Shopify customer', async () => {
@@ -574,9 +585,22 @@ describe('ShopifyWebhookAndApiHandler', () => {
       const response = await handler.createShopifyCustomer({
         req: mockRequest,
         id: 'test-customer-id',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
       });
       expect(handleAccount as jest.Mock).toHaveBeenCalledWith({
         address: 'test-address',
+      });
+      expect(
+        mockLoyaltyCardSdk.getLoyaltyCardNftContractAddressForOrganizer,
+      ).toHaveBeenCalledWith({
+        organizerId: 'test-organizer-id',
+        chainId: getCurrentChain().chainIdHex,
+      });
+      expect(mockLoyaltyCardSdk.mint).toHaveBeenCalledWith({
+        contractAddress: 'test-contract',
+        ownerAddress: 'test-address',
+        chainId: getCurrentChain().chainIdHex,
+        organizerId: 'test-organizer-id',
       });
       expect(response.status).toBe(200);
       expect(adminSdk.InsertShopifyCustomer).toHaveBeenCalledWith({
@@ -588,7 +612,7 @@ describe('ShopifyWebhookAndApiHandler', () => {
       });
     });
 
-    it('should throw BadRequestError if the customer already exists', async () => {
+    it('should not create customer if the customer already exists', async () => {
       (adminSdk.GetShopifyCustomer as jest.Mock).mockResolvedValue({
         shopifyCustomer: [{ address: 'test-address' }],
       });
@@ -597,13 +621,30 @@ describe('ShopifyWebhookAndApiHandler', () => {
       const response = await handler.createShopifyCustomer({
         req: mockRequest,
         id: 'test-customer-id',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
       });
-
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(200);
       expect(adminSdk.InsertShopifyCustomer).not.toHaveBeenCalled();
+      expect(
+        mockLoyaltyCardSdk.getLoyaltyCardNftContractAddressForOrganizer,
+      ).toHaveBeenCalled();
+      expect(mockLoyaltyCardSdk.mint).toHaveBeenCalled();
+    });
+
+    it('should throw InternalServerError if the contract address is not found', async () => {
+      (
+        mockLoyaltyCardSdk.getLoyaltyCardNftContractAddressForOrganizer as jest.Mock
+      ).mockResolvedValue(null);
+
+      const response = await handler.createShopifyCustomer({
+        req: mockRequest,
+        id: 'test-customer-id',
+        loyaltyCardSdk: mockLoyaltyCardSdk,
+      });
+      expect(response.status).toBe(500);
       expect(JSON.parse(response.body)).toEqual(
         expect.objectContaining({
-          error: expect.stringContaining('Customer already exists'),
+          error: expect.stringContaining('Internal Server Error'),
         }),
       );
     });

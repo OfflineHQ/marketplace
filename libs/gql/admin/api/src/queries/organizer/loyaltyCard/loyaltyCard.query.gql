@@ -97,6 +97,17 @@ query GetLoyaltyCardNftContractByContractAddress(
   }
 }
 
+query GetLoyaltyCardNftContractAddressForOrganizer(
+  $organizerId: String!
+  $chainId: String!
+) {
+  loyaltyCardNftContract(
+    where: { organizerId: { _eq: $organizerId }, chainId: { _eq: $chainId } }
+  ) {
+    contractAddress
+  }
+}
+
 query GetLoyaltyCardByContractAddressForProcess {
   loyaltyCardNft(
     where: { status: { _in: [CONFIRMED, ERROR] } }
