@@ -537,6 +537,14 @@ export type GetLoyaltyCardNftContractByContractAddressQueryVariables = Types.Exa
 
 export type GetLoyaltyCardNftContractByContractAddressQuery = { __typename?: 'query_root', loyaltyCardNftContract: Array<{ __typename?: 'loyaltyCardNftContract', loyaltyCardId: string }> };
 
+export type GetLoyaltyCardNftContractAddressForOrganizerQueryVariables = Types.Exact<{
+  organizerId: Types.Scalars['String']['input'];
+  chainId: Types.Scalars['String']['input'];
+}>;
+
+
+export type GetLoyaltyCardNftContractAddressForOrganizerQuery = { __typename?: 'query_root', loyaltyCardNftContract: Array<{ __typename?: 'loyaltyCardNftContract', contractAddress: string }> };
+
 export type GetLoyaltyCardByContractAddressForProcessQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 

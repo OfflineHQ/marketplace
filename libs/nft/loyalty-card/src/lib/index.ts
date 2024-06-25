@@ -2,6 +2,7 @@ import { adminSdk } from '@gql/admin/api';
 import {
   GetLoyaltyCardNftContractByContractAddressQueryVariables,
   GetLoyaltyCardOwnedByAddressQueryVariables,
+  type GetLoyaltyCardNftContractAddressForOrganizerQueryVariables,
 } from '@gql/admin/types';
 import { LoyaltyCardNft_Set_Input, NftStatus_Enum } from '@gql/shared/types';
 import { BadRequestError, NotFoundError } from '@next/api-handler';
@@ -23,6 +24,13 @@ export class LoyaltyCardNftWrapper {
   constructor() {
     this.adminSdk = adminSdk;
     this.mintPasswordNftWrapper = new MintPasswordNftWrapper();
+  }
+  async getLoyaltyCardNftContractAddressForOrganizer(
+    props: GetLoyaltyCardNftContractAddressForOrganizerQueryVariables,
+  ) {
+    const res =
+      await this.adminSdk.GetLoyaltyCardNftContractAddressForOrganizer(props);
+    return res.loyaltyCardNftContract?.[0]?.contractAddress;
   }
   async getLoyaltyCardOwnedByAddress(
     props: GetLoyaltyCardOwnedByAddressQueryVariables,
