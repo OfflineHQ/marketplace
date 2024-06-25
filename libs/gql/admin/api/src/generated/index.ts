@@ -1162,6 +1162,15 @@ ${EventParametersFieldsFragmentDoc}`;
   }
 }
     `;
+ const GetLoyaltyCardNftContractAddressForOrganizerDocument = `
+    query GetLoyaltyCardNftContractAddressForOrganizer($organizerId: String!, $chainId: String!) {
+  loyaltyCardNftContract(
+    where: {organizerId: {_eq: $organizerId}, chainId: {_eq: $chainId}}
+  ) {
+    contractAddress
+  }
+}
+    `;
  const GetLoyaltyCardByContractAddressForProcessDocument = `
     query GetLoyaltyCardByContractAddressForProcess {
   loyaltyCardNft(
@@ -1626,8 +1635,8 @@ ${EventPassFieldsFragmentDoc}`;
   }
 }
     ${StripeCustomerFieldsFragmentDoc}`;
-export type Requester<C = {}, E = unknown> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
-export function getSdk<C, E>(requester: Requester<C, E>) {
+export type Requester<C = {}> = <R, V>(doc: string, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
+export function getSdk<C>(requester: Requester<C>) {
   return {
     UpdateAccount(variables: Types.UpdateAccountMutationVariables, options?: C): Promise<Types.UpdateAccountMutation> {
       return requester<Types.UpdateAccountMutation, Types.UpdateAccountMutationVariables>(UpdateAccountDocument, variables, options) as Promise<Types.UpdateAccountMutation>;
@@ -1832,6 +1841,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetLoyaltyCardNftContractByContractAddress(variables: Types.GetLoyaltyCardNftContractByContractAddressQueryVariables, options?: C): Promise<Types.GetLoyaltyCardNftContractByContractAddressQuery> {
       return requester<Types.GetLoyaltyCardNftContractByContractAddressQuery, Types.GetLoyaltyCardNftContractByContractAddressQueryVariables>(GetLoyaltyCardNftContractByContractAddressDocument, variables, options) as Promise<Types.GetLoyaltyCardNftContractByContractAddressQuery>;
+    },
+    GetLoyaltyCardNftContractAddressForOrganizer(variables: Types.GetLoyaltyCardNftContractAddressForOrganizerQueryVariables, options?: C): Promise<Types.GetLoyaltyCardNftContractAddressForOrganizerQuery> {
+      return requester<Types.GetLoyaltyCardNftContractAddressForOrganizerQuery, Types.GetLoyaltyCardNftContractAddressForOrganizerQueryVariables>(GetLoyaltyCardNftContractAddressForOrganizerDocument, variables, options) as Promise<Types.GetLoyaltyCardNftContractAddressForOrganizerQuery>;
     },
     GetLoyaltyCardByContractAddressForProcess(variables?: Types.GetLoyaltyCardByContractAddressForProcessQueryVariables, options?: C): Promise<Types.GetLoyaltyCardByContractAddressForProcessQuery> {
       return requester<Types.GetLoyaltyCardByContractAddressForProcessQuery, Types.GetLoyaltyCardByContractAddressForProcessQueryVariables>(GetLoyaltyCardByContractAddressForProcessDocument, variables, options) as Promise<Types.GetLoyaltyCardByContractAddressForProcessQuery>;

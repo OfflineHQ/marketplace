@@ -63,6 +63,7 @@ export type HasLoyaltyCardOptions = MintLoyaltyCardOptions;
 
 export interface CreateShopifyCustomerOptions extends ApiHandlerOptions {
   id: string;
+  loyaltyCardSdk?: LoyaltyCardNftWrapper;
 }
 
 export type GetShopifyCustomerOptions = CreateShopifyCustomerOptions;
@@ -121,7 +122,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
           'Not Authorized: ' + getErrorMessage(error),
         );
       });
-    console.log({ resultParams, organizerId });
     const validatedParams = await this.serializeAndValidateParams(
       requestType,
       resultParams,
@@ -291,7 +291,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         req,
         RequestType.HasLoyaltyCard,
       );
-    console.log({ ownerAddress, organizerId });
     const loyaltyCard = await loyaltyCardSdk
       .getLoyaltyCardOwnedByAddress({
         ownerAddress: ownerAddress.toLowerCase(),
@@ -300,7 +299,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
         organizerId,
       })
       .catch((error: Error) => {
-        console.log({ error });
         console.error(
           `Error checking NFT existence: ${getErrorMessage(error)}`,
         );
@@ -308,10 +306,6 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
           `Error checking NFT existence: ${getErrorMessage(error)}`,
         );
       });
-    console.log({
-      loyaltyCard,
-      res: JSON.stringify({ isOwned: !!loyaltyCard }),
-    });
     return new NextResponse(JSON.stringify({ isOwned: !!loyaltyCard }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -327,30 +321,60 @@ export class ShopifyWebhookAndApiHandler extends BaseWebhookAndApiHandler {
           req,
           RequestType.CreateShopifyCustomer,
         );
-      console.log({ address, organizerId });
       const shopifyCustomer = await this.getShopifyCustomer({
         organizerId,
         customerId: id,
       });
-      if (shopifyCustomer) {
-        throw new BadRequestError('Customer already exists');
-      }
       // get or create a new account
       await handleAccount({
         address: address.toLowerCase(),
       });
-      await adminSdk
-        .InsertShopifyCustomer({
-          object: {
-            organizerId,
-            customerId: id,
-            address: address.toLowerCase(),
-          },
+      if (!shopifyCustomer) {
+        await adminSdk
+          .InsertShopifyCustomer({
+            object: {
+              organizerId,
+              customerId: id,
+              address: address.toLowerCase(),
+            },
+          })
+          .catch((error: Error) => {
+            throw new InternalServerError(
+              `Error creating shopify customer: ${getErrorMessage(error)}`,
+            );
+          });
+      }
+      const loyaltyCardSdk =
+        options.loyaltyCardSdk || new LoyaltyCardNftWrapper();
+
+      const contractAddress =
+        await loyaltyCardSdk.getLoyaltyCardNftContractAddressForOrganizer({
+          organizerId,
+          chainId: getCurrentChain().chainIdHex,
+        });
+      if (!contractAddress) {
+        throw new InternalServerError('No contract address found');
+      }
+      await loyaltyCardSdk
+        .mint({
+          contractAddress: contractAddress.toLowerCase(),
+          ownerAddress: address.toLowerCase(),
+          chainId: getCurrentChain().chainIdHex,
+          organizerId,
         })
         .catch((error: Error) => {
-          throw new InternalServerError(
-            `Error creating shopify customer: ${getErrorMessage(error)}`,
-          );
+          // Check if the error is already one of our custom errors
+          if (error instanceof CustomError) {
+            throw error; // It's already a custom error, re-throw it
+          } else {
+            // It's not one of our custom errors, wrap it in a custom error class
+            console.error(
+              `Error minting loyalty card: ${getErrorMessage(error)}`,
+            );
+            throw new InternalServerError(
+              `Error minting loyalty card: ${getErrorMessage(error)}`,
+            );
+          }
         });
       return new NextResponse(JSON.stringify({}), {
         status: 200,
