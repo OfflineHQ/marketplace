@@ -9,8 +9,8 @@ export interface IFrameChildMessage<T extends SendMessageType> {
   value: SendMessageValues[T];
 }
 
-export const useIframeConnect = () => {
-  const { iframeParent, connectStatus, setConnectStatus } = useIFrame();
+export function useIframeConnect<T>() {
+  const { iframeParent, connectStatus, setConnectStatus } = useIFrame<T>();
   const { wallet } = useWalletAuth();
 
   const disconnectFromDapp = (address: string) => {
@@ -89,18 +89,24 @@ export const useIframeConnect = () => {
     signWithEthereum,
     askForWalletConnectStatus,
   };
-};
+}
 
 // Here we rely on uiReady to determine if the iframe has been set (here means the iframe received css settings from the parent)
-export const useIframeReady = () => {
-  const { uiReady } = useIFrame();
+export function useIframeReady<T>() {
+  const { uiReady } = useIFrame<T>();
   return uiReady;
-};
+}
 
-export const useIframeOffKey = () => {
-  const { offKeyState, customer, product, iframeParent, linkedCustomer } =
-    useIFrame();
-  const isIframeReady = useIframeReady();
+export function useIframeOffKey<T>() {
+  const {
+    offKeyState,
+    customer,
+    product,
+    iframeParent,
+    linkedCustomer,
+    additionalData,
+  } = useIFrame<T>();
+  const isIframeReady = useIframeReady<T>();
 
   console.log('useIframeOffKey', {
     offKeyState,
@@ -108,6 +114,7 @@ export const useIframeOffKey = () => {
     product,
     isIframeReady,
     linkedCustomer,
+    additionalData,
   });
 
   return {
@@ -116,5 +123,6 @@ export const useIframeOffKey = () => {
     product,
     isReady: isIframeReady,
     linkedCustomer,
+    additionalData,
   };
-};
+}
