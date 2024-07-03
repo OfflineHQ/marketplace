@@ -34,7 +34,7 @@ export default function OffKeyGateNotConnected({
   textGateNotConnected,
   locale,
 }: OffKeyGateNotConnectedProps) {
-  const { shopifyContext, status } = useShopifyCustomer({ organizerId });
+  const { shopifyContext, status } = useShopifyCustomer();
 
   const textsSubtitle = {
     [ShopifyCustomerStatus.NotConnected]: interpolateString(

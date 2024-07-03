@@ -21,9 +21,7 @@ export default function OffKeyHeaderNotConnected({
   textHeaderNotConnected,
   locale,
 }: OffKeyHeaderNotConnectedProps) {
-  const { customer, status, shopifyContext } = useShopifyCustomer({
-    organizerId,
-  });
+  const { customer, status, shopifyContext } = useShopifyCustomer();
   if (!status) return <OffKeyHeaderNotConnectedSkeleton />;
   let title;
   if (status !== ShopifyCustomerStatus.NotConnected) {

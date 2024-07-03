@@ -2,18 +2,15 @@
 
 import { ProfileAvatar } from '@features/app-nav';
 import { interpolateString, Locale } from '@next/i18n';
-import { usePathname, useRouter } from '@next/navigation';
 import { useWalletAuth } from '@next/wallet';
-import { useMutation } from '@tanstack/react-query';
 import { Button } from '@ui/components';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
 import { useShopifyCustomer } from '../hooks/useShopifyCustomer';
 import { ShopifyCustomerStatus } from '../types';
 import { OffKeyAuthSkelton } from './OffKeyAuthSkelton';
 
 import { useIframeConnect } from '@next/iframe';
-import { ConnectProps, OffKeyAuthSignIn } from './OffKeyAuthSignIn';
+import { useConnectWallet } from '../hooks/useConnectWallet';
+import { OffKeyAuthSignIn } from './OffKeyAuthSignIn';
 
 export interface OffKeyAuthProps {
   organizerId: string;
@@ -37,54 +34,20 @@ export default function OffKeyAuth({
   textAuth,
 }: OffKeyAuthProps) {
   const {
-    connect,
     isReady: isWalletReady,
     isConnecting,
     provider,
     wallet,
     connectionError,
   } = useWalletAuth();
-  const [accountNotMatching, setAccountNotMatching] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const { connectWalletMutation, accountNotMatching } = useConnectWallet();
   const {
     shopifyContext,
     status: shopifyCustomerStatus,
     walletToConnect,
     walletInStorage,
-  } = useShopifyCustomer({
-    organizerId,
-  });
+  } = useShopifyCustomer();
   const { connectToShopify } = useIframeConnect();
-
-  const connectWalletMutation = useMutation({
-    mutationFn: ({
-      walletAddress,
-      isCreatingAccount,
-      walletToConnect,
-    }: ConnectProps) =>
-      connect(walletAddress, isCreatingAccount, walletToConnect),
-    onSuccess: (
-      address,
-      { walletAddress, isCreatingAccount, walletToConnect },
-      context,
-    ) => {
-      let url = `${pathname}/${address}`;
-      if (searchParams?.toString()) {
-        const params = new URLSearchParams(searchParams.toString());
-        url += `?${params.toString()}`;
-      }
-      router.replace(url);
-    },
-    onError: (error: any) => {
-      console.error({ error });
-      // Handle connection error
-      if (error.message.includes('Wallet address does not match')) {
-        setAccountNotMatching(true);
-      }
-    },
-  });
   if (!isWalletReady || !shopifyCustomerStatus) return <OffKeyAuthSkelton />;
   const texts = {
     connectToShopify: interpolateString(
