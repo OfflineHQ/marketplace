@@ -56,9 +56,7 @@ export default function OffKeyProfile({
   const [userActionLoading, setUserActionLoading] = useState(false);
 
   const { customer, walletToConnect, walletInStorage, shopifyContext } =
-    useShopifyCustomer({
-      organizerId,
-    });
+    useShopifyCustomer();
 
   const texts = {
     myAccount: interpolateString(textProfile.myAccount, locale, shopifyContext),

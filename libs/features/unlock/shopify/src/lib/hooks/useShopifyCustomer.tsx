@@ -3,10 +3,7 @@ import { useWalletContext } from '@next/wallet';
 import { ethers } from 'ethers';
 import { ShopifyCustomerStatus } from '../types';
 
-export interface UseShopifyCustomerProps {
-  organizerId: string;
-}
-export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
+export function useShopifyCustomer() {
   const { customer, product, isReady, offKeyState, linkedCustomer } =
     useIframeOffKey();
   const { walletInStorage } = useWalletContext();
