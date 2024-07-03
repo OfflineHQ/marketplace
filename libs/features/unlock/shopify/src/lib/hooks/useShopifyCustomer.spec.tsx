@@ -153,4 +153,29 @@ describe('useShopifyCustomer', () => {
       productAvailable: true,
     });
   });
+  it('returns correct additionalData when provided', () => {
+    const mockAdditionalData = { customField: 'customValue' };
+    (useIframeOffKey as jest.Mock).mockReturnValue({
+      isReady: true,
+      customer: mockCustomer,
+      linkedCustomer: mockLinkedCustomer,
+      additionalData: mockAdditionalData,
+    });
+
+    const { result } = renderHook(() => useShopifyCustomer());
+
+    expect(result.current.additionalData).toEqual(mockAdditionalData);
+  });
+
+  it('returns undefined additionalData when not provided', () => {
+    (useIframeOffKey as jest.Mock).mockReturnValue({
+      isReady: true,
+      customer: mockCustomer,
+      linkedCustomer: mockLinkedCustomer,
+    });
+
+    const { result } = renderHook(() => useShopifyCustomer());
+
+    expect(result.current.additionalData).toBeUndefined();
+  });
 });

@@ -1,5 +1,3 @@
-import { OffKeyViewHeaderConnected } from './lib/types';
-
 export { default as OffKeyAuth } from './lib/OffKeyAuth/OffKeyAuth';
 export { OffKeyAuthSkelton } from './lib/OffKeyAuth/OffKeyAuthSkelton';
 export { default as OffKeyGate } from './lib/OffKeyGate/OffKeyGate';
@@ -14,3 +12,4 @@ export { OffKeyHeaderNotConnectedSkeleton } from './lib/OffKeyHeaderNotConnected
 export { OffKeyLayout } from './lib/OffKeyLayout/OffKeyLayout';
 export { default as OffKeyProfile } from './lib/OffKeyProfile/OffKeyProfile';
 export { OffKeyViewHeaderConnected, ShopifyCustomerStatus } from './lib/types';
+export { V1Connect } from './lib/v1/Connect/Connect';
