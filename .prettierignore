@@ -13,3 +13,4 @@ hasura/app/**
 .vscode/**
 **/generated/**
 /.nx/cache
+/.nx/workspace-data
