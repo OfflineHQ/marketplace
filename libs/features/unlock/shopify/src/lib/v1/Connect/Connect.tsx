@@ -1,9 +1,11 @@
+import { ProfileAvatar } from '@features/app-nav';
+import { interpolateString } from '@next/i18n';
 import { useIframeConnect } from '@next/iframe';
 import { useWalletAuth } from '@next/wallet';
-import { ButtonSkeleton } from '@ui/components';
+import { Button, ButtonSkeleton } from '@ui/components';
 import { useConnectWallet } from '../../hooks/useConnectWallet';
 import { useShopifyCustomer } from '../../hooks/useShopifyCustomer';
-import type { ShopifyCustomerStatus } from '../../types';
+import { ShopifyCustomerStatus } from '../../types';
 
 export interface ConnectAdditionalData {
   [ShopifyCustomerStatus.NotConnected]: {
@@ -31,6 +33,7 @@ export interface ConnectAdditionalData {
 }
 
 export const V1Connect = () => {
+  const locale = 'en';
   const { isReady: isWalletReady } = useWalletAuth();
   const {
     shopifyContext,
@@ -44,5 +47,109 @@ export const V1Connect = () => {
   if (!isWalletReady || !shopifyCustomerStatus || !additionalData)
     return <ButtonSkeleton />;
 
-  return <div>Connect</div>;
+  const renderStatusActions = () => {
+    switch (shopifyCustomerStatus) {
+      case ShopifyCustomerStatus.NotConnected:
+        return (
+          <Button block onClick={() => connectToShopify()}>
+            {interpolateString(
+              additionalData[shopifyCustomerStatus].connectToShopify,
+              locale,
+              shopifyContext,
+            )}
+          </Button>
+        );
+      case ShopifyCustomerStatus.NewAccount:
+        return (
+          <>
+            <Button
+              block
+              onClick={() =>
+                connectWalletMutation.mutateAsync({ isCreatingAccount: true })
+              }
+            >
+              {interpolateString(
+                additionalData[shopifyCustomerStatus].createNewAccount,
+                locale,
+                shopifyContext,
+              )}
+            </Button>
+            <Button
+              variant="secondary"
+              block
+              onClick={() => connectWalletMutation.mutateAsync({})}
+            >
+              {interpolateString(
+                additionalData[shopifyCustomerStatus].useExistingAccount,
+                locale,
+                shopifyContext,
+              )}
+            </Button>
+          </>
+        );
+      case ShopifyCustomerStatus.ExistingAccountNewCustomer:
+      case ShopifyCustomerStatus.MatchingAccount:
+        return (
+          <Button
+            block
+            onClick={() =>
+              connectWalletMutation.mutateAsync({ walletToConnect })
+            }
+          >
+            {interpolateString(
+              additionalData[shopifyCustomerStatus].useExistingAccount,
+              locale,
+              shopifyContext,
+            )}
+          </Button>
+        );
+      case ShopifyCustomerStatus.NoMatchingAccount:
+        //TODO: here we will need to handle the account recovery process (in case no corresponding passkey found)
+        // We will indicate the user to use the existing account
+        return (
+          <>
+            <Button
+              block
+              onClick={() =>
+                connectWalletMutation.mutateAsync({ walletToConnect })
+              }
+            >
+              {interpolateString(
+                additionalData[shopifyCustomerStatus].createNewAccount,
+                locale,
+                shopifyContext,
+              )}
+            </Button>
+            <Button
+              className="space-x-2"
+              variant="secondary"
+              block
+              onClick={() => {
+                //TODO: here we will need to handle the account recovery on a new url made for it
+              }}
+            >
+              <ProfileAvatar
+                user={{ id: '', address: walletToConnect as string }}
+                size="auto"
+              />
+              <span>
+                {interpolateString(
+                  additionalData[shopifyCustomerStatus].useExistingAccount,
+                  locale,
+                  shopifyContext,
+                )}
+              </span>
+            </Button>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="flex w-full flex-1 flex-col justify-end space-y-3">
+      {renderStatusActions()}
+    </div>
+  );
 };

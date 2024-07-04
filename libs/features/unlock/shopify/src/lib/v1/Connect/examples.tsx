@@ -5,6 +5,7 @@ import { shopifyCustomerMocks as shopifyMocks } from '../../OffKeyHeaderNotConne
 import React from 'react';
 import { createMock } from 'storybook-addon-module-mock';
 import type { useShopifyCustomer } from '../../hooks/useShopifyCustomer';
+import { ShopifyCustomerStatus } from '../../types';
 import { V1Connect } from './Connect';
 
 export function ConnectDemo() {
@@ -34,6 +35,26 @@ export const customer = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'john@doe.com',
+};
+
+export const additionalData = {
+  [ShopifyCustomerStatus.NotConnected]: {
+    connectToShopify: 'Connect to my account',
+  },
+  [ShopifyCustomerStatus.MatchingAccount]: {
+    useExistingAccount: 'Connect',
+  },
+  [ShopifyCustomerStatus.ExistingAccountNewCustomer]: {
+    useExistingAccount: 'Connect',
+  },
+  [ShopifyCustomerStatus.NoMatchingAccount]: {
+    useExistingAccount: 'Connect',
+    createNewAccount: 'Access the fidelity program',
+  },
+  [ShopifyCustomerStatus.NewAccount]: {
+    useExistingAccount: 'Connect',
+    createNewAccount: 'Access the fidelity program',
+  },
 };
 
 export const shopifyContext = {
