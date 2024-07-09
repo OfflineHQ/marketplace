@@ -85,7 +85,7 @@ describe('LoyaltyCardNftWrapper', () => {
       });
     });
 
-    it('should throw an error if the loyalty card is already minted', async () => {
+    it('should return null if the loyalty card is already minted', async () => {
       const mockLoyaltyCard = {
         id: '1',
         status: NftStatus_Enum.Confirmed,
@@ -95,9 +95,10 @@ describe('LoyaltyCardNftWrapper', () => {
         .spyOn(loyaltyCardNftWrapper, 'getLoyaltyCardOwnedByAddress')
         .mockResolvedValue(mockLoyaltyCard);
 
-      await expect(loyaltyCardNftWrapper.mint(mockInputData)).rejects.toThrow(
-        'Loyalty card already minted',
-      );
+      const result = await loyaltyCardNftWrapper.mint(mockInputData);
+
+      expect(result).toBeNull();
+      expect(adminSdk.InsertLoyaltyCardNft).not.toHaveBeenCalled();
     });
 
     it('should throw an error if no loyalty card is found for the contract address', async () => {
