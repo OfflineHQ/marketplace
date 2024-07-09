@@ -1,3 +1,5 @@
+'use client';
+
 import { useWalletAuth } from '@next/wallet';
 import { useMutation } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
