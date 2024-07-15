@@ -18,8 +18,8 @@ importers:
         specifier: ^4.16.0
         version: 4.16.0(react@18.3.1)
       '@cometh/connect-sdk':
-        specifier: ^1.2.22
-        version: 1.2.22(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
+        specifier: ^1.2.25
+        version: 1.2.25(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
       '@date-fns/utc':
         specifier: ^1.1.1
         version: 1.2.0
@@ -1563,8 +1563,8 @@ packages:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
 
-  '@cometh/connect-sdk@1.2.22':
-    resolution: {integrity: sha512-Jn8mWKPDAeSy1yakrU5aneHeCoMnTNwJNWl0gTjVfO1IPPOhIDpM70mc0dznE+yIJOiVTeVxfD62gYy/WPzJ7g==}
+  '@cometh/connect-sdk@1.2.25':
+    resolution: {integrity: sha512-OsRtfMCyFksP0Di1ZfgnIT2pVKfyvR/e5WUfqqLNTQfB9S8yDIMN1OggqmZKTVXUAaZ7tEfkrKdWdZ1ltth3qw==}
 
   '@corex/deepmerge@4.0.43':
     resolution: {integrity: sha512-N8uEMrMPL0cu/bdboEWpQYb/0i2K5Qn8eCsxzOmxSggJbbQte7ljMRoXm917AbntqTGOzdTu+vP3KOOzoC70HQ==}
@@ -15487,7 +15487,7 @@ snapshots:
   '@colors/colors@1.5.0':
     optional: true
 
-  '@cometh/connect-sdk@1.2.22(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)':
+  '@cometh/connect-sdk@1.2.25(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)':
     dependencies:
       '@alembic/ui': 1.5.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@babel/traverse': 7.23.9
