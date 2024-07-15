@@ -1,17 +1,27 @@
 'use client';
 
+import { useIframeConnect } from '@next/iframe';
 import { useWalletAuth } from '@next/wallet';
 import { useMutation } from '@tanstack/react-query';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ConnectProps } from '../OffKeyAuth/OffKeyAuthSignIn';
+import { useShopifyCustomer } from './useShopifyCustomer';
 
 export function useConnectWallet() {
   const [accountNotMatching, setAccountNotMatching] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { connect } = useWalletAuth();
+  const { connect, wallet } = useWalletAuth();
+  const { signWithEthereum } = useIframeConnect();
+  const { customer } = useShopifyCustomer();
+
+  const connectToDappMutation = useMutation({
+    mutationFn: signWithEthereum,
+    onSuccess: () => {
+      console.log('Connected to dapp');
+    },
+    onError: (error: any) => {
+      console.error('Error connecting to dapp:', error);
+    },
+  });
 
   const connectWalletMutation = useMutation({
     mutationFn: ({
@@ -21,12 +31,7 @@ export function useConnectWallet() {
     }: ConnectProps) =>
       connect(walletAddress, isCreatingAccount, walletToConnect),
     onSuccess: (address) => {
-      let url = `${pathname}/${address}`;
-      if (searchParams?.toString()) {
-        const params = new URLSearchParams(searchParams.toString());
-        url += `?${params.toString()}`;
-      }
-      router.replace(url);
+      console.log('Connected to wallet:', address);
     },
     onError: (error: Error) => {
       if (error.message.includes('Wallet address does not match')) {
@@ -35,8 +40,19 @@ export function useConnectWallet() {
     },
   });
 
+  useEffect(() => {
+    if (wallet && customer?.id && connectToDappMutation.status === 'idle') {
+      connectToDappMutation.mutate(customer.id);
+    }
+  }, [wallet, customer?.id, connectToDappMutation.status]);
+
+  const retryConnectToDapp = () =>
+    connectToDappMutation.mutate(customer?.id as string);
+
   return {
     connectWalletMutation,
+    connectToDappMutation,
+    retryConnectToDapp,
     accountNotMatching,
   };
 }

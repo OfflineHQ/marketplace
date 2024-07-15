@@ -56,27 +56,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Loading: Story = {};
 
-export const NotConnected: Story = {
-  parameters: {
-    moduleMock: {
-      mock: () =>
-        authMocks({
-          shopifyCustomerMocks: {
-            status: ShopifyCustomerStatus.NotConnected,
-            customer: null,
-            walletInStorage: [{ address }, { address: '0x214123135' }],
-            shopifyContext,
-            additionalData,
-          },
-          ...walletConnectedProps,
-        }),
-    },
-  },
-  play: async ({ container }) => {
-    userEvent.click(await screen.findByText(/connect to my account/i));
-  },
-};
-
 export const NewAccount: Story = {
   parameters: {
     moduleMock: {
@@ -94,72 +73,6 @@ export const NewAccount: Story = {
     },
   },
   play: async ({ container }) => {
-    userEvent.click(await screen.findByText(/create new account/i));
-    userEvent.click(await screen.findByText(/use existing account/i));
-  },
-};
-
-export const ExistingAccountNewCustomer: Story = {
-  parameters: {
-    moduleMock: {
-      mock: () =>
-        authMocks({
-          shopifyCustomerMocks: {
-            status: ShopifyCustomerStatus.ExistingAccountNewCustomer,
-            customer,
-            walletInStorage: [{ address }],
-            shopifyContext,
-            additionalData,
-          },
-          ...walletConnectedProps,
-        }),
-    },
-  },
-  play: async ({ container }) => {
-    userEvent.click(await screen.findByText(/connect/i));
-  },
-};
-
-export const MatchingAccount: Story = {
-  parameters: {
-    moduleMock: {
-      mock: () =>
-        authMocks({
-          shopifyCustomerMocks: {
-            status: ShopifyCustomerStatus.MatchingAccount,
-            customer,
-            walletInStorage: [{ address }, { address: '0x214123135' }],
-            walletToConnect: address,
-            shopifyContext,
-            additionalData,
-          },
-          ...walletConnectedProps,
-        }),
-    },
-  },
-  play: async ({ container }) => {
-    userEvent.click(await screen.findByText(/connect/i));
-  },
-};
-
-export const NoMatchingAccount: Story = {
-  parameters: {
-    moduleMock: {
-      mock: () =>
-        authMocks({
-          shopifyCustomerMocks: {
-            status: ShopifyCustomerStatus.NoMatchingAccount,
-            customer,
-            walletInStorage: [{ address }, { address: '0x214123135' }],
-            walletToConnect: '0x123456789',
-            shopifyContext,
-            additionalData,
-          },
-          ...walletConnectedProps,
-        }),
-    },
-  },
-  play: async ({ container }) => {
-    userEvent.click(await screen.findByText(/🌿/i));
+    userEvent.click(await screen.findByText(/Sign up/i));
   },
 };

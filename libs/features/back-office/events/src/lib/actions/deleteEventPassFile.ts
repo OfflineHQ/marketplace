@@ -17,5 +17,7 @@ export async function deleteEventPassFile({
 }: DeleteEventPassFileProps) {
   const fileApi = new FileWrapper();
   await fileApi.deleteFile({ accountId: env.UPLOAD_ACCOUNT_ID, filePath });
-  revalidateTag(`${organizerId}-${eventId}-${eventPassId}-getEventPassNftFile`);
+  const revalidateTagKey = `${organizerId}-${eventId}-${eventPassId}-getEventPassNftFile`;
+  revalidateTag(revalidateTagKey);
+  return { revalidateTagKey };
 }
