@@ -25,9 +25,7 @@ export default function OffKeyHeaderConnected({
   locale,
   textHeaderConnected,
 }: OffKeyHeaderConnectedProps) {
-  const { customer, shopifyContext } = useShopifyCustomer({
-    organizerId,
-  });
+  const { customer, shopifyContext } = useShopifyCustomer();
   if (!customer) return <OffKeyHeaderConnectedSkeleton />;
   const texts = {
     [OffKeyViewHeaderConnected.Default]: interpolateString(

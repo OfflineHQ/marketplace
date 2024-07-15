@@ -55,7 +55,7 @@ export class LoyaltyCardNftWrapper {
       (loyaltyCard.status !== NftStatus_Enum.Burned ||
         loyaltyCard.burnedTransferId)
     ) {
-      throw new BadRequestError('Loyalty card already minted');
+      return null;
     }
     const data = await this.getLoyaltyCardNftContractByContractAddress(props);
     if (!data) {
@@ -64,7 +64,7 @@ export class LoyaltyCardNftWrapper {
       );
     }
     const { loyaltyCardId } = data;
-    await this.adminSdk.InsertLoyaltyCardNft({
+    return this.adminSdk.InsertLoyaltyCardNft({
       object: {
         loyaltyCardId,
         status: NftStatus_Enum.Confirmed,

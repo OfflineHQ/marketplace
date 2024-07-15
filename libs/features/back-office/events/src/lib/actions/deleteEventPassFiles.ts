@@ -30,7 +30,7 @@ export async function deleteEventPassFiles({
     .map(([fileName, _selected]) => `${folderPath}/${fileName}`);
   if (!filesToDelete.length) throw new Error('No files to delete selected');
   await fileApi.deleteFilesBatchWithRetry(env.UPLOAD_ACCOUNT_ID, filesToDelete);
-  revalidateTag(
-    `${organizerId}-${eventId}-${eventPassId}-getEventPassNftFiles`,
-  );
+  const revalidateTagKey = `${organizerId}-${eventId}-${eventPassId}-getEventPassNftFiles`;
+  revalidateTag(revalidateTagKey);
+  return { revalidateTagKey };
 }

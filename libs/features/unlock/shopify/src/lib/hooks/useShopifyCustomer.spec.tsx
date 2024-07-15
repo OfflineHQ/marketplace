@@ -8,7 +8,6 @@ jest.mock('@next/iframe');
 jest.mock('@next/wallet');
 
 describe('useShopifyCustomer', () => {
-  const mockOrganizerId = 'test-organizer-id';
   const mockCustomer = { id: 'test-id' };
   const mockLinkedCustomer = {
     address: '0x1234567890123456789012345678901234567890',
@@ -23,9 +22,7 @@ describe('useShopifyCustomer', () => {
   it('returns correct status when iframe is not ready', () => {
     (useIframeOffKey as jest.Mock).mockReturnValue({ isReady: false });
 
-    const { result } = renderHook(() =>
-      useShopifyCustomer({ organizerId: mockOrganizerId }),
-    );
+    const { result } = renderHook(() => useShopifyCustomer());
 
     expect(result.current.customer).toBeNull();
     expect(result.current.status).toBeNull();
@@ -38,9 +35,7 @@ describe('useShopifyCustomer', () => {
       linkedCustomer: null,
     });
 
-    const { result } = renderHook(() =>
-      useShopifyCustomer({ organizerId: mockOrganizerId }),
-    );
+    const { result } = renderHook(() => useShopifyCustomer());
 
     expect(result.current.customer).toBeNull();
     expect(result.current.status).toBe(ShopifyCustomerStatus.NotConnected);
@@ -56,9 +51,7 @@ describe('useShopifyCustomer', () => {
       walletInStorage: [{ address: mockLinkedCustomer.address }],
     });
 
-    const { result } = renderHook(() =>
-      useShopifyCustomer({ organizerId: mockOrganizerId }),
-    );
+    const { result } = renderHook(() => useShopifyCustomer());
 
     expect(result.current.customer).toEqual(mockCustomer);
     expect(result.current.status).toBe(ShopifyCustomerStatus.MatchingAccount);
@@ -72,9 +65,7 @@ describe('useShopifyCustomer', () => {
       linkedCustomer: null,
     });
 
-    const { result } = renderHook(() =>
-      useShopifyCustomer({ organizerId: mockOrganizerId }),
-    );
+    const { result } = renderHook(() => useShopifyCustomer());
 
     expect(result.current.customer).toEqual(mockCustomer);
     expect(result.current.status).toBeNull();
@@ -88,9 +79,7 @@ describe('useShopifyCustomer', () => {
         address: null,
       },
     });
-    const { result } = renderHook(() =>
-      useShopifyCustomer({ organizerId: mockOrganizerId }),
-    );
+    const { result } = renderHook(() => useShopifyCustomer());
 
     expect(result.current.customer).toEqual(mockCustomer);
     expect(result.current.status).toBe(ShopifyCustomerStatus.NewAccount);
@@ -110,9 +99,7 @@ describe('useShopifyCustomer', () => {
       ],
     });
 
-    const { result } = renderHook(() =>
-      useShopifyCustomer({ organizerId: mockOrganizerId }),
-    );
+    const { result } = renderHook(() => useShopifyCustomer());
 
     expect(result.current.customer).toEqual(mockCustomer);
     expect(result.current.status).toBe(
@@ -134,9 +121,7 @@ describe('useShopifyCustomer', () => {
       ],
     });
 
-    const { result } = renderHook(() =>
-      useShopifyCustomer({ organizerId: mockOrganizerId }),
-    );
+    const { result } = renderHook(() => useShopifyCustomer());
     expect(result.current.customer).toEqual(mockCustomer);
     expect(result.current.status).toBe(ShopifyCustomerStatus.NoMatchingAccount);
     expect(result.current.walletToConnect).toBe(
@@ -158,9 +143,7 @@ describe('useShopifyCustomer', () => {
       linkedCustomer: mockLinkedCustomer,
     });
 
-    const { result } = renderHook(() =>
-      useShopifyCustomer({ organizerId: mockOrganizerId }),
-    );
+    const { result } = renderHook(() => useShopifyCustomer());
 
     expect(result.current.shopifyContext).toEqual({
       customerFirstName: 'John',
@@ -169,5 +152,30 @@ describe('useShopifyCustomer', () => {
       productTitle: 'Exclusive T-Shirt',
       productAvailable: true,
     });
+  });
+  it('returns correct additionalData when provided', () => {
+    const mockAdditionalData = { customField: 'customValue' };
+    (useIframeOffKey as jest.Mock).mockReturnValue({
+      isReady: true,
+      customer: mockCustomer,
+      linkedCustomer: mockLinkedCustomer,
+      additionalData: mockAdditionalData,
+    });
+
+    const { result } = renderHook(() => useShopifyCustomer());
+
+    expect(result.current.additionalData).toEqual(mockAdditionalData);
+  });
+
+  it('returns undefined additionalData when not provided', () => {
+    (useIframeOffKey as jest.Mock).mockReturnValue({
+      isReady: true,
+      customer: mockCustomer,
+      linkedCustomer: mockLinkedCustomer,
+    });
+
+    const { result } = renderHook(() => useShopifyCustomer());
+
+    expect(result.current.additionalData).toBeUndefined();
   });
 });

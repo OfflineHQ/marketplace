@@ -42,9 +42,7 @@ export default function OffKeyGate({
   locale,
   textGate,
 }: OffKeyGateProps) {
-  const { offKeyState, customer, shopifyContext } = useShopifyCustomer({
-    organizerId,
-  });
+  const { offKeyState, customer, shopifyContext } = useShopifyCustomer();
   const textsSubtitle = {
     [OffKeyState.Unlocked]: interpolateString(
       textGate.subtitle[OffKeyState.Unlocked],

@@ -1,9 +1,9 @@
 import { FileWrapper } from '@file-upload/admin';
-import { revalidateTag } from 'next/cache';
 import {
   deleteEventPassFile,
   DeleteEventPassFileProps,
 } from './deleteEventPassFile';
+import { revalidateTag } from 'next/cache';
 
 jest.mock('@file-upload/admin');
 jest.mock('next/cache');
@@ -30,17 +30,17 @@ describe('deleteEventPassFile', () => {
         '/local/organizers/testOrganizerId/events/testEventId/testEventPassId/testFile',
     };
 
-    await deleteEventPassFile(props);
+    const result = await deleteEventPassFile(props);
+
+    expect(result).toEqual({
+      revalidateTagKey: `${props.organizerId}-${props.eventId}-${props.eventPassId}-getEventPassNftFile`,
+    });
 
     expect(mockDeleteFile).toHaveBeenCalledWith({
       accountId: expect.any(String), // UPLOAD_ACCOUNT_ID
       filePath:
         '/local/organizers/testOrganizerId/events/testEventId/testEventPassId/testFile',
     });
-
-    expect(mockRevalidateTag).toHaveBeenCalledWith(
-      `${props.organizerId}-${props.eventId}-${props.eventPassId}-getEventPassNftFile`,
-    );
   });
 
   it('should handle error from deleteFile', async () => {

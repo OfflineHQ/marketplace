@@ -1,6 +1,5 @@
 import env from '@env/server';
 import { FileWrapper } from '@file-upload/admin';
-import { revalidateTag } from 'next/cache';
 import {
   deleteEventPassFiles,
   DeleteEventPassFilesProps,
@@ -16,9 +15,6 @@ describe('deleteEventPassFiles', () => {
     // Mock the FileWrapper instance method
     FileWrapper.prototype.deleteFilesBatchWithRetry =
       mockDeleteFilesBatchWithRetry;
-
-    // Mock the revalidateTag function
-    (revalidateTag as jest.Mock) = mockRevalidateTag;
   });
   beforeEach(() => {
     jest.clearAllMocks();
@@ -31,17 +27,17 @@ describe('deleteEventPassFiles', () => {
       filesSelected: { file1: true, file2: false },
     };
 
-    await deleteEventPassFiles(props);
+    const result = await deleteEventPassFiles(props);
+
+    expect(result).toEqual({
+      revalidateTagKey: `${props.organizerId}-${props.eventId}-${props.eventPassId}-getEventPassNftFiles`,
+    });
 
     expect(mockDeleteFilesBatchWithRetry).toHaveBeenCalledWith(
       expect.any(String), // UPLOAD_ACCOUNT_ID
       [
         `/${env.UPLOAD_PATH_PREFIX}/organizers/testOrganizerId/events/testEventId/testEventPassId/file1`,
       ], // filesToDelete
-    );
-
-    expect(mockRevalidateTag).toHaveBeenCalledWith(
-      `${props.organizerId}-${props.eventId}-${props.eventPassId}-getEventPassNftFiles`,
     );
   });
   it('should call deleteFilesBatchWithRetry with all files when all are selected', async () => {

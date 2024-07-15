@@ -3,12 +3,15 @@ import { useWalletContext } from '@next/wallet';
 import { ethers } from 'ethers';
 import { ShopifyCustomerStatus } from '../types';
 
-export interface UseShopifyCustomerProps {
-  organizerId: string;
-}
-export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
-  const { customer, product, isReady, offKeyState, linkedCustomer } =
-    useIframeOffKey();
+export function useShopifyCustomer<T>() {
+  const {
+    customer,
+    product,
+    isReady,
+    offKeyState,
+    linkedCustomer,
+    additionalData,
+  } = useIframeOffKey<T>();
   const { walletInStorage } = useWalletContext();
 
   const shopifyContext = {
@@ -26,6 +29,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       walletInStorage,
       offKeyState,
       shopifyContext,
+      additionalData,
     };
   // means the iframe parent is ready but the customer is not connected
   else if (!customer) {
@@ -35,6 +39,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       walletInStorage,
       offKeyState,
       shopifyContext,
+      additionalData,
     };
   }
   // means the iframe parent is ready and the customer is connected but the call to get linked customer is still loading
@@ -45,6 +50,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       walletInStorage,
       offKeyState,
       shopifyContext,
+      additionalData,
     };
   }
   // means the iframe parent is ready and the customer is connected but the customer does not have a recorded wallet yet
@@ -57,6 +63,7 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
       walletInStorage,
       offKeyState,
       shopifyContext,
+      additionalData,
     };
   }
   const matchingWallet = walletInStorage?.find(
@@ -74,5 +81,6 @@ export function useShopifyCustomer({ organizerId }: UseShopifyCustomerProps) {
     walletInStorage,
     offKeyState,
     shopifyContext,
+    additionalData,
   };
 }

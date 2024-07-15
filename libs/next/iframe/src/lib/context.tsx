@@ -23,7 +23,7 @@ import {
   SendMessageType,
 } from './types';
 
-interface IFrameContextType {
+interface IFrameContextType<T = unknown> {
   iframeParent: IFramePage | null;
   connectStatus: ConnectStatus | null;
   uiReady: boolean;
@@ -34,6 +34,7 @@ interface IFrameContextType {
     | ReceiveMessageValues[ReceiveMessageType.LINKED_CUSTOMER]
     | null;
   product: ReceiveMessageValues[ReceiveMessageType.PRODUCT] | null;
+  additionalData: T | null;
 }
 
 const defaultState: IFrameContextType = {
@@ -45,15 +46,18 @@ const defaultState: IFrameContextType = {
   customer: null,
   linkedCustomer: null,
   product: null,
+  additionalData: null,
 };
 
-const IFrameContext = createContext<IFrameContextType>(defaultState);
+const IFrameContext = createContext<IFrameContextType<unknown>>(defaultState);
 
 const IFrameResizer = dynamic(() => import('./injector'), {
   ssr: false,
 });
 
-export const useIFrame = () => useContext(IFrameContext);
+export function useIFrame<T>() {
+  return useContext(IFrameContext) as IFrameContextType<T>;
+}
 
 interface IFrameProviderProps {
   children: ReactNode;
@@ -74,6 +78,7 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
   const [linkedCustomer, setLinkedCustomer] =
     useState<IFrameContextType['linkedCustomer']>(null);
   const [product, setProduct] = useState<IFrameContextType['product']>(null);
+  const [additionalData, setAdditionalData] = useState<unknown>(null);
 
   // https://github.com/davidjbradshaw/iframe-resizer/blob/master/docs/iframed_page/events.md
   const handleIFrameMessage = useCallback(
@@ -113,6 +118,9 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
           }
           if (product) {
             setProduct(product);
+          }
+          if ('additionalData' in value) {
+            setAdditionalData(value.additionalData);
           }
           break;
         case ReceiveMessageType.CONNECT_STATUS:
@@ -188,6 +196,7 @@ export const IFrameProvider: React.FC<IFrameProviderProps> = ({ children }) => {
           customer,
           linkedCustomer,
           product,
+          additionalData,
         }}
       >
         <div
