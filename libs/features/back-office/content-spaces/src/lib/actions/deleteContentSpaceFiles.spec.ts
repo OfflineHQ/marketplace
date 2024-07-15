@@ -30,17 +30,17 @@ describe('deleteContentSpaceFiles', () => {
       filesSelected: { file1: true, file2: false },
     };
 
-    await deleteContentSpaceFiles(props);
+    const result = await deleteContentSpaceFiles(props);
+
+    expect(result).toEqual({
+      revalidateTagKey: `${props.organizerId}-${props.contentSpaceId}-getContentSpaceFiles`,
+    });
 
     expect(mockDeleteFilesBatchWithRetry).toHaveBeenCalledWith(
       expect.any(String), // UPLOAD_ACCOUNT_ID
       [
         `/${env.UPLOAD_PATH_PREFIX}/organizers/testOrganizerId/content-spaces/testContentSpaceId/file1`,
       ], // filesToDelete
-    );
-
-    expect(mockRevalidateTag).toHaveBeenCalledWith(
-      `${props.organizerId}-${props.contentSpaceId}-getContentSpaceFiles`,
     );
   });
   it('should call deleteFilesBatchWithRetry with all files when all are selected', async () => {

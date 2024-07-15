@@ -6,7 +6,9 @@ import {
 } from './deleteContentSpaceFile';
 
 jest.mock('@file-upload/admin');
-jest.mock('next/cache');
+jest.mock('next/cache', () => ({
+  revalidateTag: jest.fn(),
+}));
 
 describe('deleteContentSpaceFile', () => {
   const mockDeleteFile = jest.fn();
@@ -21,7 +23,7 @@ describe('deleteContentSpaceFile', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it('should call deleteFile and revalidateTag with correct arguments', async () => {
+  it('should call deleteFile and return correct revalidateTagKey', async () => {
     const props: DeleteContentSpaceFileProps = {
       organizerId: 'testOrganizerId',
       contentSpaceId: 'testContentSpaceId',
@@ -29,7 +31,7 @@ describe('deleteContentSpaceFile', () => {
         '/local/organizers/testOrganizerId/content-spaces/testContentSpaceId/testFile',
     };
 
-    await deleteContentSpaceFile(props);
+    const result = await deleteContentSpaceFile(props);
 
     expect(mockDeleteFile).toHaveBeenCalledWith({
       accountId: expect.any(String), // UPLOAD_ACCOUNT_ID
@@ -37,9 +39,9 @@ describe('deleteContentSpaceFile', () => {
         '/local/organizers/testOrganizerId/content-spaces/testContentSpaceId/testFile',
     });
 
-    expect(mockRevalidateTag).toHaveBeenCalledWith(
-      `${props.organizerId}-${props.contentSpaceId}-getContentSpaceFiles`,
-    );
+    expect(result).toEqual({
+      revalidateTagKey: `${props.organizerId}-${props.contentSpaceId}-getContentSpaceFiles`,
+    });
   });
 
   it('should handle error from deleteFile', async () => {
