@@ -147,24 +147,39 @@ module.exports = async (phase, context) => {
   const addNx = withNx({
     ...nextConfig,
     async headers() {
-      // only add csp header when deployed with vercel to avoid Safari error in local
-      return process.env.VERCEL_ENV && process.env.APP === 'UNLOCK'
-        ? [
+      return [
+        {
+          source: '/(.*)',
+          headers: [
             {
-              source: '/(.*)',
-              headers: [
-                {
-                  key: 'Content-Security-Policy',
-                  value: cspHeader.replace(/\n/g, ''),
-                },
-                {
-                  key: 'Permissions-Policy',
-                  value: permissionsPolicy.replace(/\n/g, ''),
-                },
-              ],
+              key: 'Content-Security-Policy',
+              value: cspHeader.replace(/\n/g, ''),
             },
-          ]
-        : [];
+            {
+              key: 'Permissions-Policy',
+              value: permissionsPolicy.replace(/\n/g, ''),
+            },
+          ],
+        },
+      ];
+      // // only add csp header when deployed with vercel to avoid Safari error in local
+      // return process.env.VERCEL_ENV && process.env.APP === 'UNLOCK'
+      //   ? [
+      //       {
+      //         source: '/(.*)',
+      //         headers: [
+      //           {
+      //             key: 'Content-Security-Policy',
+      //             value: cspHeader.replace(/\n/g, ''),
+      //           },
+      //           {
+      //             key: 'Permissions-Policy',
+      //             value: permissionsPolicy.replace(/\n/g, ''),
+      //           },
+      //         ],
+      //       },
+      //     ]
+      //   : [];
     },
   });
   let config = await addNx(phase);
