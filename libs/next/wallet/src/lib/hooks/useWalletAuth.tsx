@@ -39,6 +39,7 @@ export function useWalletAuth() {
       chainId: getCurrentChain().chainIdHex,
       apiKey,
       passKeyName: 'Offline 🔑',
+      disableEoaFallback: false,
       rpcUrl: getCurrentChain().urls[0],
     });
 
