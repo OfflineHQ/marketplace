@@ -66,6 +66,10 @@ export function useWalletAuth() {
       }
       // user choose to create a new passkey/account
       else if (createAccount) {
+        // see Transient activation https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy/publickey-credentials-create
+        if (!navigator || !navigator.userActivation.isActive) {
+          throw new Error('User is not active');
+        }
         await instance.connect();
       }
       // no address from useStorageWallet and not creating new account so ask user to choose existing account (passkey)
