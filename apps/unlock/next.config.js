@@ -139,8 +139,8 @@ const cspHeader = `
 `;
 
 const permissionsPolicy = `
-    publickey-credentials-get=(self),
-    publickey-credentials-create=(self)
+publickey-credentials-get=*,
+publickey-credentials-create=*
 `;
 
 module.exports = async (phase, context) => {
