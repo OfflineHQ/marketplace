@@ -138,6 +138,11 @@ const cspHeader = `
     frame-ancestors *;
 `;
 
+const permissionsPolicy = `
+    publickey-credentials-get=(self),
+    publickey-credentials-create=(self)
+`;
+
 module.exports = async (phase, context) => {
   const addNx = withNx({
     ...nextConfig,
@@ -151,6 +156,10 @@ module.exports = async (phase, context) => {
                 {
                   key: 'Content-Security-Policy',
                   value: cspHeader.replace(/\n/g, ''),
+                },
+                {
+                  key: 'Permissions-Policy',
+                  value: permissionsPolicy.replace(/\n/g, ''),
                 },
               ],
             },
