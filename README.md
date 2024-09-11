@@ -5,11 +5,57 @@
 
 ---
 
-> **All you need to start your web3 service, 🔋 included.**
+> **Offline: Next-gen Consumer Brand Interaction Platform**
 
-> **This project has been deployed using [Vercel](https://vercel.com/), [Hasura Cloud](https://hasura.io/cloud/) and [Railway.app](https://railway.app/). You can check it out [here](https://www.offline.app/). For more information about the deployment process, check the [deployment section](./production/README.md) 🚀.**
+## Table of Contents
 
-## Quick install
+1. [Project Overview](#project-overview)
+2. [Architecture](#architecture)
+3. [Quick Install](#quick-install)
+4. [Project Structure](#project-structure)
+5. [The Stack](#the-stack)
+6. [Libraries](#libraries)
+7. [Testing](#testing)
+8. [NX Workspace](#nx-workspace)
+9. [Environment Configuration](#environment-configuration)
+10. [Troubleshooting](#troubleshooting)
+11. [Services](#services)
+
+## Project Overview
+
+Offline is an innovative platform designed to revolutionize brand-customer interactions through user-centric applications leveraging blockchain and NFT technologies. The project consists of three main applications:
+
+1. **Marketplace** (`apps/web`): The user-facing app where customers can browse and purchase tickets for events offered by organizers. This serves as the main entry point for consumers to interact with brands and access exclusive experiences.
+
+2. **Back-office** (`apps/back-office`): A comprehensive management interface for organizers to create and manage their events, smart contracts, and analyze performance metrics. This empowers brands to easily create and manage their offerings on the Offline platform.
+
+3. **Unlock** (`apps/unlock`): An iframe app that allows users to connect their Offline smart contract wallet across various platforms outside of Offline. This includes integration with Shopify stores for token-gating campaigns, expanding the utility of Offline's blockchain-based assets.
+
+<p align="center"><img src="path_to_architecture_diagram.png" width="80%"></p>
+<p align="center"><em>Offline Platform Architecture</em></p>
+
+## Architecture
+
+The Offline Marketplace Monorepo employs a microservices architecture with the following key components:
+
+- **Hasura**: Serves as the central data layer, providing a GraphQL API for all three Next.js applications. This ensures consistent data access and management across the platform.
+
+- **Next.js Apps**:
+
+  1. Marketplace (`apps/web`)
+  2. Back-office (`apps/back-office`)
+  3. Unlock (`apps/unlock`)
+
+  Each app is built using Next.js 14 with the App Router, ensuring optimal performance and SEO capabilities.
+
+- **Blockchain Integration**: Utilizes smart contracts for ticket management and token-gating functionality. This provides a secure and transparent way to manage digital assets and access rights.
+
+- **External Integrations**: Includes a Shopify app (separate project: shopify-gates) for creating token-gating campaigns on merchant stores, powered by OF Keys and OF Stamps. This extends the reach of Offline's technology to e-commerce platforms.
+
+<p align="center"><img src="path_to_integration_diagram.png" width="70%"></p>
+<p align="center"><em>Offline External Integrations</em></p>
+
+## Quick Install
 
 1. First you need to install pnpm in your machine `npm install -g pnpm`
 2. Install all the dependencies `pnpm install`
@@ -21,7 +67,7 @@
 
 5. Make sure to apply the migrations to the prisma db and client once the container is running `pnpm prisma-db:dev:start`
 
-## Project structure
+## Project Structure
 
 **View in [NX Graph](https://sebpalluel.github.io/offline/?groupByFolder=true&select=all)**
 
@@ -37,54 +83,9 @@ The console is used as a backoffice to handle the graphQL server and to innerlin
 
 This is the main web app client used to access the whole array of services.
 
-- **Prisma Studio**: `pnpm prisma studio`
-
-The prisma studio is used to offer an admin interface to the database used by the Nestjs Server app.
-
 - [**Mailhog**](http://localhost:8025/)
 
 This is the mail-catcher where all the mail are going in dev environment.
-
-| **Apps and Libs**              | **Description**                                                                                                                                                                                                  |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/web`                     | A Next.js app                                                                                                                                                                                                    |
-| `apps/web/playwright`          | Playwright e2e test for the web app                                                                                                                                                                              |
-| `apps/nestjs-server`           | A Nest.js server app used to extend Hasura functionalities                                                                                                                                                       |
-| `hasura`                       | Contains the config / metadata / migrations / seeds for the Hasura service                                                                                                                                       |
-| `prisma`                       | Prisma database schema and migrations                                                                                                                                                                            |
-| `tools`                        | Set of tools to be used for DX (Developer Experience) and testing purposes                                                                                                                                       |
-| `libs/logger`                  | Isomorphic logger (a small wrapper around console.log)                                                                                                                                                           |
-| `libs/utils`                   | Common utils functions and types for the whole project                                                                                                                                                           |
-| `libs/workspace`               | Contains all the generators and tooling dedicated to maintaining the NX workspace                                                                                                                                |
-| `libs/dlt/types`               | Contains the TypeScript types/interfaces related to the DLT (Blockchain) used in the project                                                                                                                     |
-| `libs/next/zustand`            | Middleware and util code for Zustand stores                                                                                                                                                                      |
-| `libs/next/biconomy/scw`       | Biconomy Smart Contract Wallet library. This contains the logic to set up the Biconomy Smart Contract Wallet with login and logout functions                                                                     |
-| `libs/next/biconomy/store`     | Biconomy Smart Contract Wallet store. A Zustand store to handle the state of the Biconomy Smart Contract Wallet                                                                                                  |
-| `libs/next/gql/[user, admin]`  | A library containing all the GraphQL queries and mutations and the generated schemas to be used on the web app. It is divided into 3 folders: `user`, `admin` and `anonymous`, depending on the role of the user |
-| `libs/next/gql/thegraph`       | A library that uses [The Graph](https://thegraph.com/en/) protocol in order to query data directly from smart contracts on the blockchain                                                                        |
-| `libs/next/hasura/fetcher`     | Fetcher functions to query the Hasura service                                                                                                                                                                    |
-| `libs/next/hasura/utils`       | Utilities to interact with Hasura                                                                                                                                                                                |
-| `libs/next/siwe/provider`      | Next-auth credentials provider for SIWE                                                                                                                                                                          |
-| `libs/next/next-auth/options`  | Contains all the configs for [Next-Auth](https://next-auth.js.org/)                                                                                                                                              |
-| `libs/next/next-auth/common`   | Common functions used in the context of Next-Auth                                                                                                                                                                |
-| `libs/ui/components`           | React reusable components library                                                                                                                                                                                |
-| `libs/ui/shared`               | Functions and assets shared in the context of the UI library                                                                                                                                                     |
-| `libs/ui/theme`                | Contains all the specifications for the global style and component style                                                                                                                                         |
-| `libs/test-utils/db`           | All the utilities relating to the handling of db operations in the context of testing, for example: seeding/deleting                                                                                             |
-| `libs/test-utils/functions`    | All the utility functions common to every test runner                                                                                                                                                            |
-| `libs/test-utils/gql`          | Offers an SDK and different test account clients to be used on tests in order to interact with the Hasura service                                                                                                |
-| `libs/server/api`              | API service to query external services (for example: CoinGecko API)                                                                                                                                              |
-| `libs/server/alchemy`          | Low-level service to interact with the Alchemy RPC provider                                                                                                                                                      |
-| `libs/server/arbitrum`         | Service to interact with the Arbitrum RPC provider                                                                                                                                                               |
-| `libs/server/ethereum`         | Service to interact with the Ethereum RPC provider                                                                                                                                                               |
-| `libs/server/polygon`          | Service to interact with the Polygon RPC provider                                                                                                                                                                |
-| `libs/server/ethers`           | High-level service to interact with EVM compatible blockchains                                                                                                                                                   |
-| `libs/server/common`           | Common functions used in the context of the server                                                                                                                                                               |
-| `libs/server/cryptocurrencies` | High-level service to get data related to cryptocurrencies: price, market cap, etc.                                                                                                                              |
-| `libs/server/prisma`           | Low-level service to interact with the Prisma database                                                                                                                                                           |
-| `libs/server/task`             | High-level service for task scheduling, cron jobs, etc.                                                                                                                                                          |
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 # The Stack
 
@@ -124,32 +125,6 @@ The command to run all the containers for unit and integration test is
 pnpm docker:test
 ```
 
-## Next.js
-
-<p align="center"><img src="https://user-images.githubusercontent.com/11297176/204857747-9717a55e-7edc-45cb-8970-a18aee3857f3.png" width="25%"></p>
-
-The web app is using [next.js meta-framework](https://nextjs.org/) v13 in order to leverage serverless api functions and react hybrid SSR/SSG/PWA capabilities. The web app is using the [next-auth](https://next-auth.js.org/) library to handle the authentication and the authorization and the ChakraUI components library.
-
-##  Hasura
-
-<p align="center"><img src="https://user-images.githubusercontent.com/11297176/204858221-400660c3-74b9-40d5-8780-f47b52852fd3.png" width="25%"></p>
-
-The [Hasura service](https://hasura.io/) is used as a GraphQL API gateway to the Postgres database and for introspection into the prisma database. It is also used to handle the authentication and authorization of the users through a Next-Auth adapter.
-
-It act as the single endpoint for the web app to query the database and the external services like the Nestjs Server app in a federated way.
-
-## Prisma ORM
-
-<p align="center"><img src="https://user-images.githubusercontent.com/11297176/204858587-fddcad8e-eb9b-40d7-a692-cb91f3a689fc.png" width="35%"></p>
-
-The [Prisma ORM](https://www.prisma.io/) is used in the context of the Nest.js Server app to interact with the prisma Postgres database. It is used to generate the database schema and the migrations and offer an admin with [Prisma Studio](https://www.prisma.io/studio).
-
-## Nest.js
-
-<p align="center"><img src="https://user-images.githubusercontent.com/11297176/204859634-4614e8e2-2759-482f-b5b0-84f7591b1b4e.png" width="15%"></p>
-
-The [Nest.js](https://nestjs.com/) framework is used to extend the Hasura functionalities. It serves as a complementary layer to Hasura to handle the business logic of the application and to interact with the external services like the blockchain and the crypto APIs. Currently it serves as a service to handle the retrieval of the user's wallet balance of ERC20 tokens on the Ethereum/Polygon/Arbitrum blockchains. More info in the [Nest.js Server app README](./apps/nestjs-server/README.md).
-
 ## Storybook
 
 <p align="center"><img src="https://user-images.githubusercontent.com/11297176/198039106-fa335322-4416-4f3f-967c-f6c663963ab2.png" width="35%"></p>
@@ -172,13 +147,6 @@ This repo has some additional tools already setup for you:
 - [Playwright](https://playwright.dev) test runner for E2E and components test
 - [Graphql Code Generator](https://www.the-guild.dev/graphql/codegen/) a generator for the graphql schemas and a client builders with provided queries.
 
-## Flavors
-
-Looking for a specific feature ? We have a few flavors 🍦 to choose from:
-
-- [with_waltid_idpkit](/sebpalluel/offline/tree/with_waltid_idpkit): a flavor that uses the [WaltID IDPKit](https://walt.id/idp-kit) to provide sign-in in with a DID.
-- [with_web2_signin](/sebpalluel/offline/tree/with_web2_signin): a flavor that uses the common Web2 sign-in methods such as OAuth or Email/Password.
-
 ## Libraries
 
 ### Next Auth
@@ -192,24 +160,6 @@ The user can sign in with a web3 wallet (Metamask, WalletConnect, etc) and the S
 You can find the different providers used by next-auth in `libs/next/next-auth/options`
 
 Hasura is used as an adapter to next-auth in order to persist in a database the user's provided information such as their `id`. The adapter is located in `libs/next/hasura/adapter`.
-
-<!-- TODO replace with Biconomy + SIWE mention -->
-
-### Rainbowkit
-
-### Biconomy
-
-<p align="center"><img src="https://user-images.githubusercontent.com/11297176/222410480-7d37d072-5a44-4bba-9a63-e997e8ada96c.png" width="18%"></p>
-
-This project leverages the capabilities of [Biconomy](https://www.biconomy.io/), a blockchain middleware platform that simplifies the user experience of your web3 service by offering features such as gasless transactions and smart contract wallets. With Biconomy, users can interact with dApps without worrying about the complexity of the underlying blockchain network.
-
-To streamline the authentication process, Biconomy integrates with the Web3Auth protocol, providing a standardized way for users to authenticate themselves to dApps using their Ethereum wallets. Additionally, Biconomy's middleware layer can be used to simplify the integration of Web3Auth into dApps, allowing for secure and reliable access to Web3 wallets.
-
-While Biconomy itself does not offer a Social Login feature, Web3Auth supports this functionality by allowing users to authenticate themselves using their preferred social media accounts, such as Google or Facebook, in addition to their Ethereum wallets. For more information about Web3Auth, please visit the [Web3Auth website](https://web3auth.io/).
-
-<!--  -->
-
-<!--  -->
 
 ### GraphQL code generator
 
@@ -228,18 +178,6 @@ The graphql queries definition are defined in `libs/gql/user/api/queries`. We us
 **Admin**
 
 The graphql queries definition are defined in `libs/gql/admin/api/queries`. We use a generic sdk with a simple fetch query in order to facilitate the querying the data for the admin role. Those queries are made on the server side of the frontend. Hasura will allow the request through the providing of the `X-Hasura-Admin-Secret`.
-
-### The Graph: Graph Client
-
-<p align="center"><img src="https://user-images.githubusercontent.com/11297176/196224114-2521564d-6da6-4ee0-b2d6-e09655477913.png" width="15%"></p>
-
-The [Graph Client library](https://github.com/graphprotocol/graph-client) is used in order to interact easily with any smart contract on blockchain supported by [The Graph protocol](https://thegraph.com/en/).
-
-The library located in `libs/next/gql/thegraph` integrate the client and the toolset from The Graph in order to generate the graphql code to be used by the web app to fetch live data from desired smart contracts.
-
-The query are defined in `libs/next/gql/thegraph/queries` and the smart contract sources are defined in `libs/next/gql/thegraph/src/.graphclientrc.yml`. When updating queries or smart contract sources, be sure to launch the command `pnpm thegraph-build` in order to generate the new version of the generated files located in `libs/next/gql/thegraph/.graphclient`.
-
-You can find an example of live query of smart contract on the [Blockchain page](http://localhost:8888/en/blockchain).
 
 ## Test
 
@@ -272,10 +210,6 @@ Coverage for all the libraries is created in the root of the workspace. In order
 }
 ```
 
-To facilitate integration testing, you have access to 3 clients with corresponding users: `Alpha Admin`, `Beta Admin`, and `Seb Google`. These clients, located in the `test-utils-gql` library, offer GraphQL instances with all the available queries for a user.
-
-You can check the tests in `users.spec.ts` and `adapter.spec.ts` for examples of these utilities in use.
-
 ### Playwright
 
 <p align="center"><img src="https://user-images.githubusercontent.com/11297176/196226285-40932c18-00e4-4bf4-b8cf-b2af9cda6d0e.png" width="40%"></p>
@@ -293,7 +227,7 @@ The test command will wait for all the necessary services to be reachable before
 To run all the Playwright tests on affected code, you can use the command:
 
 ```shell
-pnpm affected:web:e2e
+pnpm affected:e2e
 ```
 
 ## NX
@@ -310,7 +244,7 @@ In a workspace, libraries are typically divided into four different types:
 
 #### Feature
 
-Libraries that implement “smart” UI (e.g. is effectful, is connected to data sources, handles routing, etc.) for specific business use cases.
+Libraries that implement "smart" UI (e.g. is effectful, is connected to data sources, handles routing, etc.) for specific business use cases.
 
 #### UI
 
@@ -324,88 +258,11 @@ Libraries that contain the means for interacting with external data services; ex
 
 Libraries that contain common utilities that are shared by many projects.
 
-### Adding capabilities to your workspace
-
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
-
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
-
-Below are our core plugins:
-
-- [React](https://reactjs.org)
-- `npm install --save-dev @nx/react`
-- Web (no framework frontends)
-- `npm install --save-dev @nx/web`
-- [Node](https://nodejs.org)
-- `npm install --save-dev @nx/node`
-
-There are also many [community plugins](https://nx.dev/community) you could add.
-
-### Generate an application
-
-Run `nx g @nx/react:app my-app` to generate an application.
-
-> You can use any of the plugins above to generate applications as well.
-
-When using Nx, you can create multiple applications and libraries in the same workspace.
-
-### Generate a library
-
-Run `nx g @nx/react:lib my-lib` to generate a library.
-
-> You can also use any of the plugins above to generate libraries as well.
-
-Libraries are shareable across libraries and applications. They can be imported from `@workspace/mylib`.
-
-### Development server
-
-Run `nx serve web` for a dev server. Navigate to <http://localhost:8888/en/>. The app will automatically reload if you change any of the source files.
-
-### Code scaffolding
-
-Run `nx g @nx/react:component my-component --project=my-app` to generate a new component.
-
-### Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-### Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-### Running end-to-end tests
-
-Run `nx web:e2e` to execute the end-to-end tests via [Playwright](https://playwright.dev).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-### Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-### Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p align="center"><img width="35%" src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
-
-## Configure the project with your own `.env` (mandatory)
+## Configure the project with your own `.local.env` API keys (mandatory)
 
 <a name="env-mandatory" />
 
-**In order to run the project, you need to configure the following environment variables in you `.env`:**
+**In order to run the project, you need to configure the following environment variables in you `.local.env` file:**
 
 ### Alchemy
 
@@ -420,21 +277,6 @@ ALCHEMY_ARBITRUM_MAINNET_TOKEN=
 # NEXT_APP_ALCHEMY_POLYGON_MAINNET_TOKEN=
 # NEXT_APP_ALCHEMY_ARBITRUM_MAINNET_TOKEN=
 ```
-
-### Provide the .env file to the github action CI job
-
-The CI pipeline on github action will fail if you don't provide the Alchemy api keys as it's needed for the Nestjs Server app.
-
-In order to do that, you need to:
-
-1. Go to the github repository `Settings`
-2. Go to the `Environments` section
-3. Create a new environment called `staging` (or any other name corresponding to the environment you want to deploy)
-4. Create a new `Environment secrets` with the key `ENV_FILE` and the value of the content of your `.env` file in the base64 format (you can use this command `base64 -i .env` to get the base64 value of your `.env` file)
-
-## Configure the project with your own `.env` (optional)
-
-**The following variables are optional, they are already set for you in the `.env.local` but you need to set them in your private `.env` if you want to use any of the related feature with you own project:**
 
 ### JWT secret keys
 
@@ -474,16 +316,6 @@ cat jwtRS256.key | pbcopy
 
 Don't forget to add double quotes "" arround so that `\n` are interpreted correctly
 
-### NX Cloud access tokens
-
-As refered in the [section about access token in the nx doc,](https://nx.dev/nx-cloud/account/access-tokens) you have different strategies to setup your access to [Nx Cloud](https://nx.app/). In order to beneficiate from local and remote cacheables operations, you can use this command to generate an access token allowing <mark>read-write</mark> access:
-
-```shell
-pnpx nx g @nx/nx-cloud:init
-```
-
-After that, you are going to need to [setup your workspace on the nx cloud](https://cloud.nx.app/orgs/workspace-setup) after registering an account.
-
 ## Troubleshoot
 
 In case you need your own image instead of `sebpalluel/hasura_cli_with_socat_and_curl` you can do the following command to publish it in docker hub.
@@ -494,6 +326,124 @@ Be sure to have activated the buildx module first by following [this article](ht
 cd hasura && docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t <username>/<image>:latest --push .
 ```
 
-## Credits
+## Services
 
-This project is based on the [nextstarter-chakra](https://github.com/sozonome/nextarter-chakra) template
+Our project leverages various services to provide a robust and feature-rich platform. Here's an overview of the key services we use:
+
+### Alchemy
+
+<p align="center"><img src="https://www.alchemy.com/images/logo.svg" width="200"></p>
+
+Alchemy provides robust blockchain infrastructure. We use it as an RPC provider for Ethereum, Polygon, and Arbitrum blockchains, enabling seamless interaction with these networks.
+
+### Hasura
+
+<p align="center"><img src="https://hasura.io/brand-assets/hasura-logo-primary-dark.svg" width="200"></p>
+
+Hasura serves as our GraphQL API gateway, providing a unified interface to our Postgres database and other microservices. It handles authentication and authorization through a Next-Auth adapter.
+
+### Hygraph (CMS)
+
+Hygraph is our headless CMS, used for managing event content. It provides a flexible and powerful system for creating and organizing event information across our platform.
+
+In order to use Hygraph you can simply clone our project there and use it as your own CMS.
+
+[![Clone Project](https://hygraph.com/button)](https://app.hygraph.com/clone/87d4b94f102e4491b3e77e4aae06fdd9?name=Offline%20marketplace)
+
+### Bytescale
+
+Bytescale (formerly Uploadcare) is used to secure event passes and allow users to access them through NFT holdings. It provides robust file management and access control for our digital assets.
+
+### Thirdweb
+
+Thirdweb is integrated for deploying and managing our NFT smart contracts. It's crucial for our event passes and token gating features, simplifying the process of creating and managing blockchain-based assets.
+
+### Cometh Connect
+
+Cometh Connect is our Smart Wallet infrastructure provider, enabling seamless and user-friendly blockchain interactions for our users.
+
+### Sumsub
+
+<p align="center"><img src="https://sumsub.com/wp-content/uploads/2021/05/logo.svg" width="200"></p>
+
+Sumsub provides KYC (Know Your Customer) and AML (Anti-Money Laundering) solutions, helping us maintain regulatory compliance in user onboarding processes.
+
+### Stripe
+
+<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" width="200"></p>
+
+Stripe is our payment processing platform, handling secure transactions and financial operations within the application.
+
+### Vercel KV
+
+<p align="center"><img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" width="200"></p>
+
+Vercel KV is used for key-value data storage, providing fast and scalable data access for certain application features.## Services
+
+Our project leverages various services to provide a robust and feature-rich platform. Here's an overview of the key services we use:
+
+### Alchemy
+
+<p align="center"><img src="https://www.alchemy.com/images/logo.svg" width="200"></p>
+
+Alchemy provides robust blockchain infrastructure. We use it as an RPC provider for Ethereum, Polygon, and Arbitrum blockchains, enabling seamless interaction with these networks.
+
+### Hasura
+
+<p align="center"><img src="https://hasura.io/brand-assets/hasura-logo-primary-dark.svg" width="200"></p>
+
+Hasura serves as our GraphQL API gateway, providing a unified interface to our Postgres database and other microservices. It handles authentication and authorization through a Next-Auth adapter.
+
+### Hygraph (CMS)
+
+<p align="center"><img src="https://www.hygraph.com/static/hygraph-logo-default.svg" width="200"></p>
+
+Hygraph is our headless CMS, used for managing event content. It provides a flexible and powerful system for creating and organizing event information across our platform.
+
+### Bytescale
+
+<p align="center"><img src="https://www.bytescale.com/img/logo-light.svg" width="200"></p>
+
+Bytescale (formerly Uploadcare) is used to secure event passes and allow users to access them through NFT holdings. It provides robust file management and access control for our digital assets.
+
+### Thirdweb
+
+<p align="center"><img src="https://thirdweb.com/logos/thirdweb.svg" width="200"></p>
+
+Thirdweb is integrated for deploying and managing our NFT smart contracts. It's crucial for our event passes and token gating features, simplifying the process of creating and managing blockchain-based assets.
+
+### Cometh Connect
+
+<p align="center"><img src="https://www.cometh.io/assets/images/logo.svg" width="200"></p>
+
+Cometh Connect is our Smart Wallet infrastructure provider, enabling seamless and user-friendly blockchain interactions for our users.
+
+### Sumsub
+
+<p align="center"><img src="https://sumsub.com/wp-content/uploads/2021/05/logo.svg" width="200"></p>
+
+Sumsub provides KYC (Know Your Customer) and AML (Anti-Money Laundering) solutions, helping us maintain regulatory compliance in user onboarding processes.
+
+### Stripe
+
+<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" width="200"></p>
+
+Stripe is our payment processing platform, handling secure transactions and financial operations within the application.
+
+### Vercel KV
+
+<p align="center"><img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" width="200"></p>
+
+Vercel KV is used for key-value data storage, providing fast and scalable data access for certain application features.
+
+### Posthog
+
+<p align="center"><img src="https://posthog.com/images/logos/posthog-logo-800x155.svg" width="200"></p>
+
+Posthog is our analytics platform, helping us track user behavior and gather insights to improve the application.
+
+### WalletConnect
+
+<p align="center"><img src="https://walletconnect.com/_next/static/media/logo.e1cb8d79.svg" width="200"></p>
+
+WalletConnect enables seamless connection between our dApp and various cryptocurrency wallets, enhancing the user experience for blockchain interactions.
