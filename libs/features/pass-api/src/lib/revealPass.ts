@@ -62,14 +62,14 @@ export const eventPassTransferQRCode = async (
       source: fileOrigin,
       destination: fileDest,
     },
-    accountId: env.UPLOAD_ACCOUNT_ID,
+    accountId: env.BYTESCALE_ACCOUNT_ID,
   });
   if (resCopy.status !== FileCopyStatusEnum.Copied)
     throw new Error(resCopy.status);
   // TODO: evaluate if need to delete file from organizer space or not ?
   // const resDelete = await fileWrapper.deleteFile({
   //   filePath: fileOrigin,
-  //   accountId: env.UPLOAD_ACCOUNT_ID,
+  //   accountId: env.BYTESCALE_ACCOUNT_ID,
   // });
 };
 

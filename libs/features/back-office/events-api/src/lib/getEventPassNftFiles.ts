@@ -14,7 +14,7 @@ export const getEventPassNftFiles = cacheWithDynamicKeys(
     const folder = new FolderWrapper();
     const folderPath = getEventPassOrganizerFolderPath(props);
     const list = await folder.listFolder({
-      accountId: env.UPLOAD_ACCOUNT_ID,
+      accountId: env.BYTESCALE_ACCOUNT_ID,
       folderPath,
     });
     return list.items.filter((item): item is FileSummary => 'filePath' in item);

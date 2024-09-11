@@ -1,5 +1,5 @@
-import { FolderWrapper } from '@file-upload/admin';
 import env from '@env/server';
+import { FolderWrapper } from '@file-upload/admin';
 
 const folder = new FolderWrapper();
 
@@ -10,6 +10,6 @@ export const handleSecureStorageForUser = (address: string) => {
       allowUnnamedFolder: false,
       folderPath,
     },
-    accountId: env.UPLOAD_ACCOUNT_ID,
+    accountId: env.BYTESCALE_ACCOUNT_ID,
   });
 };

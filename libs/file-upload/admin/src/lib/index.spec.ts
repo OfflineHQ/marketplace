@@ -184,7 +184,7 @@ describe('UploadWrapper', () => {
   let uploadWrapper: UploadWrapper;
 
   beforeEach(() => {
-    process.env.UPLOAD_SECRET_API_KEY = 'mock-api-key';
+    process.env.BYTESCALE_SECRET_API_KEY = 'mock-api-key';
     uploadWrapper = new UploadWrapper();
     jobWrapper = new JobWrapper();
   });
@@ -209,9 +209,9 @@ describe('FileWrapper', () => {
   let mockJobWrapper: JobWrapper;
 
   beforeEach(() => {
-    process.env.UPLOAD_SECRET_API_KEY = 'mock-api-key';
+    process.env.BYTESCALE_SECRET_API_KEY = 'mock-api-key';
     mockJobApi = new Upload.JobApi({
-      apiKey: process.env.UPLOAD_SECRET_API_KEY,
+      apiKey: process.env.BYTESCALE_SECRET_API_KEY,
     });
     mockJobWrapper = new JobWrapper(mockJobApi);
     fileWrapper = new FileWrapper(undefined, mockJobWrapper);
@@ -361,7 +361,7 @@ describe('FolderWrapper', () => {
   let folderWrapper: FolderWrapper;
 
   beforeEach(() => {
-    process.env.UPLOAD_SECRET_API_KEY = 'mock-api-key';
+    process.env.BYTESCALE_SECRET_API_KEY = 'mock-api-key';
     folderWrapper = new FolderWrapper();
   });
 

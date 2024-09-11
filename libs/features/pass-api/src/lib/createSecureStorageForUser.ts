@@ -1,7 +1,7 @@
+import env from '@env/server';
 import { FolderWrapper } from '@file-upload/admin';
 
 const folder = new FolderWrapper();
-import env from '@env/server';
 
 export const createSecureStorageForUser = (address: string) => {
   const folderPath = `/${env.UPLOAD_PATH_PREFIX}/users/${address}`;
@@ -10,6 +10,6 @@ export const createSecureStorageForUser = (address: string) => {
       allowUnnamedFolder: false,
       folderPath,
     },
-    accountId: env.UPLOAD_ACCOUNT_ID,
+    accountId: env.BYTESCALE_ACCOUNT_ID,
   });
 };

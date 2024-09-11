@@ -13,7 +13,7 @@ export const checkEventPassNftFilesHash = cacheWithDynamicKeys(
       filesPath.map((filePath) =>
         fileWrapper
           .downloadFile({
-            accountId: env.UPLOAD_ACCOUNT_ID,
+            accountId: env.BYTESCALE_ACCOUNT_ID,
             filePath,
           })
           .then(async (response) => {

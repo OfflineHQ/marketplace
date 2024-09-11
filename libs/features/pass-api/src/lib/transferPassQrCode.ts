@@ -31,12 +31,12 @@ export const transferPassQrCode = async (
       source: fileOrigin,
       destination: fileDest,
     },
-    accountId: env.UPLOAD_ACCOUNT_ID,
+    accountId: env.BYTESCALE_ACCOUNT_ID,
   });
   if (resCopy.status !== FileCopyStatusEnum.Copied)
     throw new Error(resCopy.status);
   await fileWrapper.deleteFile({
     filePath: fileOrigin,
-    accountId: env.UPLOAD_ACCOUNT_ID,
+    accountId: env.BYTESCALE_ACCOUNT_ID,
   });
 };

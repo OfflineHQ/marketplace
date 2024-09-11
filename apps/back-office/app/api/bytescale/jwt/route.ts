@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
   const { iat, exp, access, sub } = (await getJwt({ raw: false })) as JWT;
   const payload = { iat, exp, access, sub };
-  const jwt = jsonwebtoken.sign(payload!, env.UPLOAD_SECRET_JWT as string, {
+  const jwt = jsonwebtoken.sign(payload!, env.BYTESCALE_SECRET_JWT as string, {
     algorithm: 'RS256',
   });
   return new NextResponse(jwt, {

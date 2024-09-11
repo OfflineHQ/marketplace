@@ -27,7 +27,10 @@ export async function deleteContentSpaceFiles({
     .filter(([_fileName, selected]) => selected)
     .map(([fileName, _selected]) => `${folderPath}/${fileName}`);
   if (!filesToDelete.length) throw new Error('No files to delete selected');
-  await fileApi.deleteFilesBatchWithRetry(env.UPLOAD_ACCOUNT_ID, filesToDelete);
+  await fileApi.deleteFilesBatchWithRetry(
+    env.BYTESCALE_ACCOUNT_ID,
+    filesToDelete,
+  );
   const revalidateTagKey = `${organizerId}-${contentSpaceId}-getContentSpaceFiles`;
   revalidateTag(revalidateTagKey);
   return { revalidateTagKey };

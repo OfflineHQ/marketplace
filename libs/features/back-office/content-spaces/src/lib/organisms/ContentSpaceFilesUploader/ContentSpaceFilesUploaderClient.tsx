@@ -28,7 +28,7 @@ export function ContentSpaceFilesUploaderClient({
     contentSpaceId,
   });
   const uploaderOptions: UploadDropzoneConfig = {
-    apiKey: env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY,
+    apiKey: env.NEXT_PUBLIC_BYTESCALE_PUBLIC_API_KEY,
     multi: true,
     path: {
       folderPath: path,

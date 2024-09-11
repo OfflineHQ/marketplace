@@ -1,9 +1,9 @@
 import { FileWrapper } from '@file-upload/admin';
+import { revalidateTag } from 'next/cache';
 import {
   deleteEventPassFile,
   DeleteEventPassFileProps,
 } from './deleteEventPassFile';
-import { revalidateTag } from 'next/cache';
 
 jest.mock('@file-upload/admin');
 jest.mock('next/cache');
@@ -37,7 +37,7 @@ describe('deleteEventPassFile', () => {
     });
 
     expect(mockDeleteFile).toHaveBeenCalledWith({
-      accountId: expect.any(String), // UPLOAD_ACCOUNT_ID
+      accountId: expect.any(String), // BYTESCALE_ACCOUNT_ID
       filePath:
         '/local/organizers/testOrganizerId/events/testEventId/testEventPassId/testFile',
     });

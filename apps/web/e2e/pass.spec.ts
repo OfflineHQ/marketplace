@@ -21,11 +21,11 @@ test.afterAll(async () => {
   const filePath =
     '/local/users/0xb98bd7c7f656290071e52d1aa617d9cb4467fd6d/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-1234124.png';
   const fileApi = new Bytescale.FileApi({
-    apiKey: process.env.UPLOAD_SECRET_API_KEY || '',
+    apiKey: process.env.BYTESCALE_SECRET_API_KEY || '',
   });
 
   await fileApi.deleteFile({
-    accountId: process.env.UPLOAD_ACCOUNT_ID || '',
+    accountId: process.env.BYTESCALE_ACCOUNT_ID || '',
     filePath: filePath,
   });
 });

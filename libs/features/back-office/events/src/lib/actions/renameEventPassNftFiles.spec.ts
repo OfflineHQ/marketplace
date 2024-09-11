@@ -38,7 +38,7 @@ describe('renameEventPassNftFiles', () => {
 
     // Assert
     expect(mockCopyFileBatchWithRetry).toHaveBeenCalledWith(
-      expect.any(String), // UPLOAD_ACCOUNT_ID
+      expect.any(String), // BYTESCALE_ACCOUNT_ID
       [
         {
           source: 'file1.jpg',
@@ -51,7 +51,7 @@ describe('renameEventPassNftFiles', () => {
       ],
     );
     expect(mockDeleteFilesBatchWithRetry).toHaveBeenCalledWith(
-      expect.any(String), // UPLOAD_ACCOUNT_ID
+      expect.any(String), // BYTESCALE_ACCOUNT_ID
       ['file1.jpg', 'file2.jpg'],
     );
   });

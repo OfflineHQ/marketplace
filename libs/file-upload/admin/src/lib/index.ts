@@ -61,7 +61,7 @@ export class UploadWrapper {
   constructor() {
     this.uploadManager = new Upload.UploadManager({
       fetchApi: fetch,
-      apiKey: env.UPLOAD_SECRET_API_KEY,
+      apiKey: env.BYTESCALE_SECRET_API_KEY,
     });
   }
 
@@ -86,7 +86,7 @@ export class FileWrapper {
       fileApi ||
       new Upload.FileApi({
         fetchApi: fetch,
-        apiKey: env.UPLOAD_SECRET_API_KEY,
+        apiKey: env.BYTESCALE_SECRET_API_KEY,
       });
     this.jobWrapper = jobWrapper || new JobWrapper();
   }
@@ -201,7 +201,7 @@ export class FolderWrapper {
   constructor() {
     this.folderApi = new Upload.FolderApi({
       fetchApi: fetch,
-      apiKey: env.UPLOAD_SECRET_API_KEY,
+      apiKey: env.BYTESCALE_SECRET_API_KEY,
     });
   }
 
@@ -236,7 +236,7 @@ export class JobWrapper {
       jobApi ||
       new Upload.JobApi({
         fetchApi: fetch,
-        apiKey: env.UPLOAD_SECRET_API_KEY,
+        apiKey: env.BYTESCALE_SECRET_API_KEY,
       });
   }
 

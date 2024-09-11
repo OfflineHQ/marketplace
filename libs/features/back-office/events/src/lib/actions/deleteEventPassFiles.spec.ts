@@ -34,7 +34,7 @@ describe('deleteEventPassFiles', () => {
     });
 
     expect(mockDeleteFilesBatchWithRetry).toHaveBeenCalledWith(
-      expect.any(String), // UPLOAD_ACCOUNT_ID
+      expect.any(String), // BYTESCALE_ACCOUNT_ID
       [
         `/${env.UPLOAD_PATH_PREFIX}/organizers/testOrganizerId/events/testEventId/testEventPassId/file1`,
       ], // filesToDelete

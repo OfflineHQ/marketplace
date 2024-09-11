@@ -6,9 +6,9 @@ declare module '@env/client' {
     NEXT_PUBLIC_HASURA_PROJECT_ENDPOINT: string;
     NEXT_PUBLIC_CHAIN: string;
     NEXT_PUBLIC_ALCHEMY_API_KEY: string;
-    NEXT_PUBLIC_UPLOAD_ACCOUNT_ID: string;
+    NEXT_PUBLIC_BYTESCALE_ACCOUNT_ID: string;
     NEXT_PUBLIC_UPLOAD_PATH_PREFIX: string;
-    NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY: string;
+    NEXT_PUBLIC_BYTESCALE_PUBLIC_API_KEY: string;
     NEXT_PUBLIC_SENTRY_DSN?: string;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
     NEXT_PUBLIC_OPENZEPPELIN_URL: string;
@@ -50,11 +50,11 @@ declare module '@env/server' {
     KV_REST_API_URL: string;
     KV_REST_API_TOKEN: string;
     TZ: string;
-    UPLOAD_ACCOUNT_ID: string;
-    UPLOAD_SECRET_API_KEY: string;
-    UPLOAD_SECRET_JWT: string;
+    BYTESCALE_ACCOUNT_ID: string;
+    BYTESCALE_SECRET_API_KEY: string;
+    BYTESCALE_SECRET_JWT: string;
     UPLOAD_PATH_PREFIX: string;
-    UPLOAD_PUBLIC_API_KEY: string;
+    BYTESCALE_PUBLIC_API_KEY: string;
     FIXER_CURRENCY_API_KEY: string;
     EXCHANGE_RATE_API_KEY: string;
     WEB_APP_URL?: string;

@@ -10,7 +10,7 @@ import { getNextAppURL } from '@shared/client';
 async function downloadPass(slug: string, id: string, tokenId: string) {
   try {
     await Bytescale.AuthManager.beginAuthSession({
-      accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
+      accountId: env.NEXT_PUBLIC_BYTESCALE_ACCOUNT_ID,
       authUrl: `${getNextAppURL()}api/bytescale/jwt`,
       authHeaders: async () => Promise.resolve({}),
     });
@@ -20,11 +20,11 @@ async function downloadPass(slug: string, id: string, tokenId: string) {
 
     const fileApi = new Bytescale.FileApi({
       fetchApi: fetch,
-      apiKey: env.NEXT_PUBLIC_UPLOAD_PUBLIC_API_KEY,
+      apiKey: env.NEXT_PUBLIC_BYTESCALE_PUBLIC_API_KEY,
     });
 
     const fileData = await fileApi.downloadFile({
-      accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
+      accountId: env.NEXT_PUBLIC_BYTESCALE_ACCOUNT_ID,
       filePath: filePath,
     });
 

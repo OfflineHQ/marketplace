@@ -171,7 +171,7 @@ describe('eventPassActivity integration test', () => {
     ).toHaveBeenCalledTimes(1);
     expect(
       FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
-    ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
+    ).toHaveBeenCalledWith(env.BYTESCALE_ACCOUNT_ID, [
       {
         source: `/${env.UPLOAD_PATH_PREFIX}/users/0x1b8bd7c7f656290071e52d1aa617d9cb4469bb9f/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png`,
         destination: `/${env.UPLOAD_PATH_PREFIX}/users/0xb98bd7c7f656290071e52d1aa617d9cb4467fd6d/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png`,
@@ -182,7 +182,7 @@ describe('eventPassActivity integration test', () => {
     ).toHaveBeenCalledTimes(1);
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
-    ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
+    ).toHaveBeenCalledWith(env.BYTESCALE_ACCOUNT_ID, [
       `/${env.UPLOAD_PATH_PREFIX}/users/0x1b8bd7c7f656290071e52d1aa617d9cb4469bb9f/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png`,
     ]);
   });
@@ -200,7 +200,7 @@ describe('eventPassActivity integration test', () => {
     ).toHaveBeenCalledTimes(2);
     expect(
       FileWrapper.prototype.copyFileBatchWithRetry as jest.Mock,
-    ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
+    ).toHaveBeenCalledWith(env.BYTESCALE_ACCOUNT_ID, [
       {
         source: `/${env.UPLOAD_PATH_PREFIX}/users/0x1b8bd7c7f656290071e52d1aa617d9cb4469bb9f/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png`,
         destination: `/${env.UPLOAD_PATH_PREFIX}/users/0xb98bd7c7f656290071e52d1aa617d9cb4467fd6d/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png`,
@@ -215,7 +215,7 @@ describe('eventPassActivity integration test', () => {
     ).toHaveBeenCalledTimes(2);
     expect(
       FileWrapper.prototype.deleteFilesBatchWithRetry as jest.Mock,
-    ).toHaveBeenCalledWith(env.UPLOAD_ACCOUNT_ID, [
+    ).toHaveBeenCalledWith(env.BYTESCALE_ACCOUNT_ID, [
       `/${env.UPLOAD_PATH_PREFIX}/users/0x1b8bd7c7f656290071e52d1aa617d9cb4469bb9f/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/clj8raobj7g8l0aw3bfw6dny4/clizzpvidao620buvxit1ynko-clj8raobj7g8l0aw3bfw6dny4-12432.png`,
       `/${env.UPLOAD_PATH_PREFIX}/users/0xb98bd7c7f656290071e52d1aa617d9cb4467fd6d/clizzky8kap2t0bw7wka9a2id/events/clizzpvidao620buvxit1ynko/fake-event-pass-2/clizzpvidao620buvxit1ynko-fake-event-pass-2-1512512512.png`,
     ]);

@@ -32,8 +32,11 @@ export async function renameEventPassNftFiles({
       .pop()}`,
   }));
   await fileWrapper.copyFileBatchWithRetry(
-    env.UPLOAD_ACCOUNT_ID,
+    env.BYTESCALE_ACCOUNT_ID,
     modifiedFilesPath,
   );
-  await fileWrapper.deleteFilesBatchWithRetry(env.UPLOAD_ACCOUNT_ID, filesPath);
+  await fileWrapper.deleteFilesBatchWithRetry(
+    env.BYTESCALE_ACCOUNT_ID,
+    filesPath,
+  );
 }

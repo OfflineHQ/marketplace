@@ -49,7 +49,7 @@ export const transferPassQrCodeBatch = async (
   try {
     // Execute the copy batch operation with retry
     await fileWrapper.copyFileBatchWithRetry(
-      env.UPLOAD_ACCOUNT_ID,
+      env.BYTESCALE_ACCOUNT_ID,
       copyFileRequests,
     );
   } catch (error) {
@@ -63,7 +63,7 @@ export const transferPassQrCodeBatch = async (
   try {
     // Execute the delete batch operation with retry
     await fileWrapper.deleteFilesBatchWithRetry(
-      env.UPLOAD_ACCOUNT_ID,
+      env.BYTESCALE_ACCOUNT_ID,
       filesToDelete,
     );
   } catch (error) {

@@ -20,13 +20,13 @@ export async function GET(req: NextRequest) {
 
   const fileApi = new Bytescale.FileApi({
     fetchApi: fetch,
-    apiKey: envServer.UPLOAD_SECRET_API_KEY,
+    apiKey: envServer.BYTESCALE_SECRET_API_KEY,
   });
 
   const filePath = await getEventPassRevealedFilePath(id, user?.address);
 
   const fileData = await fileApi.downloadFile({
-    accountId: envServer.UPLOAD_ACCOUNT_ID,
+    accountId: envServer.BYTESCALE_ACCOUNT_ID,
     filePath: filePath,
   });
 

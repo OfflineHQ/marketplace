@@ -36,7 +36,7 @@ export const UploaderProvider: React.FC<BytescaleProviderProps> = ({
     if (data && !sessionReady) {
       Bytescale.AuthManager.endAuthSession();
       Bytescale.AuthManager.beginAuthSession({
-        accountId: env.NEXT_PUBLIC_UPLOAD_ACCOUNT_ID,
+        accountId: env.NEXT_PUBLIC_BYTESCALE_ACCOUNT_ID,
         authUrl: `${getNextAppURL()}api/bytescale/jwt`,
         authHeaders: async () => Promise.resolve({}),
       });

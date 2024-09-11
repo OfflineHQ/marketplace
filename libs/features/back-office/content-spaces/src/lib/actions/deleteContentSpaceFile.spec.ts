@@ -34,7 +34,7 @@ describe('deleteContentSpaceFile', () => {
     const result = await deleteContentSpaceFile(props);
 
     expect(mockDeleteFile).toHaveBeenCalledWith({
-      accountId: expect.any(String), // UPLOAD_ACCOUNT_ID
+      accountId: expect.any(String), // BYTESCALE_ACCOUNT_ID
       filePath:
         '/local/organizers/testOrganizerId/content-spaces/testContentSpaceId/testFile',
     });

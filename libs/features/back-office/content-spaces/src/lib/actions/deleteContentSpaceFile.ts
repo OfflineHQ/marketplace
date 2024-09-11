@@ -15,7 +15,7 @@ export async function deleteContentSpaceFile({
   filePath,
 }: DeleteContentSpaceFileProps) {
   const fileApi = new FileWrapper();
-  await fileApi.deleteFile({ accountId: env.UPLOAD_ACCOUNT_ID, filePath });
+  await fileApi.deleteFile({ accountId: env.BYTESCALE_ACCOUNT_ID, filePath });
 
   const revalidateTagKey = `${organizerId}-${contentSpaceId}-getContentSpaceFiles`;
   revalidateTag(revalidateTagKey);
