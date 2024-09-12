@@ -1,10 +1,5 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/11297176/195363494-6cc53b41-958d-4493-88b3-2cbfc65a2594.png" width="50%"></p>
 
-[![CodeFactor](https://www.codefactor.io/repository/github/sebpalluel/offline/badge)](https://www.codefactor.io/repository/github/sebpalluel/offline)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=alert_status)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=bugs)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=code_smells)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=sebpalluel_offline&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=sebpalluel_offline) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-
----
-
 > **Offline: Next-gen Consumer Brand Interaction Platform**
 
 ## Table of Contents
@@ -15,10 +10,10 @@
 4. [Project Structure](#project-structure)
 5. [The Stack](#the-stack)
 6. [Libraries](#libraries)
-7. [Testing](#testing)
+7. [Tests](#tests)
 8. [NX Workspace](#nx-workspace)
 9. [Environment Configuration](#environment-configuration)
-10. [Troubleshooting](#troubleshooting)
+10. [Troubleshoot](#troubleshoot)
 11. [Services](#services)
 
 ## Project Overview
@@ -129,11 +124,23 @@ pnpm docker:test
 
 <p align="center"><img src="https://user-images.githubusercontent.com/11297176/198039106-fa335322-4416-4f3f-967c-f6c663963ab2.png" width="35%"></p>
 
-You can [**find the Storybook for this project here**](https://63511cd2e1271125e3654edf-szwfakvhbw.chromatic.com/)
-Stories are defined on the `libs/ui/components` and `apps/web`. We use [interaction testing](https://storybook.js.org/docs/react/writing-tests/interaction-testing) with the storybook version of jest and testing library in order to provide dynamic demonstration of the usage of individual components along with testing.
-Aditionnaly, the service [chromatic](https://www.chromatic.com) is launched on the CI in order to spot and approve/decline UI changes.
+We have four separate Storybooks for different parts of our project:
 
-To create a new component, you can use the custom nx generator provided on this project `@workspace - component` provided from the `libs/workspace`. It will create the boilerplate code for the react component, the stories file and the jest spec file.
+1. **UI Components**: Individual stories for each component (mostly based on shadcn/ui).
+   [View UI Storybook](https://staging--6408af6e1ba96e06e062bbb1.chromatic.com)
+
+2. **Web Platform**: Exposes the Offline platform user-facing app.
+   [View Web Storybook](https://staging--63fe151cbff444bb85293d09.chromatic.com)
+
+3. **Back Office**: Exposes the Offline platform organizer app.
+   [View Back Office Storybook](https://staging--654288a25cf4cf069953529c.chromatic.com)
+
+4. **Unlock**: Exposes the Offline iframe app.
+   [View Unlock Storybook](https://staging--65d8bdc005f02c93ab8be52f.chromatic.com)
+
+We use [interaction testing](https://storybook.js.org/docs/react/writing-tests/interaction-testing) with the Storybook version of Jest and Testing Library to provide dynamic demonstrations of individual components along with testing.
+
+Additionally, we use [Chromatic](https://www.chromatic.com) in our CI pipeline to spot and approve/decline UI changes across all our Storybooks.
 
 ## Utilities
 
@@ -149,17 +156,19 @@ This repo has some additional tools already setup for you:
 
 ## Libraries
 
-### Next Auth
+### Next Auth & Cometh Connect
 
 <p align="center"><img src="https://user-images.githubusercontent.com/11297176/196224807-718c7649-b946-423e-9449-92ef244a6816.png" width="10%"></p>
 
-This project use [Next-Auth](https://next-auth.js.org) to offer different way of authentication.
+This project uses [Next-Auth](https://next-auth.js.org) in conjunction with [Cometh Connect](https://docs.cometh.io/connect) to provide secure authentication for users.
 
-The user can sign in with a web3 wallet (Metamask, WalletConnect, etc) and the SIWE adapter will handle the request with Hasura.
+Our authentication method utilizes smart wallet signatures, offering a seamless and secure connection through the verification of a signature on a smart contract. This approach leverages blockchain technology to provide a robust and user-friendly authentication experience.
 
-You can find the different providers used by next-auth in `libs/next/next-auth/options`
+The authentication providers and configuration can be found in `libs/next/next-auth/options`.
 
-Hasura is used as an adapter to next-auth in order to persist in a database the user's provided information such as their `id`. The adapter is located in `libs/next/hasura/adapter`.
+We associate the smart account with a Hasura account by persisting the wallet address and a UUID in our database.
+
+For more details on the signature verification process, refer to the [Cometh Connect documentation](https://docs.cometh.io/connect/features/sign-verify-a-message).
 
 ### GraphQL code generator
 
@@ -167,9 +176,13 @@ Hasura is used as an adapter to next-auth in order to persist in a database the 
 
 The command `pnpm graphql-codegen` will launch the `graphql-codegen` script. All the codegen definitions are written in the file `codegen.ts`. You should run this command each time you modify a graphql query or update something on the hasura console to have the updated generated sdk and utilities functions.
 
-The generator is divided in two parts, corresponding to the role of `user` and `admin`, targeting the graphql hasura server for those respective roles.
+The generator is divided in three parts, corresponding to the role of `anonymous`, `user` and `admin`, targeting the graphql hasura server for those respective roles.
 
-Each one have a grapqhl schema and an ast schema generated and specfic sdk.
+Each one have a graphql schema and an ast schema generated and specfic sdk.
+
+**Anonymous**
+
+The graphql queries definition are defined in `libs/gql/anonymous/api/queries`. We use a generic sdk with a simple fetch query in order to facilitate the querying the data for the anonymous role. Those queries doesn't need any authentication and thus are limited to read only access on some basic information about the events.
 
 **User**
 
@@ -179,7 +192,23 @@ The graphql queries definition are defined in `libs/gql/user/api/queries`. We us
 
 The graphql queries definition are defined in `libs/gql/admin/api/queries`. We use a generic sdk with a simple fetch query in order to facilitate the querying the data for the admin role. Those queries are made on the server side of the frontend. Hasura will allow the request through the providing of the `X-Hasura-Admin-Secret`.
 
-## Test
+### shadcn/ui
+
+<p align="center"><img src="https://ui.shadcn.com/og.jpg" width="200"></p>
+
+We use [shadcn/ui](https://ui.shadcn.com/) as our component library. It provides a set of re-usable components that you can copy and paste into your apps.
+
+Key features of shadcn/ui in our project:
+
+- **Customizable**: The components are built using Radix UI and Tailwind CSS, allowing for easy customization to match our design system.
+- **Accessible**: Built on top of Radix UI primitives, ensuring accessibility out of the box.
+- **Themeable**: Supports light and dark mode, with the ability to extend for custom themes.
+
+Our custom implementations and extensions of shadcn/ui components can be found in the `libs/ui/components` directory. We've adapted these components to fit our specific needs while maintaining the core benefits of the library.
+
+For more information on how we use and customize shadcn/ui, refer to our UI Components Storybook.
+
+## Tests
 
 ### Jest
 
@@ -195,7 +224,7 @@ The global settings for Jest are located in tools/test. This directory contains 
 
 - `test-db`: a database for testing running in memory to speed up execution.
 - `hasura-engine`: used to interact with the test-db and services, it uses all the metadata and migrations from the one we used in dev.
-- `jest.preset.js` is referencing all the needed setup to launch the tests. It checks that the hasura-console is running and is healthy.
+- `jest.preset.js` and `jest.setup.ts` are referencing all the needed setup to launch the tests. It checks that the hasura-console is running and is healthy.
 
 Coverage for all the libraries is created in the root of the workspace. In order to maintain code quality, you can uncomment this section with the minimum coverage before the test reports a failure on CI:Coverage for all the libs is created in the root of the workspace. In order to maintain code quality, you can uncommit this section with the minimum coverage before the test report a failure on CI:
 
@@ -214,7 +243,7 @@ Coverage for all the libraries is created in the root of the workspace. In order
 
 <p align="center"><img src="https://user-images.githubusercontent.com/11297176/196226285-40932c18-00e4-4bf4-b8cf-b2af9cda6d0e.png" width="40%"></p>
 
-Playwright is the test runner used for e2e and component tests. The tests for the web app are located in `apps/web/playwright`.
+Playwright is the test runner used for e2e tests. The tests for the web app are located in `apps/web/e2e` and `apps/back-office/e2e`.
 
 Before running the tests, be sure that all the service containers are running with:
 
@@ -230,7 +259,7 @@ To run all the Playwright tests on affected code, you can use the command:
 pnpm affected:e2e
 ```
 
-## NX
+## NX Workspace
 
 This project was generated using [Nx](https://nx.dev).
 
@@ -258,11 +287,13 @@ Libraries that contain the means for interacting with external data services; ex
 
 Libraries that contain common utilities that are shared by many projects.
 
-## Configure the project with your own `.local.env` API keys (mandatory)
+## Environment Configuration
+
+### Configure the project with your own `.env.local` API keys (mandatory)
 
 <a name="env-mandatory" />
 
-**In order to run the project, you need to configure the following environment variables in you `.local.env` file:**
+**In order to run the project, you need to configure the following environment variables in you `.env.local` file:**
 
 ### Alchemy
 
@@ -330,6 +361,12 @@ cd hasura && docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7
 
 Our project leverages various services to provide a robust and feature-rich platform. Here's an overview of the key services we use:
 
+### Cometh Connect
+
+<p align="center"><img src="https://docs.cometh.io/connect/assets/logo.svg" width="200"></p>
+
+Cometh Connect is our Smart Wallet infrastructure provider, enabling seamless and user-friendly blockchain interactions for our users.
+
 ### Alchemy
 
 <p align="center"><img src="https://www.alchemy.com/images/logo.svg" width="200"></p>
@@ -378,62 +415,6 @@ Stripe is our payment processing platform, handling secure transactions and fina
 
 <p align="center"><img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" width="200"></p>
 
-Vercel KV is used for key-value data storage, providing fast and scalable data access for certain application features.## Services
-
-Our project leverages various services to provide a robust and feature-rich platform. Here's an overview of the key services we use:
-
-### Alchemy
-
-<p align="center"><img src="https://www.alchemy.com/images/logo.svg" width="200"></p>
-
-Alchemy provides robust blockchain infrastructure. We use it as an RPC provider for Ethereum, Polygon, and Arbitrum blockchains, enabling seamless interaction with these networks.
-
-### Hasura
-
-<p align="center"><img src="https://hasura.io/brand-assets/hasura-logo-primary-dark.svg" width="200"></p>
-
-Hasura serves as our GraphQL API gateway, providing a unified interface to our Postgres database and other microservices. It handles authentication and authorization through a Next-Auth adapter.
-
-### Hygraph (CMS)
-
-<p align="center"><img src="https://www.hygraph.com/static/hygraph-logo-default.svg" width="200"></p>
-
-Hygraph is our headless CMS, used for managing event content. It provides a flexible and powerful system for creating and organizing event information across our platform.
-
-### Bytescale
-
-<p align="center"><img src="https://www.bytescale.com/img/logo-light.svg" width="200"></p>
-
-Bytescale (formerly Uploadcare) is used to secure event passes and allow users to access them through NFT holdings. It provides robust file management and access control for our digital assets.
-
-### Thirdweb
-
-<p align="center"><img src="https://thirdweb.com/logos/thirdweb.svg" width="200"></p>
-
-Thirdweb is integrated for deploying and managing our NFT smart contracts. It's crucial for our event passes and token gating features, simplifying the process of creating and managing blockchain-based assets.
-
-### Cometh Connect
-
-<p align="center"><img src="https://www.cometh.io/assets/images/logo.svg" width="200"></p>
-
-Cometh Connect is our Smart Wallet infrastructure provider, enabling seamless and user-friendly blockchain interactions for our users.
-
-### Sumsub
-
-<p align="center"><img src="https://sumsub.com/wp-content/uploads/2021/05/logo.svg" width="200"></p>
-
-Sumsub provides KYC (Know Your Customer) and AML (Anti-Money Laundering) solutions, helping us maintain regulatory compliance in user onboarding processes.
-
-### Stripe
-
-<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" width="200"></p>
-
-Stripe is our payment processing platform, handling secure transactions and financial operations within the application.
-
-### Vercel KV
-
-<p align="center"><img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" width="200"></p>
-
 Vercel KV is used for key-value data storage, providing fast and scalable data access for certain application features.
 
 ### Posthog
@@ -441,9 +422,3 @@ Vercel KV is used for key-value data storage, providing fast and scalable data a
 <p align="center"><img src="https://posthog.com/images/logos/posthog-logo-800x155.svg" width="200"></p>
 
 Posthog is our analytics platform, helping us track user behavior and gather insights to improve the application.
-
-### WalletConnect
-
-<p align="center"><img src="https://walletconnect.com/_next/static/media/logo.e1cb8d79.svg" width="200"></p>
-
-WalletConnect enables seamless connection between our dApp and various cryptocurrency wallets, enhancing the user experience for blockchain interactions.
