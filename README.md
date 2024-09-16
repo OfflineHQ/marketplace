@@ -237,7 +237,7 @@ Coverage for all the libraries is created in the root of the workspace. In order
 ### Playwright
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a1df407e-65f2-4673-a7b2-4258283ff46c" width="40%">
+  <img src="https://github.com/user-attachments/assets/e0f5089b-905b-4e18-9181-a09bcd7d2a83" width="40%">
 </p>
 
 Playwright is the test runner used for e2e tests. The tests for the web app are located in `apps/web/e2e` and `apps/back-office/e2e`.
@@ -390,7 +390,7 @@ Vercel is our cloud platform of choice for hosting our web apps and api. It prov
 ### Openzeppelin
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/cd7e068b-76a8-4ad3-a1b5-af4ef17964b7" width="25%">
+  <img src="https://github.com/user-attachments/assets/69277928-f564-4eb7-819a-dfba54fad06f" width="25%">
 </p>
 
 Openzeppelin relayer is used to manage our meta transactions and allow gasless transactions on our deployed smart contracts.
@@ -424,7 +424,7 @@ In order to use Hygraph you can simply clone our project there and use it as you
 ### Bytescale
 
 <p align="center">
-<img width="20%" alt="bytescale-logo" src="https://github.com/user-attachments/assets/a53c6305-821e-4354-9e08-db60a9260bb9">
+<img width="18%" alt="bytescale-logo" src="https://github.com/user-attachments/assets/a53c6305-821e-4354-9e08-db60a9260bb9">
 </p>
 
 Bytescale is used to secure event passes and allow users to access them through NFT holdings. It provides robust file management and access control for our digital assets.
@@ -432,7 +432,7 @@ Bytescale is used to secure event passes and allow users to access them through 
 ### Sumsub
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a814a5e9-8d10-48af-bd82-6fd03b44bd7f" width="30%">
+  <img src="https://github.com/user-attachments/assets/a814a5e9-8d10-48af-bd82-6fd03b44bd7f" width="35%">
 </p>
 
 Sumsub provides KYC (Know Your Customer) and AML (Anti-Money Laundering) solutions, helping us maintain regulatory compliance in user onboarding processes.
@@ -440,7 +440,7 @@ Sumsub provides KYC (Know Your Customer) and AML (Anti-Money Laundering) solutio
 ### Stripe
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/27784fab-7d00-45b7-a753-c78af98743e4" width="30%">
+  <img src="https://github.com/user-attachments/assets/27784fab-7d00-45b7-a753-c78af98743e4" width="25%">
 </p>
 
 Stripe is our payment processing platform, handling secure transactions and financial operations within the application.
@@ -448,7 +448,7 @@ Stripe is our payment processing platform, handling secure transactions and fina
 ### Posthog
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/31ab2c8a-babc-4fd4-936a-50479dda7858" width="30%">
+  <img src="https://github.com/user-attachments/assets/31ab2c8a-babc-4fd4-936a-50479dda7858" width="35%">
 </p>
 
 Posthog is our analytics platform, helping us track user behavior and gather insights to improve the application.
@@ -456,7 +456,7 @@ Posthog is our analytics platform, helping us track user behavior and gather ins
 ### Sentry
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/31ab2c8a-babc-4fd4-936a-50479dda7858" width="30%">
+  <img src="https://github.com/user-attachments/assets/333016de-3f9b-49a0-a720-709748a5cc68" width="30%">
 </p>
 
 Sentry is our error tracking platform.
