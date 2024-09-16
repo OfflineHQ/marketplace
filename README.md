@@ -353,110 +353,92 @@ cd hasura && docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7
 
 ## Services
 
-Our project leverages various services to provide a robust and feature-rich platform. Here's an overview of the key services we use:
+Our platform leverages a variety of cutting-edge services to deliver a robust and feature-rich experience. Here's an overview of our key technology partners:
 
-### Cometh Connect
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <img src="https://github.com/user-attachments/assets/a043873a-ddc1-4e02-8a42-8321118fc288" width="100"><br>
+      <b>Cometh Connect</b><br>
+      Smart Wallet infrastructure
+    </td>
+    <td align="center" width="33%">
+      <img src="https://github.com/user-attachments/assets/29f5c3ad-66a8-4def-8f6b-2abe1bfa36e7" width="100"><br>
+      <b>Alchemy</b><br>
+      Blockchain RPC provider
+    </td>
+    <td align="center" width="33%">
+      <img src="https://github.com/user-attachments/assets/2a613c3a-da68-4087-b5ce-89adcba4bdc6" width="100"><br>
+      <b>Thirdweb</b><br>
+      NFT smart contract management
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/cd7e068b-76a8-4ad3-a1b5-af4ef17964b7" width="100"><br>
+      <b>Vercel</b><br>
+      Web app and API hosting
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/69277928-f564-4eb7-819a-dfba54fad06f" width="100"><br>
+      <b>OpenZeppelin</b><br>
+      Meta-transaction relayer
+    </td>
+    <td align="center">
+      <img src="https://hasura.io/brand-assets/hasura-logo-primary-dark.svg" width="100"><br>
+      <b>Hasura</b><br>
+      GraphQL API gateway
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/89f9f0c0-a5f1-4bd5-a1aa-39530ffae0bf" width="100"><br>
+      <b>Neon DB</b><br>
+      Postgres database provider
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/84a41fff-fc1c-4705-a132-05aac6a8a201" width="100"><br>
+      <b>Hygraph</b><br>
+      Headless CMS for event content
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/a53c6305-821e-4354-9e08-db60a9260bb9" width="100"><br>
+      <b>Bytescale</b><br>
+      Secure file management
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/a814a5e9-8d10-48af-bd82-6fd03b44bd7f" width="100"><br>
+      <b>Sumsub</b><br>
+      KYC and AML solutions
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/27784fab-7d00-45b7-a753-c78af98743e4" width="100"><br>
+      <b>Stripe</b><br>
+      Payment processing
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/31ab2c8a-babc-4fd4-936a-50479dda7858" width="100"><br>
+      <b>Posthog</b><br>
+      Analytics platform
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/333016de-3f9b-49a0-a720-709748a5cc68" width="100"><br>
+      <b>Sentry</b><br>
+      Error tracking
+    </td>
+    <td align="center" colspan="3">
+      <img width="100%" alt="thirdweb-logo" src="https://github.com/user-attachments/assets/2a613c3a-da68-4087-b5ce-89adcba4bdc6"><br>
+      <b>Hygraph CMS</b><br>
+      Headless CMS for event content
+      <a href="https://app.hygraph.com/clone/87d4b94f102e4491b3e77e4aae06fdd9?name=Offline%20marketplace">
+        <img src="https://hygraph.com/button" alt="Clone Project">
+      </a>
+    </td>
+  </tr>
+</table>
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/a043873a-ddc1-4e02-8a42-8321118fc288" width="25%">
-</p>
-
-Cometh Connect is our Smart Wallet infrastructure provider, enabling seamless and user-friendly blockchain interactions for our users.
-
-### Alchemy
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/29f5c3ad-66a8-4def-8f6b-2abe1bfa36e7" width="25%">
-</p>
-
-Alchemy provides robust blockchain infrastructure. We use it as an RPC provider for Ethereum, Polygon, and Arbitrum blockchains, enabling seamless interaction with these networks.
-
-### Thirdweb
-
-<p align="center">
-<img width="25%" alt="thirdweb-logo" src="https://github.com/user-attachments/assets/2a613c3a-da68-4087-b5ce-89adcba4bdc6">
-</p>
-
-Thirdweb is integrated for deploying and managing our NFT smart contracts. It's crucial for our event passes and token gating features, simplifying the process of creating and managing blockchain-based assets.
-
-### Vercel
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/cd7e068b-76a8-4ad3-a1b5-af4ef17964b7" width="25%">
-</p>
-
-Vercel is our cloud platform of choice for hosting our web apps and api. It provides a robust and scalable environment for our applications.
-
-### Openzeppelin
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/69277928-f564-4eb7-819a-dfba54fad06f" width="25%">
-</p>
-
-Openzeppelin relayer is used to manage our meta transactions and allow gasless transactions on our deployed smart contracts.
-
-### Hasura
-
-<p align="center"><img src="https://hasura.io/brand-assets/hasura-logo-primary-dark.svg" width="25%"></p>
-
-Hasura serves as our GraphQL API gateway, providing a unified interface to our Postgres database and other microservices. It handles authentication and authorization through a Next-Auth adapter.
-
-### Neon DB
-
-<p align="center">
-<img width="25%" alt="neon-logo" src="https://github.com/user-attachments/assets/89f9f0c0-a5f1-4bd5-a1aa-39530ffae0bf">
-</p>
-
-Neon is our Postgres database provider. It provides a scalable and secure database solution for our applications.
-
-### Hygraph (CMS)
-
-<p align="center">
-<img width="25%" alt="hygraph-logo" src="https://github.com/user-attachments/assets/84a41fff-fc1c-4705-a132-05aac6a8a201">
-</p>
-
-Hygraph is our headless CMS, used for managing event content. It provides a flexible and powerful system for creating and organizing event information across our platform.
-
-In order to use Hygraph you can simply clone our project there and use it as your own CMS.
-
-[![Clone Project](https://hygraph.com/button)](https://app.hygraph.com/clone/87d4b94f102e4491b3e77e4aae06fdd9?name=Offline%20marketplace)
-
-### Bytescale
-
-<p align="center">
-<img width="18%" alt="bytescale-logo" src="https://github.com/user-attachments/assets/a53c6305-821e-4354-9e08-db60a9260bb9">
-</p>
-
-Bytescale is used to secure event passes and allow users to access them through NFT holdings. It provides robust file management and access control for our digital assets.
-
-### Sumsub
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/a814a5e9-8d10-48af-bd82-6fd03b44bd7f" width="35%">
-</p>
-
-Sumsub provides KYC (Know Your Customer) and AML (Anti-Money Laundering) solutions, helping us maintain regulatory compliance in user onboarding processes.
-
-### Stripe
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/27784fab-7d00-45b7-a753-c78af98743e4" width="25%">
-</p>
-
-Stripe is our payment processing platform, handling secure transactions and financial operations within the application.
-
-### Posthog
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/31ab2c8a-babc-4fd4-936a-50479dda7858" width="35%">
-</p>
-
-Posthog is our analytics platform, helping us track user behavior and gather insights to improve the application.
-
-### Sentry
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/333016de-3f9b-49a0-a720-709748a5cc68" width="30%">
-</p>
-
-Sentry is our error tracking platform.
+Each service plays a crucial role in our ecosystem, from blockchain interactions to content management and analytics. For more details on how these services are integrated and used, please refer to our documentation.
