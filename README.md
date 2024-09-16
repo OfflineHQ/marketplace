@@ -150,9 +150,9 @@ This repo has some additional tools already setup for you:
 
 ### Next Auth & Cometh Connect
 
-<p align="center" style="display: flex; align-items: center; justify-content: center; gap: 50px;">
+<p align="center" style="display: flex; align-items: center; justify-content: center; gap: 100px;">
   <img src="https://user-images.githubusercontent.com/11297176/196224807-718c7649-b946-423e-9449-92ef244a6816.png" width="10%">
-  <img src="https://github.com/user-attachments/assets/a043873a-ddc1-4e02-8a42-8321118fc288" width="50%">
+  <img src="https://github.com/user-attachments/assets/a043873a-ddc1-4e02-8a42-8321118fc288" width="30%">
 </p>
 
 This project uses [Next-Auth](https://next-auth.js.org) in conjunction with [Cometh Connect](https://docs.cometh.io/connect) to provide secure authentication for users.
@@ -167,7 +167,7 @@ For more details on the signature verification process, refer to the [Cometh Con
 
 ### GraphQL code generator
 
-<p align="center"><img src="https://user-images.githubusercontent.com/11297176/196225336-16072309-c798-4263-85ed-b5332509dc99.jpeg" width="20%"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/11297176/196225336-16072309-c798-4263-85ed-b5332509dc99.jpeg" width="18%"></p>
 
 The command `pnpm graphql-codegen` will launch the `graphql-codegen` script. All the codegen definitions are written in the file `codegen.ts`. You should run this command each time you modify a graphql query or update something on the hasura console to have the updated generated sdk and utilities functions.
 
@@ -189,7 +189,7 @@ The graphql queries definition are defined in `libs/gql/admin/api/queries`. We u
 
 ### shadcn/ui
 
-<p align="center"><img src="https://ui.shadcn.com/og.jpg" width="200"></p>
+<p align="center"><img src="https://ui.shadcn.com/og.jpg" width="50%"></p>
 
 We use [shadcn/ui](https://ui.shadcn.com/) as our component library. It provides a set of re-usable components that you can copy and paste into your apps.
 
@@ -358,7 +358,7 @@ Our project leverages various services to provide a robust and feature-rich plat
 ### Cometh Connect
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a043873a-ddc1-4e02-8a42-8321118fc288" width="50%">
+  <img src="https://github.com/user-attachments/assets/a043873a-ddc1-4e02-8a42-8321118fc288" width="25%">
 </p>
 
 Cometh Connect is our Smart Wallet infrastructure provider, enabling seamless and user-friendly blockchain interactions for our users.
@@ -366,7 +366,7 @@ Cometh Connect is our Smart Wallet infrastructure provider, enabling seamless an
 ### Alchemy
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/29f5c3ad-66a8-4def-8f6b-2abe1bfa36e7" width="50%">
+  <img src="https://github.com/user-attachments/assets/29f5c3ad-66a8-4def-8f6b-2abe1bfa36e7" width="25%">
 </p>
 
 Alchemy provides robust blockchain infrastructure. We use it as an RPC provider for Ethereum, Polygon, and Arbitrum blockchains, enabling seamless interaction with these networks.
@@ -374,7 +374,7 @@ Alchemy provides robust blockchain infrastructure. We use it as an RPC provider 
 ### Thirdweb
 
 <p align="center">
-<img width="50%" alt="thirdweb-logo" src="https://github.com/user-attachments/assets/2a613c3a-da68-4087-b5ce-89adcba4bdc6">
+<img width="25%" alt="thirdweb-logo" src="https://github.com/user-attachments/assets/2a613c3a-da68-4087-b5ce-89adcba4bdc6">
 </p>
 
 Thirdweb is integrated for deploying and managing our NFT smart contracts. It's crucial for our event passes and token gating features, simplifying the process of creating and managing blockchain-based assets.
@@ -382,7 +382,7 @@ Thirdweb is integrated for deploying and managing our NFT smart contracts. It's 
 ### Vercel
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/cd7e068b-76a8-4ad3-a1b5-af4ef17964b7" width="50%">
+  <img src="https://github.com/user-attachments/assets/cd7e068b-76a8-4ad3-a1b5-af4ef17964b7" width="25%">
 </p>
 
 Vercel is our cloud platform of choice for hosting our web apps and api. It provides a robust and scalable environment for our applications.
@@ -390,21 +390,21 @@ Vercel is our cloud platform of choice for hosting our web apps and api. It prov
 ### Openzeppelin
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/cd7e068b-76a8-4ad3-a1b5-af4ef17964b7" width="50%">
+  <img src="https://github.com/user-attachments/assets/cd7e068b-76a8-4ad3-a1b5-af4ef17964b7" width="25%">
 </p>
 
 Openzeppelin relayer is used to manage our meta transactions and allow gasless transactions on our deployed smart contracts.
 
 ### Hasura
 
-<p align="center"><img src="https://hasura.io/brand-assets/hasura-logo-primary-dark.svg" width="200"></p>
+<p align="center"><img src="https://hasura.io/brand-assets/hasura-logo-primary-dark.svg" width="25%"></p>
 
 Hasura serves as our GraphQL API gateway, providing a unified interface to our Postgres database and other microservices. It handles authentication and authorization through a Next-Auth adapter.
 
 ### Neon DB
 
 <p align="center">
-<img width="50%" alt="neon-logo" src="https://github.com/user-attachments/assets/89f9f0c0-a5f1-4bd5-a1aa-39530ffae0bf">
+<img width="25%" alt="neon-logo" src="https://github.com/user-attachments/assets/89f9f0c0-a5f1-4bd5-a1aa-39530ffae0bf">
 </p>
 
 Neon is our Postgres database provider. It provides a scalable and secure database solution for our applications.
@@ -412,7 +412,7 @@ Neon is our Postgres database provider. It provides a scalable and secure databa
 ### Hygraph (CMS)
 
 <p align="center">
-<img width="50%" alt="hygraph-logo" src="https://github.com/user-attachments/assets/84a41fff-fc1c-4705-a132-05aac6a8a201">
+<img width="25%" alt="hygraph-logo" src="https://github.com/user-attachments/assets/84a41fff-fc1c-4705-a132-05aac6a8a201">
 </p>
 
 Hygraph is our headless CMS, used for managing event content. It provides a flexible and powerful system for creating and organizing event information across our platform.
@@ -424,7 +424,7 @@ In order to use Hygraph you can simply clone our project there and use it as you
 ### Bytescale
 
 <p align="center">
-<img width="50%" alt="bytescale-logo" src="https://github.com/user-attachments/assets/a53c6305-821e-4354-9e08-db60a9260bb9">
+<img width="20%" alt="bytescale-logo" src="https://github.com/user-attachments/assets/a53c6305-821e-4354-9e08-db60a9260bb9">
 </p>
 
 Bytescale is used to secure event passes and allow users to access them through NFT holdings. It provides robust file management and access control for our digital assets.
@@ -432,7 +432,7 @@ Bytescale is used to secure event passes and allow users to access them through 
 ### Sumsub
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a814a5e9-8d10-48af-bd82-6fd03b44bd7f" width="50%">
+  <img src="https://github.com/user-attachments/assets/a814a5e9-8d10-48af-bd82-6fd03b44bd7f" width="30%">
 </p>
 
 Sumsub provides KYC (Know Your Customer) and AML (Anti-Money Laundering) solutions, helping us maintain regulatory compliance in user onboarding processes.
@@ -440,7 +440,7 @@ Sumsub provides KYC (Know Your Customer) and AML (Anti-Money Laundering) solutio
 ### Stripe
 
 <p align="center">
-  ![stripe_logo](https://github.com/user-attachments/assets/27784fab-7d00-45b7-a753-c78af98743e4)
+  <img src="https://github.com/user-attachments/assets/27784fab-7d00-45b7-a753-c78af98743e4" width="30%">
 </p>
 
 Stripe is our payment processing platform, handling secure transactions and financial operations within the application.
@@ -448,7 +448,7 @@ Stripe is our payment processing platform, handling secure transactions and fina
 ### Posthog
 
 <p align="center">
-  ![posthog-logo](https://github.com/user-attachments/assets/31ab2c8a-babc-4fd4-936a-50479dda7858)
+  <img src="https://github.com/user-attachments/assets/31ab2c8a-babc-4fd4-936a-50479dda7858" width="30%">
 </p>
 
 Posthog is our analytics platform, helping us track user behavior and gather insights to improve the application.
@@ -456,7 +456,7 @@ Posthog is our analytics platform, helping us track user behavior and gather ins
 ### Sentry
 
 <p align="center">
-  ![sentry-logo](https://github.com/user-attachments/assets/31ab2c8a-babc-4fd4-936a-50479dda7858)
+  <img src="https://github.com/user-attachments/assets/31ab2c8a-babc-4fd4-936a-50479dda7858" width="30%">
 </p>
 
 Sentry is our error tracking platform.
