@@ -1,20 +1,20 @@
-<p align="center"><img width="22%" alt="offline logo" src="https://github.com/user-attachments/assets/35c58da8-89ee-41c4-af27-884b86ee4834"></p>
+<p align="center"><img width="25%" alt="Offline logo" src="https://github.com/user-attachments/assets/35c58da8-89ee-41c4-af27-884b86ee4834"></p>
 
-> **Offline: Next-gen Consumer Brand Interaction Platform**
+<h1 align="center">Offline: Next-gen Consumer Brand Interaction Platform</h1>
 
-## Table of Contents
-
-1. [Project Overview](#project-overview)
-2. [Architecture](#architecture)
-3. [Quick Install](#quick-install)
-4. [Project Structure](#project-structure)
-5. [The Stack](#the-stack)
-6. [Libraries](#libraries)
-7. [Tests](#tests)
-8. [NX Workspace](#nx-workspace)
-9. [Environment Configuration](#environment-configuration)
-10. [Troubleshoot](#troubleshoot)
-11. [Services](#services)
+<p align="center">
+  <a href="#project-overview">Overview</a> •
+  <a href="#quick-install">Quick Install</a> •
+  <a href="#architecture">Architecture</a> •
+  <a href="#the-stack">Tech Stack</a> •
+  <a href="#libraries">Libraries</a> •
+  <a href="#tests">Tests</a> •
+  <a href="#nx-workspace">NX Workspace</a> •
+  <a href="#environment-configuration">Environment Configuration</a> •
+  <a href="#troubleshoot">Troubleshoot</a> •
+  <a href="#services">Services</a> •
+  <a href="#license">License</a>
+</p>
 
 ## Project Overview
 
@@ -25,6 +25,16 @@ Offline is an innovative platform designed to revolutionize brand-customer inter
 2. **Back-office** (`apps/back-office`): A comprehensive management interface for organizers to create and manage their events, smart contracts, and analyze performance metrics. This empowers brands to easily create and manage their offerings on the Offline platform.
 
 3. **Unlock** (`apps/unlock`): An iframe app that allows users to connect their Offline smart contract wallet across various platforms outside of Offline. This includes integration with Shopify stores for token-gating campaigns, expanding the utility of Offline's blockchain-based assets.
+
+## Quick Install
+
+1. First you need to install pnpm in your machine `npm install -g pnpm`
+2. Install all the dependencies `pnpm install`
+3. Provide the needed API keys in the `.env.local` file
+
+   **[Refer to this section to set your .env.local with the needed API keys](#env-mandatory)**
+
+4. Then you can run the project `pnpm start`
 
 ## Architecture
 
@@ -43,16 +53,6 @@ The Offline Marketplace Monorepo employs a microservices architecture with the f
 - **Blockchain Integration**: Utilizes smart contracts for ticket management and token-gating functionality. This provides a secure and transparent way to manage digital assets and access rights.
 
 - **External Integrations**: Includes a Shopify app (separate project: shopify-gates) for creating token-gating campaigns on merchant stores, powered by OF Keys and OF Stamps. This extends the reach of Offline's technology to e-commerce platforms.
-
-## Quick Install
-
-1. First you need to install pnpm in your machine `npm install -g pnpm`
-2. Install all the dependencies `pnpm install`
-3. Provide the needed API keys in the `.env.local` file
-
-   **[Refer to this section to set your .env.local with the needed API keys](#env-mandatory)**
-
-4. Then you can run the project `pnpm start`
 
 ## Project Structure
 
