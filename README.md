@@ -72,8 +72,6 @@ The Offline Marketplace Monorepo employs a microservices architecture with the f
 
 ## Environment Configuration
 
-<a name="env-mandatory" />
-
 > [!NOTE]  
 > In order to run the project, you need to configure the following environment variables in you `.env.local` file
 
