@@ -2,24 +2,34 @@
 
 <h1 align="center">Offline: Next-gen Consumer Brand Interaction Platform</h1>
 
+> [!IMPORTANT]  
+> Offline development has been stopped on July 2024 and the project is no longer maintained.
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+
 <p align="center">
   <a href="#project-overview">Overview</a> •
-  <a href="#quick-install">Quick Install</a> •
   <a href="#architecture">Architecture</a> •
+  <a href="#quick-install">Quick Install</a> •
+  <a href="#environment-configuration">Environment Configuration</a> •
+  <a href="#project-structure">Project Structure</a> •
   <a href="#the-stack">Tech Stack</a> •
   <a href="#libraries">Libraries</a> •
   <a href="#tests">Tests</a> •
   <a href="#nx-workspace">NX Workspace</a> •
-  <a href="#environment-configuration">Environment Configuration</a> •
   <a href="#troubleshoot">Troubleshoot</a> •
   <a href="#services">Services</a> •
   <a href="#license">License</a>
 </p>
 
-> [!IMPORTANT]  
-> Offline development has been stopped on july 2024 and the project is no longer maintained.
+## ✨ Features
 
-🌟 Star our repository if you find it interesting! We appreciate your support.
+- 🎫 User-friendly marketplace for event tickets
+- 🖥️ Comprehensive back-office for organizers
+- ⛓️ Blockchain integration with smart contracts and NFTs
+- 👛 Seamless wallet connection with Cometh Connect
+- 🛍️ Integration with Shopify for token-gating campaigns
+- 🌐 Multi-language support
 
 ## Project Overview
 
@@ -30,16 +40,6 @@ Offline is an innovative platform designed to revolutionize brand-customer inter
 2. **Back-office** (`apps/back-office`): A comprehensive management interface for organizers to create and manage their events, smart contracts, and analyze performance metrics. This empowers brands to easily create and manage their offerings on the Offline platform.
 
 3. **Unlock** (`apps/unlock`): An iframe app that allows users to connect their Offline smart contract wallet across various platforms outside of Offline. This includes integration with Shopify stores for token-gating campaigns, expanding the utility of Offline's blockchain-based assets.
-
-## Quick Install
-
-1. First you need to install pnpm in your machine `npm install -g pnpm`
-2. Install all the dependencies `pnpm install`
-3. Provide the needed API keys in the `.env.local` file
-
-   **[Refer to this section to set your .env.local with the needed API keys](#env-mandatory)**
-
-4. Then you can run the project `pnpm start`
 
 ## Architecture
 
@@ -58,6 +58,73 @@ The Offline Marketplace Monorepo employs a microservices architecture with the f
 - **Blockchain Integration**: Utilizes smart contracts for ticket management and token-gating functionality. This provides a secure and transparent way to manage digital assets and access rights.
 
 - **External Integrations**: Includes a Shopify app (separate project: shopify-gates) for creating token-gating campaigns on merchant stores, powered by OF Keys and OF Stamps. This extends the reach of Offline's technology to e-commerce platforms.
+
+## Quick Install
+
+1. Install pnpm: `npm install -g pnpm`
+2. Install all dependencies: `pnpm install`
+3. Provide the required API keys in the `.env.local` file.
+
+   **[Refer to the [Environment Configuration](#environment-configuration) section to set up your `.env.local` with the required API keys.](#environment-configuration)**
+
+4. Run the project: `pnpm start`
+
+## Environment Configuration
+
+### Configure the project with your own `.env.local` API keys (mandatory)
+
+<a name="env-mandatory" />
+
+**In order to run the project, you need to configure the following environment variables in you `.env.local` file:**
+
+### Alchemy env
+
+Our platform uses [Alchemy](https://alchemy.com/?r=ba8fc42476de40ad) as an RPC provider for the Polygon blockchain. You need to create an account and [get an API key on the alchemy dashboard](https://dashboard.alchemyapi.io/?r=ba8fc42476de40ad):
+
+```bash
+NEXT_PUBLIC_ALCHEMY_API_KEY=
+ALCHEMY_API_KEY=
+ALCHEMY_AUTH_TOKEN=
+# Warning ! Those api keys are going to get leaked in the client side code so it's advised to set ALLOWLIST DOMAIN in the alchemy dashboard to your apex domain (in our case www.offline.live) in order to avoid someone hijacking your api keys.
+```
+
+### JWT secret keys
+
+In order to secure your JWT authentication provided by [Next Auth](https://next-auth.js.org/) you are going to need to generate your own RSA-256 keys.
+
+### Configure Hasura and Next Auth with same RSA key
+
+You need to configure hasura and next auth to have the same asymmetric key. One is provided by default but you can generate your own RSA 256 key using those commands:
+
+```shell
+# Don't add passphrase
+
+ssh-keygen -t rsa -P "" -b 4096 -m PEM -f jwtRS256.key
+
+ssh-keygen -e -m PEM -f jwtRS256.key > jwtRS256.key.pub
+```
+
+<https://hasura.io/blog/next-js-jwt-authentication-with-next-auth-and-integration-with-hasura/>
+
+- Copy the public key in a single line format:
+
+```shell
+awk -v ORS='\\n' '1' jwtRS256.key.pub | pbcopy
+```
+
+- Now paste this value in your clipboard to `HASURA_GRAPHQL_JWT_SECRET` env in the format
+
+```shell
+{ "type": "RS256", "key": "<insert-your-public-key-here>"}
+```
+
+- Copy private key and paste it into `NEXTAUTH_SECRET` env
+
+```shell
+cat jwtRS256.key | pbcopy
+```
+
+Don't forget to add double quotes "" arround so that `\n` are interpreted correctly
 
 ## Project Structure
 
@@ -79,9 +146,9 @@ This is the back-office app where organizers can manage their events, smart cont
 
 This is the iframe app where the users connect their smart wallet to our platform seamlessly across domains. It is embedded in the Shopify stores for tokengating campaigns.
 
-# The Stack
+## The Stack
 
-## Docker
+### Docker
 
 <p align="center"><img src="https://user-images.githubusercontent.com/11297176/198038805-76a9dc37-538e-41f5-93c5-0e372d43ae9a.png" width="22%"></p>
 
@@ -117,7 +184,7 @@ The command to run all the containers for unit and integration test is
 pnpm docker:test
 ```
 
-## Storybook
+### Storybook
 
 <p align="center"><img src="https://user-images.githubusercontent.com/11297176/198039106-fa335322-4416-4f3f-967c-f6c663963ab2.png" width="55%"></p>
 
@@ -129,8 +196,8 @@ We have four separate Storybooks for different parts of our project:
 2. **Web Platform**: Exposes the Offline platform user-facing app.
    [View Web Storybook](https://staging--63fe151cbff444bb85293d09.chromatic.com)
 
-3. **Back Office**: Exposes the Offline platform organizer app.
-   [View Back Office Storybook](https://staging--654288a25cf4cf069953529c.chromatic.com)
+3. **Back-office**: Exposes the Offline platform organizer app.
+   [View Back-office Storybook](https://staging--654288a25cf4cf069953529c.chromatic.com)
 
 4. **Unlock**: Exposes the Offline iframe app.
    [View Unlock Storybook](https://staging--65d8bdc005f02c93ab8be52f.chromatic.com)
@@ -289,63 +356,6 @@ Libraries that contain the means for interacting with external data services; ex
 
 Libraries that contain common utilities that are shared by many projects.
 
-## Environment Configuration
-
-### Configure the project with your own `.env.local` API keys (mandatory)
-
-<a name="env-mandatory" />
-
-**In order to run the project, you need to configure the following environment variables in you `.env.local` file:**
-
-### Alchemy env
-
-Our platform uses [Alchemy](https://alchemy.com/?r=ba8fc42476de40ad) as an RPC provider for the Polygon blockchain. You need to create an account and [get an API key on the alchemy dashboard](https://dashboard.alchemyapi.io/?r=ba8fc42476de40ad):
-
-```bash
-NEXT_PUBLIC_ALCHEMY_API_KEY=
-ALCHEMY_API_KEY=
-ALCHEMY_AUTH_TOKEN=
-# Warning ! Those api keys are going to get leaked in the client side code so it's advised to set ALLOWLIST DOMAIN in the alchemy dashboard to your apex domain (in our case www.offline.live) in order to avoid someone hijacking your api keys.
-```
-
-### JWT secret keys
-
-In order to secure your JWT authentication provided by [Next Auth](https://next-auth.js.org/) you are going to need to generate your own RSA-256 keys.
-
-### Configure Hasura and Next Auth with same RSA key
-
-You need to configure hasura and next auth to have the same asymmetric key. One is provided by default but you can generate your own RSA 256 key using those commands:
-
-```shell
-# Don't add passphrase
-
-ssh-keygen -t rsa -P "" -b 4096 -m PEM -f jwtRS256.key
-
-ssh-keygen -e -m PEM -f jwtRS256.key > jwtRS256.key.pub
-```
-
-<https://hasura.io/blog/next-js-jwt-authentication-with-next-auth-and-integration-with-hasura/>
-
-- Copy the public key in a single line format:
-
-```shell
-awk -v ORS='\\n' '1' jwtRS256.key.pub | pbcopy
-```
-
-- Now paste this value in your clipboard to `HASURA_GRAPHQL_JWT_SECRET` env in the format
-
-```shell
-{ "type": "RS256", "key": "<insert-your-public-key-here>"}
-```
-
-- Copy private key and paste it into `NEXTAUTH_SECRET` env
-
-```shell
-cat jwtRS256.key | pbcopy
-```
-
-Don't forget to add double quotes "" arround so that `\n` are interpreted correctly
-
 ## Troubleshoot
 
 In case you need your own image instead of `sebpalluel/hasura_cli_with_socat_and_curl` you can do the following command to publish it in docker hub.
@@ -433,3 +443,7 @@ Our platform leverages a variety of cutting-edge services to deliver a robust an
 </table>
 
 Each service plays a crucial role in our ecosystem, from blockchain interactions to content management and analytics. For more details on how these services are integrated and used, please refer to our documentation.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
