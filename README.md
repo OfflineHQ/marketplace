@@ -65,17 +65,17 @@ The Offline Marketplace Monorepo employs a microservices architecture with the f
 2. Install all dependencies: `pnpm install`
 3. Provide the required API keys in the `.env.local` file.
 
-   **[Refer to the [Environment Configuration](#environment-configuration) section to set up your `.env.local` with the required API keys.](#environment-configuration)**
+> [!TIP]
+> Refer to the [Environment Configuration](#environment-configuration) section to set up your `.env.local` with the required API keys.
 
 4. Run the project: `pnpm start`
 
 ## Environment Configuration
 
-### Configure the project with your own `.env.local` API keys (mandatory)
-
 <a name="env-mandatory" />
 
-**In order to run the project, you need to configure the following environment variables in you `.env.local` file:**
+> [!NOTE]  
+> In order to run the project, you need to configure the following environment variables in you `.env.local` file
 
 ### Alchemy env
 
@@ -441,8 +441,6 @@ Our platform leverages a variety of cutting-edge services to deliver a robust an
       <td/>
   </tr>
 </table>
-
-Each service plays a crucial role in our ecosystem, from blockchain interactions to content management and analytics. For more details on how these services are integrated and used, please refer to our documentation.
 
 ## License
 
