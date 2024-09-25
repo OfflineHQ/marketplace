@@ -16,6 +16,11 @@
   <a href="#license">License</a>
 </p>
 
+> [!IMPORTANT]  
+> Offline development has been stopped on july 2024 and the project is no longer maintained.
+
+🌟 Star our repository if you find it interesting! We appreciate your support.
+
 ## Project Overview
 
 Offline is an innovative platform designed to revolutionize brand-customer interactions through user-centric applications leveraging blockchain and NFT technologies. The project consists of three main applications:
